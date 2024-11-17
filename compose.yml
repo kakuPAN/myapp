@@ -29,6 +29,6 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # 環境変数から参照
       TZ: "Asia/Tokyo"
     ports:
-      - "${MYSQL_POAT}:3306" # 環境変数から参照
+      - "${MYSQL_PORT}:3306" # 環境変数から参照
 volumes:
   db-data:
