@@ -18,7 +18,8 @@ services:
     depends_on:
       - db
   # MySQLの設定
-  db: #データベースのサービス名
+  #データベースのサービス名
+  db: 
     container_name: myapp_db
     image: mysql:8.0
     volumes:
@@ -31,4 +32,3 @@ services:
       - "${MYSQL_POAT}:3306" # 環境変数から参照
 volumes:
   db-data:
-  
