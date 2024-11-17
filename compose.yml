@@ -31,3 +31,4 @@ services:
       - "${MYSQL_POAT}:3306" # 環境変数から参照
 volumes:
   db-data:
+  
