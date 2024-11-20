@@ -1,0 +1,9 @@
+<h1>ユーザー登録フォームだよ</h1>
+
+<%= form_with model: @user, local: true do |f| %>
+  <div>
+    <%= f.label :name, "名前" %>
+    <%= f.text_field :name, required: true %>
+    <%= f.submit "登録"%>
+  </div>
+<% end %>
