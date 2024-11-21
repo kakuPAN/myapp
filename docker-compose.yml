@@ -6,6 +6,7 @@ services:
     restart: always
     environment:
       TZ: Asia/Tokyo
+      RAILS_ENV: production
       POSTGRES_PASSWORD: password
     volumes:
       - postgresql_data:/var/lib/postgresql
