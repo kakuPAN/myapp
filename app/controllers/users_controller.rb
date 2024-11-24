@@ -1,5 +1,4 @@
-class UsersController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
+class UsersController < ApplicationController
   def new
     @user = User.new
   end
@@ -7,16 +6,15 @@ class UsersController < ActionController::Base
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to root_path, notice: "ユーザーが登録されました"
+      redirect_to login_path, notice: "#{@user.user_name}さまを登録しました"
     else
-      flash.now[:danger] = "入力エラーです"
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:name)
+    params.require(:user).permit(:user_name, :email, :password, :password_confirmation)
   end
 end
