@@ -1,0 +1,7 @@
+<% if current_user %>
+  <h1>ようこそ<%= current_user.user_name %>さま</h1>
+<% else %>
+  <h1>ようこそゲストさま</h1>
+<%end %>
+
+<%= link_to 'ログアウト', logout_path, data: { turbo_method: :delete } %>
