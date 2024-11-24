@@ -1,6 +1,5 @@
-class StaticPagesController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
+class StaticPagesController < ApplicationController
   def top
-    @user = User.last
+    @users = User.all
   end
 end
