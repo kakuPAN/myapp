@@ -1,0 +1,31 @@
+<h1>タスク閲覧ページ</h1>
+<% if logged_in? %>
+  <p>ログイン中のユーザー：<%= current_user.user_name %></p>
+<% else %>
+  <p>ゲストユーザー</p>
+<% end %>
+<h2>タスク達成率 <%= @achievement %> % </h2>
+<% if @tasks %>
+  <% @tasks.each do |task| %>
+    <% if current_user.id == task.user_id || task.access_level == 1 %>
+      <h3><%= link_to "タイトル：#{task.title}", task_path(task.id) %></h3>
+      <% if task.progress_status != 2 %>
+        <% if logged_in? && current_user.id == task.user_id %>
+          <%= button_to "達成", achieve_task_task_path(task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %>
+        <% end %>
+        <span>ステータス：未着手</span>
+      <% else %>
+        <span>ステータス：達成済み</span>
+      <% end %>
+    <% end %>
+    <% if logged_in? && current_user.id == task.user_id %>
+      <p><%= link_to "削除", task_path(task.id), data: {turbo_method: :delete} %></p>
+    <% end %>
+  <% end %>
+<% else %>
+  <p><%= current_user.user_name %>さまのタスクはありません</p>
+<% end %>
+<div>
+  <%= link_to "タスクを作成する", new_task_path %>
+  <%= link_to "ホーム", home_pages_path %>
+</div>

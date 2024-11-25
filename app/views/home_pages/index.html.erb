@@ -5,6 +5,9 @@
   <h1>ようこそゲストさま</h1>
 <%end %>
 
+<%= link_to "タスクの作成はこちら", new_task_path %>
+<%= link_to "タスク一覧はこちら", tasks_path %>
+
 <%= link_to "トップページ", root_path %>
 <% if current_user %>
   <%= link_to 'ログアウト', logout_path, data: { turbo_method: :delete } %>
