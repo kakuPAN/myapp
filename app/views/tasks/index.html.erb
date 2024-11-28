@@ -7,7 +7,7 @@
 <h2>今日のタスク達成率 <%= @achievement %> % </h2>
 <% if @tasks %>
   <% @tasks.each do |task| %>
-    <% if current_user.id == task.user_id || task.public_access? %>
+    <% if (logged_in? && current_user.id == task.user_id) || task.public_access? %>
       <h3><%= link_to "タイトル：#{task.title}", task_path(task.id) %></h3>
       <% unless task.done? %>
         <% if logged_in? && current_user.id == task.user_id %>
