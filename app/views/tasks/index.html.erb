@@ -4,19 +4,17 @@
 <% else %>
   <p>ゲストユーザー</p>
 <% end %>
-<h2>タスク達成率 <%= @achievement %> % </h2>
+<h2>今日のタスク達成率 <%= @achievement %> % </h2>
 <% if @tasks %>
   <% @tasks.each do |task| %>
-    <% if current_user.id == task.user_id || task.access_level == 1 %>
+    <% if current_user.id == task.user_id || task.public_access? %>
       <h3><%= link_to "タイトル：#{task.title}", task_path(task.id) %></h3>
-      <% if task.progress_status != 2 %>
+      <% unless task.done? %>
         <% if logged_in? && current_user.id == task.user_id %>
           <%= button_to "達成", achieve_task_task_path(task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %>
         <% end %>
-        <span>ステータス：未着手</span>
-      <% else %>
-        <span>ステータス：達成済み</span>
       <% end %>
+      <span>ステータス:<%= task.progress_status %></span>
     <% end %>
     <% if logged_in? && current_user.id == task.user_id %>
       <p><%= link_to "削除", task_path(task.id), data: {turbo_method: :delete} %></p>

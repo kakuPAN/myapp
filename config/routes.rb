@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :tasks do
     member do
       patch :achieve_task
+      patch :start_task
     end
   end
   root "static_pages#top"

@@ -17,11 +17,10 @@ class TasksController < ApplicationController
 
   def index
     @tasks = Task.all
-    @achievement = calcurate_achievement
+    @achievement = Task.calcurate_achievement_rate
   end
 
   def show
-    
     @task = Task.find(params[:id])
   end
 
@@ -38,7 +37,15 @@ class TasksController < ApplicationController
     @task = Task.find_by(user_id: current_user.id, id: params[:id])
     if @task
       @task.update(progress_status: 2)
-      redirect_to tasks_path
+      redirect_to request.referer || tasks_path, notice: "タスクを達成しました！"
+    end
+  end
+
+  def start_task
+    @task = Task.find_by(user_id: current_user.id, id: params[:id])
+    if @task
+      @task.update(progress_status: 1)
+      redirect_to request.referer || tasks_path, notice: "タスクに着手しました！"
     end
   end
 
@@ -48,15 +55,6 @@ class TasksController < ApplicationController
     params.require(:task).permit(:user_id,:title, :body, :deadline, :access_level, :progress_status)
   end
 
-  def calcurate_achievement
-    tasks = Task.all
-    done_tasks = Task.where(progress_status: "done")
-    all_tasks_count = tasks.count
-    done_tasks_count = done_tasks.count
-    if done_tasks_count == 0
-      return 0
-    end
-    achievement = (done_tasks_count.to_f/all_tasks_count)*100
-    achievement.to_i
+  def get_achievement_rate
   end
 end
