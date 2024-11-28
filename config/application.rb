@@ -10,7 +10,7 @@ module Myapp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
-    config.time_zone = 'Tokyo'
+    config.time_zone = "Tokyo"
     config.hosts << "task-machi-app.onrender.com"
     config.active_record.default_timezone = :local
     # Please, add to the `ignore` list any other `lib` subdirectories that do
