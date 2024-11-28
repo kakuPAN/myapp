@@ -8,7 +8,7 @@ class SorceryCore < ActiveRecord::Migration[8.0]
       t.string :avater_image
       t.string :profile
 
-      t.timestamps                null: false
+      t.timestamps
     end
   end
 end

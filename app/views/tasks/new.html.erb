@@ -1,0 +1,13 @@
+<h1>タスク作成ページ</h1>
+<%= form_with model: @task do |f| %>
+  <div>
+    <%= f.label :title, "タイトル" %>
+    <%= f.text_field :title %>
+    <%= f.label :body, "内容" %>
+    <%= f.text_area :body, size: "10x5" %>
+    <%= f.label :deadline, "期限" %>
+    <%= f.datetime_field :deadline %>
+    <%= f.radio_button :access_level, "private_access" %>非公開<%= f.radio_button :access_level, "public_access" %>公開
+  </div>
+  <%= f.submit "作成" %>
+<% end %>

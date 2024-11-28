@@ -1,0 +1,36 @@
+<h1>タスク詳細ページ</h1>
+<div>
+  <div>
+    <%= @task.title %>
+  </div>
+  <div>
+  <%= @task.body %>
+  </div>
+  <div>
+  <%= @task.deadline %>
+  </div>
+  <div>
+  <%= @task.access_level %>
+  </div>
+  <div>
+  <%= @task.progress_status %>
+  </div>
+</div>
+<div>
+
+<% if logged_in? && current_user.id == @task.user_id %>
+  <% unless @task.done? %>
+    <%= button_to "達成", achieve_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %>
+    <% unless @task.in_progress? %>
+      <%= button_to "取り組む", start_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %>
+    <% end %>
+  <% end %>
+  
+<% end %>
+  <div>
+    <%= link_to "削除", task_path(@task.id), data: { turbo_method: :delete } %>
+  </div>
+  <div>
+    <%= link_to "タスク一覧", tasks_path %>
+  </div>
+</div>
