@@ -1,5 +1,4 @@
 class Task < ApplicationRecord
-
   enum :access_level, { private_access: 0, public_access: 1 }
   enum :progress_status, { not_stated: 0, in_progress: 1, done: 2 }
 
@@ -16,11 +15,11 @@ class Task < ApplicationRecord
 
     today_tasks = Task.where(deadline: start_of_today..end_of_today)
     all_tasks_count = today_tasks.count
-    return 0 if all_tasks_count.zero? 
+    return 0 if all_tasks_count.zero?
 
     done_today_tasks = today_tasks.where(progress_status: :done)
     done_tasks_count = done_today_tasks.count
-    
+
     achievement_rate = (done_tasks_count.to_f/all_tasks_count)*100
     achievement_rate.to_i
   end

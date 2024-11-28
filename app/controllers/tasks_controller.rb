@@ -52,7 +52,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:user_id,:title, :body, :deadline, :access_level, :progress_status)
+    params.require(:task).permit(:user_id, :title, :body, :deadline, :access_level, :progress_status)
   end
 
   def get_achievement_rate
