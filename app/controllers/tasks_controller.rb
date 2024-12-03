@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
   before_action :require_login, except: :index
+  before_action :set_task, only: %i[edit update destroy achieve_task start_task reset_task]
 
   def new
     @task = Task.new
@@ -24,8 +25,23 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
   end
 
+  def edit
+    unless @task
+      redirect_to tasks_path
+      flash[:danger] = "このタスクに対するアクセス権限がありません"
+    end
+  end
+
+  def update
+    if @task.update(task_params)
+      redirect_to @task, notice: "タスクを編集しました"
+    else
+      render :edit
+      flash[:danger] = "タスクの変更を保存できません"
+    end
+  end
+
   def destroy
-    @task = Task.find_by(user_id: current_user.id, id: params[:id])
     if @task
       @task.destroy
       redirect_to tasks_path
@@ -34,7 +50,6 @@ class TasksController < ApplicationController
   end
 
   def achieve_task
-    @task = Task.find_by(user_id: current_user.id, id: params[:id])
     if @task
       @task.update(progress_status: 2)
       redirect_to request.referer || tasks_path, notice: "タスクを達成しました！"
@@ -42,14 +57,24 @@ class TasksController < ApplicationController
   end
 
   def start_task
-    @task = Task.find_by(user_id: current_user.id, id: params[:id])
     if @task
       @task.update(progress_status: 1)
       redirect_to request.referer || tasks_path, notice: "タスクに着手しました！"
     end
   end
 
+  def reset_task
+    if @task
+      @task.update(progress_status: 0)
+      redirect_to request.referer || tasks_path, notice: "タスクを未着手にました！"
+    end
+  end      
+
   private
+
+  def set_task
+    @task = Task.find_by(user_id: current_user.id, id: params[:id])
+  end
 
   def task_params
     params.require(:task).permit(:user_id, :title, :body, :deadline, :access_level, :progress_status)

@@ -19,17 +19,21 @@
 <div>
 
 <% if logged_in? && current_user.id == @task.user_id %>
-  <% unless @task.done? %>
-    <%= button_to "達成", achieve_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %>
-    <% unless @task.in_progress? %>
-      <%= button_to "取り組む", start_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %>
-    <% end %>
+  <% if @task.not_started? %>
+    <p><%= button_to "進行中", start_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを進行中にしますか？" } %></p>
+    <p><%= button_to "達成", achieve_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %></p>
+  <% elsif @task.in_progress? %>
+    <p><%= button_to "未着手", reset_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを未着手にしますか？" } %></p>
+    <p><%= button_to "達成", achieve_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %></p>
+  <% else %>
+    <p><%= button_to "未着手", reset_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを未着手にしますか？" } %></p>
+    <p><%= button_to "進行中", start_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを進行中にしますか？" } %></p>
   <% end %>
-  
-<% end %>
+  <div><%= link_to "編集", edit_task_path(@task.id) %></div>
   <div>
     <%= link_to "削除", task_path(@task.id), data: { turbo_method: :delete } %>
   </div>
+<% end %>
   <div>
     <%= link_to "タスク一覧", tasks_path %>
   </div>

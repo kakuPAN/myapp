@@ -7,7 +7,9 @@
     <p><%= user.user_name %></p>
   <% end %>
 <%end%>
-<%= link_to "ユーザー作成", new_user_path %>
+<% unless logged_in? %>
+  <%= link_to "ユーザー作成", new_user_path %>
+<% end %>
 
 <%= link_to "ホームページ", home_pages_path %>
 <% if current_user %>
