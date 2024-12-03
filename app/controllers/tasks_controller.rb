@@ -68,7 +68,7 @@ class TasksController < ApplicationController
       @task.update(progress_status: 0)
       redirect_to request.referer || tasks_path, notice: "タスクを未着手にました！"
     end
-  end      
+  end   
 
   private
 
