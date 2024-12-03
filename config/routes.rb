@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     member do
       patch :achieve_task
       patch :start_task
+      patch :reset_task
     end
   end
   root "static_pages#top"
