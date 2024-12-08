@@ -10,10 +10,10 @@ class User < ApplicationRecord
   has_many :tasks, dependent: :destroy
 
   def self.ransackable_attributes(auth_object = nil)
-    ["user_name", "email"]
+    [ "user_name", "email" ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["tasks"]
+    [ "tasks" ]
   end
 end

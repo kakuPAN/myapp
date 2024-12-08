@@ -33,10 +33,10 @@ class Task < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     # 検索可能にしたい属性を配列で返す
-    ["access_level", "body", "deadline", "progress_status", "title", "created_at"]
+    [ "access_level", "body", "deadline", "progress_status", "title", "created_at" ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["user"]
+    [ "user" ]
   end
 end
