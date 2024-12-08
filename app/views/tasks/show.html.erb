@@ -1,40 +1,53 @@
-<h1>タスク詳細ページ</h1>
-<div>
-  <div>
-    <%= @task.title %>
-  </div>
-  <div>
-  <%= @task.body %>
-  </div>
-  <div>
-  <%= @task.deadline %>
-  </div>
-  <div>
-  <%= @task.access_level %>
-  </div>
-  <div>
-  <%= @task.progress_status %>
-  </div>
-</div>
-<div>
+<table class="table table-striped">
+  <tbody>
+    <tr>
+      <h2><%= @task.title %></h2>
+    </tr>
+    <tr>
+      <th>
+        内容
+      </th>
+      <td>
+        <%= @task.body %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        期限
+      </th>
+      <td>
+        <%= l @task.deadline %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        公開設定
+      </th>
+      <td>
+        <%= I18n.t("enums.task.access_level.#{@task.access_level}") %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        進捗
+      </th>
+      <td>
+        <%= I18n.t("enums.task.progress_status.#{@task.progress_status}") %>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <% if logged_in? && current_user.id == @task.user_id %>
-  <% if @task.not_started? %>
-    <p><%= button_to "進行中", start_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを進行中にしますか？" } %></p>
-    <p><%= button_to "達成", achieve_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %></p>
-  <% elsif @task.in_progress? %>
-    <p><%= button_to "未着手", reset_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを未着手にしますか？" } %></p>
-    <p><%= button_to "達成", achieve_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを達成済みにしますか？" } %></p>
-  <% else %>
-    <p><%= button_to "未着手", reset_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを未着手にしますか？" } %></p>
-    <p><%= button_to "進行中", start_task_task_path(@task.id), method: :patch, data: { confirm: "このタスクを進行中にしますか？" } %></p>
-  <% end %>
-  <div><%= link_to "編集", edit_task_path(@task.id) %></div>
-  <div>
-    <%= link_to "削除", task_path(@task.id), data: { turbo_method: :delete } %>
+  <div class="col-6">
+    <%= button_to "未着手", reset_task_task_path(@task.id), method: :patch, class:"btn btn-outline-primary btn-lg mb-1",data: { confirm: "このタスクを未着手にしますか？" }, :disabled => @task.not_started?  %>
+    <%= button_to "進行中", start_task_task_path(@task.id), method: :patch, class:"btn btn-outline-primary btn-lg mb-1", data: { confirm: "このタスクを進行中にしますか？" }, :disabled => @task.in_progress?  %>
+    <%= button_to "達成", achieve_task_task_path(@task.id), method: :patch, class:"btn btn-outline-primary btn-lg mb-1", data: { confirm: "このタスクを達成済みにしますか？" }, :disabled => @task.done? %>
   </div>
+  <%= link_to "編集", edit_task_path(@task.id), class:"btn btn-outline-danger" %>
+</b>
+  <%= link_to "削除", task_path(@task.id), data: { turbo_method: :delete }, class:"btn btn-outline-danger" %>
 <% end %>
   <div>
     <%= link_to "タスク一覧", tasks_path %>
   </div>
-</div>

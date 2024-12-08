@@ -8,4 +8,12 @@ class User < ApplicationRecord
   validates :user_name, presence: true
 
   has_many :tasks, dependent: :destroy
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["user_name", "email"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["tasks"]
+  end
 end

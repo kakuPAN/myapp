@@ -7,3 +7,52 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+User.create!(
+  [
+    {
+     email: "nanaka@email.com",
+     password: "pass",
+     password_confirmation: "pass",
+     user_name: "志田"
+    },
+    {
+      email: "ishigami@email.com",
+      password: "pass",
+      password_confirmation: "pass",
+      user_name: "石上"
+     },
+     {
+     email: "kasuga@email.com",
+     password: "pass",
+     password_confirmation: "pass",
+     user_name: "春日"
+    }
+  ]
+)
+
+Task.create!(
+  [
+    {
+      user_id: 1,
+      title: "河川敷10分",
+      body: "河川敷ランニング10分",
+      deadline: Time.now,
+      access_level: 1
+    },
+    {
+      user_id: 2,
+      title: "家の掃除",
+      body: "洗濯・皿洗い そろそろやばい",
+      deadline: Time.now,
+      access_level: 1
+    },
+    {
+      user_id: 3,
+      title: "ハローワークに行く",
+      body: "今日こそ仕事見つけてやるぜ！！",
+      deadline: Time.now,
+      access_level: 1
+    }
+  ]
+)

@@ -9,7 +9,8 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params.merge(user_id: current_user.id))
     if @task.save
-      redirect_to tasks_path, notice: "新しいタスクが作成されました"
+      redirect_to tasks_path
+      flash[:success] = "新しいタスクが作成されました"
     else
       flash.now[:danger] = "タスクを作成できませんでした"
       render :new, status: :unprocessable_entity
@@ -17,7 +18,9 @@ class TasksController < ApplicationController
   end
 
   def index
-    @tasks = Task.all
+    @q = Task.ransack(params[:q])
+    @progress_statuses = Task.progress_statuses_i18n
+    @tasks = @q.result(distinct: true).includes(:user).order(created_at: :desc)
     @achievement = Task.calcurate_achievement_rate
   end
 
@@ -45,28 +48,31 @@ class TasksController < ApplicationController
     if @task
       @task.destroy
       redirect_to tasks_path
-      flash[:notice] = "タスクを削除しました"
+      flash[:success] = "タスクを削除しました"
     end
   end
 
   def achieve_task
     if @task
       @task.update(progress_status: 2)
-      redirect_to request.referer || tasks_path, notice: "タスクを達成しました！"
+      redirect_to request.referer || tasks_path
+      flash[:success] =  "タスクを達成しました！"
     end
   end
 
   def start_task
     if @task
       @task.update(progress_status: 1)
-      redirect_to request.referer || tasks_path, notice: "タスクに着手しました！"
+      redirect_to request.referer || tasks_path
+      flash[:success] = "タスクに着手しました！"
     end
   end
 
   def reset_task
     if @task
       @task.update(progress_status: 0)
-      redirect_to request.referer || tasks_path, notice: "タスクを未着手にました！"
+      redirect_to request.referer || tasks_path
+      flash[:success] = "タスクを未着手にしました！"
     end
   end
 
