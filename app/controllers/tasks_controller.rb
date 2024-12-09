@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :require_login, except: :index
+  before_action :require_login, except: %i[index show]
   before_action :set_task, only: %i[edit update destroy achieve_task start_task reset_task]
 
   def new
