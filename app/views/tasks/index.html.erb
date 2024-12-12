@@ -1,13 +1,6 @@
 <h1>タスク一覧</h1>
-<% if logged_in? %>
-  <p>ログイン中のユーザー：<%= current_user.user_name %></p>
-<% else %>
-  <p>ゲストユーザー</p>
-<% end %>
-<h2>今日のタスク達成率 <%= @achievement %> % </h2>
+<div id="achievement-rate"><span id="ahievement-rate-label">現在のタスク達成率</span> <span id="achievement-rate-number"><%= @achievement %></span> % </div>
 <div class="mb-3">
-  <%= link_to "タスクを作成する", new_task_path %>
-  <%= link_to "ホーム", home_pages_path %>
   <div class="row">
     <div class="col-lg-10 offset-lg-1">
       <%= render 'search_form', q: @q %>
@@ -18,6 +11,9 @@
   <% @tasks.each do |task| %>
     <% if (logged_in? && current_user.id == task.user_id) || task.public_access? %>
       <div class=" border border-primary">
+        <p id="task-user-name">
+          <%= User.find(task.user_id).user_name %>
+        </p>
         <div class="task-index m-2">
           <% if logged_in? && current_user.id == task.user_id %>
             <%= link_to achieve_task_task_path(task.id), data: { turbo_method: :patch }, class: "task-title" do %>
@@ -43,10 +39,21 @@
 <% else %>
   <p><%= current_user.user_name %>さまのタスクはありません</p>
 <% end %>
+
 <style>
-  .bi-circle:hover {
-  color: skyblue;
-};
+  #achievement-rate {
+    float: right;
+    margin: 5px;
+  }
+  #achievement-rate-label {
+    font-size: 12px;
+  }
+  #achievement-rate-number {
+    font-size: 25px;
+    font-weight: bold;
+  }
+  #task-user-name {
+    margin:1px;
+  }
+
 </style>
-
-
