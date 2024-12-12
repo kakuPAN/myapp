@@ -14,13 +14,13 @@ User.create!(
      email: "nanaka@email.com",
      password: "pass",
      password_confirmation: "pass",
-     user_name: "志田"
+     user_name: "佐藤"
     },
     {
       email: "ishigami@email.com",
       password: "pass",
       password_confirmation: "pass",
-      user_name: "石上"
+      user_name: "中川"
      },
      {
      email: "kasuga@email.com",
@@ -43,14 +43,14 @@ Task.create!(
     {
       user_id: 2,
       title: "家の掃除",
-      body: "洗濯・皿洗い そろそろやばい",
+      body: "洗濯・皿洗い",
       deadline: Time.now,
       access_level: 1
     },
     {
       user_id: 3,
       title: "ハローワークに行く",
-      body: "今日こそ仕事見つけてやるぜ！！",
+      body: "必要書類を提出する",
       deadline: Time.now,
       access_level: 1
     }

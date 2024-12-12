@@ -16,7 +16,11 @@
         期限
       </th>
       <td>
-        <%= l @task.deadline %>
+        <% if @task.deadline %>
+          <%= l @task.deadline %>
+        <% else %>
+          未設定
+        <% end %>
       </td>
     </tr>
     <tr>
