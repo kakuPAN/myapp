@@ -37,21 +37,21 @@ Task.create!(
       user_id: 1,
       title: "河川敷10分",
       body: "河川敷ランニング10分",
-      deadline: Time.now,
+      deadline: Time.now.change(sec: 0),
       access_level: 1
     },
     {
       user_id: 2,
       title: "家の掃除",
       body: "洗濯・皿洗い",
-      deadline: Time.now,
+      deadline: Time.now.change(sec: 0),
       access_level: 1
     },
     {
       user_id: 3,
       title: "ハローワークに行く",
       body: "必要書類を提出する",
-      deadline: Time.now,
+      deadline: Time.now.change(sec: 0),
       access_level: 1
     }
   ]
