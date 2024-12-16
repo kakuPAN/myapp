@@ -82,8 +82,8 @@ class TasksController < ApplicationController
   end
 
   def get_point
-    #achieve_taskメソッド実行時に実行
-    #Pointテーブルに初期値を挿入
+    # achieve_taskメソッド実行時に実行
+    # Pointテーブルに初期値を挿入
     point = Point.last.current_point
     delta = 1
     new_point = point + delta
@@ -92,10 +92,10 @@ class TasksController < ApplicationController
       delta: delta,
       current_point: new_point
     )
-    #Pointsテーブル
-    #calculation_time　変化した時刻
-    #delta　変化の幅　＝＞＞　タスクの条件によって加算されるポイントが異なる
-    #current_point　変化した結果のポイント
+    # Pointsテーブル
+    # calculation_time　変化した時刻
+    # delta　変化の幅　＝＞＞　タスクの条件によって加算されるポイントが異なる
+    # current_point　変化した結果のポイント
   end
 
   # def get_delta
@@ -119,7 +119,7 @@ class TasksController < ApplicationController
       ## 使用されていない Location を取得
       nonused_locations = Location.where.not(id: used_location_ids)
       ## nonused_locations が空の場合は処理をスキップ
-      if nonused_locations.exists?  
+      if nonused_locations.exists?
         ## 使用されていない Location からランダムに1つ選択
         random_location_id = nonused_locations.sample.id
       else
