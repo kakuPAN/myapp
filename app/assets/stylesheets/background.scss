@@ -1,0 +1,15 @@
+@media (min-width: 1024px) {
+  .whole-wrapper {
+    height: 1280px;
+    background-image: url("city_objects/isome_ground.png");
+    background-size: 1800px;
+  }
+}
+
+@media (max-width: 600px) {
+  .whole-wrapper {
+    height: 1280px;
+    background-image: url("city_objects/city_1.jpeg");
+    background-size: cover;
+  }
+}

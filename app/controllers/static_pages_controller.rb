@@ -1,8 +1,6 @@
 class StaticPagesController < ApplicationController
   def top
-    if current_user
-      redirect_to home_pages_path
-    end
     @users = User.all
+    @tasks = Task.all.order(:id)
   end
 end
