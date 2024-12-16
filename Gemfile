@@ -19,6 +19,18 @@ gem "cssbundling-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem "sorcery"
+
+gem "ransack"
+
+gem "enum_help"
+
+gem "rails-i18n"
+
+gem "kaminari"
+
+gem "bootstrap5-kaminari-views"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
