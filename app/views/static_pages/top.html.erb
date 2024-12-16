@@ -1,9 +1,62 @@
-<div class="title-wrapper">
-  <h1>街づくり✖️タスク管理</h1>
-  <span><%= link_to "ユーザー作成", new_user_path, class: "link-tag"  %></span>
-  <span><%= link_to "ログイン", login_path, class: "link-tag" %></span>
+<div class="whole-wrapper"> 
+  <div class="sky-container">
+    <%= image_tag "city_objects/cloud_1.png", class: "cloud-image-1" %>
+    <%= image_tag "city_objects/cloud_1.png", class: "cloud-image-2" %>
+    <div class="title-wrapper">
+      <h1>街づくり✖️タスク管理</h1>
+      <span><%= link_to "ユーザー作成", new_user_path, class: "link-tag"  %></span>
+      <span><%= link_to "ログイン", login_path, class: "link-tag" %></span>
+    </div>
+  </div>
+  <div class="object_wrapper">
+    <% if @tasks %>
+      <% @tasks.each do |task|%>
+        <div class="object_container">
+          <p class="task-title"><%= link_to "#{task.title}", task_path(task.id) %></p>
+          <div class="task-check-mark">
+            <% if logged_in? && current_user.id == task.user_id %>
+              <%= link_to achieve_task_task_path(task.id), data: { turbo_method: :patch }, class: "task-title" do %>
+                <% if task.done? %>
+                  <h3><i class="bi bi-circle-fill"></i></h3>
+                <% else %>
+                  <h3><i class="bi bi-circle"></i></h3>
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+          <% if task.done? %>
+            <%= image_tag "city_objects/house_1.png", class: "object_image" %>
+          <% else %>
+            <%= image_tag "city_objects/now_building.png", class: "object_image" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 </div>
 <style>
+  
+  .whole-wrapper {
+
+  }
+  .sky-container {
+    height: 300px;
+    background-color: skyblue;
+    box-shadow: 0px 10px 20px 20px skyblue;
+    position: relative;
+  }
+  .cloud-image-1 {
+    position: absolute;
+    width: 300px;
+    top:150px;
+  }
+  .cloud-image-2 {
+    position: absolute;
+    width: 500px;
+    top:0px;
+    left: 600px;
+    margin: -80px;
+  }
   .title-wrapper {
     text-align: center;
     position:relative;
@@ -11,5 +64,34 @@
   }
   .link-tag {
     text-decoration: none;
+  }
+  @media (min-width: 1024px) {
+    .object_wrapper {
+      padding-top: 180px;
+      display: flex;          /* フレックスボックスで横並び */
+      flex-wrap: wrap;        /* 行がいっぱいになったら改行 */
+      gap: 20px;              /* 各オブジェクト間のスペース */
+      justify-content: start;
+      align-content: flex-start;
+    }
+    .object_container {
+      width: calc(10%); /* 10個並べるために幅を設定（-10px は gap の調整） */
+      box-sizing: border-box;  /* パディングを含めて幅を計算 */
+      text-align: center;      /* 中央揃え（必要に応じて変更可） */
+      padding: 10px;
+      align-self: flex-end;        /* 内側の余白 */
+    }
+    .task-title {
+      margin-bottom: 0px;
+      padding-bottom: 2px;
+      height: 20px;
+    }
+    .task-check-mark {
+      height: 20px;
+    }
+    .object_image {
+      width: 150px;
+      margin: 5px;
+    }
   }
 </style>
