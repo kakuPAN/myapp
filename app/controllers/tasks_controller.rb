@@ -20,7 +20,7 @@ class TasksController < ApplicationController
   def index
     @q = Task.ransack(params[:q])
     @progress_statuses = Task.progress_statuses_i18n
-    @tasks = @q.result(distinct: true).includes(:user).order(created_at: :desc)
+    @tasks = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(params[:page]).per(6)
     @achievement = Task.calcurate_achievement_rate
     @point = Point.last
     # @display_object = CityObject.joins(:object_locations).distinct
