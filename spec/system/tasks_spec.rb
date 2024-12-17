@@ -102,7 +102,7 @@ RSpec.describe 'Tasks', type: :system do
 
           expect(page).to have_content '入力に不足があります'
           expect(page).to have_content "内容を入力してください"
-          
+
           expect(current_path).to eq new_task_path
         end
       end
@@ -122,7 +122,7 @@ RSpec.describe 'Tasks', type: :system do
           expect(page).to have_content '未設定'
           expect(page).to have_content '未着手'
           last_task = Task.last
-          
+      
           expect(current_path).to eq task_path(last_task)
         end
       end
@@ -137,7 +137,7 @@ RSpec.describe 'Tasks', type: :system do
       context 'フォームの入力値が正常' do
         it 'タスクの編集が成功する' do
           visit edit_task_path(task)
-          
+       
           fill_in 'task_title', with: 'updated_title'
           click_button '変更を保存'
 
@@ -173,7 +173,7 @@ RSpec.describe 'Tasks', type: :system do
 
           expect(page).to have_content 'タスクの変更を保存できません'
           expect(page).to have_content "内容を入力してください"
-          
+        
           expect(current_path).to eq edit_task_path(task)
         end
       end
@@ -192,7 +192,7 @@ RSpec.describe 'Tasks', type: :system do
 
     describe 'タスク削除' do
       before { login(user) }
-      
+
       let!(:task) { create(:task, user: user) }
 
       it 'タスクの削除が成功する' do
