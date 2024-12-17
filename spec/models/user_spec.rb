@@ -10,7 +10,7 @@ RSpec.describe User, type: :model do
     it 'user_nameがない場合にバリデーションが機能してinvalidになるか' do
       user_without_user_name = build(:user, user_name: "")
       expect(user_without_user_name).to be_invalid
-      expect(user_without_user_name.errors[:user_name]).to eq ["を入力してください"]
+      expect(user_without_user_name.errors[ :user_name ]).to eq [ "を入力してください" ]
     end
     it 'emailがない場合にバリデーションが機能してinvalidになるか' do
       user_without_email = build(:user, email: "")
