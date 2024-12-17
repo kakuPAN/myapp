@@ -16,7 +16,9 @@
     <% if current_user %>
       <%= link_to 'ログアウト', logout_path, data: { turbo_method: :delete }, class: "header-content" %>
     <% else %>
-      <%= link_to "ログイン", login_path, class: "header-content" %>
+      <% unless controller_name == 'user_sessions' && action_name == 'new' || controller_name == 'users' && action_name == 'new' %>
+        <%= link_to "ログイン", login_path, class: "header-content" %>
+      <% end %>
     <% end %>
   </div>
 </div>

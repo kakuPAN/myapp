@@ -9,6 +9,7 @@ class UsersController < ApplicationController
       redirect_to login_path
       flash[:primary] = "#{@user.user_name}さまを登録しました"
     else
+      flash.now[:danger] = "入力に不足があります"
       render :new, status: :unprocessable_entity
     end
   end

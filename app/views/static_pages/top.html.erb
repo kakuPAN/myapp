@@ -1,13 +1,19 @@
 <div class="whole-wrapper"> 
   <div class="sky-container">
-    <%= image_tag "city_objects/cloud_1.png", class: "cloud-image-1" %>
-    <%= image_tag "city_objects/cloud_1.png", class: "cloud-image-2" %>
     <div class="title-wrapper">
-      <h1>街づくり✖️タスク管理</h1>
+      <%= link_to tasks_path, class: "title-logo" do %>
+        <h1>街づくり✖️タスク管理</h1>
+      <% end %>
+      <style>
+        .title-logo {
+          text-decoration: none;
+        }
+      </style>
       <span><%= link_to "ユーザー作成", new_user_path, class: "link-tag"  %></span>
       <span><%= link_to "ログイン", login_path, class: "link-tag" %></span>
     </div>
   </div>
+<!--
   <div class="object_wrapper">
     <% if @tasks %>
       <% @tasks.each do |task|%>
@@ -34,6 +40,7 @@
     <% end %>
   </div>
 </div>
+!-->
 <style>
   
   .whole-wrapper {

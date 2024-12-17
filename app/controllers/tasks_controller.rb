@@ -9,10 +9,10 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params.merge(user_id: current_user.id))
     if @task.save
-      redirect_to tasks_path
+      redirect_to @task
       flash[:success] = "新しいタスクが作成されました"
     else
-      flash.now[:danger] = "タスクを作成できませんでした"
+      flash.now[:danger] = "入力に不足があります"
       render :new, status: :unprocessable_entity
     end
   end
@@ -28,22 +28,32 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task = Task.find(params[:id])
+    @task = Task.find_by(id: params[:id])
+    unless @task
+      redirect_to tasks_path
+      flash[:danger] = "タスクが存在しません"
+    end
   end
 
   def edit
-    unless @task
+    @task = Task.find_by(id: params[:id])
+    if @task
+      if current_user.id != @task.user_id
+        redirect_to tasks_path
+        flash[:danger] = "このタスクに対するアクセス権限がありません"
+      end
+    else
       redirect_to tasks_path
-      flash[:danger] = "このタスクに対するアクセス権限がありません"
+      flash[:danger] = "タスクが存在しません"
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to @task, notice: "タスクを編集しました"
+      redirect_to @task, notice: "タスクの変更を保存しました"
     else
-      render :edit
-      flash[:danger] = "タスクの変更を保存できません"
+      flash.now[:danger] = "タスクの変更を保存できません"
+      render :edit, status: :unprocessable_entity
     end
   end
 
