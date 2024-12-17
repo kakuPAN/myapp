@@ -9,6 +9,12 @@ ja:
         user_name: ユーザーネーム
         password: パスワード
         password_confirmation: パスワード確認
+      task:
+        title: タイトル
+        body: 内容
+        deadline: 期限
+        progress_status: 進行状況
+        access_level: 公開設定
   views:
     pagination:
       first: <i class="bi bi-chevron-double-left"></i>

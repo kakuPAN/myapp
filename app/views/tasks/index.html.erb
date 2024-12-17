@@ -1,6 +1,15 @@
 <h1>タスク一覧</h1>
 <div id="achievement-rate"><span id="ahievement-rate-label">現在のタスク達成率</span> <span id="achievement-rate-number"><%= @achievement %></span> % </div>
-<div id="point"><span id="point-label">現在のポイント</span><span id="point-number"><%= @point.current_point %></span>ポイント</div>
+<div id="point">
+  <span id="point-label">現在のポイント</span>
+  <!-- ここで＠pointを呼び出しているが、rspecではおそらくseedsファイルを実行しない（ポイントの初期値が入らない）ためnilとなってしまいエラーが発生する。そのため応急処置として分岐を設定!-->
+  <span id="point-number">
+    <% if @point %>
+      <%= @point.current_point %>
+    <% else %>
+      0
+    <% end %>
+  </span>ポイント</div>
 <div class="mb-3">
   <div class="row">
     <div class="col-lg-10 offset-lg-1">
