@@ -19,7 +19,7 @@ RSpec.describe "Users", type: :system do
 
         expect(current_path).to eq login_path
       end
-      
+
       it "ユーザーネームが未入力の場合" do
         visit root_path
         click_link "ユーザー作成"

@@ -136,7 +136,6 @@ RSpec.describe "Tasks", type: :system do
     end
 
     describe "タスク編集" do
-
       let!(:task) { create(:task, user: user, title: "元のタイトル", body: "元の内容") }
       before { visit edit_task_path(task) }
 
