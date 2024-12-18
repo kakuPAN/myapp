@@ -5,7 +5,7 @@ class UserSessionsController < ApplicationController
   def create
     @user = login(params[:email], params[:password])
     if @user
-      redirect_to home_pages_path
+      redirect_to tasks_path
       flash[:primary] = "#{@user.user_name}さまがログインしました"
     else
       flash.now[:danger] = "ユーザーが存在しません"
@@ -16,5 +16,6 @@ class UserSessionsController < ApplicationController
   def destroy
     logout
     redirect_to root_path, status: :see_other
+    flash[:primary] = "ログアウトしました"
   end
 end
