@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Tasks", type: :system do
   let(:user) { create(:user) }
   let(:public_task) { create(:task) }
-  let(:private_task) { create(:task, access_level: 0)}
+  let(:private_task) { create(:task, access_level: 0) }
 
   describe "ログイン前" do
     describe "ページ遷移確認" do
