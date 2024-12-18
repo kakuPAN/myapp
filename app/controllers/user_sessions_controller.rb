@@ -8,7 +8,7 @@ class UserSessionsController < ApplicationController
       redirect_to home_pages_path
       flash[:primary] = "#{@user.user_name}さまがログインしました"
     else
-      flash.now[:notice] = "ユーザーが存在しません"
+      flash.now[:danger] = "ユーザーが存在しません"
       render :new, status: :unprocessable_entity
     end
   end

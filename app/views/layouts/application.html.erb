@@ -19,7 +19,9 @@
   </head>
 
   <body>
-    <%= render 'shared/header' %>
+    <% unless controller_name == 'static_pages' && action_name == 'top' %>
+      <%= render 'shared/header' %>
+    <% end %>
     <%= render 'shared/flash_message' %>
     <%= yield %>
   </body>

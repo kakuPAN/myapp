@@ -9,10 +9,10 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params.merge(user_id: current_user.id))
     if @task.save
-      redirect_to tasks_path
+      redirect_to @task
       flash[:success] = "新しいタスクが作成されました"
     else
-      flash.now[:danger] = "タスクを作成できませんでした"
+      flash.now[:danger] = "入力に不足があります"
       render :new, status: :unprocessable_entity
     end
   end
@@ -28,56 +28,76 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task = Task.find(params[:id])
+    @task = Task.find_by(id: params[:id])
+    if @task && (current_user&.id == @task.user_id || @task.public_access?)
+      @task
+    else
+      flash[:danger] = "タスクが存在しません"
+      redirect_to tasks_path
+    end
   end
 
   def edit
-    unless @task
+    @task = Task.find_by(id: params[:id])
+    if @task && current_user&.id == @task.user_id
+      @task
+    else
+      flash[:danger] = "タスクが存在しません"
       redirect_to tasks_path
-      flash[:danger] = "このタスクに対するアクセス権限がありません"
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to @task, notice: "タスクを編集しました"
+      flash[:success] = "タスクの変更を保存しました"
+      redirect_to @task
     else
-      render :edit
-      flash[:danger] = "タスクの変更を保存できません"
+      flash.now[:danger] = "タスクの変更を保存できません"
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    if @task
-      @task.destroy
-      redirect_to tasks_path
-      flash[:success] = "タスクを削除しました"
-    end
+    @task.destroy
+    flash[:success] = "タスクを削除しました"
+    redirect_to tasks_path
   end
 
   def achieve_task
+    if current_user&.id != @task.user_id
+      flash[:danger] = "このタスクに対するアクセス権限がありません"
+      redirect_to tasks_path
+    end
     if !@task.done?
       @task.update(progress_status: 2)
-      redirect_to request.referer || tasks_path
       flash[:success] =  "タスクを達成しました！"
+      redirect_to request.referer || tasks_path
+      get_point
+      display_new_object
     end
-    get_point
-    display_new_object
   end
 
   def start_task
-    if @task
+    if current_user&.id != @task.user_id
+      flash[:danger] = "このタスクに対するアクセス権限がありません"
+      redirect_to tasks_path
+    end
+    if !@task.in_progress?
       @task.update(progress_status: 1)
-      redirect_to request.referer || tasks_path
       flash[:success] = "タスクに着手しました！"
+      redirect_to request.referer || tasks_path
     end
   end
 
   def reset_task
-    if @task
+    if current_user&.id != @task.user_id
+      flash[:danger] = "このタスクに対するアクセス権限がありません"
+      redirect_to tasks_path
+    end
+    if !@task.not_started?
       @task.update(progress_status: 0)
-      redirect_to request.referer || tasks_path
       flash[:success] = "タスクを未着手にしました！"
+      redirect_to request.referer || tasks_path
     end
   end
 
