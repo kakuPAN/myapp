@@ -57,7 +57,7 @@ RSpec.describe "Tasks", type: :system do
     before { login(user) }
 
     describe "タスク作成" do
-      context "フォームの入力値が正常" do
+      context "フォームの入力値が正常な場合" do
         it "タスクの作成が成功する" do
           click_link "タスクの作成"
 
@@ -80,7 +80,7 @@ RSpec.describe "Tasks", type: :system do
         end
       end
 
-      context "タイトルが未入力" do
+      context "タイトルが未入力の場合" do
         it "タスクの作成が失敗する" do
           click_link "タスクの作成"
 
@@ -97,7 +97,7 @@ RSpec.describe "Tasks", type: :system do
         end
       end
 
-      context "内容が未入力" do
+      context "内容が未入力の場合" do
         it "タスクの作成が失敗する" do
           click_link "タスクの作成"
 
@@ -114,7 +114,7 @@ RSpec.describe "Tasks", type: :system do
         end
       end
 
-      context "期限が未入力" do
+      context "期限が未入力の場合" do
         it "タスクの作成が成功し、期限に「未設定」が設定される" do
           click_link "タスクの作成"
 
@@ -136,12 +136,10 @@ RSpec.describe "Tasks", type: :system do
     end
 
     describe "タスク編集" do
-      before { login(user) }
-
       let!(:task) { create(:task, user: user, title: "元のタイトル", body: "元の内容") }
       before { visit edit_task_path(task) }
 
-      context "フォームの入力値が正常" do
+      context "フォームの入力値が正常な場合" do
         it "タスクの編集が成功する" do
           visit edit_task_path(task)
 
@@ -162,7 +160,7 @@ RSpec.describe "Tasks", type: :system do
         end
       end
 
-      context "タイトルが未入力" do
+      context "タイトルが未入力の場合" do
         it "タスクの編集が失敗する" do
           visit edit_task_path(task)
 
@@ -176,7 +174,7 @@ RSpec.describe "Tasks", type: :system do
         end
       end
 
-      context "内容が未入力" do
+      context "内容が未入力の場合" do
         it "タスクの編集が失敗する" do
           fill_in "task_body", with: nil
           click_button "変更を保存"
@@ -188,7 +186,7 @@ RSpec.describe "Tasks", type: :system do
         end
       end
 
-      context "他ユーザーのタスク編集ページにアクセス" do
+      context "他ユーザーのタスク編集ページにアクセスした場合" do
         let!(:other_user) { create(:user, email: "other_user@example.com") }
         let!(:other_task) { create(:task, user: other_user) }
 
@@ -201,7 +199,6 @@ RSpec.describe "Tasks", type: :system do
     end
 
     describe "タスク削除" do
-      before { login(user) }
       let!(:task) { create(:task, user: user) }
       it "タスクの削除が成功する" do
         visit task_path(task)

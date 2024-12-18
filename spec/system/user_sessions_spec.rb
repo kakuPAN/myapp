@@ -9,10 +9,10 @@ RSpec.describe "UserSessions", type: :system do
         visit root_path
         click_link "ログイン"
         fill_in "session-email", with: user.email
-        fill_in "session-password", with: "complex-password-complex"
+        fill_in "session-password", with: "password"
         click_button "ログイン"
 
-        expect(page).to have_content("ログインしました")
+        expect(page).to have_content("#{user.user_name}さまがログインしました")
         expect(current_path).to eq tasks_path
       end
     end
