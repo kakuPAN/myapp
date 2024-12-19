@@ -49,7 +49,7 @@ RSpec.describe "UserSessions", type: :system do
     it "ログアウト後、トップ画面にリダイレクトされる" do
       click_link "ログアウト"
 
-      expect(page).to have_content("ログアウしたよ")
+      expect(page).to have_content("ログアウトしました")
       expect(current_path).to eq root_path
     end
   end
