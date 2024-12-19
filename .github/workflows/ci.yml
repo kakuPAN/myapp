@@ -84,7 +84,7 @@ jobs:
 
       - name: Database create and migrate # データベースの作成とマイグレーションを実行します。
         run: |
-          cp config/database.yml.ci config/database.yml
+          cp config/database.ci.yml config/database.yml
           bundle exec rails db:create
           bundle exec rails db:migrate
 
