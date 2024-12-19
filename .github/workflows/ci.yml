@@ -58,9 +58,6 @@ jobs:
       #   ports:
       #     - 6379:6379
       #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
-    env:
-      RAILS_ENV: test
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/myapp_test
 
     steps:
       - name: Install packages
@@ -75,6 +72,9 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Yarn install
+        run: yarn install --check-files
+
       # - name: Run tests
       #   env:
       #     RAILS_ENV: test
@@ -83,10 +83,13 @@ jobs:
       #   run: bin/rails db:test:prepare test test:system
 
       - name: Database create and migrate # データベースの作成とマイグレーションを実行します。
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432
         run: |
           cp config/database.ci.yml config/database.yml
-          bundle exec rails db:create
-          bundle exec rails db:migrate
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
 
       - name: Run rspec # RSpecを実行します。
         run: bundle exec rspec
