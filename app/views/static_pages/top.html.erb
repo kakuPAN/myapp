@@ -1,4 +1,4 @@
-<div class="whole-wrapper"> 
+<div class="whole-wrapper">
   <div class="sky-container">
     <div class="title-wrapper">
       <%= link_to tasks_path, class: "title-logo" do %>
@@ -9,14 +9,14 @@
           text-decoration: none;
         }
       </style>
-      <span><%= link_to "ユーザー作成", new_user_path, class: "link-tag"  %></span>
+      <span><%= link_to "ユーザー作成", new_user_path, class: "link-tag" %></span>
       <span><%= link_to "ログイン", login_path, class: "link-tag" %></span>
     </div>
   </div>
 <!--
   <div class="object_wrapper">
     <% if @tasks %>
-      <% @tasks.each do |task|%>
+      <% @tasks.each do |task| %>
         <div class="object_container">
           <p class="task-title"><%= link_to "#{task.title}", task_path(task.id) %></p>
           <div class="task-check-mark">
@@ -42,7 +42,7 @@
 </div>
 !-->
 <style>
-  
+
   .whole-wrapper {
 
   }
