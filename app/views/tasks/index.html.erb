@@ -13,7 +13,7 @@
 <div class="mb-3">
   <div class="row">
     <div class="col-lg-10 offset-lg-1">
-      <%= render 'search_form', q: @q %>
+      <%= render "search_form", q: @q %>
     </div>
   </div>
 </div>
@@ -52,7 +52,7 @@
       <p><%= current_user.user_name %>さまのタスクはありません</p>
     <% end %>
     <div class="pagination">
-      <%= paginate @tasks, theme: 'bootstrap-5',pagination_class: "pagination-lg" %>
+      <%= paginate @tasks, theme: "bootstrap-5", pagination_class: "pagination-lg" %>
     </div>
   </div>
   <div class="scroll-area">
@@ -171,7 +171,6 @@
 
 </style>
 
-
 <!-- アイソメトリック用
 <style>
   body {
@@ -199,7 +198,7 @@
 !-->
 <!-- ここから　!
 <style>
-  
+
   .sky-container {
     height: 300px;
     position: relative;
@@ -259,5 +258,3 @@
 !-->
 
 <!-- ここまで　!-->
-
-
