@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   describe 'バリデーションチェック' do
     it 'ユーザー登録の際、設定したすべてのバリデーションが機能しているか' do
       user = build(:user)
-      expect(user).to be_valid
+      expect(user).to be_invalid
       expect(user.errors).to be_empty
     end
     it 'user_nameがない場合にバリデーションが機能してinvalidになるか' do

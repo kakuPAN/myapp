@@ -12,7 +12,7 @@ RSpec.describe "Users", type: :system do
         fill_in "user_user_name", with: "new_user"
         fill_in "user_email", with: "new_user@email.com"
         fill_in "user_password", with: "password"
-        fill_in "user_password_confirmation", with: "no"
+        fill_in "user_password_confirmation", with: "password"
         click_button "登録"
 
         expect(page).to have_content("new_userさまを登録しました")
