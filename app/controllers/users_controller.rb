@@ -1,5 +1,9 @@
 class UsersController < ApplicationController
   def new
+    if current_user
+      redirect_to tasks_path
+      flash[:danger] = "すでにログインしています"
+    end
     @user = User.new
   end
 
