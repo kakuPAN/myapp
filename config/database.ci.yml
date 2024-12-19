@@ -1,7 +1,8 @@
 test:  
   adapter: postgresql
   encoding: unicode
-  host: 127.0.0.1
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: db
   username: postgres
   password: password
   database: myapp_test
