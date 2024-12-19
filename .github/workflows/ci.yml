@@ -85,7 +85,7 @@ jobs:
       - name: Database create and migrate # データベースの作成とマイグレーションを実行します。
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/myapp_test
         run: |
           cp config/database.ci.yml config/database.yml
           bundle exec rails db:create RAILS_ENV=test
