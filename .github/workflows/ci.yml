@@ -89,7 +89,7 @@ jobs:
           bundle exec rails db:migrate
 
       - name: Run rspec # RSpecを実行します。
-        run: bundle exec rspec spec/models
+        run: bundle exec rspec spec/models spec/system
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
