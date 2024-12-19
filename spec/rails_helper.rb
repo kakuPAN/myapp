@@ -76,7 +76,7 @@ RSpec.configure do |config|
     else
       driven_by :selenium_chrome_headless
     end
-
+  end
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
