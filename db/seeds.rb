@@ -52,7 +52,7 @@ Task.create!(
       title: "ハローワークに行く",
       body: "必要書類を提出する",
       deadline: Time.current.change(sec: 0),
-      access_level: 1
+      access_level: 0
     }
   ]
 )

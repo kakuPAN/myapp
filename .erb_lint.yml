@@ -5,9 +5,6 @@ exclude:
   - '**/vendor/**/*'
   - '**/node_modules/**/*'
 linters:
-  ErbSafety:
-    enabled: true
-    # better_html_config: .better-html.yml
   Rubocop:
     enabled: true
     rubocop_config:
