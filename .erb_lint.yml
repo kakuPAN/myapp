@@ -6,8 +6,8 @@ exclude:
   - '**/node_modules/**/*'
 linters:
   ErbSafety:
-    enabled: false
-    better_html_config: .better-html.yml
+    enabled: true
+    # better_html_config: .better-html.yml
   Rubocop:
     enabled: true
     rubocop_config:
