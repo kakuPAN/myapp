@@ -21,32 +21,30 @@
   <div class="scroll-area">
     <% if @tasks %>
       <% @tasks.each do |task| %>
-        <% if (logged_in? && current_user.id == task.user_id) || task.public_access? %>
-          <div class="task-area border border-primary">
-            <p id="task-user-name">
-              <%= User.find(task.user_id).user_name %>
-            </p>
-            <div class="task-index m-2">
-              <% if logged_in? && current_user.id == task.user_id %>
-                <%= link_to achieve_task_task_path(task.id), data: { turbo_method: :patch }, class: "task-title" do %>
-                  <% if task.done? %>
-                    <h3><i class="bi bi-circle-fill"></i></h3>
-                  <% else %>
-                    <h3><i class="bi bi-circle"></i></h3>
-                  <% end %>
+        <div class="task-area border border-primary">
+          <p id="task-user-name">
+            <%= User.find(task.user_id).user_name %>
+          </p>
+          <div class="task-index m-2">
+            <% if logged_in? && current_user.id == task.user_id %>
+              <%= link_to achieve_task_task_path(task.id), data: { turbo_method: :patch }, class: "task-title" do %>
+                <% if task.done? %>
+                  <h3><i class="bi bi-circle-fill"></i></h3>
+                <% else %>
+                  <h3><i class="bi bi-circle"></i></h3>
                 <% end %>
               <% end %>
-            </div>
-            <div class="task-index m-2">
-              <%= link_to task_path(task.id), class: "task-title" do %>
-                <h3>
-                  <%= task.title %>
-                </h3>
-              <% end %>
-            </div>
-            <span><%= I18n.t("enums.task.progress_status.#{task.progress_status}") %></span>
+            <% end %>
           </div>
-        <% end %>
+          <div class="task-index m-2">
+            <%= link_to task_path(task.id), class: "task-title" do %>
+              <h3>
+                <%= task.title %>
+              </h3>
+            <% end %>
+          </div>
+          <span><%= I18n.t("enums.task.progress_status.#{task.progress_status}") %></span>
+        </div>
       <% end %>
     <% else %>
       <p><%= current_user.user_name %>さまのタスクはありません</p>

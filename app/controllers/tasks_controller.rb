@@ -18,9 +18,9 @@ class TasksController < ApplicationController
   end
 
   def index
-    @q = Task.ransack(params[:q])
+    @q = Task.where("access_level = ? OR user_id = ?", 1, current_user&.id).ransack(params[:q])
     @progress_statuses = Task.progress_statuses_i18n
-    @tasks = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(params[:page]).per(6)
+    @tasks = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(params[:page]).per(5)
     @achievement = Task.calcurate_achievement_rate
     @point = Point.last
     # @display_object = CityObject.joins(:object_locations).distinct
