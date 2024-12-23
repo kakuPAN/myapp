@@ -31,29 +31,123 @@ User.create!(
   ]
 )
 
-# Task.create!(
-#   [
-#     {
-#       user_id: 1,
-#       title: "河川敷10分",
-#       body: "河川敷ランニング10分",
-#       deadline: Time.current.change(sec: 0),
-#       access_level: 1
-#     },
-#     {
-#       user_id: 2,
-#       title: "家の掃除",
-#       body: "洗濯・皿洗い",
-#       deadline: Time.current.change(sec: 0),
-#       access_level: 1
-#     },
-#     {
-#       user_id: 3,
-#       title: "ハローワークに行く",
-#       body: "必要書類を提出する",
-#       deadline: Time.current.change(sec: 0),
-#       access_level: 0
-#     }
-#   ]
-# )
+Category.create!(
+  [
+    {
+      title: "勉強",
+      total_height: 0,
+      user_id: 1
+    },
+    {
+      title: "トレーニング",
+      total_height: 0,
+      user_id: 1
+    },
+    {
+      title: "投資",
+      total_height: 0,
+      user_id: 1
+    }
+  ]
+)
 
+Goal.create!(
+  [
+    {
+      title: "プログラミング",
+      user_id: 1,
+      category_id: 1
+    },
+    {
+      title: "100m 10秒",
+      user_id: 1,
+      category_id: 2
+    },
+    {
+      title: "総資産 500万",
+      user_id: 1,
+      category_id: 1
+    }
+  ]
+)
+
+Task.create!(
+  [
+    {
+      user_id: 1,
+      goal_id: 1,
+      title: "カリキュラム10　進める",
+      body: "まずは１〜３を終わらせる",
+      deadline: Time.current.change(sec: 0),
+      access_level: 1
+    },
+    {
+      user_id: 1,
+      goal_id: 2,
+      title: "河川敷",
+      body: "河川敷ランニング30分3セット", 
+      deadline: Time.current.change(sec: 0),
+      access_level: 1
+    },
+    {
+      user_id: 1,
+      goal_id: 3,
+      title: "NiSA　見直し",
+      body: "投資先を検討する",
+      deadline: Time.current.change(sec: 0),
+      access_level: 1
+    }
+  ]
+)
+
+Height.create!(
+  [
+    {
+      current_height: 0,
+      current_height_level: 0,
+      max_height: 0,
+      max_height_level: 0,
+      user_id: 1,
+      goal_id: 1
+    },
+    {
+      current_height: 1,
+      current_height_level: 1 ,
+      max_height: 1,
+      max_height_level: 1,
+      user_id: 1,
+      goal_id: 2
+    },
+    {
+      current_height: 100,
+      current_height_level: 2,
+      max_height: 100,
+      max_height_level: 2,
+      user_id: 1,
+      goal_id: 3
+    }
+  ]
+)
+
+Landmark.create!(
+  [
+    {
+      name: "ボーリングレーンの幅",
+      landmark_image: "landmarks/bowling.jpg",
+      setting_height: 1,
+      setting_height_level: 1
+    },
+    {
+      name: "45型テレビの画面の横幅",
+      landmark_image: "landmarks/45inchTV.png",
+      setting_height: 1,
+      setting_height_level: 1
+    },
+    {
+      name: "1万円札を1億円分積んだ時の高さ",
+      landmark_image: "landmarks/100MillionYen.png",
+      setting_height: 1,
+      setting_height_level: 1
+    }
+  ]
+)

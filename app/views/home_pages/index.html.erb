@@ -1,15 +1,9 @@
-<h1>みんなの街</h1>
-<div class="image-wrapper">
-  <%= image_tag "city_objects/building_1.jpeg", size: "120x120", class: "image-content", id: "building_1" %>
-  <%= image_tag "city_objects/tower_1.png", size: "120x120", class: "image-content", id: "tower_1" %>
-  <%= image_tag "city_objects/house_1.png", size: "120x120", class: "image-content", id: "house_1" %>
-  <%= image_tag "city_objects/building_1.jpeg", size: "120x120", class: "image-content", id: "building_2" %>
-  <%= image_tag "city_objects/tower_1.png", size: "120x120", class: "image-content", id: "tower_2" %>
-  <%= image_tag "city_objects/house_1.png", size: "120x120", class: "image-content", id: "house_2" %>
-  <%= image_tag "city_objects/building_1.jpeg", size: "120x120", class: "image-content", id: "building_3" %>
-  <%= image_tag "city_objects/tower_1.png", size: "120x120", class: "image-content", id: "tower_3" %>
-  <%= image_tag "city_objects/house_1.png", size: "120x120", class: "image-content", id: "house_3" %>
-</div>
+<% @goals.each do |goal| %>
+  <%= link_to home_page_path(goal) do %>
+    <%= goal.title %>
+  <% end %>
+<% end %>
+
 <style>
   .image-wrapper {
     position: relative;
