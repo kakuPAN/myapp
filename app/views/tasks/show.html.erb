@@ -44,14 +44,14 @@
 
 <% if logged_in? && current_user.id == @task.user_id %>
   <div class="col-6">
-    <%= button_to "未着手", reset_task_task_path(@task.id), method: :patch, class: "btn btn-outline-primary btn-lg mb-1", data: { confirm: "このタスクを未着手にしますか？" }, disabled: @task.not_started? %>
-    <%= button_to "進行中", start_task_task_path(@task.id), method: :patch, class: "btn btn-outline-primary btn-lg mb-1", data: { confirm: "このタスクを進行中にしますか？" }, disabled: @task.in_progress? %>
-    <%= button_to "達成", achieve_task_task_path(@task.id), method: :patch, class: "btn btn-outline-primary btn-lg mb-1", data: { confirm: "このタスクを達成済みにしますか？" }, disabled: @task.done? %>
+    <%= button_to "未着手", reset_task_goal_task_path(@goal, @task.id), method: :patch, class: "btn btn-outline-primary btn-lg mb-1", data: { confirm: "このタスクを未着手にしますか？" }, disabled: @task.not_started? %>
+    <%= button_to "進行中", start_task_goal_task_path(@goal, @task.id), method: :patch, class: "btn btn-outline-primary btn-lg mb-1", data: { confirm: "このタスクを進行中にしますか？" }, disabled: @task.in_progress? %>
+    <%= button_to "達成", achieve_task_goal_task_path(@goal, @task.id), method: :patch, class: "btn btn-outline-primary btn-lg mb-1", data: { confirm: "このタスクを達成済みにしますか？" }, disabled: @task.done? %>
   </div>
-  <%= link_to "編集", edit_task_path(@task.id), class: "btn btn-outline-danger" %>
+  <%= link_to "編集", edit_goal_task_path(@goal ,@task.id), class: "btn btn-outline-danger" %>
 </b>
-  <%= link_to "削除", task_path(@task.id), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
+  <%= link_to "削除", goal_task_path(@goal, @task.id), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
 <% end %>
 <div>
-  <%= link_to "タスク一覧", tasks_path %>
+  <%= link_to "タスク一覧", goal_tasks_path %>
 </div>

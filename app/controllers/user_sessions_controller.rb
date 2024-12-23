@@ -5,7 +5,7 @@ class UserSessionsController < ApplicationController
   def create
     @user = login(params[:email], params[:password])
     if @user
-      redirect_to tasks_path
+      redirect_to goals_path
       flash[:primary] = "#{@user.user_name}さまがログインしました"
     else
       flash.now[:danger] = "ユーザーが存在しません"

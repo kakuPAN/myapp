@@ -1,15 +1,6 @@
-<h1>タスク一覧</h1>
-<div id="achievement-rate"><span id="ahievement-rate-label">現在のタスク達成率</span> <span id="achievement-rate-number"><%= @achievement %></span> % </div>
-<div id="point">
-  <span id="point-label">現在のポイント</span>
-  <!-- ここで＠pointを呼び出しているが、rspecではおそらくseedsファイルを実行しない（ポイントの初期値が入らない）ためnilとなってしまいエラーが発生する。そのため応急処置として分岐を設定!-->
-  <span id="point-number">
-    <% if @point %>
-      <%= @point.current_point %>
-    <% else %>
-      0
-    <% end %>
-  </span>ポイント</div>
+<%= render "shared/header" %>
+<h1><%= @goal.title %></h1>
+<h3>タスク一覧</h3>
 <div class="mb-3">
   <div class="row">
     <div class="col-lg-10 offset-lg-1">
@@ -27,7 +18,7 @@
           </p>
           <div class="task-index m-2">
             <% if logged_in? && current_user.id == task.user_id %>
-              <%= link_to achieve_task_task_path(task.id), data: { turbo_method: :patch }, class: "task-title" do %>
+              <%= link_to achieve_task_goal_task_path(@goal, task.id), data: { turbo_method: :patch }, class: "task-title" do %>
                 <% if task.done? %>
                   <h3><i class="bi bi-circle-fill"></i></h3>
                 <% else %>
@@ -37,7 +28,7 @@
             <% end %>
           </div>
           <div class="task-index m-2">
-            <%= link_to task_path(task.id), class: "task-title" do %>
+            <%= link_to goal_task_path(@goal,task.id), class: "task-title" do %>
               <h3>
                 <%= task.title %>
               </h3>
@@ -66,7 +57,8 @@
 <!-- スクロール !-->
 <style>
   body {
-    overflow: hidden;
+   
+   
   }
   .whole-wrapper {
     overflow: auto;

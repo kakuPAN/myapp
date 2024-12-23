@@ -8,11 +8,11 @@
     <% unless current_user %>
       <%= link_to "トップ", root_path, class: "header-content" %>
     <% end %>
-    <%= link_to "ホーム", home_pages_path, class: "header-content" %>
+    <%= link_to "ホーム", goals_path, class: "header-content" %>
     <% if current_user %>
-      <%= link_to "タスクの作成", new_task_path, class: "header-content" %>
+      <%= link_to "タスクの作成", new_goal_task_path(@goal), class: "header-content" %>
     <% end %>
-    <%= link_to "タスク一覧", tasks_path, class: "header-content" %>
+    <%= link_to "タスク一覧", goal_tasks_path(@goal), class: "header-content" %>
     <% if current_user %>
       <%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "header-content" %>
     <% else %>
