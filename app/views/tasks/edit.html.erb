@@ -1,6 +1,6 @@
 <h1>Edit Task</h1>
 <%= render "shared/error_messages", object: @task %>
-<%= form_with model: @task do |f| %>
+<%= form_with url: goal_task_path(@goal, @task), model: @task do |f| %>
     <div class="mb-3">
       <%= f.label :title, "タイトル", class: "form-label" %>
       <%= f.text_field :title, class: "form-control" %>

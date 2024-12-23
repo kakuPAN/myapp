@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
-  resources :home_pages
   resources :users
-  resources :tasks do
-    member do
-      patch :achieve_task
-      patch :start_task
-      patch :reset_task
+  resources :goals do
+    resources :tasks do
+      member do
+        patch :achieve_task
+        patch :start_task
+        patch :reset_task
+      end
     end
   end
   root "static_pages#top"
