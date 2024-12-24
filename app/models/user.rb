@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
   has_many :goals, dependent: :destroy
+  has_many :categories, dependent: :destroy
   has_many :heights, dependent: :destroy
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
@@ -16,6 +17,6 @@ class User < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    [ "tasks" ]
+    [ "tasks", "goals" ]
   end
 end

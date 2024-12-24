@@ -1,5 +1,52 @@
-<% @goals.each do |goal| %>
-  <%= link_to goal_path(goal) do %>
-    <% goal.title %>
-  <% end %>
-<% end %>
+<%= render "shared/header" %>
+<div class="mb-3">
+  <div class="row">
+    <div class="col-lg-10 offset-lg-1">
+      <%= render "goals_search_form", q: @q %>
+    </div>
+  </div>
+</div>
+<div class="whole-wrapper">
+  <div class="scroll-area">
+    <% if @goals %>
+      <% @goals.each do |goal| %>
+        <div class="goal-area border border-primary">
+          <div class="goal-index m-2">
+            <%= link_to goal_path(goal), class: "goal-title" do %>
+              <h3 class="goal-title">
+                <%= goal.title %>
+              </h3>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>設定された目標がありません</p>
+    <% end %>
+    <div class="pagination">
+      <%= paginate @goals, theme: "bootstrap-5", pagination_class: "pagination-lg" %>
+    </div>
+  </div>
+</div>
+<!-- スクロール !-->
+<style>
+  
+  .whole-wrapper {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+  }
+  .scroll-area {
+    scroll-snap-align: start;
+    height: 100vh;
+  }
+  .goal-title {
+    display: inline-block;
+  }
+</style>
+<!-- ページネーション !-->
+<style>
+  .pagination {
+  justify-content: center;
+  }
+</style>

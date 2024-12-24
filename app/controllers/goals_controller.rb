@@ -1,10 +1,12 @@
 class GoalsController < ApplicationController
   def index
-    @goals = current_user&.goals    
+    @q = Goal.ransack(params[:q])
+    @goals = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(params[:page]).per(2)
   end
 
   def show
     if current_user
+      @goals = current_user&.goals 
       @goal = current_user.goals.find(params[:id])
       @height = Height.find_by(goal_id: @goal.id)
       @landmarks = Landmark.where(setting_height_level: @height.current_height_level)
