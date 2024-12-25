@@ -1,7 +1,7 @@
 <% if current_user %>
   <%= render "shared/goal_related_header" %>
 <% end %>
-<div class="title-wrapper">
+<div class="title-wrapper content-1">
   <h1 class="goal-title"><%= @goal.title %></h1>
   <h1 class="current-height">積み上げた高さ：<%= @height.current_height %>
     <% if @height.thing? %>
@@ -9,41 +9,27 @@
     <% end %>
   </h1>
 </div>
-
-<% if @landmarks.present? %>
-  <div class="wrapper">
-    <% @landmarks.each do |landmark| %>
-      <div class="scroll-area">
-        <div class="content-1">
-          <h2 class="landmark-name"><%= landmark.name %></h2>
-          <p>高さ: <%= landmark.setting_height %>
-            <% if landmark.thing? %>
-              <span>m</span>
-            <% end %>
-          </p>
-        </div>
-        <div class="content-2">
-          <%= image_tag landmark.landmark_image, class: "landmark-image" %>
-        </div>
-      </div>
+<div class="wrapper content-2">
+    <%= turbo_frame_tag "landmarks-page-#{@landmarks.current_page}" do %>
+      <%# 今のページで取得したTweet一覧 %>
+        <%= render @landmarks %>
+      <%# 遅延読み込みで次ページを取得する`<turbo-frame>` %>
+        <%= turbo_frame_tag "landmarks-page-#{@landmarks.next_page}", loading: :lazy, src: path_to_next_page(@landmarks) %>
     <% end %>
-  </div>
-<% else %>
-  <p>該当するランドマークはありません。</p>
-<% end %>
-
+</div>
 
 <style>
 
    .wrapper {
     overflow: auto;
     scroll-snap-type: y mandatory;
-    height: 100vh;
-    width: 90%;
+    height: 80vh;
+    width: 60%;
     margin: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+  <%# 全画面の方のスクロールがずれていると、エリアのスクロールがうまくいかないことがある　#%>
   .wrapper::-webkit-scrollbar {
     display:none;
   }
@@ -72,9 +58,7 @@
     padding-top: 10px;
     z-index: 10
   }
-  .content-1 .landmark-name {
-    font-
-  }
+
   .content-2 {
     z-index: 1
   }
