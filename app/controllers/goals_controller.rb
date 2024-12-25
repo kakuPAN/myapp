@@ -5,17 +5,18 @@ class GoalsController < ApplicationController
   end
 
   def show
-    if current_user
-      @goals = current_user&.goals
-      @goal = current_user.goals.where(id: params[:id])
-      if @goal
-        @height = Height.find_by(goal_id: @goal&.id)
-        @landmarks = Landmark.where(setting_height_level: @height&.current_height_level)
-        @tasks = @goal.tasks.order(created_at: :desc)
-      end
-    else
-      flash[:danger] = "ログインしてください"
-      redirect_to root_path
+    return unless current_user # ログインしていない場合は処理をスキップ
+  
+    @goals = current_user.goals
+    @goal = current_user.goals.find_by(id: params[:id]) # 単一のゴールを取得
+  
+    unless @goal
+      flash[:alert] = "指定されたゴールが見つかりません。"
+      redirect_to goals_path and return
     end
+  
+    @height = Height.find_by(goal_id: @goal.id)
+    @landmarks = Landmark.order(created_at: :desc).page(params[:page]).per(2)
+    @tasks = @goal.tasks.order(created_at: :desc)
   end
 end
