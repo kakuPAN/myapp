@@ -75,6 +75,8 @@ group :development, :test do
   gem "faker"
 
   gem "database_cleaner"
+
+  gem "line-bot-api"
 end
 
 group :development do
