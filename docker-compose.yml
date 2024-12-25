@@ -51,7 +51,7 @@ services:
   sidekiq:
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile.sidekiq
     command: bundle exec sidekiq
     volumes:
       - .:/myapp
