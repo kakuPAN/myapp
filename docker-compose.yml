@@ -41,7 +41,27 @@ services:
     image: seleniarm/standalone-chromium:latest
     ports:
       - 4444:4444
+  redis:
+    image: "redis:7.0-alpine"
+    volumes:
+      - redis_volume:/data
+    command: redis-server --appendonly yes
+    ports:
+      - 6379:6379
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: bundle exec sidekiq
+    volumes:
+      - .:/myapp
+    depends_on:
+      - db
+      - redis
+
+
 volumes:
+  redis_volume:
   bundle_data:
   postgresql_data:
   node_modules:
