@@ -1,5 +1,14 @@
 <div id="<%= dom_id landmark %>" , class="scroll-area">
+  <button class="mark-button"><%= landmark.name %></button>
   <%= image_tag landmark.landmark_image, class: "landmark-image" %>
+  
 </div>
 
+<style>
+  .mark-button {
+    position: absolute;
+    padding: 5px;
+    top: 30px;
+  }
+</style>
 
