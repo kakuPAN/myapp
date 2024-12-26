@@ -1,29 +1,35 @@
-<% if current_user %>
-  <%= render "shared/goal_related_header" %>
-<% end %>
-<div class="title-wrapper content-1">
-  <h1 class="goal-title"><%= @goal.title %></h1>
-  <h1 class="current-height">積み上げた高さ：<%= @height.current_height %>
-    <% if @height.thing? %>
-      m
+<div class="whole-wrapper">
+  <div class="index-10">
+    <% if current_user %>
+      <%= render "shared/goal_related_header" %>
     <% end %>
-  </h1>
+    <div class="title-wrapper content-1">
+      <h1 class="goal-title"><%= @goal.title %></h1>
+    </div>
+  </div>
+  <div class="wrapper content-2 index-1">
+      <%= turbo_frame_tag "landmarks-page-#{@landmarks.current_page}" do %>
+        <%# 今のページで取得したTweet一覧 %>
+          <%= render @landmarks %>
+        <%# 遅延読み込みで次ページを取得する`<turbo-frame>` %>
+          <%= turbo_frame_tag "landmarks-page-#{@landmarks.next_page}", loading: :lazy, src: path_to_next_page(@landmarks) %>
+      <% end %>
+  </div>
 </div>
-<div class="wrapper content-2">
-    <%= turbo_frame_tag "landmarks-page-#{@landmarks.current_page}" do %>
-      <%# 今のページで取得したTweet一覧 %>
-        <%= render @landmarks %>
-      <%# 遅延読み込みで次ページを取得する`<turbo-frame>` %>
-        <%= turbo_frame_tag "landmarks-page-#{@landmarks.next_page}", loading: :lazy, src: path_to_next_page(@landmarks) %>
-    <% end %>
-</div>
-
 <style>
-
+  .index-10 {
+    z-index: 10;
+  }
+  .index-1 {
+    z-index:1;
+  }
+  .whole-wrapper {
+  
+  }
    .wrapper {
     overflow: auto;
     scroll-snap-type: y mandatory;
-    height: 80vh;
+    height: 100vh;
     width: 60%;
     margin: auto;
     -ms-overflow-style: none;
@@ -37,9 +43,10 @@
     scroll-snap-align: start;
     height: 100vh;
     text-align: center;
-    margin: 10px;
+    margin: 20px;
+    padding-bottom: 10%;
     overflow: hidden;
-
+    position: relative;
   }
 
   .title-wrapper {
@@ -65,6 +72,9 @@
   .landmark-image {
     width: 100%;
     height: 100%;
-    padding: 100px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    padding-left: 50px;
+    padding-right: 50px;
   }
 </style>

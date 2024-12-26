@@ -14,8 +14,6 @@ class GoalsController < ApplicationController
       flash[:alert] = "指定されたゴールが見つかりません。"
       redirect_to goals_path and return
     end
-  
-    @height = Height.find_by(goal_id: @goal.id)
     @landmarks = Landmark.order(created_at: :desc).page(params[:page]).per(2)
     @tasks = @goal.tasks.order(created_at: :desc)
   end
