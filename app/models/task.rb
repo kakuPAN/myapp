@@ -1,6 +1,5 @@
 class Task < ApplicationRecord
   belongs_to :user
-  belongs_to :goal
   enum :access_level, { private_access: 0, public_access: 1 }
   enum :progress_status, { not_started: 0, in_progress: 1, done: 2 }
 
