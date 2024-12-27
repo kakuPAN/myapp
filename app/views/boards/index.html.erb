@@ -1,0 +1,169 @@
+<div class="whole-wrapper">
+  <div class="header-wrapper">
+    <% if current_user %>
+      <%= render "shared/header" %>
+    <% end %>
+  </div>
+  <div class="wrapper">
+    <%= render @boards %>
+  </div>
+  <div class="pagination">
+    <% if @boards.present? && @boards.current_page %>
+      <% if @boards.prev_page %>
+        <%= link_to  url_for(page: @boards.prev_page || 1) do %>
+          <i class="bi bi-arrow-up-square-fill previous-link"></i>
+        <% end %>
+      <% else %>
+        <i class="bi bi-arrow-up-square previous-link disabled"></i>
+      <% end %>
+      <%= paginate @boards %>
+      <% if @boards.next_page %>
+        <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
+          <i class="bi bi-arrow-down-square-fill next-link"></i>
+        <% end %>
+      <% else %>
+        <i class="bi bi-arrow-down-square next-link disabled"></i>
+      <% end %>
+    <% else %>
+      <p>ページネーションを表示するデータがありません。</p>
+    <% end %>
+  </div>
+</div>
+<!-- コメント用!-->
+<div class="comment-marquee">
+  <div class="comment-track">
+    <% @boards.each do |board| %>
+      <span class="comment-item"><%= board.body %></span>
+      <span class="comment-item">by<%= board.user.user_name %></span>
+    <% end %>
+  </div>
+</div>
+
+<style>
+.comment-marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  background-color: black;
+  padding: 10px 0;
+  border: 1px solid #ddd;
+}
+
+.comment-track {
+  display: inline-block;
+  animation: scroll-left 15s linear infinite; /* 15秒で1周、無限ループ */
+}
+
+.comment-item {
+  display: inline-block;
+  margin-right: 50px; /* 各コメント間のスペース */
+  font-size: 16px;
+  color: white;
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+</style>
+<!-- ここまで　!-->
+<style>
+  .title-text {
+    margin: auto;
+    text-align: center;
+    color: pink;
+    font-size: 50px;
+    font-weight: bolder;
+  }
+  .whole-wrapper {
+    background-size: contain;
+  }
+
+  .wrapper {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+    width: 60%;
+    margin: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  <%# 全画面の方のスクロールがずれていると、エリアのスクロールがうまくいかないことがある　#%>
+  .wrapper::-webkit-scrollbar {
+    display:none;
+  }
+  .scroll-area {
+    scroll-snap-align: start;
+    height: 80vh;
+    margin: 0 20px;
+    margin-bottom: 100px;
+    padding-bottom: 10%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .scroll-content {
+    top: 10%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    border: solid;
+    border-color: pink;
+    align-items: center;
+    display: flex;
+    background-color: white;
+  }
+
+
+  .pagination {
+  }
+  .previous-link {
+    position: absolute;
+    left: 20px;
+    top: 60%;
+    font-size: 100px;
+    color: pink;
+    margin: 50px;
+    float: left;
+  }
+  .next-link {
+    position: absolute;
+    left: 20px;
+    top: 75%;
+    font-size: 100px;
+    color: pink;
+    margin: 50px;
+    float: right;
+  }
+  .disabled {
+    pointer-events: none;
+  }
+
+  .title-wrapper {
+    text-align: center;
+  }
+  .board-title {
+    font-size: 50px;
+  }
+  .current-height {
+    font-size: 50px;
+    border-bottom: solid;
+    border-color: blue;
+  }
+  .board-image {
+    width: 100%;
+    height: 100%;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+</style>

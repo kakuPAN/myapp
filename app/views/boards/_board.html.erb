@@ -1,0 +1,36 @@
+<div class="scroll-area">
+  <div class="scroll-content">
+    <div class="board-items">
+      <div id="user-name">
+        <%= board.user.user_name %>
+      </div>
+      <div id="board-body">
+        <%= link_to board_path(board), id: "board-text" do %>
+          <%= board.body %>
+        <% end %>
+      </div>
+      <%# <%= image_tag board.board_image, class: "board-image" %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .board-items {
+    margin: 0 auto;
+    text-align: center;
+    
+  }
+  #user-name {
+    display: inline-block;
+  }
+  #board-body {
+    margin: 0 auto;
+    padding: 0 10px;
+    font-size: 20px;
+    width: 100%;
+  }
+  #board-text {
+    text-decoration: none; 
+    color: black; 
+  }
+</style>

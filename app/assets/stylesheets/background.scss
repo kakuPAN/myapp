@@ -1,11 +1,9 @@
-@media (min-width: 1024px) {
-  .whole-wrapper {
-    background-image: url("city_objects/isome_ground.png");
-  }
+.whole-wrapper {
+  background-image: url("board-background/spring_back.jpg");
 }
 
-@media (max-width: 600px) {
-  .whole-wrapper {
-    background-image: url("city_objects/isome_ground.png");
-  }
-}
+// @media (max-width: 600px) {
+//   .whole-wrapper {
+//     background-image: url("city_objects/isome_ground.png");
+//   }
+// }
