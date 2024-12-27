@@ -6,30 +6,162 @@
   </div>
   <div class="wrapper">
     <%= render @boards %>
+    <div class="pagination-left">
+      <% if @boards.present? && @boards.current_page %>
+        <% if @boards.prev_page %>
+          <%= link_to  url_for(page: @boards.prev_page || 1) do %>
+            <div class="previous-link"></div>
+          <% end %>
+        <% else %>
+          <div class="previous-link disabled"></div>
+        <% end %>
+    </div>
+        <%= paginate @boards %>
+    <div class="pagination-right">
+        <% if @boards.next_page %>
+          <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
+            <div class="next-link"></div>
+          <% end %>
+        <% else %>
+          <div class="next-link disabled"></div>
+        <% end %>
+      <% else %>
+        <p>ページネーションを表示するデータがありません。</p>
+      <% end %>
+    </div>
   </div>
-  <div class="pagination">
-    <% if @boards.present? && @boards.current_page %>
-      <% if @boards.prev_page %>
-        <%= link_to  url_for(page: @boards.prev_page || 1) do %>
-          <i class="bi bi-arrow-up-square-fill previous-link"></i>
-        <% end %>
-      <% else %>
-        <i class="bi bi-arrow-up-square previous-link disabled"></i>
-      <% end %>
-      <%= paginate @boards %>
-      <% if @boards.next_page %>
-        <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
-          <i class="bi bi-arrow-down-square-fill next-link"></i>
-        <% end %>
-      <% else %>
-        <i class="bi bi-arrow-down-square next-link disabled"></i>
-      <% end %>
-    <% else %>
-      <p>ページネーションを表示するデータがありません。</p>
-    <% end %>
+</div>
+<div class="comment-area">
+  <div class="comment-track-sub">
+    <span class="comment-text" id="1"><i class="bi bi-emoji-sunglasses-fill"></i>コメントですコメントですコメントです</span>
+    <span class="comment-text" id="2"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
+    <span class="comment-text" id="3"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
+    <span class="comment-text" id="4"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
+    <span class="comment-text" id="5"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
+    <span class="comment-text" id="1"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
+    <span class="comment-text" id="2"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
+    <span class="comment-text" id="3"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
+    <span class="comment-text" id="4"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
+    <span class="comment-text" id="5"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
   </div>
 </div>
 <!-- コメント用!-->
+
+<style>
+<%# 背景 %>
+  .whole-wrapper {
+    background-size: contain;
+  }
+  .wrapper {
+    position: absolute; <%# 投稿の表示領域全体を左寄せ %>
+    left: 30px;
+    width: 60%; <%# 投稿の表示領域全体の幅 %>
+    padding: 0 20px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .wrapper::-webkit-scrollbar {
+    display:none;
+  }
+  .scroll-area {
+    height: 85vh;
+    margin: 0 20px; <%# ボックスの外側の余白 %>
+    overflow: hidden; <%# ボックスからはみ出た部分を非表示 %>
+    position: relative;
+  }
+  .board-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%); 
+    <%# position: absolute;は基準点に対して、自分の左上を基軸にして移動するので、
+      top, left 50%としたときの中心に来るのは自分の左上になる。translateはそれを調節する%>
+  }
+  .board-body a{
+    text-decoration: none;
+    color: black;
+    font-size: 25px;
+  }
+  .scroll-content {
+    top: 15%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    border: solid;
+    border-color: pink;
+    align-items: center; <%# 小要素の垂直位置を指定 %>
+    display: flex;  <%# これなしではalign-itemsが解除される%>
+    background-color: white;
+  }
+  </style>
+  <%# ここからパーシャル %>
+  <style>
+  .board-items {
+    margin: auto; <%# 要素の中央寄せ %>
+    text-align: center;
+  }
+  .user-name {
+    display: inline-block;
+    margin: auto;
+  }
+  .board-image {
+    opacity: 50%;
+  }
+  .board-image img { <%# これらのプロパティはimgに直接指定することに注意 %>
+    width: 700px; <%# 100％で表示できるのは元の大きさまで %><%# クリックで100%に変更　＝＞　全体表示 %>
+    max-height: 550px;<%# 小さい画像をあえてはみ出させたい場合は直接指定するしかない、比率を維持したまま親要素に合わせて自動でサイズを調整することができなくなる %>
+    object-fit:cover; <%# 上記の指定だけでは比率がおかしくなるらしい（なくてもできてる感ある）%>
+    border-radius: 15px 15px 15px 15px;
+  }
+</style>
+<style>
+  .pagination-left {
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .pagination-right {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .previous-link {
+    font-size: 100px;
+    margin: 50px;
+    width: 50px;
+    height: 200px;
+    background-color: black;
+    opacity: 2%;
+    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+    border-radius: 40px 5px 5px 40px;
+  }
+  .previous-link:hover {
+    background-color: pink;
+    opacity: 50%;
+  }
+  .next-link:hover {
+    background-color: pink;
+    opacity: 50%;
+  }
+
+  .next-link {
+    font-size: 100px;
+    margin: 50px;
+    width: 50px;
+    height: 200px;
+    background-color: black;
+    opacity: 2%;
+    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+    border-radius: 5px 40px 40px 5px;
+  }
+  .disabled {
+    pointer-events: none;
+  }
+  
+</style>
 
 
 <style>
@@ -38,7 +170,7 @@
   overflow: hidden;
   white-space: nowrap;
   position: relative;
-  top: 50px;
+  top: 45px;
   background-color: pink;
   padding: 10px 0;
   border: 1px solid #ddd;
@@ -56,6 +188,9 @@
   font-weight: bold;
   color: white;
 }
+.board-user-name {
+  font-size: 38px;
+}
 
 @keyframes scroll-left {
   from {
@@ -69,96 +204,41 @@
 </style>
 <!-- ここまで　!-->
 <style>
-  .title-text {
-    margin: auto;
-    text-align: center;
-    color: pink;
-    font-size: 50px;
-    font-weight: bolder;
-  }
-  .whole-wrapper {
-    background-size: contain;
-  }
+  .comment-area {
+  position: relative;
+  width: 400px; /* コンテナの幅 */
+  height: 500px; /* コンテナの高さ */
+  overflow: hidden; /* コンテナ外のテキストを隠す */
+  border: 1px solid #ddd;
+  left: 1000px;
+  top: 350px;
+  transform: translate(0,-50%); 
+  background-color: white;
+  border-width: 1em;
+  border-color: pink;
+  
+}
+.comment-track-sub {
+  position: absolute;
+  width: 100%;
+  text-align: left;
+  animation: slideDown 15s linear infinite;; /* 下に移動するアニメーション */
+}
 
-  .wrapper {
-    overflow: auto;
-    scroll-snap-type: y mandatory;
-    height: 100vh;
-    width: 60%;
-    margin: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  <%# 全画面の方のスクロールがずれていると、エリアのスクロールがうまくいかないことがある　#%>
-  .wrapper::-webkit-scrollbar {
-    display:none;
-  }
-  .scroll-area {
-    scroll-snap-align: start;
-    height: 80vh;
-    margin: 0 20px;
-    margin-bottom: 100px;
-    padding-bottom: 10%;
-    overflow: hidden;
-    position: relative;
-  }
+.comment-text {
+  display: block;
+  margin: 20px; /* 各コメント間のスペース */
+  font-size: 20px;
+  color: black;
+}
 
-  .scroll-content {
-    top: 10%;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: 0 auto;
-    position: absolute;
-    border: solid;
-    border-color: pink;
-    align-items: center;
-    display: flex;
-    background-color: white;
+@keyframes slideDown {
+  from {
+    transform: translateY(-85%);
   }
+  to {
+    transform: translateY(180%);
+  }
+}
 
-
-  .pagination {
-  }
-  .previous-link {
-    position: absolute;
-    left: 20px;
-    top: 60%;
-    font-size: 100px;
-    color: pink;
-    margin: 50px;
-    float: left;
-  }
-  .next-link {
-    position: absolute;
-    left: 20px;
-    top: 75%;
-    font-size: 100px;
-    color: pink;
-    margin: 50px;
-    float: right;
-  }
-  .disabled {
-    pointer-events: none;
-  }
-
-  .title-wrapper {
-    text-align: center;
-  }
-  .board-title {
-    font-size: 50px;
-  }
-  .current-height {
-    font-size: 50px;
-    border-bottom: solid;
-    border-color: blue;
-  }
-  .board-image {
-    width: 100%;
-    height: 100%;
-    padding-top: 100px;
-    padding-bottom: 100px;
-    padding-left: 50px;
-    padding-right: 50px;
-  }
 </style>
