@@ -1,0 +1,99 @@
+<div class="header-wrapper">
+  <div class="header-body">
+    <% if current_user %>
+      <div class="mypage-container" id="mypageContainer">
+        <span class="username-honorific header-text"><%= current_user.user_name %></span><span class="username-honorific header-text">さん</span>
+        <div class="mypage-dropdown" id="mypageDropdown">
+          <ul>
+            <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "header-content header-text login-text" %></li>
+            <li><%= link_to "マイページ" %></li>
+          </ul>
+        </div>
+      </div>
+    <% else %>
+      <div id="mypageContainer">
+        <span class="user-title header-text">ゲストユーザー</span>
+        <div class="mypage-dropdown" id="mypageDropdown">
+          <ul>
+            <li><%= link_to "ユーザー登録", new_users_path %>
+            <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "header-content header-text login-text" %></li>
+            <li><%= link_to "トップ", root_path, class: "header-content header-text" %></li>
+          </ul>
+        </div>
+      </div>
+    <% end %> 
+  </div>
+</div>
+<script>
+  document.addEventListener('turbo:load', function() {
+    const mypageContainer = document.getElementById('mypageContainer');
+    const mypageDropdown = document.querySelector('.mypage-dropdown');
+
+    if (mypageContainer) {
+      
+      mypageContainer.addEventListener('mouseover', function() {
+        mypageDropdown.style.display = 'block'
+      });
+
+      mypageContainer.addEventListener('mouseout', function() {
+        mypageDropdown.style.display = 'none';
+      });
+    }
+  });
+</script>
+<style>
+  .mypage-dropdown {
+    display: none;
+    position: absolute;
+    right: 0px;
+    width: 140px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    z-index: 999;
+    
+  }
+  
+  .mypage-dropdown a {
+    color: #5c3e26;
+    text-decoration: none;
+  }
+  .mypage-dropdown ul {
+    list-style: none;
+    margin: 0 auto;
+    padding-left: 5px;
+    display: inline-block;
+  }
+  .mypage-dropdown li {
+    text-align: left;
+  }
+  .mypage-container {
+    position: relative;
+  }
+
+</style>
+
+<style>
+
+  .username-honorific {
+    font-size: 12px;
+  }
+  .header-wrapper {
+    background-color: pink;
+    padding: 3px;
+    height: 70px;
+  }
+  .header-body {
+    position: absolute;
+    right: 50px;
+  }
+  .header-content {
+    text-decoration: none;
+  }
+  .header-content:hover {
+    color: rgba(233, 155, 0, 0.946);
+  }
+  .header-text {
+    font-weight: bold;
+    font-size: 20px;
+  }
+</style>
