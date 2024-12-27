@@ -4,23 +4,16 @@ class NotificationService
   end
 
   def call
-    send_push_message
+    # send_push_message
   end
 
   private
 
   def send_push_message
-    today_tasks = user.tasks.where(deadline: Date.today)
-    if today_tasks.any?
-      task_list = today_tasks.map { |task| "- #{task.name}" }.join("\n")
-      message_text = "#{user.user_name}さんの今日のタスク:\n#{task_list}"
-    else
-      message_text = "#{user.user_name}さん、今日はタスクがありません。"
-    end
-
+    
     message = {
       type: 'text',
-      text: message_text
+      text: "おはよ〜"
     }
 
     response = LINE_NOTIFY_CLIENT.broadcast(message)

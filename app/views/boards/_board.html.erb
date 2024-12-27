@@ -1,15 +1,21 @@
+
 <div class="scroll-area">
   <div class="scroll-content">
     <div class="board-items">
-      <div id="user-name">
+      <div class="user-name">
         <%= board.user.user_name %>
       </div>
-      <div id="board-body">
-        <%= link_to board_path(board), id: "board-text" do %>
-          <%= board.body %>
-        <% end %>
-      </div>
-      <%# <%= image_tag board.board_image, class: "board-image" %>
+      <% if board.image.attached? %>
+        <div class="board-image"><%= image_tag board.image %></div>
+      <% end %>
+    </div>
+  </div>
+  <div class="comment-marquee">
+    <div class="comment-track">
+      <% @boards.each do |board| %>
+        <span class="comment-item"><%= board.body %></span>
+        <span class="comment-item">by<%= board.user.user_name %></span>
+      <% end %>
     </div>
   </div>
 </div>
@@ -20,8 +26,9 @@
     text-align: center;
     
   }
-  #user-name {
+  .user-name {
     display: inline-block;
+    margin: auto;
   }
   #board-body {
     margin: 0 auto;
@@ -34,3 +41,7 @@
     color: black; 
   }
 </style>
+
+<!--
+
+!-->

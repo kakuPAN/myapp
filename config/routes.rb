@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :users
-  resources :boards
+  resources :boards do
+    member do
+      delete :delete_image
+    end
+  end
   resources :tasks do
     member do
       patch :achieve_task

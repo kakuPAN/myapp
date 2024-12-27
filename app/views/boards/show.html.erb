@@ -1,1 +1,7 @@
 <%= @board.body %>
+<% if @board.image.attached? %>
+  <div><%= image_tag @board.image %></div>
+<% end %>
+<%= link_to "削除", board_path(@board), data: { turbo_method: :delete } %>
+<%= link_to "編集", edit_board_path(@board) %>
+<%= link_to "一覧へ" ,boards_path %>
