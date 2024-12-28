@@ -60,6 +60,52 @@ Board.create!(
   ]
 )
 
+Comment.create!(
+  [
+    {
+      body: "かわいい〜",
+      user_id: 2,
+      board_id: 1
+    },
+    {
+      body: "癒される！",
+      user_id: 3,
+      board_id: 1
+    },
+    {
+      body: "朝から元気出ますね！！",
+      user_id: 3,
+      board_id: 1
+    },
+    {
+      body: "私も今朝挨拶もらいました笑",
+      user_id: 2,
+      board_id: 1
+    },
+    {
+      body: "nice!",
+      user_id: 2,
+      board_id: 5
+    },
+    {
+      body: "私も頑張らねば",
+      user_id: 2,
+      board_id: 5
+    },
+    {
+      body: "優しい世界",
+      user_id: 2,
+      board_id: 6
+    },
+    {
+      body: "優しい人でよかったですね〜",
+      user_id: 1,
+      board_id: 6
+    },
+
+  ]
+)
+
 Task.create!(
   [
     {

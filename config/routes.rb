@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :users
   resources :boards do
+    resources :comments
     member do
       delete :delete_image
     end

@@ -1,26 +1,52 @@
-<div class="scroll-area">
-  <div class="scroll-content">
-    <div class="board-items">
-      <% if board.image.attached? %>
-        <div class="board-image"><%= image_tag board.image %></div>
-      <% end %>
-    </div>
-  </div>
-  <%= link_to user_path(board.user_id) do %>
-    <div class="comment-marquee">
-      <div class="comment-track">
-        <% @boards.each do |board| %>
-          <span class="comment-item"><i class="bi bi-emoji-sunglasses-fill"></i></span>
-          <span class="comment-item board-user-name"><%= board.user.user_name %></span>
-          <span class="comment-item">最近寒すぎて焼き芋食べたい</span>
+  <div class="scroll-area">
+    <div class="scroll-content">
+      <div class="board-items">
+        <% if board.image.attached? %>
+          <div class="board-image"><%= image_tag board.image %></div>
         <% end %>
       </div>
     </div>
-  <% end %>
-  <div class="board-body">
-    <%= link_to board_path(board)  do %>
-      <%= board.body %>
+    <%= link_to user_path(board.user_id), class: "user_page_link" do %>
+      <div class="user-comment-area">
+        <div class="user-comment-track">
+          <% @boards.each do |board| %>
+            <span class="user-comment-text"><i class="bi bi-emoji-sunglasses-fill"></i></span>
+            <span class="user-comment-text board-user-name"><%= board.user.user_name %></span>
+            <span class="user-comment-text", id="user-comment-body">ユーザーコメント</span>
+          <% end %>
+        </div>
+      </div>
     <% end %>
+    <div class="board-body">
+      <%= link_to board_path(board, page: params[:page])  do %>
+        <%= board.body %>
+      <% end %>
+    </div>
   </div>
-</div>
+  <div class="comment-area">
+    <div class="comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
+      <% board.comments.each do |comment| %>
+        <%= link_to user_path(comment.user), class: "comment-link" do %>
+          <% if current_user && current_user.id == comment.user_id %>
+            <span class="comment-text comment_by_current_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+          <% elsif %>
+            <span class="comment-text comment_by_board_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+          <% else %>
+            <span class="comment-text comment_by_other_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="comment-form-wrapper">
+    <div class="comment-form"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
+      <%= form_with model: [board, @comment], local: true do |f| %>
+        <%= f.label :body, "コメント", class: "form-label" %>
+        <%= f.text_area :body, size: "10x5", class: "form-control" %>
+        <div>
+          <%= f.submit "コメントを投稿する" %>
+        </div>
+      <% end %> 
+    </div>
+  </div> 
 
