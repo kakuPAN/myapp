@@ -1,10 +1,21 @@
 class BoardsController < ApplicationController
   before_action :require_login, except: %i[index show]
   def index
-    @all_boards = Board.all
-    @boards= Board.order(created_at: :desc).page(params[:page]).per(1)
-  end
+    if params[:current_board_id] # 他のページから一覧ページのリンクをクリックした場合に、同じ投稿が表示されるページにアクセスするための処理
+      current_board = Board.find(params[:current_board_id])
+      @page = page_for(current_board)
+      redirect_to boards_path(page: @page) and return
+    end
 
+    @all_boards = Board.all
+    @boards= Board.order(created_at: :desc).page(params[:page]).per(1) #comment_countカラムを追加し、コメントの数またはリアクションの数でソート
+    @comment = Comment.new
+    
+    if @boards.out_of_range? # Kaminari の out_of_range? メソッドを使用
+      redirect_to boards_path(page: @boards.total_pages) and return
+    end
+  end
+  
   def new
     @board = Board.new
   end
@@ -30,7 +41,7 @@ class BoardsController < ApplicationController
       @board
     else
       redirect_to boards_path
-      flash[:danger] = "タスクが存在しません"
+      flash[:danger] = "投稿が存在しません"
     end
   end
 
@@ -66,4 +77,14 @@ class BoardsController < ApplicationController
     params.require(:board).permit(:id , :user_id, :body, :image, images: [])
   end
 
+  def page_for(board) #詳細ページから一覧ページに戻る際に、同じ投稿が表示されるページにアクセスするためのメソッド
+    # 1ページあたりの投稿数
+    per_page = 1
+    # 投稿の全体の並び順を取得
+    boards = Board.order(created_at: :desc).pluck(:id) #表示順序によって変更が必要
+    # 対象の投稿の、並び替えた投稿の中のインデックス番号を取得
+    board_index = boards.index(board.id)
+    # ページ番号を計算
+    (board_index / per_page) + 1
+  end
 end

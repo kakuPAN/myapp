@@ -1,51 +1,84 @@
-<div class="whole-wrapper">
-  <div class="header-wrapper">
-    <% if current_user %>
-      <%= render "shared/header" %>
-    <% end %>
-  </div>
-  <div class="wrapper">
-    <%= render @boards %>
-    <div class="pagination-left">
-      <% if @boards.present? && @boards.current_page %>
-        <% if @boards.prev_page %>
-          <%= link_to  url_for(page: @boards.prev_page || 1) do %>
-            <div class="previous-link"></div>
-          <% end %>
-        <% else %>
-          <div class="previous-link disabled"></div>
-        <% end %>
-    </div>
-        <%= paginate @boards %>
-    <div class="pagination-right">
-        <% if @boards.next_page %>
-          <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
-            <div class="next-link"></div>
-          <% end %>
-        <% else %>
-          <div class="next-link disabled"></div>
-        <% end %>
-      <% else %>
-        <p>ページネーションを表示するデータがありません。</p>
+  <div class="whole-wrapper">
+    <div class="header-wrapper">
+      <% if current_user %>
+        <%= render "shared/header" %>
       <% end %>
     </div>
+    <div class="wrapper">
+      <%= render @boards %>
+      <div class="pagination-left">
+        <% if @boards.present? && @boards.current_page %>
+          <% if @boards.prev_page %>
+            <%= link_to  url_for(page: @boards.prev_page || 1) do %>
+              <div class="previous-link"></div>
+            <% end %>
+          <% else %>
+            <div class="previous-link disabled"></div>
+          <% end %>
+      </div>
+          <%= paginate @boards %>
+      <div class="pagination-right">
+          <% if @boards.next_page %>
+            <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
+              <div class="next-link"></div>
+            <% end %>
+          <% else %>
+            <div class="next-link disabled"></div>
+          <% end %>
+        <% else %>
+          <p>表示するデータがありません。</p>
+        <% end %>
+      </div>
+    </div>
   </div>
-</div>
-<div class="comment-area">
-  <div class="comment-track-sub">
-    <span class="comment-text" id="1"><i class="bi bi-emoji-sunglasses-fill"></i>コメントですコメントですコメントです</span>
-    <span class="comment-text" id="2"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
-    <span class="comment-text" id="3"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
-    <span class="comment-text" id="4"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
-    <span class="comment-text" id="5"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
-    <span class="comment-text" id="1"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
-    <span class="comment-text" id="2"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
-    <span class="comment-text" id="3"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
-    <span class="comment-text" id="4"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
-    <span class="comment-text" id="5"><i class="bi bi-emoji-sunglasses-fill"></i>コメントです</span>
-  </div>
-</div>
-<!-- コメント用!-->
+
+ 
+
+<!-- ユーザーコメント欄 !-->
+<!-- 表示領域の幅を変更する場合には"800"も同時に変更すること!-->
+<script>
+  document.addEventListener("turbo:load", function () {
+    const commentTrack = document.querySelector(".user-comment-track");
+    const visibleWidth = commentTrack.offsetWidth;
+    const userComment = document.getElementById("user-comment-body");
+    const commenWidth = userComment.offsetWidth;
+    const totalWidth = visibleWidth + commenWidth
+    const speed = 80;
+    
+    let duration, endTranslate
+    if (totalWidth < 800) {
+      endTranslate = 800;
+    } else {
+      endTranslate = totalWidth;
+    }
+    duration = endTranslate / speed
+    commentTrack.style.setProperty("--end-translate", `-${endTranslate}px`);
+    commentTrack.style.setProperty("--animation-duration", `${duration}s`); //speedを一定にしてもコメントが増えるほど加速していくので、調整
+    }
+  );
+</script>
+<!-- コメント欄　!-->
+<!-- 表示領域の高さを変更する場合には"500"も同時に変更すること!-->
+<script>
+  document.addEventListener("turbo:load", function () {
+    const commentTrack = document.querySelector(".comment-track");
+    const comments = document.querySelectorAll(".comment-text");
+    const commentCount = comments.length;
+    const totalHeight = commentTrack.offsetHeight;
+    const speed = 50;
+    
+    let duration, endTranslate
+    if (totalHeight < 400) {
+      endTranslate = totalHeight + 400;
+    } else {
+      endTranslate = 400;
+    }
+    duration = endTranslate / speed
+    commentTrack.style.setProperty("--end-translate", `${endTranslate}px`);
+    commentTrack.style.setProperty("--animation-duration", `${duration+commentCount}s`); //speedを一定にしてもコメントが増えるほど加速していくので、調整
+  }
+);
+</script>
 
 <style>
 <%# 背景 %>
@@ -55,7 +88,7 @@
   .wrapper {
     position: absolute; <%# 投稿の表示領域全体を左寄せ %>
     left: 30px;
-    width: 60%; <%# 投稿の表示領域全体の幅 %>
+    width: 800px;
     padding: 0 20px;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -95,7 +128,7 @@
     background-color: white;
   }
   </style>
-  <%# ここからパーシャル %>
+  <%# パーシャル %>
   <style>
   .board-items {
     margin: auto; <%# 要素の中央寄せ %>
@@ -115,17 +148,18 @@
     border-radius: 15px 15px 15px 15px;
   }
 </style>
+<!-- ページネーション !-->
 <style>
   .pagination-left {
     position: absolute;
     left: 0px;
-    top: 50%;
+    top: 30%;
     transform: translate(-50%,-50%);
   }
   .pagination-right {
     position: absolute;
     left: 100%;
-    top: 50%;
+    top: 30%;
     transform: translate(-50%,-50%);
   }
   .previous-link {
@@ -160,28 +194,25 @@
   .disabled {
     pointer-events: none;
   }
-  
 </style>
 
-
+<!-- 投稿者コメント !-->
 <style>
-.comment-marquee {
+.user-comment-area {
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
   position: relative;
-  top: 45px;
+  top: 50px;
   background-color: pink;
   padding: 10px 0;
   border: 1px solid #ddd;
 }
-
-.comment-track {
-  display: inline-block;
-  animation: scroll-left 15s linear infinite; /* 15秒で1周、無限ループ */
+.user-comment-track {
+  width: 100%;
+  animation: scroll-left var(--animation-duration) linear infinite;
 }
-
-.comment-item {
+.user-comment-text {
   display: inline-block;
   margin-right: 50px; /* 各コメント間のスペース */
   font-size: 30px;
@@ -191,38 +222,43 @@
 .board-user-name {
   font-size: 38px;
 }
+.user_page_link {
+  text-decoration: none;
+}
 
 @keyframes scroll-left {
   from {
-    transform: translateX(100%);
+    transform: translateX(var(--start-translate, 100%));
   }
   to {
-    transform: translateX(-100%);
+    transform: translateX(var(--end-translate, -200px));
   }
 }
 
 </style>
-<!-- ここまで　!-->
+
+
+<!-- コメント欄 !-->
 <style>
   .comment-area {
   position: relative;
-  width: 400px; /* コンテナの幅 */
-  height: 500px; /* コンテナの高さ */
+  width: 600px; /* コンテナの幅 */
+  height: 400px; /* コンテナの高さ */
   overflow: hidden; /* コンテナ外のテキストを隠す */
   border: 1px solid #ddd;
-  left: 1000px;
-  top: 350px;
+  left: 800px;
+  top: -420px;
   transform: translate(0,-50%); 
   background-color: white;
-  border-width: 1em;
+  border-width: 10px;
   border-color: pink;
   
 }
-.comment-track-sub {
+.comment-track {
   position: absolute;
   width: 100%;
   text-align: left;
-  animation: slideDown 15s linear infinite;; /* 下に移動するアニメーション */
+  animation: slideDown var(--animation-duration) linear infinite;; /* 下に移動するアニメーション */
 }
 
 .comment-text {
@@ -231,14 +267,38 @@
   font-size: 20px;
   color: black;
 }
+.comment-link {
+  text-decoration: none;
+}
+.comment-link:hover {
+  
+  font-weight: bold;
+}
+.comment_by_current_user.comment_by_board_user {
+  background-color: rgb(239,255,74,0.5);
+}
+.comment_by_current_user {
+  background-color: rgb(84,211,44, 0.5)  ;
+}
+.comment_by_board_user {
+  background-color: rgb(239,255,74,0.5);
+}
 
 @keyframes slideDown {
   from {
-    transform: translateY(-85%);
+    transform: translateY(var(--start-translate, -100%));
   }
   to {
-    transform: translateY(180%);
+    transform: translateY(var(--end-translate, -200px));
   }
 }
+</style>
 
+<style>
+  .comment-form-wrapper {
+    position: relative;
+    top: -600px;
+    left: 800px;
+    width: 600px;
+  }
 </style>
