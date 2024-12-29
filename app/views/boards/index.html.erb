@@ -1,38 +1,33 @@
-  <div class="whole-wrapper">
-    <div class="header-wrapper">
-      <% if current_user %>
-        <%= render "shared/header" %>
-      <% end %>
-    </div>
-    <div class="wrapper">
-      <%= render @boards %>
+<div class="whole-wrapper">
+  <% if current_user %>
+    <%= render "shared/header" %>
+  <% end %>
+  <div class="wrapper">
+    <% if @boards.present? && @boards.current_page %>
       <div class="pagination-left">
-        <% if @boards.present? && @boards.current_page %>
-          <% if @boards.prev_page %>
-            <%= link_to  url_for(page: @boards.prev_page || 1) do %>
-              <div class="previous-link"></div>
-            <% end %>
-          <% else %>
-            <div class="previous-link disabled"></div>
-          <% end %>
-      </div>
-          <%= paginate @boards %>
-      <div class="pagination-right">
-          <% if @boards.next_page %>
-            <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
-              <div class="next-link"></div>
-            <% end %>
-          <% else %>
-            <div class="next-link disabled"></div>
+        <% if @boards.prev_page %>
+          <%= link_to  url_for(page: @boards.prev_page || 1) do %>
+            <i class="bi bi-arrow-left-square previous-link"></i>
           <% end %>
         <% else %>
-          <p>表示するデータがありません。</p>
+          <i class="bi bi-arrow-left-square previous-link disabled"></i>
         <% end %>
       </div>
-    </div>
+        <%= paginate @boards %>
+      <div class="pagination-right">
+        <% if @boards.next_page %>
+          <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
+            <i class="bi bi-arrow-right-square next-link"></i>
+          <% end %>
+        <% else %>
+          <i class="bi bi-arrow-right-square next-link disaled"></i>
+        <% end %>
+      </div>
+    <% else %>
+      <p>表示するデータがありません。</p>
+    <% end %>
   </div>
-
- 
+</div>
 
 <!-- ユーザーコメント欄 !-->
 <!-- 表示領域の幅を変更する場合には"800"も同時に変更すること!-->
@@ -81,6 +76,11 @@
 </script>
 
 <style>
+<%# 全体のボーダーを表示・スクロールバーを非表示%>
+body {
+  outline: 2px solid blue;
+  scrollbar-width: none;
+}
 <%# 背景 %>
   .whole-wrapper {
     background-size: contain;
@@ -88,7 +88,8 @@
   .wrapper {
     position: absolute; <%# 投稿の表示領域全体を左寄せ %>
     left: 30px;
-    width: 800px;
+    width: 50%;
+    height: 100%;
     padding: 0 20px;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -101,6 +102,7 @@
     margin: 0 20px; <%# ボックスの外側の余白 %>
     overflow: hidden; <%# ボックスからはみ出た部分を非表示 %>
     position: relative;
+    
   }
   .board-body {
     position: absolute;
@@ -126,6 +128,7 @@
     align-items: center; <%# 小要素の垂直位置を指定 %>
     display: flex;  <%# これなしではalign-itemsが解除される%>
     background-color: white;
+    border-radius: 0px 0px 30px 30px;
   }
   </style>
   <%# パーシャル %>
@@ -207,6 +210,7 @@
   background-color: pink;
   padding: 10px 0;
   border: 1px solid #ddd;
+  border-radius: 30px 30px 0px 0px;
 }
 .user-comment-track {
   width: 100%;
@@ -234,25 +238,24 @@
     transform: translateX(var(--end-translate, -200px));
   }
 }
-
 </style>
 
 
 <!-- コメント欄 !-->
 <style>
-  .comment-area {
+.comment-area {
   position: relative;
-  width: 600px; /* コンテナの幅 */
+  width: 80%; /* コンテナの幅 */
   height: 400px; /* コンテナの高さ */
   overflow: hidden; /* コンテナ外のテキストを隠す */
   border: 1px solid #ddd;
-  left: 800px;
+  left: 110%;
   top: -420px;
   transform: translate(0,-50%); 
   background-color: white;
   border-width: 10px;
   border-color: pink;
-  
+  border-radius: 30px 30px 30px 30px;
 }
 .comment-track {
   position: absolute;
@@ -267,11 +270,13 @@
   font-size: 20px;
   color: black;
 }
+.comment-image img {
+  width: 100px;
+}
 .comment-link {
   text-decoration: none;
 }
 .comment-link:hover {
-  
   font-weight: bold;
 }
 .comment_by_current_user.comment_by_board_user {
@@ -298,7 +303,23 @@
   .comment-form-wrapper {
     position: relative;
     top: -600px;
-    left: 800px;
-    width: 600px;
+    left: 110%;
+    width: 80%;
+  }
+  .comment-form textarea {
+    resize: none;
+    background-color: rgba(255, 192, 203, 0.2);
+  }
+  .comment-form input {
+    border: solid;
+    border-width: 5px;
+    color: white;
+    background: pink;
+    opacity: 0.6;
+  }
+  .comment-form input:hover {
+    color: white;
+    background: pink;
+    opacity: 0.8;
   }
 </style>

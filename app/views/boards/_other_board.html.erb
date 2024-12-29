@@ -1,0 +1,149 @@
+<div class="card-area <%= 'current-board' if board.id == current_board.id %>">
+  <%= link_to board_path(board, page: params[:page]) do %>
+    <div class="card-content card-image">
+      <% if board.image.attached? %>
+        <%= image_tag board.image %>
+      <% end %>
+    </div>
+    <div class="card-content card-body">
+      <%= board.body %>
+    </div>
+    <div class="card-content card-comment-area">
+      <div class="card-comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
+        <% board.comments.each do |comment| %>
+          <% if current_user && current_user.id == comment.user_id %>
+            <span class="card-comment-text comment_by_other_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<style>
+/*
+  * {
+    outline: 2px solid blue;
+    scrollbar-width: none;
+  }
+  */
+
+  <%#
+  .card-area {
+    flex: 0 1 calc(25% - 16px); /* 一行に4つ配置（25%幅） */
+    height: 400px;
+    box-sizing: border-box; /* パディングやボーダーを幅に含める */
+    background-color: #fff; /* カードの背景色 */
+    border: 2px solid pink; /* カードの境界線 */
+    border-radius: 30px; /* カードの角を丸くする */
+    overflow: hidden; /* コンテンツがはみ出さないようにする */
+    padding: 8px; /* 内側の余白 */
+  }
+  .card-content {
+    align-items: center; /* 横方向の中央寄せ */
+    justify-content: center;
+    overflow: hidden;
+    width: 90%;
+    height: 90%;
+    margin: auto;
+    
+  }
+  .card-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 横幅いっぱい */
+    overflow: hidden;
+    border-radius: 30px;
+  }
+  .card-image img {
+    width: 100%; /* 横幅いっぱい */
+    height: 100%; /* 高さいっぱい */
+    object-fit: cover; /* カード内で写真を拡大縮小して収める */
+    display: block; /* 画像をブロック要素化 */
+  }
+  .card-body {
+    text-align: center;
+    color: black;
+    width: 100%;
+    text-overflow: ellipsis; /* 規定の幅をはみ出した場合三点リーダーを表示*/
+    white-space: nowrap; /* 規定の幅をはみ出した場合三点リーダーを表示*/
+  }
+  .card-area a {
+    text-decoration: none;
+  }
+%>
+
+.card-area {
+  position: relative;
+  overflow: hidden; /* 画像がスライドしてもカード外に出ないようにする */
+  width: 300px; /* カードの幅を指定 */
+  height: 400px; /* カードの高さを指定 */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+}
+.card-area.current_board {
+  border: 5px solid pink;
+}
+.card-area.current_board img {
+  display: none;
+}
+
+.card-content.card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s ease; /* トランジションをスムーズに */
+  z-index: 100; /* 本文より前面に表示 */
+}
+
+.card-content.card-image img {
+  width: 100%; /* 画像の幅をカードに合わせる */
+  height: 100%; /* 画像の高さをカードに合わせる */
+  object-fit: cover; /* カードの枠内で画像を中央に切り取り */
+  object-position: center; /* 画像の中心を基準に配置 */
+  display: block; /* 不要な余白を排除 */
+  }
+
+.card-content.card-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9); /* 背景を白で半透明に */
+  z-index: 0; /* 画像の下に配置 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+  opacity: 0; /* 初期状態では非表示 */
+  transition: opacity 0.5s ease; /* 本文の表示をスムーズに */
+}
+
+.card-area:hover .card-content.card-image {
+  transform: translateY(-200%); /* 画像を上にスライド */
+}
+
+.card-area.current-board a {
+  pointer-events: none; /* current-board ではリンクを無効化 */
+}
+.card-area.current-board:hover .card-content.card-image {
+  transform: none; /* current-board ではホバーを無効化 */
+}
+
+.card-area.current-board .card-content.card-image img {
+  opacity: 0.2;
+}
+
+.card-area:hover .card-content.card-body {
+  opacity: 1; /* 本文を表示 */
+}
+
+</style>

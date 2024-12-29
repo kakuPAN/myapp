@@ -8,8 +8,7 @@ class BoardsController < ApplicationController
     end
 
     @all_boards = Board.all
-    @boards= Board.order(created_at: :desc).page(params[:page]).per(1) #comment_countカラムを追加し、コメントの数またはリアクションの数でソート
-    @comment = Comment.new
+    @boards= Board.order(created_at: :desc).page(params[:page]).per(20) #comment_countカラムを追加し、コメントの数またはリアクションの数でソート
     
     if @boards.out_of_range? # Kaminari の out_of_range? メソッドを使用
       redirect_to boards_path(page: @boards.total_pages) and return
@@ -32,7 +31,17 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @board = Board.find(params[:id])
+    @board = Board.find(params[:id]) # 現在の投稿
+    @page = params[:page] || page_for(@board) # ページ情報を取得
+
+    @boards= Board.where(user_id: @board.user_id).order(created_at: :desc).page(@page).per(5) # 後、comment_countカラムを追加し、コメントの数またはリアクションの数でソート
+    
+    @all_boards = Board.limit(20) # 本当は表示中の投稿と同じタグやコメントが含まれる投稿を取得する
+    @comment = Comment.new
+
+    if @boards.out_of_range? # Kaminari の out_of_range? メソッドを使用
+      redirect_to boards_path(page: @boards.total_pages) and return
+    end
   end
 
   def edit
@@ -79,7 +88,7 @@ class BoardsController < ApplicationController
 
   def page_for(board) #詳細ページから一覧ページに戻る際に、同じ投稿が表示されるページにアクセスするためのメソッド
     # 1ページあたりの投稿数
-    per_page = 1
+    per_page = 5
     # 投稿の全体の並び順を取得
     boards = Board.order(created_at: :desc).pluck(:id) #表示順序によって変更が必要
     # 対象の投稿の、並び替えた投稿の中のインデックス番号を取得
