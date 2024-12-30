@@ -1,10 +1,23 @@
-<div class="scroll-area">
-  <div class="scroll-content">
-    <div class="board-items">
-      <% if board.image.attached? %>
-        <div class="board-image"><%= image_tag board.image %></div>
+<div class="scroll-content">
+  <div class="delete-edit-button">
+    <% if current_user&.id == board.user_id%>
+      <%= link_to board_path(board), data: { turbo_method: :delete }, class: "delete-button" do %>
+        <i class="bi bi-trash3-fill"></i>
       <% end %>
-    </div>
+      <%= link_to edit_board_path(board), class: "edit-button" do %>
+        <i class="bi bi-pencil-fill"></i>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="board-items">
+    <% if board.image.attached? %>
+      <div class="board-image"><%= image_tag board.image %></div>
+    <% end %>
+  </div>
+  <div class="board-body">
+    <%= link_to board_path(board, page: params[:page])  do %>
+      <%= board.body %>
+    <% end %>
   </div>
   <div class="user-comment-area">
     <%= link_to user_path(board.user_id), class: "user_page_link" do %>
@@ -15,60 +28,59 @@
       </div>
     <% end %>
   </div>
-  <div class="board-body">
-    <%= link_to board_path(board, page: params[:page])  do %>
-      <%= board.body %>
+  <div class="prev-board"> <!-- 前後の投稿に移動するボタン -->
+    <% if previous_board(board) %>
+      <%= link_to board_path(previous_board(board)) do %>
+        <i class="bi bi-arrow-left-square prev-board-link"></i>
+      <% end %>
+    <% else %>
+      <i class="bi bi-arrow-left-square prev-board-link disabled"></i>
+    <% end %>
+  </div>
+  <div class="next-board">
+    <% if next_board(board) %>
+      <%= link_to board_path(next_board(board)) do %>
+        <i class="bi bi-arrow-right-square next-board-link"></i>
+      <% end %>
+    <% else %>
+      <i class="bi bi-arrow-right-square next-board-link disabled"></i>
     <% end %>
   </div>
 </div>
-<div class="comment-area">
-  <div class="comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%><%# フォロー中のユーザーのコメントは強調表示 %>
-    <% board.comments.each do |comment| %>
-      <%= link_to user_path(comment.user), class: "comment-link" do %>
-        <% if current_user && current_user.id == comment.user_id %>
-          <span class="comment-text comment_by_current_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
-        <% elsif %>
-          <span class="comment-text comment_by_board_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
-        <% else %>
-          <span class="comment-text comment_by_other_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+<div class="comment-wrapper">
+  <div class="comment-area">
+    <div class="comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%><%# フォロー中のユーザーのコメントは強調表示 %>
+      <% board.comments.each do |comment| %>
+        <%= link_to user_path(comment.user), class: "comment-link" do %>
+          <% if current_user && current_user.id == comment.user_id %>
+            <span class="comment-text comment_by_current_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+          <% elsif %>
+            <span class="comment-text comment_by_board_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+          <% else %>
+            <span class="comment-text comment_by_other_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
-    <% if board.comments.empty? %>
-      <span class="comment-text">盛り上げよう！</span>
-      <div class="comment-image"><%= image_tag "9318.png"%></div><%# 画像などもコメントできるようにしたい%>
-      <span class="comment-text">コメントやリアクションをして</span>
-      <span class="comment-text">関心のある投稿には</span>
-    <% end %>
+      <% if board.comments.empty? %>
+        <span class="comment-text">盛り上げよう！</span>
+        <div class="comment-image"><%= image_tag "9318.png"%></div><%# 画像などもコメントできるようにしたい%>
+        <span class="comment-text">コメントやリアクションをして</span>
+        <span class="comment-text">関心のある投稿には</span>
+      <% end %>
+    </div>
+  </div>
+  <div class="comment-form-wrapper">
+    <div class="comment-form"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
+      <%= form_with model: [board, @comment], local: true do |f| %>
+        <%= f.text_area :body, class: "form-control form-textarea" %>
+        <div>
+          <%= f.submit "コメントを送信" %>
+        </div>
+      <% end %> 
+    </div>
   </div>
 </div>
-<div class="comment-form-wrapper">
-  <div class="comment-form"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
-    <%= form_with model: [board, @comment], local: true do |f| %>
-      <%= f.text_area :body, size: "10x5", class: "form-control" %>
-      <div>
-        <%= f.submit "コメントを送信", class: "btn btn-lg" %>
-      </div>
-    <% end %> 
-  </div>
-</div>
-<div class="prev-board"> <!-- 前後の投稿に移動するボタン -->
-  <% if previous_board(board) %>
-    <%= link_to board_path(previous_board(board)) do %>
-      <i class="bi bi-arrow-left-square prev-board-link"></i>
-    <% end %>
-  <% else %>
-    <i class="bi bi-arrow-left-square prev-board-link disabled"></i>
-  <% end %>
-</div>
-<div class="next-board">
-  <% if next_board(board) %>
-    <%= link_to board_path(next_board(board)) do %>
-      <i class="bi bi-arrow-right-square next-board-link"></i>
-    <% end %>
-  <% else %>
-    <i class="bi bi-arrow-right-square next-board-link disaled"></i>
-  <% end %>
-</div>
+
+
 
 

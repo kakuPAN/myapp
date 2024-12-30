@@ -1,11 +1,11 @@
 <div class="card-area <%= 'current-board' if board.id == current_board.id %>">
   <%= link_to board_path(board, page: params[:page]) do %>
-    <div class="card-content card-image">
-      <% if board.image.attached? %>
+    <% if board.image.attached? %>
+      <div class="card-content card-image">
         <%= image_tag board.image %>
-      <% end %>
-    </div>
-    <div class="card-content card-body">
+      </div>
+    <% end %>
+    <div class="card-content card-body <%= "no-image" unless board.image.attached? %>">
       <%= board.body %>
     </div>
     <div class="card-content card-comment-area">
@@ -28,52 +28,6 @@
   }
   */
 
-  <%#
-  .card-area {
-    flex: 0 1 calc(25% - 16px); /* 一行に4つ配置（25%幅） */
-    height: 400px;
-    box-sizing: border-box; /* パディングやボーダーを幅に含める */
-    background-color: #fff; /* カードの背景色 */
-    border: 2px solid pink; /* カードの境界線 */
-    border-radius: 30px; /* カードの角を丸くする */
-    overflow: hidden; /* コンテンツがはみ出さないようにする */
-    padding: 8px; /* 内側の余白 */
-  }
-  .card-content {
-    align-items: center; /* 横方向の中央寄せ */
-    justify-content: center;
-    overflow: hidden;
-    width: 90%;
-    height: 90%;
-    margin: auto;
-    
-  }
-  .card-image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%; /* 横幅いっぱい */
-    overflow: hidden;
-    border-radius: 30px;
-  }
-  .card-image img {
-    width: 100%; /* 横幅いっぱい */
-    height: 100%; /* 高さいっぱい */
-    object-fit: cover; /* カード内で写真を拡大縮小して収める */
-    display: block; /* 画像をブロック要素化 */
-  }
-  .card-body {
-    text-align: center;
-    color: black;
-    width: 100%;
-    text-overflow: ellipsis; /* 規定の幅をはみ出した場合三点リーダーを表示*/
-    white-space: nowrap; /* 規定の幅をはみ出した場合三点リーダーを表示*/
-  }
-  .card-area a {
-    text-decoration: none;
-  }
-%>
-
 .card-area {
   position: relative;
   overflow: hidden; /* 画像がスライドしてもカード外に出ないようにする */
@@ -82,6 +36,9 @@
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 20px;
+}
+.card-area.current-board {
+  background-color: rgb(173, 173, 173);
 }
 .card-area.current_board {
   border: 5px solid pink;
@@ -144,6 +101,11 @@
 
 .card-area:hover .card-content.card-body {
   opacity: 1; /* 本文を表示 */
+}
+
+.card-content.card-body.no-image {
+  opacity: 1;
+  transition: none;
 }
 
 </style>
