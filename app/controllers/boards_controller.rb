@@ -32,11 +32,11 @@ class BoardsController < ApplicationController
 
   def show
     @board = Board.find(params[:id]) # 現在の投稿
-    @page = params[:page] || page_for(@board) # ページ情報を取得
+    @page = params[:page] || user_boards_page_for(@board) # ページ情報を取得
 
     @boards= Board.where(user_id: @board.user_id).order(created_at: :desc).page(@page).per(5) # 後、comment_countカラムを追加し、コメントの数またはリアクションの数でソート
-    
-    @all_boards = Board.limit(20) # 本当は表示中の投稿と同じタグやコメントが含まれる投稿を取得する
+    # １ページに表示する個数を変えた場合、page_forメソッドも変更すること
+    @recommend_boards = Board.where.not(id: @board.id).all # 実際は、誰がどの投稿にリアクション・コメント・閲覧したかを確認できるテーブルを用意し、そこから取得
     @comment = Comment.new
 
     if @boards.out_of_range? # Kaminari の out_of_range? メソッドを使用
@@ -86,14 +86,17 @@ class BoardsController < ApplicationController
     params.require(:board).permit(:id , :user_id, :body, :image, images: [])
   end
 
-  def page_for(board) #詳細ページから一覧ページに戻る際に、同じ投稿が表示されるページにアクセスするためのメソッド
-    # 1ページあたりの投稿数
+  def all_boards_page_for(board) #詳細ページから一覧ページに戻る際に、同じ投稿が表示されるページにアクセスするためのメソッド
     per_page = 5
-    # 投稿の全体の並び順を取得
     boards = Board.order(created_at: :desc).pluck(:id) #表示順序によって変更が必要
-    # 対象の投稿の、並び替えた投稿の中のインデックス番号を取得
     board_index = boards.index(board.id)
-    # ページ番号を計算
+    (board_index / per_page) + 1
+  end
+
+  def user_boards_page_for(board) # 詳細ページ上にある同じ投稿者の投稿一覧をの同じページを表示するためのメソッド
+    per_page = 5
+    boards = Board.where(user_id: board.user_id).order(created_at: :desc).pluck(:id) #表示順序によって変更が必要
+    board_index = boards.index(board.id)
     (board_index / per_page) + 1
   end
 end

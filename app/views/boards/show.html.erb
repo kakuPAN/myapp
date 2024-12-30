@@ -5,42 +5,48 @@
   <div class="wrapper">
     <%= render @board %>
   </div>
+  <div class="board-cards-title">
+    <span classs="user-name"><i class="bi bi-emoji-sunglasses-fill"></i><%= @board.user.user_name %></span></span>
+  </div>
+  <div class="board-cards users-other-boards"> <!-- 同じユーザーの投稿 -->
+    <% @boards.each do |board| %> 
+      <%= render "users_other_board", board: board, current_board: @board %>
+    <% end %>
+    <% if @boards.present? && @boards.current_page %> <!-- カード用ページネーション -->
+      <div class="pagination-left">
+        <% if @boards.prev_page %>
+          <%= link_to  url_for(page: @boards.prev_page || 1) do %>
+            <i class="bi bi-arrow-left-square previous-link"></i>
+          <% end %>
+        <% else %>
+          <i class="bi bi-arrow-left-square previous-link disabled"></i>
+        <% end %>
+      </div>
+        <%= paginate @boards %>
+      <div class="pagination-right">
+        <% if @boards.next_page %>
+          <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
+            <i class="bi bi-arrow-right-square next-link"></i>
+          <% end %>
+        <% else %>
+          <i class="bi bi-arrow-right-square next-link disabled"></i>
+        <% end %>
+      </div>
+    <% else %>
+      <p>表示するデータがありません。</p>
+    <% end %>
+  </div>
+  <div class="board-cards-title">
+    <span>おすすめの投稿一覧</span>
+  </div>
+  <div class="board-cards recommend-boards"> <!-- おすすめの投稿 -->
+    <% @recommend_boards.each do |board| %>
+      <%= render "users_other_board", board: board, current_board: @board %>
+    <% end %>
+  </div>
 </div>
-<% if current_user&.id == @board.user_id%>
-  <%= link_to "削除", board_path(@board), data: { turbo_method: :delete } %>
-  <%= link_to "編集", edit_board_path(@board) %>
-<% end %>
-<%= link_to "一覧へ" ,boards_path(current_board_id: @board.id) %>
 
 <!-- 投稿者の他の投稿表示用　--> <!-- 投稿の数が奇数の場合、余ったスペースに「リアクションの多い投稿」や「新しい投稿」などへのリンクをつけたカードを配置する-->
-<div class="board-cards">
-  <% @boards.each do |board| %> 
-    <%= render "other_board", board: board, current_board: @board %>
-  <% end %>
-  <% if @boards.present? && @boards.current_page %> <!-- カード用ページネーション -->
-    <div class="pagination-left">
-      <% if @boards.prev_page %>
-        <%= link_to  url_for(page: @boards.prev_page || 1) do %>
-          <i class="bi bi-arrow-left-square previous-link"></i>
-        <% end %>
-      <% else %>
-        <i class="bi bi-arrow-left-square previous-link disabled"></i>
-      <% end %>
-    </div>
-      <%= paginate @boards %>
-    <div class="pagination-right">
-      <% if @boards.next_page %>
-        <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
-          <i class="bi bi-arrow-right-square next-link"></i>
-        <% end %>
-      <% else %>
-        <i class="bi bi-arrow-right-square next-link disaled"></i>
-      <% end %>
-    </div>
-  <% else %>
-    <p>表示するデータがありません。</p>
-  <% end %>
-</div>
 
 <!-- ユーザーコメント欄 !-->
 <!-- 表示領域の幅を変更する場合には"800"も同時に変更すること!-->
@@ -91,18 +97,27 @@
 <style>
 <%# 全体のボーダーを表示・スクロールバーを非表示%>
 * {
-  /* outline: 2px solid blue; */
+  /*outline: 2px solid blue;*/
   scrollbar-width: none;
 }
+</style>
 <%# 背景 %>
+<style>
   .whole-wrapper {
-    background-size: contain;
+    background-size: auto auto;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    flex-direction: column;
   }
+</style>
+<%# 投稿・コメント%>
+<style>
   .wrapper {
-    position: absolute; <%# 投稿の表示領域全体を左寄せ %>
-    left: 30px;
-    width: 50%;
-    height: 100%;
+    display: flex;
+    height: 80vh;
+    width: 100%;
     padding: 0 20px;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -110,12 +125,31 @@
   .wrapper::-webkit-scrollbar {
     display:none;
   }
-  .scroll-area {
-    height: 85vh;
-    margin: 0 20px; <%# ボックスの外側の余白 %>
-    overflow: hidden; <%# ボックスからはみ出た部分を非表示 %>
+  .scroll-content {
     position: relative;
-    
+    flex: 5; 
+    width: 100%;
+    border: solid;
+    border-color: pink;
+    align-items: center; <%# 小要素の垂直位置を指定 %>
+    display: flex;  <%# これなしではalign-itemsが解除される%>
+    background-color: white;
+    overflow: hidden;
+  }
+  .delete-edit-button {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    font-size: 30px;
+  }
+  .delete-edit-button a {
+    text-decoration: none;
+    color: pink;
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .delete-button:hover,.edit-button:hover {
+    font-size: 40px;
   }
   .board-body {
     position: absolute;
@@ -130,118 +164,40 @@
     color: black;
     font-size: 25px;
   }
-  .scroll-content {
-    top: 15%;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    border: solid;
-    border-color: pink;
-    align-items: center; <%# 小要素の垂直位置を指定 %>
-    display: flex;  <%# これなしではalign-itemsが解除される%>
-    background-color: white;
-    border-radius: 0px 0px 30px 30px;
-  }
   </style>
   <%# パーシャル %>
   <style>
   .board-items {
     margin: auto; <%# 要素の中央寄せ %>
-    text-align: center;
   }
   .user-name {
     display: inline-block;
     margin: auto;
   }
   .board-image {
-    opacity: 50%;
+    
   }
   .board-image img { <%# これらのプロパティはimgに直接指定することに注意 %>
-    width: 700px; <%# 100％で表示できるのは元の大きさまで %><%# クリックで100%に変更　＝＞　全体表示 %>
-    max-height: 550px;<%# 小さい画像をあえてはみ出させたい場合は直接指定するしかない、比率を維持したまま親要素に合わせて自動でサイズを調整することができなくなる %>
-    object-fit:cover; <%# 上記の指定だけでは比率がおかしくなるらしい（なくてもできてる感ある）%>
+    max-width: 100%; <%# 100％で表示できるのは元の大きさまで %><%# クリックで100%に変更　＝＞　全体表示 %>
+    max-height: 100%;<%# 小さい画像をあえてはみ出させたい場合は直接指定するしかない、比率を維持したまま親要素に合わせて自動でサイズを調整することができなくなる %>
+    min-width: 100px;
+    min-height: 100px;
+    object-fit: cover; <%# 上記の指定だけでは比率がおかしくなるらしい（なくてもできてる感ある）%>
     border-radius: 15px 15px 15px 15px;
   }
 </style>
-<!-- ページネーション -->
-<style>
-  .pagination-left {
-    position: absolute;
-    top: -20%;
-    left: 45%;
-    font-size: 40px;
-  }
-  .pagination-right {
-    position: absolute;
-    top: -20%;
-    left: 55%;
-    font-size: 40px;
-  }
-  .previous-link {
-    font-size: 50px;
-    opacity: 20%;
-  }
-  .next-link {
-    font-size: 50px;
-    opacity: 20%;
-  }
-  .previous-link:hover {
-    opacity: 50%;
-  }
-  .next-link:hover { 
-    opacity: 50%;
-  }
-  .disabled {
-    pointer-events: none;
-  }
-</style>
-
-<!-- 前後の投稿への移動ボタン !-->
-<style>
-  .prev-board {
-    position: absolute;
-    left: 0px;
-    top: 10%;
-    transform: translate(-50%,-50%);
-  }
-  .next-board {
-    position: absolute;
-    left: 100%;
-    top: 10%;
-    transform: translate(-50%,-50%);
-  }
-  .prev-board-link {
-    font-size: 50px;
-    opacity: 20%;
-  }
-  .next-board-link {
-    font-size: 50px;
-    opacity: 20%;
-  }
-  .prev-board-link:hover {
-    opacity: 50%;
-  }
-  .next-board-link:hover { 
-    opacity: 50%;
-  }
-  .disabled {
-    pointer-events: none;
-  }
-</style>
-
 <!-- 投稿者コメント !-->
 <style>
 .user-comment-area {
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
-  position: relative;
-  top: 50px;
+  position: absolute;
+  top: 0;
   background-color: pink;
-  padding: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 30px 30px 0px 0px;
+  border: 5px solid white;
+  margin: 0;
+  padding: 0;
 }
 .user_page_link {
   text-decoration: none;
@@ -269,25 +225,69 @@
     transform: translateX(var(--end-translate, -200px));
   }
 }
-
 </style>
 
+<!-- 前後の投稿への移動ボタン !-->
+<style>
+  .prev-board {
+    position: absolute;
+    left: 45%;
+    bottom: 0;
+    transform: translate(-50%,0); 
+    
+  }
+  .next-board {
+    position: absolute;
+    right: 45%;
+    bottom: 0;
+    transform: translate(50%,0); 
+  }
+  .prev-board-link {
+    font-size: 40px;
+    opacity: 0;
+    color: pink;
+  }
+  .next-board-link {
+    font-size: 40px;
+    opacity: 0;
+    color: pink;
+  }
+  .scroll-content:hover  .prev-board-link:not(.disabled) {
+    opacity: 1;
+  }
+  .scroll-content:hover .next-board-link:not(.disabled) {
+    opacity: 1;
+  }
+  .prev-board-link:hover {
+    opacity: 1;
+    font-size: 50px;
+  }
+  .next-board-link:hover { 
+    opacity: 1;
+    font-size: 50px;
+  }
+  .prev-board-link.disabled, .next-board-link.disabled {
+    pointer-events: none;
+  }
+</style>
 
 <!-- コメント欄 !-->
 <style>
+.comment-wrapper {
+  flex: 3;  /* コンテナの幅 */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 2px solid pink;
+  padding-top: 10px;
+}
 .comment-area {
   position: relative;
-  width: 80%; /* コンテナの幅 */
   height: 400px; /* コンテナの高さ */
   overflow: hidden; /* コンテナ外のテキストを隠す */
-  border: 1px solid #ddd;
-  left: 110%;
-  top: -420px;
-  transform: translate(0,-50%); 
   background-color: white;
-  border-width: 10px;
-  border-color: pink;
-  border-radius: 30px 30px 30px 30px;
+  border: 5px solid white;
+  
 }
 .comment-track {
   position: absolute;
@@ -295,7 +295,6 @@
   text-align: left;
   animation: slideDown var(--animation-duration) linear infinite;; /* 下に移動するアニメーション */
 }
-
 .comment-text {
   display: block;
   margin: 20px; /* 各コメント間のスペース */
@@ -323,7 +322,7 @@
 
 @keyframes slideDown {
   from {
-    transform: translateY(var(--start-translate, -100%));
+    transform: translateY(var(--start-translate, -120%));
   }
   to {
     transform: translateY(var(--end-translate, -200px));
@@ -331,23 +330,31 @@
 }
 </style>
 
+<!-- コメント入力 -->
 <style>
   .comment-form-wrapper {
+    flex: 1;
     position: relative;
-    top: -600px;
-    left: 110%;
-    width: 80%;
+    border: 2px solid pink;
   }
   .comment-form textarea {
+    position: absolute;
+    height: 100%;
+    padding-top: 60px;
+    bottom: 0;
     resize: none;
     background-color: rgba(255, 192, 203, 0.2);
+    font-size: 30px;
   }
   .comment-form input {
-    border: solid;
-    border-width: 5px;
     color: white;
     background: pink;
+    width: 100%;
     opacity: 0.6;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
   }
   .comment-form input:hover {
     color: white;
@@ -357,15 +364,72 @@
 </style>
 
 <style>
+  .board-cards-title {
+    text-align: center;
+    background-color: pink;
+  }
+  .board-cards-title span:not(.user-name) {
+    font-size: 40px;
+    color: white;
+  }
+  .board-cards-title .user-name {
+    font-size: 100%;
+    max-width: 20%;
+  }
   .board-cards {
     position: relative;
-    top: 1000px;
     display: flex;
     flex-wrap: wrap; /* 行をまたいで自動的に折り返す */
-    gap: 10px; /* カード間のスペースを設定 */
+    gap: 6px; /* カード間のスペースを設定 */
     justify-content: space-between; /* 均等に配置 */
-    margin: 0 20px;
-    padding-bottom: 30px;
+    padding-bottom: 150px;
+    margin-top: 50px;
   }
+  .users-other-boards {
+  
+  }
+  .recommend-boards {
+    margin-top: 100px;
+  }
+</style>
 
+<!-- ページネーション -->
+<style>
+  .pagination-left {
+    position: absolute;
+    bottom: 0;
+    left: 45%;
+    font-size: 40px;
+  }
+  .pagination-right {
+    position: absolute;
+    bottom: 0;
+    right: 45%;
+    font-size: 40px;
+  }
+  .previous-link {
+    font-size: 50px;
+    opacity: 0;
+    color: pink;
+  }
+  .next-link {
+    font-size: 50px;
+    opacity: 0;
+    color: pink;
+  }
+  .previous-link:hover {
+    font-size: 60px;
+  }
+  .next-link:hover { 
+    font-size: 60px;
+  }
+  .previous-link.disabled, .next-link.disabled {
+    pointer-events: none;
+  }
+  .board-cards:hover .prev-link:not(.disabled) {
+    opacity: 1;
+  }
+  .board-cards:hover .next-link:not(.disabled) {
+    opacity: 1;
+  }
 </style>
