@@ -141,6 +141,7 @@
     top: 10%;
     right: 5%;
     font-size: 30px;
+    z-index: 99; <%# スクロール用のページの上に配置%>
   }
   .delete-edit-button a {
     text-decoration: none;
@@ -152,30 +153,20 @@
     font-size: 40px;
   }
   .board-body {
-    position: absolute;
+    position: relative;
+    text-align: center;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%); 
-    <%# position: absolute;は基準点に対して、自分の左上を基軸にして移動するので、
-      top, left 50%としたときの中心に来るのは自分の左上になる。translateはそれを調節する%>
+    transform: translate(-50%, -50%);
   }
   .board-body a{
     text-decoration: none;
     color: black;
     font-size: 25px;
   }
-  </style>
-  <%# パーシャル %>
-  <style>
-  .board-items {
-    margin: auto; <%# 要素の中央寄せ %>
-  }
   .user-name {
     display: inline-block;
     margin: auto;
-  }
-  .board-image {
-    
   }
   .board-image img { <%# これらのプロパティはimgに直接指定することに注意 %>
     max-width: 100%; <%# 100％で表示できるのは元の大きさまで %><%# クリックで100%に変更　＝＞　全体表示 %>
