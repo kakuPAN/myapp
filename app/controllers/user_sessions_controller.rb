@@ -3,13 +3,17 @@ class UserSessionsController < ApplicationController
   end
 
   def create
-    @user = login(params[:email], params[:password])
-    if @user
-      redirect_to boards_path
-      flash[:primary] = "#{@user.user_name}さまがログインしました"
+    unless current_user
+      @user = login(params[:email], params[:password])
+      if @user
+        redirect_to boards_path
+        flash[:primary] = "#{@user.user_name}さまがログインしました"
+      else
+        flash.now[:danger] = "ユーザーが存在しません"
+        render :new, status: :unprocessable_entity
+      end
     else
-      flash.now[:danger] = "ユーザーが存在しません"
-      render :new, status: :unprocessable_entity
+      redirect_to boards_path
     end
   end
 

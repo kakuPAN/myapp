@@ -1,32 +1,24 @@
-<div class="card-area <%= 'current-board' if board.id == current_board.id %>">
-  <%= link_to board_path(board, page: params[:page]) do %>
-    <% if board.frames.order(:frame_number).first.image.attached? %>
+<div class="card-area">
+  <%= link_to board_path(board) do %>
+    <% frame = board&.frames.order(:frame_number).first %>
+    <% if frame&.image&.attached? %>
       <div class="card-content card-image">
-        <%= image_tag board.frames.order(:frame_number).first.image %>
+        <%= image_tag frame.image %>
       </div>
     <% end %>
-    <div class="card-content card-body <%= "no-image" unless board.frames.order(:frame_number).first.image.attached? %>">
+    <div class="card-content card-body <%= "no-image" unless frame&.image&.attached? %>">
       <%= board.title %>
-    </div>
-    <div class="card-content card-comment-area">
-      <div class="card-comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
-        <% board.comments.each do |comment| %>
-          <% if current_user && current_user.id == comment.user_id %>
-            <span class="card-comment-text comment_by_other_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
-          <% end %>
-        <% end %>
-      </div>
     </div>
   <% end %>
 </div>
 
 <style>
-/*
+ 
   * {
-    outline: 2px solid blue;
+    /*outline: 2px solid blue;*/
     scrollbar-width: none;
   }
-  */
+   
 
 .card-area {
   position: relative;

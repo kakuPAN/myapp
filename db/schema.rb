@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_28_011629) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_31_061017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,11 +43,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_28_011629) do
   end
 
   create_table "boards", force: :cascade do |t|
-    t.string "body", null: false
-    t.string "image_url"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title", null: false
+    t.integer "access_level", default: 0, null: false
     t.index ["user_id"], name: "index_boards_on_user_id"
   end
 
@@ -59,6 +59,16 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_28_011629) do
     t.datetime "updated_at", null: false
     t.index ["board_id"], name: "index_comments_on_board_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "frames", force: :cascade do |t|
+    t.string "body"
+    t.integer "frame_number", null: false
+    t.bigint "board_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["board_id", "frame_number"], name: "index_frames_on_board_id_and_frame_number", unique: true
+    t.index ["board_id"], name: "index_frames_on_board_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -89,4 +99,5 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_28_011629) do
   add_foreign_key "boards", "users"
   add_foreign_key "comments", "boards"
   add_foreign_key "comments", "users"
+  add_foreign_key "frames", "boards"
 end
