@@ -1,325 +1,99 @@
-<div class="whole-wrapper">
   <% if current_user %>
     <%= render "shared/header" %>
   <% end %>
-  <div class="wrapper">
-    <% if @boards.present? && @boards.current_page %>
-      <div class="pagination-left">
-        <% if @boards.prev_page %>
-          <%= link_to  url_for(page: @boards.prev_page || 1) do %>
-            <i class="bi bi-arrow-left-square previous-link"></i>
-          <% end %>
-        <% else %>
-          <i class="bi bi-arrow-left-square previous-link disabled"></i>
-        <% end %>
-      </div>
-        <%= paginate @boards %>
-      <div class="pagination-right">
-        <% if @boards.next_page %>
-          <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
-            <i class="bi bi-arrow-right-square next-link"></i>
-          <% end %>
-        <% else %>
-          <i class="bi bi-arrow-right-square next-link disaled"></i>
-        <% end %>
+  <div class="pagination"> 
+    <% if @index_boards.present? && @index_boards.current_page %> <!-- カード用ページネーション -->
+      <div class="page-numbers">
+        <%= paginate @index_boards, context: false %>
       </div>
     <% else %>
       <p>表示するデータがありません。</p>
     <% end %>
   </div>
-</div>
-
-<!-- ユーザーコメント欄 !-->
-<!-- 表示領域の幅を変更する場合には"800"も同時に変更すること!-->
-<script>
-  document.addEventListener("turbo:load", function () {
-    const commentTrack = document.querySelector(".user-comment-track");
-    const visibleWidth = commentTrack.offsetWidth;
-    const userComment = document.getElementById("user-comment-body");
-    const commenWidth = userComment.offsetWidth;
-    const totalWidth = visibleWidth + commenWidth
-    const speed = 80;
-    
-    let duration, endTranslate
-    if (totalWidth < 800) {
-      endTranslate = 800;
-    } else {
-      endTranslate = totalWidth;
-    }
-    duration = endTranslate / speed
-    commentTrack.style.setProperty("--end-translate", `-${endTranslate}px`);
-    commentTrack.style.setProperty("--animation-duration", `${duration}s`); //speedを一定にしてもコメントが増えるほど加速していくので、調整
-    }
-  );
-</script>
-<!-- コメント欄　!-->
-<!-- 表示領域の高さを変更する場合には"500"も同時に変更すること!-->
-<script>
-  document.addEventListener("turbo:load", function () {
-    const commentTrack = document.querySelector(".comment-track");
-    const comments = document.querySelectorAll(".comment-text");
-    const commentCount = comments.length;
-    const totalHeight = commentTrack.offsetHeight;
-    const speed = 50;
-    
-    let duration, endTranslate
-    if (totalHeight < 400) {
-      endTranslate = totalHeight + 400;
-    } else {
-      endTranslate = 400;
-    }
-    duration = endTranslate / speed
-    commentTrack.style.setProperty("--end-translate", `${endTranslate}px`);
-    commentTrack.style.setProperty("--animation-duration", `${duration+commentCount}s`); //speedを一定にしてもコメントが増えるほど加速していくので、調整
-  }
-);
-</script>
-
+  <% if @index_boards %>
+    <div class="board-cards recommend-boards"> <!-- おすすめの投稿 -->
+      <% @index_boards.each do |board| %>
+        <%= render "index_board", board: board %>
+      <% end %>
+    </div>
+  <% else %>
+    <span>表示するコンテンツがありません</span>
+  <% end %>
+<!-- おすすめの投稿　-->
 <style>
-<%# 全体のボーダーを表示・スクロールバーを非表示%>
-body {
-  outline: 2px solid blue;
-  scrollbar-width: none;
-}
-<%# 背景 %>
-  .whole-wrapper {
-    background-size: contain;
-  }
-  .wrapper {
-    position: absolute; <%# 投稿の表示領域全体を左寄せ %>
-    left: 30px;
-    width: 50%;
-    height: 100%;
-    padding: 0 20px;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .wrapper::-webkit-scrollbar {
-    display:none;
-  }
-  .scroll-area {
-    height: 85vh;
-    margin: 0 20px; <%# ボックスの外側の余白 %>
-    overflow: hidden; <%# ボックスからはみ出た部分を非表示 %>
-    position: relative;
-    
-  }
-  .board-body {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%); 
-    <%# position: absolute;は基準点に対して、自分の左上を基軸にして移動するので、
-      top, left 50%としたときの中心に来るのは自分の左上になる。translateはそれを調節する%>
-  }
-  .board-body a{
-    text-decoration: none;
-    color: black;
-    font-size: 25px;
-  }
-  .scroll-content {
-    top: 15%;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    border: solid;
-    border-color: pink;
-    align-items: center; <%# 小要素の垂直位置を指定 %>
-    display: flex;  <%# これなしではalign-itemsが解除される%>
-    background-color: white;
-    border-radius: 0px 0px 30px 30px;
-  }
-  </style>
-  <%# パーシャル %>
-  <style>
-  .board-items {
-    margin: auto; <%# 要素の中央寄せ %>
+  .board-cards-title {
     text-align: center;
+    background-color: pink;
   }
-  .user-name {
-    display: inline-block;
-    margin: auto;
+  .board-cards-title span:not(.user-name) {
+    font-size: 40px;
+    color: white;
   }
-  .board-image {
-    opacity: 50%;
+  .board-cards-title .user-name {
+    font-size: 100%;
+    max-width: 20%;
   }
-  .board-image img { <%# これらのプロパティはimgに直接指定することに注意 %>
-    width: 700px; <%# 100％で表示できるのは元の大きさまで %><%# クリックで100%に変更　＝＞　全体表示 %>
-    max-height: 550px;<%# 小さい画像をあえてはみ出させたい場合は直接指定するしかない、比率を維持したまま親要素に合わせて自動でサイズを調整することができなくなる %>
-    object-fit:cover; <%# 上記の指定だけでは比率がおかしくなるらしい（なくてもできてる感ある）%>
-    border-radius: 15px 15px 15px 15px;
+  .board-cards {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap; /* 行をまたいで自動的に折り返す */
+    gap: 6px; /* カード間のスペースを設定 */
+    justify-content: space-between; /* 均等に配置 */
+    padding-bottom: 150px;
+    margin-top: 50px;
+  }
+  .users-other-boards {
+  
+  }
+  .recommend-boards {
+    margin-top: 100px;
   }
 </style>
-<!-- ページネーション !-->
+
+<!-- ページネーション -->
 <style>
+  .page-numbers {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: 40px;
+  }
   .pagination-left {
     position: absolute;
-    left: 0px;
-    top: 30%;
-    transform: translate(-50%,-50%);
+    bottom: 0;
+    left: 45%;
+    font-size: 40px;
   }
   .pagination-right {
     position: absolute;
-    left: 100%;
-    top: 30%;
-    transform: translate(-50%,-50%);
+    bottom: 0;
+    right: 45%;
+    font-size: 40px;
   }
   .previous-link {
-    font-size: 100px;
-    margin: 50px;
-    width: 50px;
-    height: 200px;
-    background-color: black;
-    opacity: 2%;
-    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
-    border-radius: 40px 5px 5px 40px;
+    font-size: 50px;
+    opacity: 1;
+    color: pink;
+  }
+  .next-link {
+    font-size: 50px;
+    opacity: 1;
+    color: pink;
   }
   .previous-link:hover {
-    background-color: pink;
-    opacity: 50%;
+    font-size: 60px;
   }
-  .next-link:hover {
-    background-color: pink;
-    opacity: 50%;
+  .next-link:hover { 
+    font-size: 60px;
   }
-
-  .next-link {
-    font-size: 100px;
-    margin: 50px;
-    width: 50px;
-    height: 200px;
-    background-color: black;
-    opacity: 2%;
-    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
-    border-radius: 5px 40px 40px 5px;
-  }
-  .disabled {
+  .previous-link.disabled, .next-link.disabled {
     pointer-events: none;
   }
-</style>
-
-<!-- 投稿者コメント !-->
-<style>
-.user-comment-area {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  position: relative;
-  top: 50px;
-  background-color: pink;
-  padding: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 30px 30px 0px 0px;
-}
-.user-comment-track {
-  width: 100%;
-  animation: scroll-left var(--animation-duration) linear infinite;
-}
-.user-comment-text {
-  display: inline-block;
-  margin-right: 50px; /* 各コメント間のスペース */
-  font-size: 30px;
-  font-weight: bold;
-  color: white;
-}
-.board-user-name {
-  font-size: 38px;
-}
-.user_page_link {
-  text-decoration: none;
-}
-
-@keyframes scroll-left {
-  from {
-    transform: translateX(var(--start-translate, 100%));
+  .board-cards:hover .previous-link:not(.disabled) {
+    opacity: 1;
   }
-  to {
-    transform: translateX(var(--end-translate, -200px));
-  }
-}
-</style>
-
-
-<!-- コメント欄 !-->
-<style>
-.comment-area {
-  position: relative;
-  width: 80%; /* コンテナの幅 */
-  height: 400px; /* コンテナの高さ */
-  overflow: hidden; /* コンテナ外のテキストを隠す */
-  border: 1px solid #ddd;
-  left: 110%;
-  top: -420px;
-  transform: translate(0,-50%); 
-  background-color: white;
-  border-width: 10px;
-  border-color: pink;
-  border-radius: 30px 30px 30px 30px;
-}
-.comment-track {
-  position: absolute;
-  width: 100%;
-  text-align: left;
-  animation: slideDown var(--animation-duration) linear infinite;; /* 下に移動するアニメーション */
-}
-
-.comment-text {
-  display: block;
-  margin: 20px; /* 各コメント間のスペース */
-  font-size: 20px;
-  color: black;
-}
-.comment-image img {
-  width: 100px;
-}
-.comment-link {
-  text-decoration: none;
-}
-.comment-link:hover {
-  font-weight: bold;
-}
-.comment_by_current_user.comment_by_board_user {
-  background-color: rgb(239,255,74,0.5);
-}
-.comment_by_current_user {
-  background-color: rgb(84,211,44, 0.5)  ;
-}
-.comment_by_board_user {
-  background-color: rgb(239,255,74,0.5);
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(var(--start-translate, -100%));
-  }
-  to {
-    transform: translateY(var(--end-translate, -200px));
-  }
-}
-</style>
-
-<style>
-  .comment-form-wrapper {
-    position: relative;
-    top: -600px;
-    left: 110%;
-    width: 80%;
-  }
-  .comment-form textarea {
-    resize: none;
-    background-color: rgba(255, 192, 203, 0.2);
-  }
-  .comment-form input {
-    border: solid;
-    border-width: 5px;
-    color: white;
-    background: pink;
-    opacity: 0.6;
-  }
-  .comment-form input:hover {
-    color: white;
-    background: pink;
-    opacity: 0.8;
+  .board-cards:hover .next-link:not(.disabled) {
+    opacity: 1;
   }
 </style>

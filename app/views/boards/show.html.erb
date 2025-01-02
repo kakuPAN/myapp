@@ -6,31 +6,15 @@
     <%= render @board %>
   </div>
   <div class="board-cards-title">
-    <span classs="user-name"><i class="bi bi-emoji-sunglasses-fill"></i><%= @board.user.user_name %></span></span>
+    <span classs="user-name"><i class="bi bi-emoji-sunglasses-fill"></i><%= @board.user.user_name %></span></span><span>の他の投稿を見る</span>
   </div>
   <div class="board-cards users-other-boards"> <!-- 同じユーザーの投稿 -->
     <% @boards.each do |board| %> 
       <%= render "users_other_board", board: board, current_board: @board %>
     <% end %>
     <% if @boards.present? && @boards.current_page %> <!-- カード用ページネーション -->
-      <div class="pagination-left">
-        <% if @boards.prev_page %>
-          <%= link_to  url_for(page: @boards.prev_page || 1) do %>
-            <i class="bi bi-arrow-left-square previous-link"></i>
-          <% end %>
-        <% else %>
-          <i class="bi bi-arrow-left-square previous-link disabled"></i>
-        <% end %>
-      </div>
-        <%= paginate @boards %>
-      <div class="pagination-right">
-        <% if @boards.next_page %>
-          <%= link_to url_for(page: @boards.next_page || @boards.total_pages) do %>
-            <i class="bi bi-arrow-right-square next-link"></i>
-          <% end %>
-        <% else %>
-          <i class="bi bi-arrow-right-square next-link disabled"></i>
-        <% end %>
+      <div class="page-numbers">
+        <%= paginate @boards, context: true %>
       </div>
     <% else %>
       <p>表示するデータがありません。</p>
@@ -45,6 +29,12 @@
     <% end %>
   </div>
 </div>
+<style>
+  
+  .page-numbers a {
+    
+  }
+</style>
 
 <!-- 投稿者の他の投稿表示用　--> <!-- 投稿の数が奇数の場合、余ったスペースに「リアクションの多い投稿」や「新しい投稿」などへのリンクをつけたカードを配置する-->
 
@@ -53,6 +43,7 @@
 <script>
   document.addEventListener("turbo:load", function () {
     const commentTrack = document.querySelector(".user-comment-track");
+    if (!commentTrack) return;
     const visibleWidth = commentTrack.offsetWidth;
     const userComment = document.getElementById("user-comment-body");
     const commenWidth = userComment.offsetWidth;
@@ -76,6 +67,7 @@
 <script>
   document.addEventListener("turbo:load", function () {
     const commentTrack = document.querySelector(".comment-track");
+    if (!commentTrack) return;
     const comments = document.querySelectorAll(".comment-text");
     const commentCount = comments.length;
     const totalHeight = commentTrack.offsetHeight;
@@ -223,25 +215,42 @@
   .prev-board {
     position: absolute;
     left: 45%;
-    bottom: 0;
+    bottom: 3%;
     transform: translate(-50%,0); 
-    
+  }
+  .latest-board {
+    position: absolute;
+    left: 35%;
+    bottom: 3%;
+    transform: translate(-50%,0); 
   }
   .next-board {
     position: absolute;
     right: 45%;
-    bottom: 0;
+    bottom: 3%;
+    transform: translate(50%,0); 
+  }
+  .oldest-board {
+    position: absolute;
+    right: 35%;
+    bottom: 3%;
     transform: translate(50%,0); 
   }
   .prev-board-link {
-    font-size: 40px;
+    font-size: 20px;
     opacity: 0;
     color: pink;
+    padding: 10px;
+    border: 2px solid pink;
+    border-radius: 5px;
   }
   .next-board-link {
-    font-size: 40px;
+    font-size: 20px;
     opacity: 0;
     color: pink;
+    padding: 10px;
+    border: 2px solid pink;
+    border-radius: 8px;
   }
   .scroll-content:hover  .prev-board-link:not(.disabled) {
     opacity: 1;
@@ -251,14 +260,33 @@
   }
   .prev-board-link:hover {
     opacity: 1;
-    font-size: 50px;
+    font-size: 30px;
+    background: pink;
+    color: white;
   }
   .next-board-link:hover { 
     opacity: 1;
-    font-size: 50px;
+    font-size: 30px;
+    background: pink;
+    color: white;
   }
   .prev-board-link.disabled, .next-board-link.disabled {
     pointer-events: none;
+  }
+</style>
+<!-- kaminari パーシャル -->
+<style>
+  .page-item {
+    margin: 10px;
+  }
+  .page-item.active .page-link {
+    background: pink;
+    border: none;
+  }
+  .page-link {
+    color: pink;
+    border-color: pink;
+    border-radius: 5px;
   }
 </style>
 
@@ -353,7 +381,7 @@
     opacity: 0.8;
   }
 </style>
-
+<!-- おすすめの投稿　-->
 <style>
   .board-cards-title {
     text-align: center;
@@ -386,6 +414,13 @@
 
 <!-- ページネーション -->
 <style>
+  .page-numbers {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 0);
+      font-size: 40px;
+    }
   .pagination-left {
     position: absolute;
     bottom: 0;
@@ -417,7 +452,7 @@
   .previous-link.disabled, .next-link.disabled {
     pointer-events: none;
   }
-  .board-cards:hover .prev-link:not(.disabled) {
+  .board-cards:hover .previous-link:not(.disabled) {
     opacity: 1;
   }
   .board-cards:hover .next-link:not(.disabled) {

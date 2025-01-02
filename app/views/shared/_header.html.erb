@@ -6,14 +6,17 @@
       <li>Happy</li>
     </ul>
   </div>
+  <div class="search-form-container">
+    <%= render "search_form", q: @q %>
+  </div>
   <% if current_user %>
     <div class="mypage-container" id="mypageContainer">
       <span class="header-user-name"><%= current_user.user_name %>さん</span>
       <div class="mypage-dropdown" id="mypageDropdown">
         <ul>
-          <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "header-content login-text" %></li>
-          <li><%= link_to "新規投稿", new_board_path, class: "header-content" %></li>
-          <li><%= link_to "投稿一覧", boards_path, class: "header-content" %></li>
+          <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete } %></li>
+          <li><%= link_to "新規投稿", new_board_path %></li>
+          <li><%= link_to "投稿一覧", boards_path %></li>
         </ul>
       </div>
     </div>
@@ -23,8 +26,8 @@
       <div class="mypage-dropdown" id="mypageDropdown">
         <ul>
           <li><%= link_to "ユーザー登録", new_users_path %>
-          <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "header-content header-text login-text" %></li>
-          <li><%= link_to "トップ", root_path, class: "header-content header-text" %></li>
+          <li><%= link_to "ログイン", login_path, class: "login-text" %></li>
+          <li><%= link_to "トップ", root_path %></li>
         </ul>
       </div>
     </div>
@@ -40,49 +43,69 @@
       
       mypageContainer.addEventListener('mouseover', function() {
         mypageDropdown.style.display = 'block'
+        event.stopPropagation(); // キャプチャおよびバブリング段階において現在のイベントのさらなる伝播を阻止
       });
 
-      mypageContainer.addEventListener('mouseout', function() {
+      document.addEventListener('click', function() {
         mypageDropdown.style.display = 'none';
       });
     }
   });
 </script>
+<style>
+<%# 全体のボーダーを表示・スクロールバーを非表示%>
+* {
+  /*outline: 2px solid blue;*/
+  scrollbar-width: none;
+}
+</style>
 <!-- プルダウン !-->
 <style>
   .header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
     height: 70px;
-    margin: 0;
-    padding: 0;
     background-color: pink;
+    position: relative;
   }
-  .header-content {
-    text-decoration: none;
+  .search-form-container {
+    flex: 2; /* 中央部分に広いスペースを割り当て */
+    display: flex;
+    justify-content: center; /* 水平方向に中央揃え */
   }
-  .header-content:hover {
+  .header-content a:hover {
     color: rgba(233, 155, 0, 0.946);
   }
 </style>
 <style>
   .mypage-container {
     position: relative;
-    padding-left: 20px;
+    flex: 1; /* 右側の部分に適切な幅を確保 */
+    display: flex;
+    justify-content: flex-end; /* 要素を右揃え */
+    top: -50%;
   }
   .header-user-name {
     font-size: 20px;
     margin: auto;
     position: absolute;
     right: 5%;
+    cursor: pointer;
   }
   .mypage-dropdown {
-    display: none;
-    position: absolute;
-    right: 1%;
-    width: 10%;
-    top: 30px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    z-index: 999; 
+    display: none; /* 初期状態では非表示 */
+    position: absolute; /* 親要素に対して絶対位置 */
+    top: 30px; /* 親要素の真下に配置 */
+    right: 0; /* 右揃え */
+    background-color: #fff; /* 背景色を白に設定 */
+    border: 1px solid #ccc; /* 境界線を設定 */
+    border-radius: 4px; /* 角を丸く */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
+    z-index: 1000; /* 他の要素の上に配置 */
+    min-width: 150px; /* 最小幅を指定 */
+    
   }
   .mypage-dropdown a {
     color: #5c3e26;
@@ -92,22 +115,23 @@
     list-style: none;
     margin: 0 auto;
     padding: 0 5px;
-    display: inline-block;
   }
   .mypage-dropdown li {
     text-align: left;
   }
+  .mypage-dropdown ul li a:hover {
+    background-color: #f0f0f0; /* ホバー時の背景色 */
+    color: #007bff; /* ホバー時のリンク色 */
+  }
 </style>
 <style>
   .logo {
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    left: 20px;
+    flex: 1;
+    width: 100%;
+    height: 100%;
   }
   .logo ul {
     list-style: none;
-
   }
   .logo li {
     font-weight: bold;

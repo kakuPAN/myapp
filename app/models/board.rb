@@ -1,22 +1,18 @@
 class Board < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
+  has_many :frames, dependent: :destroy
 
-  validates :body, presence: true
+  validates :title, presence: true, length: { maximum: 100 }
 
-  has_one_attached :image
-  validate :image_content_type
-  validate :image_size
+  enum :access_level, { private_access: 0, public_access: 1 }
 
-  def image_content_type
-    if image.attached? && !image.content_type.in?(%w[image/jpeg image/png image/gif])
-      errors.add(:image, '：ファイル形式が、JPEG, PNG, GIF以外になってます。ファイル形式をご確認ください。')
-    end
+  def self.ransackable_attributes(auth_object = nil)
+    # 検索可能にしたい属性を配列で返す
+    [ "title" ]
   end
 
-  def image_size
-    if image.attached? && image.blob.byte_size > 1.megabytes
-      errors.add(:image, '：1MB以下のファイルをアップロードしてください。')
-    end
+  def self.ransackable_associations(auth_object = nil)
+    [ "user" ]
   end
 end

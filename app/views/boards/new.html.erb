@@ -3,12 +3,8 @@
 <%= render "shared/error_messages", object: @board %>
 <%= form_with model: @board do |f| %>
   <div class="mb-3">
-    <%= f.label :body, "内容", class: "form-label" %>
-    <%= f.text_area :body, size: "10x5", class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :image, "画像" %>
-    <%= f.file_field :image %>
+    <%= f.label :title, "タイトル", class: "form-label" %>
+    <%= f.text_field :title, size: "10x5", class: "form-control" %>
   </div>
   <div class="mb-3">
   <%= f.submit "作成", class: "form-control btn btn-primary" %>

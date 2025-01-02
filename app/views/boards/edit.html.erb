@@ -1,19 +1,162 @@
 <%= render "shared/header" %>
-<h1>New board</h1>
-<%= render "shared/error_messages", object: @board %>
-<%= form_with model: @board do |f| %>
-  <div class="mb-3">
-    <%= f.label :body, "内容", class: "form-label" %>
-    <%= f.text_area :body, size: "10x5", class: "form-control" %>
+<h1>Edit board</h1>
+<div class="edit-wrapper">
+  <div class="frames-wrapper">
+    <div class="add-frame">
+      <% if @board.frames.size < 4 %>
+        <%= link_to "フレームを追加", new_board_frame_path(@board), class: "btn btn-primary" %>
+      <% else %>
+        <p>フレームの最大数に達しています</p>
+      <% end %>
+    </div>
+    <% @board.frames.each do |frame| %>
+      <div class="frame-container">
+        <div class="frame-content">
+          <% if frame.image.attached? %>
+            <%= image_tag frame.image %>
+          <% else %>
+            <%= simple_format(frame.body) %>
+          <% end %>
+        </div>
+        <div class="edit-button">
+          <%= link_to "編集", edit_board_frame_path(@board, frame), class: "btn btn-secondary" %>
+        </div>
+      </div>
+    <% end %>
   </div>
-  <div class="mb-3">
-    <%= f.label :image, "画像" %>
-    <%= f.file_field :image %>
+
+  <div class="access-level">
+    <div class="buttons">
+      <%= link_to "公開", make_board_publish_board_path(@board), data: { turbo_method: :patch }, class: "btn btn-outline-success #{"status-public" if @board.public_access? }" %>
+      <%= link_to "非公開", make_board_private_board_path(@board), data: { turbo_method: :patch }, class: "btn btn-outline-secondary #{"status-private" if @board.private_access? }" %>
+      <%= link_to "削除", board_path(@board), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
+    </div>
   </div>
-  <% if @board.image.attached? %>
-    <%= link_to "画像を削除", delete_image_board_path, data: { turbo_method: :delete } %>
-  <%end%>
-  <div class="mb-3">
-  <%= f.submit "作成", class: "form-control btn btn-primary" %>
-  </div>
-<% end %> 
+</div>
+<!-- @board.frames.size == 0 なら公開ボタンを非アクティブにする -->
+
+<style>
+<%# 全体のボーダーを表示・スクロールバーを非表示%>
+* {
+  /*outline: 2px solid blue;*/
+  /*scrollbar-width: none;*/
+}
+</style>
+<style>
+.frame-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 縦方向に中央揃え */
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.frame-content {
+  border: 2px solid #ddd;
+  text-align: center;
+  overflow: hidden;
+  width: 100%;
+  font-size: 20px;
+  margin: 10px 0;
+  padding: 20px 0;
+  background: #ededed;
+}
+.edit-button {
+ 
+}
+</style>
+<style>
+@media (min-width: 1000px) {
+  .edit-wrapper {
+    position: relative;
+  }
+  .frames-wrapper {
+    width: 60%;
+  }
+  .access-level {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+  }
+}
+@media (max-width: 1000px) {
+  .edit-wrapper {
+    flex-direction: column;
+    height: auto; /* 縦方向に制限を外す */
+    overflow-y: auto; /* 縦スクロールを有効にする */
+  }
+  .frames-wrapper {
+    width: 100%;
+    
+  }
+  .access-level {
+    flex-direction: column;
+    height: auto; /* 縦方向に制限を外す */
+    overflow-y: auto; /* 縦スクロールを有効にする */
+  }
+}
+</style>
+<style>
+  .edit-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center; /* 縦方向に中央揃え */
+    gap: 20px; /* コンテナ間のスペース */
+    flex-wrap: wrap; /* 画面サイズが小さい場合は折り返す */
+    margin: auto;
+    overflow: auto; /* 必要に応じてスクロール */
+    margin-bottom: 50px;
+  }
+  .frames-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center; <%# 小要素の垂直位置を指定 %>
+    border: 2px solid #ddd;
+    border-radius: 40px;
+    padding: 10%;
+  }
+  .add-frame {
+    margin-bottom: 20px;
+    font-size: 30px;
+    border-radius: 20px;
+  }
+  .add-frame a {
+    font-size: 25px;
+  }
+  .edit-button {
+    margin-bottom: 20px;
+  }
+  .edit-button a {
+    font-size: 20px;
+    border-radius: 10px;
+  }
+  .access-level {
+    display: flex;
+    flex-direction: column;
+  }
+  .access-level .buttons {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .access-level a {
+    font-size: 30px;
+    text-decoration: none;
+    padding: 5px 20px;
+    border-radius: 20px;
+    text-align: center;
+    margin: 10px;
+  }
+  .status-public {
+    background: green;
+    color: white;
+    pointer-events: none;
+  }
+  .status-private {
+    background: #ddd;
+    color: black;
+    pointer-events: none;
+  }
+</style>

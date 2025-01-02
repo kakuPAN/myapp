@@ -10,36 +10,17 @@
     <% end %>
   </div>
   <div class="container">
-    <div class="section">
-      <div class="board-body">
-        <% if board.image.attached? %>
-          <%= image_tag board.image %>
-        <% end %>
+    <% @frames.each do |frame| %>
+      <div class="section">
+        <div class="board-body">
+          <% if frame.image.attached? %>
+            <%= image_tag frame.image %>
+          <% else %>
+            <%= simple_format(frame.body) %>
+          <% end %>
+        </div>
       </div>
-    </div>
-    <div class="section">
-      <div class="board-body">
-        <%= link_to board_path(board, page: params[:page])  do %>
-          <%= board.body %>
-        <% end %>
-      </div>
-    </div>
-    <div class="section">
-      ページ3
-    </div>
-    <div class="section">
-      ページ4
-    </div>
-    <!-- <div class="board-items section">
-      <% if board.image.attached? %>
-        <div class="board-image"><%= image_tag board.image %></div>
-      <% end %>
-    </div>
-    <div class="board-body section">
-      <%= link_to board_path(board, page: params[:page])  do %>
-        <%= board.body %>
-      <% end %>
-    </div> -->
+    <% end %>
   </div>
   <div class="user-comment-area">
     <%= link_to user_path(board.user_id), class: "user_page_link" do %>
@@ -50,22 +31,40 @@
       </div>
     <% end %>
   </div>
-  <div class="prev-board"> <!-- 前後の投稿に移動するボタン -->
-    <% if previous_board(board) %>
-      <%= link_to board_path(previous_board(board)) do %>
-        <i class="bi bi-arrow-left-square prev-board-link"></i>
+  <div class="latest-board"> <!-- 前後の投稿に移動するボタン -->
+    <% if latest_board(board) %><!-- 最新 -->
+      <%= link_to board_path(latest_board(board)) do %>
+        <i class="bi bi-chevron-double-left prev-board-link"></i>
       <% end %>
     <% else %>
-      <i class="bi bi-arrow-left-square prev-board-link disabled"></i>
+      <i class="bi bi-chevron-double-left prev-board-link disabled"></i>
+    <% end %>
+  </div>
+  <div class="prev-board"><!-- 一つ新しい -->
+    <% if previous_board(board) %>
+      <%= link_to board_path(previous_board(board)) do %>
+        <i class="bi bi bi-chevron-left prev-board-link"></i>
+      <% end %>
+    <% else %>
+      <i class="bi bi bi-chevron-left prev-board-link disabled"></i>
     <% end %>
   </div>
   <div class="next-board">
-    <% if next_board(board) %>
+    <% if next_board(board) %><!-- 一つ古い -->
       <%= link_to board_path(next_board(board)) do %>
-        <i class="bi bi-arrow-right-square next-board-link"></i>
+        <i class="bi bi bi-chevron-right next-board-link"></i>
       <% end %>
     <% else %>
-      <i class="bi bi-arrow-right-square next-board-link disabled"></i>
+      <i class="bi bi bi-chevron-right next-board-link disabled"></i>
+    <% end %>
+  </div>
+  <div class="oldest-board">
+    <% if oldest_board(board) %><!-- 最古 -->
+      <%= link_to board_path(oldest_board(board)) do %>
+        <i class="bi bi-chevron-double-right next-board-link"></i>
+      <% end %>
+    <% else %>
+      <i class="bi bi-chevron-double-right next-board-link disabled"></i>
     <% end %>
   </div>
 </div>
@@ -75,17 +74,17 @@
       <% board.comments.each do |comment| %>
         <%= link_to user_path(comment.user), class: "comment-link" do %>
           <% if current_user && current_user.id == comment.user_id %>
-            <span class="comment-text comment_by_current_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+            <span class="comment-text comment_by_current_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= simple_format(comment.body) %></span>
           <% elsif %>
-            <span class="comment-text comment_by_board_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+            <span class="comment-text comment_by_board_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= simple_format(comment.body) %></span>
           <% else %>
-            <span class="comment-text comment_by_other_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= comment.body %></span>
+            <span class="comment-text comment_by_other_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= simple_format(comment.body) %></span>
           <% end %>
         <% end %>
       <% end %>
       <% if board.comments.empty? %>
         <span class="comment-text">盛り上げよう！</span>
-        <div class="comment-image"><%= image_tag "9318.png"%></div><%# 画像などもコメントできるようにしたい%>
+        <div class="comment-image"><%= image_tag "3.png"%></div><%# 画像などもコメントできるようにしたい%>
         <span class="comment-text">コメントやリアクションをして</span>
         <span class="comment-text">関心のある投稿には</span>
       <% end %>

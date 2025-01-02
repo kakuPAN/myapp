@@ -1,0 +1,16 @@
+<%= render "shared/header" %>
+<h1>New Frame</h1>
+<%= render "shared/error_messages", object: @frame %>
+<%= form_with model: [@board, @frame] do |f| %>
+  <div class="mb-3">
+    <%= f.label :body, "内容", class: "form-label" %>
+    <%= f.text_area :body, size: "10x5", class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :image, "画像" %>
+    <%= f.file_field :image %>
+  </div>
+  <div class="mb-3">
+  <%= f.submit "作成", class: "form-control btn btn-primary" %>
+  </div>
+<% end %>
