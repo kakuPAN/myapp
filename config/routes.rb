@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     resources :frames do
       member do
         delete :delete_image
+        patch :move_forward
+        patch :move_back
       end
     end
     resources :comments
