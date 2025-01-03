@@ -66,6 +66,7 @@ class BoardsController < ApplicationController
 
   def edit
     @board = Board.find_by(id: params[:id])
+    @frames = @board.frames.order(:frame_number)
     if @board
       @board
     else

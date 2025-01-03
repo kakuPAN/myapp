@@ -10,28 +10,38 @@ class FramesController < ApplicationController
   end
 
   def new
-    @frame = @board.frames.build
+    @frame_type = params[:frame_type] || :image
+    if @board.frames.size < 4
+      @frame = @board.frames.build
+    else
+      redirect_to edit_board_path(@board)
+    end
   end
 
   def create
+    @frame_type = params[:frame_type] || :image
     frame_number = @board.frames.size + 1
     @frame = @board.frames.build(frame_params.merge(frame_number: frame_number))
+
     if @frame.save
       make_board_private(@board)
       redirect_to edit_board_path(@board)
       flash[:notice] = "フレームが作成されました"
     else
+      @frame_type = 
       render :new, status: :unprocessable_entity
-      flash.now[:danger] = "変更を保存できません"
     end
   end
 
   def edit
+    @frame_type = params[:frame_type] || :image
     @frame = @board.frames.find(params[:id])
   end
 
   def update
+    @frame_type = params[:frame_type] || :image
     @frame = @board.frames.find(params[:id])
+
     if @frame.update(frame_params)
       make_board_private(@board)
       redirect_to edit_board_path(@board)
@@ -44,24 +54,68 @@ class FramesController < ApplicationController
 
   def destroy
     @frame = Frame.find(params[:id])
+    current_number = @frame.frame_number
     @frame.destroy
-    if @board.frames.size >= 1
-      @board.frames.each do |frame|
-        frame.update(frame_number: frame.frame_number-1)
+    begin
+      Frame.transaction do
+        @frame.destroy
+        # 削除された番号より大きな番号を持つフレームを1つずつ繰り下げ
+        @board.frames.where('frame_number > ?', current_number).order(:frame_number).each do |frame|
+          frame.update!(frame_number: frame.frame_number - 1)
+        end
       end
+    rescue => e
+      flash[:danger] = "フレームを削除できません"
     end
     make_board_private(@board)
     redirect_to edit_board_path(@board)
     flash[:success] = "フレームを削除しました"
   end
 
-  def delete_image
+  def move_forward
     @frame = Frame.find(params[:id])
-    @frame.image.purge
-    respond_to do |format|
-        render turbo_stream: turbo_stream.remove(@frame.image)
+    if @frame.frame_number > 1
+      previous_frame = @board.frames.find_by(frame_number: @frame.frame_number - 1)
+
+      current_number = @frame.frame_number
+      previous_number = current_number-1
+      begin 
+        Frame.transaction do
+          previous_frame.update!(frame_number: 5)
+          @frame.update!(frame_number: previous_number)
+          previous_frame.update!(frame_number: current_number)
+        end
+      rescue => e
+        flash[:danger] = "フレームを移動できません"
+      end
+      redirect_to edit_board_path(@board)
+    else
+      redirect_to edit_board_path(@board)
     end
   end
+
+  def move_back
+    @frame = Frame.find(params[:id])
+    if @frame.frame_number <4
+      next_frame = @board.frames.find_by(frame_number: @frame.frame_number + 1)
+
+      current_number = @frame.frame_number
+      next_number = current_number+1
+      begin 
+        Frame.transaction do
+          next_frame.update!(frame_number: 5)
+          @frame.update!(frame_number: next_number)
+          next_frame.update!(frame_number: current_number)
+        end
+      rescue => e
+        flash[:danger] = "フレームを移動できません"
+      end
+      redirect_to edit_board_path(@board)
+    else
+      redirect_to edit_board_path(@board)
+    end
+  end
+      
 
   private
 
