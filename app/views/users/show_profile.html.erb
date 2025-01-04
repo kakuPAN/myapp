@@ -1,0 +1,120 @@
+<%= render "shared/header" %>
+<div class="user-wrapper">
+  <div class="users-profile-wrapper">
+    <div class="user-content avater-container">
+      <div class="avater">
+        <% if @user.avater_image.attached? %>
+          <%= image_tag @user.avater_image %>
+        <% else %>
+          <%= image_tag "images.jpeg" %>
+        <% end %>
+      </div>
+      <div class="edit">
+        <div>プロフィール画像</div>
+      </div>
+    </div>
+    <div class="user-content user-name-container">
+      <div class="user-name">
+        <%= @user.user_name %>
+      </div>
+      <div class="edit">
+        <div>ユーザーネーム</div>
+      </div>
+    </div>
+    <div class="user-content profile-container">
+      <div class="profile">
+        <%= @user.profile %>
+      </div>
+      <div class="edit">
+        <div>自己紹介</div>
+      </div>
+    </div>
+    <div class="edit">
+      <%= link_to "プロフィールを変更", edit_user_path(@user), class: "btn btn-outline-primary" %>
+    </div>
+  </div>
+  <div class="user-content email-container">
+    <div class="email">
+      <%= @user.email %>
+    </div>
+    <div class="edit">
+      <div>メールアドレス</div>
+    </div>
+  </div>
+  <div class="edit">
+    <%= link_to "メールアドレスを変更", boards_path, class: "btn btn-outline-primary" %>
+  </div> 
+  <div class="user-content password-container">
+    <div class="edit">
+      <div>パスワード</div>
+    </div>
+  </div>
+  <div class="edit">
+    <%= link_to "パスワードを変更", boards_path, class: "btn btn-outline-primary" %>
+  </div>
+  </div>
+</div>
+
+<style>
+  .user-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin: 100px 20%;
+    padding: 10%;
+    border: 2px solid #ddd;
+  }
+  .users-profile-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 30px;
+    width: 100%;
+    border-bottom: 2px solid #ddd;
+  }
+  .user-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    border-bottom: 2px solid #ddd;
+  }
+  .user-content.avater-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 400px;
+    width: 400px;
+  }
+  .edit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+  }
+  .edit a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+  }
+  .avater-container .avater img {
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+  }
+  .user-name, .profile, .email {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 30px;
+    margin: 30px 0;
+    background: rgb(112, 112, 112, 0.2);
+    font-size: 20px;
+    border-radius: 5px;
+  }
+</style>

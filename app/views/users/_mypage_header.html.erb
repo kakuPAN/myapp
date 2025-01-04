@@ -1,23 +1,24 @@
 <div class="mypage-header">
   <div class="user-profile">
     <div class="users-info">
-        <div class="users-avater-image">
-          <% if @user.avater_image.attached? %>
-            <%= image_tag @user.avater_image %>
-          <% else %>
-            <%= image_tag "images.jpeg"%>
-          <% end %>
-        </div>
-        <div class="users-name">
-          <%= @user.user_name %>
-        </div>
-        <div class="setting">
-          <button><% if current_user&.id == @user.id %><p>ユーザー設定(ログインユーザーのみ)</p><% end %></button>
-        </div>
+      <div class="users-avater-image">
+        <% if @user.avater_image.attached? %>
+          <%= image_tag @user.avater_image %>
+        <% else %>
+          <%= image_tag "images.jpeg"%>
+        <% end %>
+      </div>
+      <div class="users-name">
+        <%= @user.user_name %>
+      </div>
+      <div class="setting">
+        <% if current_user&.id == @user.id %>
+          <%= link_to "プロフィールを編集", edit_user_path(@user) %>
+        <% end %>
+      </div>
     </div>
     <div class="users-intro">
-      <p>ckUUaHRIGeq0MoteyqYHWlbZNMghkCu1C8Vm6Zis5O3UgWpbjIIP2IsZZ6v3QRFkbUSLZUpoGMKmgfn75S34G28HEpOQeDjgo3vZ<p>
-      <% @user.profile %>
+      <%= @user.profile %>
     </div>
   </div>
   <div class="most-frequent-comment">
@@ -66,7 +67,6 @@
   flex-direction: column;
   justify-content: space-between; /* コンテナ内のスペースを均等配置 */
   align-items: center; /* 垂直方向を中央揃え */
- 
   margin: 20px
 }
 .users-avater-image {
@@ -76,7 +76,6 @@
   width: 200px;
   height: 200px;
   overflow: hidden;
-   
   border-radius: 50%;
 }
 .user-avater-image img {
@@ -85,6 +84,15 @@
   max-height: 100%;
   margin: auto; 
   display: block;
+}
+.users-info .setting {
+  background: #ddd;
+  border-radius: 20px;
+  padding: 5px;
+}
+.users-info .setting a {
+  text-decoration: none;
+  color: black;
 }
 .users-intro {
   display: flex;
@@ -96,12 +104,10 @@
   overflow: hidden; /* はみ出た部分を隠す */
   padding: 20px;
   margin: auto;
-  background: #ddd;
-}
-.users-intro p {
   min-width: 50px;
   max-width: 400px;
   flex-wrap: wrap;
+  border-bottom: 2px solid #ddd;
 }
 .users-name {
   max-width: 300px;

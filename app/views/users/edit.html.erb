@@ -1,0 +1,282 @@
+<%= render "shared/header" %>
+<div class="form-label">
+    <span>プロフィール編集</span>
+</div>
+<%= render "shared/error_messages", object: @user %>
+<div class="form-wrapper">
+  <div class="form-container">
+    <%= form_with model: @user do |f| %>
+      <div class="preset-preview-container">
+        <div id="preset-post_images" style="">
+          <div id="preset-preview">
+            <% if @user.avater_image.attached? &&
+                  @user.avater_image.attachment.blob.present? &&
+                  @user.avater_image.attachment.blob.persisted? %>
+                  <div class="image-label">設定中の画像</div>
+                  <%= image_tag @user.avater_image %>
+            <% else %>
+              <%= image_tag "images.jpeg" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="preview-container">
+        <div id="post_images" style="display: none;">
+          <div class="image-label" id="new-image-label">追加した画像</div>
+          <div id="preview"></div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <%= f.file_field :avater_image, id: "avatar-image", onchange: "loadImage(this); checkForm();" %>
+      </div>
+      <div class="mb-3">
+        <%= f.text_field :user_name, maxlength: 20, id: "user-name", class: "form-control", placeholder: "ユーザーネームを入力してください", onkeyup: "ShowUserNameLength(value);" %>
+        <p id="username-length"><%= @user.user_name.length %>文字/20文字</p>
+      </div>
+      <div class="mb-3">
+        <%= f.text_area :profile, maxlength: 250, class: "form-control", placeholder: "自己紹介を入力してください", onkeyup: "ShowProfileLength(value);" %>
+        <p id="profile-length"><%= @user&.profile&.length %>文字/250文字</p>
+      </div>
+      
+      <div class="mb-3">
+        <%= f.submit "変更を保存", class: "form-control btn btn-outline-primary",id: "submit-button", disabled: true %>
+      </div>
+    <% end %>
+  </div>
+  <div class="cancel-button">
+      <%= link_to "キャンセル", show_profile_user_path(@user),class: "cancel btn btn-outline-danger" %>
+  </div>
+</div>
+
+<style>
+* {
+    /*outline: 2px solid blue;*/
+    scrollbar-width: none;
+  }
+  .form-label {
+    width: 100%;
+    height: 100%;
+    margin: 20px 0;
+    text-align: center;
+    background: rgba(221,221,221,0.4);
+  }
+  .form-label span {
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(112, 112, 112);
+  }
+  .form-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.form-container, .cancel-button {
+  width: 100%;
+  margin: auto;
+}
+.form-container input, .cancel {
+  font-size: 30px;
+  padding: 10px 10px;
+  border-radius: 20px;
+  width: 50%;
+  display: block;
+  margin: auto;
+}
+#user_image {
+  display: block;
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 20px;
+}
+.form-container textarea {
+  min-height: 300px;
+  height: 100%;
+  resize: none;
+  background: rgba(221,221,221,0.4);
+  font-size: 25px;
+}
+.cancel-button {
+  margin-top: 20px;
+  text-align: center;
+  width: 50%;
+}
+
+.cancel-button .cancel {
+  display: block;
+  width: 100%; 
+  text-decoration: none;
+}
+</style>
+<style>
+.preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px dashed #ccc;
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  overflow: hidden;
+}
+.image-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+#avatar-image, #user-name {
+  font-size: 20px;
+  width: 100%;
+}
+#new-image-label {
+  display: none;
+}
+#post_images {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+#post_images img {
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  object-fit: contain;  
+  display: block;
+}
+</style>
+
+<style>
+.preset-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed #ccc;
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  overflow: hidden;
+}
+
+#preset-post_images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+#preset-post_images img {
+  max-width: 100%;
+  max-height: 100%;
+}
+#preset-preview p {
+  width:100%;
+  text-align: center;
+  font-size: 20px;
+}
+</style>
+
+<!-- プレビュー表示 -->
+<script> 
+  console.log("読み込んだ");
+  function loadImage(obj) {
+  const newImageLabel = document.getElementById("new-image-label");
+  var allPreview = document.getElementById("post_images");
+  
+  var existingPreview = allPreview.querySelector("#preview");
+  if (existingPreview) {
+    existingPreview.remove();
+  }
+  var newPreview = document.createElement("div");
+  newPreview.setAttribute("id", "preview");
+  allPreview.style.display = "flex";
+  newImageLabel.style.display = "flex";
+  allPreview.appendChild(newPreview);
+
+  var fileReader = new FileReader();
+  fileReader.onload = function (e) {
+    var img = new Image();
+    img.src = e.target.result;
+    img.style.maxWidth = "100%";
+    img.style.maxHeight = "100%";
+    newPreview.appendChild(img);
+  };
+
+  if (obj.files && obj.files[0]) {
+    fileReader.readAsDataURL(obj.files[0]);
+  }
+}
+</script>
+
+<!-- ユーザーネーム　カウント・空白の場合submitを無効化 -->
+<script>
+  function ShowUserNameLength(str) {
+    const maxLength = 20;
+    const value = str.trim()
+    const inputLength = str.trim().length;
+    const submitButton = document.getElementById("submit-button");
+
+    document.getElementById("username-length").innerHTML = `${inputLength}/${maxLength}文字`;
+
+
+    if (value === "") {
+        submitButton.disabled = true;
+    } else {
+        submitButton.disabled = false;
+    }
+}
+</script>
+<!-- 自己紹介　カウント -->
+<script>
+  function ShowProfileLength(str) {
+    const maxLength = 250;
+    const value = str.trim()
+    const inputLength = str.trim().length;
+
+    const userNameInput = document.getElementById("user-name");
+    const userName = userNameInput.value.trim();
+    const submitButton = document.getElementById("submit-button");
+
+    document.getElementById("profile-length").innerHTML = `${inputLength}/${maxLength}文字`;
+
+    if (userName !== "") {
+      submitButton.disabled = false;
+    } else {
+      submitButton.disabled = true;
+    }
+}
+</script>
+
+<!-- ユーザー名が空でなく、かつ画像が選択されている場合にsubmitを有効化 -->
+<script>
+  function checkImage() {
+    const userNameInput = document.getElementById("user-name");
+    const avatarImageInput = document.getElementById("avatar-image");
+    const submitButton = document.getElementById("submit-button");
+
+    const userName = userNameInput.value.trim();
+
+    const isImageSelected = avatarImageInput.files.length > 0;
+
+    // 
+    if (userName !== "" || isImageSelected) {
+      submitButton.disabled = false;
+    } else {
+      submitButton.disabled = true;
+    }
+  }
+</script>

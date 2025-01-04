@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     member do
       get :all_users_boards
       get :bookmarked_boards
+      get :show_profile
     end
   end
   resources :boards do

@@ -1,3 +1,5 @@
+<%= render "reply/new" %>
+<div class="background-cover"></div>
 <div class="whole-wrapper">
   <% if current_user %>
     <%= render "shared/header" %>
@@ -85,7 +87,17 @@
   }
 );
 </script>
-
+<!-- 背景暗転 -->
+<style>
+ .background-cover {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  opacity: 0.3;
+  z-index: 100;
+ }
+</style>
 <style>
 <%# 全体のボーダーを表示・スクロールバーを非表示%>
 * {
