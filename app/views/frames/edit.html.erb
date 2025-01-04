@@ -31,7 +31,7 @@
             </div>
           </div>
         </div>
-         <p class="image-label">追加した画像</p>
+        <p class="image-label">追加した画像</p>
         <div class="preview-container">
           <div id="post_images" style="display: none;">
             <div id="preview"></div>
@@ -67,16 +67,16 @@
   }
   .form-wrapper {
     display: flex;
-    flex-direction: column; /* 縦並び */
-    align-items: center;    /* 中央揃え */
-    width: 100%;        /* 親要素の幅いっぱいを使用 */
-    max-width: 700px;       /* 必要に応じて最大幅を制限 */
-    margin: 0 auto;    /* 中央に配置 */
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
 .form-container, .cancel-button {
   width: 100%;
-  margin: auto;        /* 両コンテナの幅を揃える */
+  margin: auto;
 }
 .form-container input, .cancel {
   font-size: 30px;
@@ -87,13 +87,13 @@
   margin: auto;
 }
 #frame_image {
-  display: block; /* ブロック要素として表示 */
-  margin: 10px 0; /* 上下に余白を追加 */
-  padding: 5px; /* 内側の余白を追加 */
-  border: 1px solid #ccc; /* 薄いグレーの枠線 */
-  border-radius: 4px; /* 角を丸くする */
-  width: 100%; /* 幅を100%にしてコンテナにフィットさせる */
-  cursor: pointer; /* マウスカーソルをポインターに変更 */
+  display: block;
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  cursor: pointer;
   font-size: 20px;
 }
 .form-container textarea {
@@ -105,27 +105,27 @@
 }
 
 .cancel-button {
-  margin-top: 20px;       /* フォームとの間隔を設定 */
+  margin-top: 20px;
   text-align: center;
-  width: 50%; /* ボタンを中央揃え */
+  width: 50%;
 }
 
 .cancel-button .cancel {
-  display: block;         /* ボタンをブロック要素化して中央揃えを強制 */
+  display: block;
   width: 100%; 
-  text-decoration: none;           /* ボタン幅をフォームと揃える */
+  text-decoration: none;
 }
 </style>
 <style>
 .preview-container {
-  display: flex; /* フレックスボックスを使用 */
-  justify-content: center; /* 水平方向に中央揃え */
-  align-items: center; /* 垂直方向に中央揃え */
-  max-width: 100%; /* コンテナの幅を全体に合わせる */
-  max-height: 100%; /* 必要に応じて高さを指定 */
-  border: 1px dashed #ccc; /* プレビューエリアの見た目を調整 */
-  margin-top: 20px; /* フォームとの間隔を設定 */
-  background-color: #f8f9fa; /* 見やすくするための背景色 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px dashed #ccc;
+  margin-top: 20px;
+  background-color: #f8f9fa;
   overflow: hidden;
 }
 #post_images {
@@ -147,14 +147,14 @@
 
 <style>
 .preset-preview-container {
-  display: flex; /* フレックスボックスを使用 */
-  justify-content: center; /* 水平方向に中央揃え */
-  align-items: center; /* 垂直方向に中央揃え */
-  width: 100%; /* コンテナの幅を全体に合わせる */
-  height: 100%; /* 必要に応じて高さを指定 */
-  border: 1px dashed #ccc; /* プレビューエリアの見た目を調整 */
-  margin-top: 20px; /* フォームとの間隔を設定 */
-  background-color: #f8f9fa; /* 見やすくするための背景色 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed #ccc;
+  margin-top: 20px;
+  background-color: #f8f9fa;
   overflow: hidden;
 }
 
@@ -165,10 +165,9 @@
   width: 100%;
   height: 100%;
 }
-
 #preset-post_images img {
-  max-width: 100%; /* 画像が横方向に収まりきるように調整 */
-  max-height: 100%; /* 画像が縦方向に収まりきるように調整 */
+  max-width: 100%;
+  max-height: 100%;
 }
 #preset-preview p {
   width:100%;
@@ -180,32 +179,29 @@
 <script>
   console.log("読み込んだ");
   function loadImage(obj) {
-  // プレビュー表示エリアを取得
+
   var allPreview = document.getElementById("post_images");
   
-  // 既存のプレビューを削除
   var existingPreview = allPreview.querySelector("#preview");
   if (existingPreview) {
     existingPreview.remove();
   }
 
-  // 新しいプレビュー用要素を作成
   var newPreview = document.createElement("div");
   newPreview.setAttribute("id", "preview");
-  allPreview.style.display = "flex"; // プレビュー表示エリアを可視化
+  allPreview.style.display = "flex";
   allPreview.appendChild(newPreview);
 
-  // ファイルの読み込みとプレビューの表示
+
   var fileReader = new FileReader();
   fileReader.onload = function (e) {
     var img = new Image();
     img.src = e.target.result;
-    img.style.maxWidth = "100%"; // プレビュー画像のサイズ調整
+    img.style.maxWidth = "100%";
     img.style.maxHeight = "100%";
     newPreview.appendChild(img);
   };
 
-  // ファイルが選択されていれば処理を続行
   if (obj.files && obj.files[0]) {
     fileReader.readAsDataURL(obj.files[0]);
   }
@@ -219,14 +215,12 @@
     const inputLength = str.trim().length;
     const submitButton = document.getElementById("submit_button");
 
-    // 文字数を表示
     document.getElementById("inputlength").innerHTML = `${inputLength}/${maxLength}文字`;
 
-    // ボタンの有効/無効を切り替え
     if (value === "") {
-        submitButton.disabled = true; // 入力が空の場合はボタンを無効化
+        submitButton.disabled = true;
     } else {
-        submitButton.disabled = false; // 入力がある場合はボタンを有効化
+        submitButton.disabled = false;
     }
 }
 </script>

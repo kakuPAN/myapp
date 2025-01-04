@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show all_users_boards bookmarked_boards ]
+  before_action :set_user, only: %i[ edit update show show_profile all_users_boards bookmarked_boards ]
   before_action :set_search
 
   def new
@@ -52,10 +52,27 @@ class UsersController < ApplicationController
     render :show
   end
 
+  def show_profile
+    render :show_profile
+  end
+
+  def edit
+  end
+
+  def update
+    if @user.update(user_params)
+      flash[:success] = "ユーザープロフィールを変更しました"
+      redirect_to show_profile_user_path(@user)
+    else
+      render :edit
+      flash[:danger] = "変更を保存できません"
+    end
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:user_name, :email, :password, :password_confirmation, :avater_image)
+    params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avater_image)
   end
 
   def set_user
