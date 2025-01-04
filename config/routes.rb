@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :users
+  resources :users do
+    member do
+      get :all_users_boards
+      get :bookmarked_boards
+    end
+  end
   resources :boards do
     member do
       patch :make_board_private

@@ -9,9 +9,7 @@ class BoardsController < ApplicationController
       redirect_to boards_path(page: @page) and return
     end
     
-    @frames = 
-    
-    if @index_boards.empty? && @page > 1 # 表示できる投稿が存在しない場合、このコードがないとリダイレクトが繰り返されエラーになる。
+    if @index_boards.empty? && @index_boards.current_page > 1 # 表示できる投稿が存在しない場合、このコードがないとリダイレクトが繰り返されエラーになる。
       redirect_to boards_path(page: @index_boards.total_pages) and return
     end
   end
@@ -110,14 +108,14 @@ class BoardsController < ApplicationController
   end
 
   def set_search
-    @page = params[:page].to_i # 不正なページ番号を補正（0以下の値や文字列を1にする）
-    @page = 1 if @page < 1
+    @index_page = params[:page].to_i # 不正なページ番号を補正（0以下の値や文字列を1にする）
+    @index_page = 1 if @index_page < 1
     if current_user
       @q = Board.where("access_level = ? OR user_id = ?", 1, current_user.id).ransack(params[:q])
     else
       @q = Board.where(access_level: 1).ransack(params[:q])
     end
-    @index_boards = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(@page).per(2)
+    @index_boards = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(@index_page).per(2)
   end
 
   def all_boards_page_for(board) #詳細ページから一覧ページに戻る際に、同じ投稿が表示されるページにアクセスするためのメソッド
