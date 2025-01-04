@@ -13,7 +13,7 @@
   <% if @index_boards %>
     <div class="board-cards recommend-boards"> <!-- おすすめの投稿 -->
       <% @index_boards.each do |board| %>
-        <%= render "index_board", board: board %>
+        <%= render "shared/board_card", board: board %>
       <% end %>
     </div>
   <% else %>

@@ -14,13 +14,13 @@ User.create!(
      email: "nanaka@email.com",
      password: "pass",
      password_confirmation: "pass",
-     user_name: "佐藤"
+     user_name: "志田"
     },
     {
       email: "ishigami@email.com",
       password: "pass",
       password_confirmation: "pass",
-      user_name: "中川"
+      user_name: "石上"
      },
      {
      email: "kasuga@email.com",
@@ -36,50 +36,62 @@ Board.create!(
     {
       title: "桜の花びら見るたびに",
       user_id: 1,
+      access_level: 1
     },
     {
       title: "生麦生米生卵",
-      user_id: 2
+      user_id: 2,
+      access_level: 1
     },
     {
       title: "サザエさんじゃんけん勝った！！！！",
-      user_id: 3
+      user_id: 3,
+      access_level: 1
     },
     {
       title: "ギザ十ゲット！",
-      user_id: 1
+      user_id: 2,
+      access_level: 1
     },
     {
       title: "１０kmマラソン新記録！！！",
-      user_id: 1
+      user_id: 1,
+      access_level: 1
     },
     {
       title: "財布落としたんだけど、後ろ歩いてた外国の方が拾って届けてくれた\n優しい",
-      user_id: 1
+      user_id: 1,
+      access_level: 1
     },
     {
-      title: "サザエさんじゃんけん勝った！！！！",
-      user_id: 3
+      title: "正月だ〜",
+      user_id: 3,
+      access_level: 1
     },
     {
-      title: "ギザ十ゲット！",
-      user_id: 1
+      title: "もう疲れたな",
+      user_id: 1,
+      access_level: 1
     },
     {
-      title: "１０kmマラソン新記録！！！",
-      user_id: 1
+      title: "ケルト音楽にハマってる",
+      user_id: 2,
+      access_level: 1
     },
     {
-      title: "財布落としたんだけど、後ろ歩いてた外国の方が拾って届けてくれた\n優しい",
-      user_id: 1
+      title: "最近腹筋ついてきた...かも？",
+      user_id: 1,
+      access_level: 1
     },
     {
-      title: "サザエさんじゃんけん勝った！！！！",
-      user_id: 3
+      title: "ハロワ行かねば",
+      user_id: 3,
+      access_level: 1
     },
     {
-      title: "ギザ十ゲット！",
-      user_id: 1
+      title: "流石に半袖は寒いか笑",
+      user_id: 1,
+      access_level: 1
     }
   ]
 )
@@ -167,31 +179,5 @@ Comment.create!(
       board_id: 6
     },
 
-  ]
-)
-
-Task.create!(
-  [
-    {
-      user_id: 1,
-      title: "カリキュラム10　進める",
-      body: "まずは１〜３を終わらせる",
-      deadline: Time.current.change(sec: 0),
-      access_level: 1
-    },
-    {
-      user_id: 1,
-      title: "河川敷",
-      body: "河川敷ランニング30分3セット", 
-      deadline: Time.current.change(sec: 0),
-      access_level: 1
-    },
-    {
-      user_id: 1,
-      title: "NiSA　見直し",
-      body: "投資先を検討する",
-      deadline: Time.current.change(sec: 0),
-      access_level: 1
-    }
   ]
 )

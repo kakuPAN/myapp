@@ -1,0 +1,118 @@
+<div class="mypage-header">
+  <div class="user-profile">
+    <div class="users-info">
+        <div class="users-avater-image">
+          <% if @user.avater_image.attached? %>
+            <%= image_tag @user.avater_image %>
+          <% else %>
+            <%= image_tag "images.jpeg"%>
+          <% end %>
+        </div>
+        <div class="users-name">
+          <%= @user.user_name %>
+        </div>
+        <div class="setting">
+          <button><% if current_user&.id == @user.id %><p>ユーザー設定(ログインユーザーのみ)</p><% end %></button>
+        </div>
+    </div>
+    <div class="users-intro">
+      <p>ckUUaHRIGeq0MoteyqYHWlbZNMghkCu1C8Vm6Zis5O3UgWpbjIIP2IsZZ6v3QRFkbUSLZUpoGMKmgfn75S34G28HEpOQeDjgo3vZ<p>
+      <% @user.profile %>
+    </div>
+  </div>
+  <div class="most-frequent-comment">
+    <p>サービスクラスでコメントを集計し分析。時間がかかるようなら1日１回か２回実行し、決まった時間に更新する最も多くコメントされたフレーズ（3種類）　件数</p>
+  </div>
+</div> <!-- 右寄せ　-->
+
+<style>
+* {
+    /*outline: 2px solid blue;*/
+    scrollbar-width: none;
+  }
+</style>
+
+<style>
+.mypage-header {
+  display: flex; /* Flexbox を有効化 */
+  justify-content: space-between; /* コンテナ内のスペースを均等配置 */
+  align-items: center; /* 垂直方向を中央揃え */
+  gap: 20px; /* 要素間の間隔を設定 */
+  padding: 20px 15%;
+  padding-bottom: 20px;
+  margin: auto;
+  text-align: center;
+  border: 3px solid #ddd;
+}
+@media (max-width: 900px){
+  .mypage-header {
+   flex-direction: column;
+  }  
+}
+@media (max-width: 1500px){
+  .user-profile {
+   flex-direction: column;
+  }  
+}
+.user-profile {
+  padding-left: 20px;
+  display: flex;
+  justify-content: space-between; /* コンテナ内のスペースを均等配置 */
+  align-items: center; /* 垂直方向を中央揃え */
+  width: 60%;
+}
+.users-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* コンテナ内のスペースを均等配置 */
+  align-items: center; /* 垂直方向を中央揃え */
+ 
+  margin: 20px
+}
+.users-avater-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+   
+  border-radius: 50%;
+}
+.user-avater-image img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto; 
+  display: block;
+}
+.users-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* コンテナ内のスペースを均等配置 */
+  align-items: center; /* 垂直方向を中央揃え */
+  word-wrap: break-word; /* 長い単語で適宜改行 */
+  word-break: break-word; /* 必要に応じて単語を分割して改行 */
+  overflow: hidden; /* はみ出た部分を隠す */
+  padding: 20px;
+  margin: auto;
+  background: #ddd;
+}
+.users-intro p {
+  min-width: 50px;
+  max-width: 400px;
+  flex-wrap: wrap;
+}
+.users-name {
+  max-width: 300px;
+  font-size: 30px;
+  word-wrap: break-word; /* 長い単語で適宜改行 */
+  word-break: break-word; /* 必要に応じて単語を分割して改行 */
+ 
+}
+.most-frequent-comment {
+  flex: 1;
+  border: 2px solid #ddd;
+  padding-right: 20px;
+}
+</style>
