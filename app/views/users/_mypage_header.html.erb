@@ -5,7 +5,7 @@
         <% if @user.avatar_image.attached? %>
           <%= image_tag @user.avatar_image %>
         <% else %>
-          <%= image_tag "images.jpeg"%>
+          <%= image_tag "free_images/user_icon_4.png" %>
         <% end %>
       </div>
       <div class="users-name">
@@ -78,10 +78,10 @@
   overflow: hidden;
   border-radius: 50%;
 }
-.user-avatar-image img {
+.users-avatar-image img {
   object-fit: contain;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 200px;
+  max-height: 200px;
   margin: auto; 
   display: block;
 }

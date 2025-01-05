@@ -53,10 +53,19 @@ class UsersController < ApplicationController
   end
 
   def show_profile
+    unless current_user == @user
+      redirect_to user_path(@user)
+      flash[:danger] = "権限がありません"
+      return
+    end
     render :show_profile
   end
 
   def edit
+    unless current_user == @user
+      redirect_to user_path(@user)
+      flash[:danger] = "権限がありません"
+    end
   end
 
   def update
