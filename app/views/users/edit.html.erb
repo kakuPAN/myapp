@@ -9,11 +9,11 @@
       <div class="preset-preview-container">
         <div id="preset-post_images" style="">
           <div id="preset-preview">
-            <% if @user.avater_image.attached? &&
-                  @user.avater_image.attachment.blob.present? &&
-                  @user.avater_image.attachment.blob.persisted? %>
+            <% if @user.avatar_image.attached? &&
+                  @user.avatar_image.attachment.blob.present? &&
+                  @user.avatar_image.attachment.blob.persisted? %>
                   <div class="image-label">設定中の画像</div>
-                  <%= image_tag @user.avater_image %>
+                  <%= image_tag @user.avatar_image %>
             <% else %>
               <%= image_tag "images.jpeg" %>
             <% end %>
@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="mb-3">
-        <%= f.file_field :avater_image, id: "avatar-image", onchange: "loadImage(this); checkForm();" %>
+        <%= f.file_field :avatar_image, id: "avatar-image", onchange: "loadImage(this); checkImage();" %>
       </div>
       <div class="mb-3">
         <%= f.text_field :user_name, maxlength: 20, id: "user-name", class: "form-control", placeholder: "ユーザーネームを入力してください", onkeyup: "ShowUserNameLength(value);" %>

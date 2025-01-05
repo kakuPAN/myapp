@@ -68,17 +68,44 @@
     <% end %>
   </div>
 </div>
-<div class="comment-wrapper">
+<div class="comment-area-wrapper">
   <div class="comment-area">
     <div class="comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%><%# フォロー中のユーザーのコメントは強調表示 %>
       <% board.comments.each do |comment| %>
-        <%= link_to user_path(comment.user), class: "comment-link" do %>
-          <% if current_user && current_user.id == comment.user_id %>
-            <span class="comment-text comment_by_current_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= simple_format(comment.body) %></span>
-          <% elsif %>
-            <span class="comment-text comment_by_board_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= simple_format(comment.body) %></span>
-          <% else %>
-            <span class="comment-text comment_by_other_user"><i class="bi bi-emoji-sunglasses-fill"></i><%= simple_format(comment.body) %></span>
+        <%= link_to new_board_comment_reply_path(board,comment), class: "comment-link" do %>
+          <% comment_class_name = comment_class_name(board, comment) %>
+          <div class="comment-wrapper">
+            <div class="comment-avatar">
+              <% if comment.user.avatar_image.attached? %>
+                <%= image_tag comment.user.avatar_image, class: "avatar-image" %>
+              <% else %>
+                <i class="bi bi-person-circle avatar-icon"></i>
+              <% end %>
+              <div class="commented-user"><%= comment.user.user_name %></div>
+            </div>
+            <div class="comment-text <%= comment_class_name %>">
+              <%= simple_format(comment.body) %>
+            </div>
+          </div>
+          <% if comment.replies.any? %>
+            <div class="replies-wrapper">
+              <% comment.replies.order(:created_at).each do |reply| %>
+                <div class="reply-wrapper">
+                  <% reply_class_name = reply_class_name(board, reply) %>
+                  <div class="reply-avatar">
+                    <% if reply.user.avatar_image.attached? %>
+                      <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
+                    <% else %>
+                      <i class="bi bi-person-circle avatar-icon"></i>
+                    <% end %>
+                    <div class="replied-user"><%= reply.user.user_name %></div>
+                  </div>
+                  <div class="reply-text <%= reply_class_name %>">
+                    <%= simple_format(reply.body) %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
           <% end %>
         <% end %>
       <% end %>
@@ -118,4 +145,49 @@
 	height: 100%;
   border: 2px solid #ddd;
 }
+</style>
+
+<style>
+.replies-wrapper {
+  margin-left: 20px;
+  border-left: 2px solid #ddd;
+}
+.reply-wrapper {
+  margin-bottom: 10px;
+}
+.comment-text, .reply-text {
+  display: block;
+  margin: 20px;
+  font-size: 20px;
+}
+.comment-text {
+  color: black;
+}
+.reply-text {
+  color: #555;
+}
+.comment-avatar, .reply-avatar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  overflow: hidden;
+  margin: 20px;
+}
+.commented-user, .replied-user {
+  font-size: 20px;
+  color: black;
+  margin-left: 10px;
+}
+.avatar-image {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+.avatar-icon {
+  font-size: 40px;
+  color: #aaa;
+}
+
 </style>

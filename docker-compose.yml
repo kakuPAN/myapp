@@ -48,16 +48,16 @@ services:
     command: redis-server --appendonly yes
     ports:
       - 6379:6379
-  sidekiq:
-    build:
-      context: .
-      dockerfile: Dockerfile.sidekiq
-    command: bundle exec sidekiq
-    volumes:
-      - .:/myapp
-    depends_on:
-      - db
-      - redis
+  # sidekiq:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.sidekiq
+  #   command: bundle exec sidekiq
+  #   volumes:
+  #     - .:/myapp
+  #   depends_on:
+  #     - db
+  #     - redis
 
 
 volumes:

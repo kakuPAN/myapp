@@ -1,9 +1,9 @@
 <div class="mypage-header">
   <div class="user-profile">
     <div class="users-info">
-      <div class="users-avater-image">
-        <% if @user.avater_image.attached? %>
-          <%= image_tag @user.avater_image %>
+      <div class="users-avatar-image">
+        <% if @user.avatar_image.attached? %>
+          <%= image_tag @user.avatar_image %>
         <% else %>
           <%= image_tag "images.jpeg"%>
         <% end %>
@@ -69,7 +69,7 @@
   align-items: center; /* 垂直方向を中央揃え */
   margin: 20px
 }
-.users-avater-image {
+.users-avatar-image {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,7 +78,7 @@
   overflow: hidden;
   border-radius: 50%;
 }
-.user-avater-image img {
+.user-avatar-image img {
   object-fit: contain;
   max-width: 100%;
   max-height: 100%;
