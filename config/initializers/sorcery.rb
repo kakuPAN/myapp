@@ -221,8 +221,8 @@ Rails.application.config.sorcery.configure do |config|
 
   config.line.key = Rails.application.credentials.dig(:line, :channel_id)
   config.line.secret = Rails.application.credentials.dig(:line, :channel_secret)
-  # config.line.callback_url = 'https://本番環境のドメイン/oauth/callback?provider=line'
-  config.line.callback_url = "http://localhost:3000/oauth/callback?provider=line" # httpsではなくhttp
+  config.line.callback_url = "https://task-machi-app.onrender.com/oauth/callback?provider=line"
+  # config.line.callback_url = "http://localhost:3000/oauth/callback?provider=line" # httpsではなくhttp
   config.line.scope = "profile"
   # config.line.bot_prompt = "normal"
   config.line.user_info_mapping = {user_name: 'displayName'}
