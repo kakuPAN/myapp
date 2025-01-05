@@ -83,12 +83,13 @@ group :development, :test do
   gem "erb_lint", require: false
 
   gem "factory_bot_rails"
-
   gem "faker"
-
   gem "database_cleaner"
 
   gem "line-bot-api"
+  gem "omniauth-auth0"
+  gem "omniauth-line"
+  gem "omniauth-rails_csrf_protection"
 end
 
 group :development do

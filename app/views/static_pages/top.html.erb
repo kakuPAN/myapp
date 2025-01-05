@@ -10,6 +10,7 @@
       </style>
       <span><%= link_to "ユーザー作成", new_user_path, class: "link-tag" %></span>
       <span><%= link_to "ログイン", login_path, class: "link-tag" %></span>
+      <%= link_to 'LINEでログイン', auth_at_provider_path(provider: :line) %>
     </div>
   </div>
 </div>

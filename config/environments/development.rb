@@ -2,7 +2,8 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
+  config.hosts << "host.docker.internal:3000" # ngrokで公開したホストにアクセスするための記述
+  config.hosts << ".ngrok-free.app" # ngrokで公開したホストにアクセスするための記述
   # Make code changes take effect immediately without server restart.
   config.enable_reloading = true
 

@@ -48,6 +48,7 @@ services:
     command: redis-server --appendonly yes
     ports:
       - 6379:6379
+
   # sidekiq:
   #   build:
   #     context: .
@@ -58,7 +59,6 @@ services:
   #   depends_on:
   #     - db
   #     - redis
-
 
 volumes:
   redis_volume:

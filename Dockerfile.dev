@@ -1,5 +1,4 @@
-FROM ruby:3.2.3
-ENV LANG C.UTF-8
+FROM ruby:3.2.2
 ENV TZ Asia/Tokyo
 RUN apt-get update -qq \
 && apt-get install -y ca-certificates curl gnupg \
@@ -9,8 +8,17 @@ RUN apt-get update -qq \
 && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
 && wget --quiet -O - /tmp/pubkey.gpg https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs yarn vim
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs yarn vim imagemagick
 RUN mkdir /myapp
 WORKDIR /myapp
-RUN gem install bundler
-COPY . /myapp
+ADD Gemfile /myapp/Gemfile
+ADD Gemfile.lock /myapp/Gemfile.lock
+RUN bundle install
+ADD . /myapp
+COPY . .
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+EXPOSE 3000
+
+CMD [ "rails","server","-b","0.0.0.0" ]
