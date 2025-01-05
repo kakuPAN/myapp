@@ -64,7 +64,7 @@ class UsersController < ApplicationController
       flash[:success] = "ユーザープロフィールを変更しました"
       redirect_to show_profile_user_path(@user)
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
       flash[:danger] = "変更を保存できません"
     end
   end
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avater_image)
+    params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avatar_image)
   end
 
   def set_user

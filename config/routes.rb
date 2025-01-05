@@ -18,7 +18,9 @@ Rails.application.routes.draw do
         patch :move_back
       end
     end
-    resources :comments
+    resources :comments do
+      resources :replies
+    end
   end
   resources :tasks do
     member do

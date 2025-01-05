@@ -3,7 +3,8 @@ class User < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
   has_many :boards, dependent: :destroy
-  has_one_attached :avater_image
+  has_many :replies, dependent: :destroy
+  has_one_attached :avatar_image
 
   validates :user_name, presence: true, length: { maximum: 20 }
   validates :profile, length: { maximum: 250 }
@@ -16,14 +17,14 @@ class User < ApplicationRecord
   validate :image_size
 
   def image_content_type
-    if avater_image.attached? && !avater_image.content_type.in?(%w[image/jpeg image/jpg image/png])
-      errors.add(:avater_image, '：ファイル形式が、JPEG, JPG, PNG以外になってます。ファイル形式をご確認ください。')
+    if avatar_image.attached? && !avatar_image.content_type.in?(%w[image/jpeg image/jpg image/png])
+      errors.add(:avatar_image, '：ファイル形式が、JPEG, JPG, PNG以外になってます。ファイル形式をご確認ください。')
     end
   end
 
   def image_size
-    if avater_image.attached? && avater_image.blob.byte_size > 3.megabytes
-      errors.add(:avater_image, '：3MB以下のファイルをアップロードしてください。')
+    if avatar_image.attached? && avatar_image.blob.byte_size > 3.megabytes
+      errors.add(:avatar_image, '：3MB以下のファイルをアップロードしてください。')
     end
   end
 
