@@ -1,16 +1,13 @@
 <div class="whole-wrapper">
   <div class="sky-container">
     <div class="title-wrapper">
-        <h1>コツコツタスク</h1>
         <a href="https://lin.ee/ptXYQmj"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"></a>
       <style>
         .title-logo {
           text-decoration: none;
         }
       </style>
-      <span><%= link_to "ユーザー作成", new_user_path, class: "link-tag" %></span>
-      <span><%= link_to "ログイン", login_path, class: "link-tag" %></span>
-      <%= link_to 'LINEでログイン', auth_at_provider_path(provider: :line) %>
+      <%= link_to 'LINEでログインorユーザー登録', auth_at_provider_path(provider: :line) %>
     </div>
   </div>
 </div>
