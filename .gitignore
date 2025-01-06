@@ -9,7 +9,7 @@
 
 # Ignore all environment files.
 /.env*
-/app/assets/images
+/app/assets/images/dev_images
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*

@@ -15,7 +15,7 @@
                   <div class="image-label">設定中の画像</div>
                   <%= image_tag @user.avatar_image %>
             <% else %>
-              <%= image_tag "images.jpeg" %>
+              <%= image_tag "free_images/user_icon_4.png" %>
             <% end %>
           </div>
         </div>
@@ -192,7 +192,6 @@
 
 <!-- プレビュー表示 -->
 <script> 
-  console.log("読み込んだ");
   function loadImage(obj) {
   const newImageLabel = document.getElementById("new-image-label");
   var allPreview = document.getElementById("post_images");

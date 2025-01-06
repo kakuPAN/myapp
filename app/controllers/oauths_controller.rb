@@ -17,7 +17,7 @@ class OauthsController < ApplicationController
 
        reset_session # protect from session fixation attack
        auto_login(@user)
-       redirect_to edit_user_path(@user),
+       redirect_to edit_user_path(@user)
        flash[:success] = "#{provider.titleize}!からアカウントを作成します"
      rescue
        redirect_to login_path
