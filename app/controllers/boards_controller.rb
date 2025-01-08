@@ -31,19 +31,20 @@ class BoardsController < ApplicationController
 
   def show
     @board = Board.find_by(id: params[:id])
-    if @board
-      @board
-    else
-      redirect_to boards_path
-      flash.now[:danger] = "ボードが見つかりませんでした。"
-      return
-    end
-     # 現在の投稿
-    if @board.access_level == 0 && @board.user_id != current_user&.id
+    
+    if !@board  || @board.access_level == 0 && @board.user_id != current_user&.id
       redirect_to boards_path
       flash[:danger] = "投稿が存在しません"
       return 
     end
+
+    @visitor = UserBoard.find_by(user_id: current_user, board_id: @board.id)
+    if @visitor&.unvisited?
+      @visitor.update(trigger: 1)
+    elsif @visitor&.answering?
+      @visitor.update(trigger: 2)
+    end
+    
     @frames = Frame.where(board_id: @board.id).order(:frame_number)
     @pagination_context == :index
     @page = user_boards_page_for(@board)
@@ -60,6 +61,15 @@ class BoardsController < ApplicationController
     if @boards.out_of_range? # Kaminari の out_of_range? メソッドを使用
       redirect_to boards_path(page: @boards.total_pages) and return
     end
+  end
+
+  def answer
+    @board = Board.find(params[:id])
+    if current_user && @board.user_id != current_user.id
+      UserBoard.find_or_create_by(user: current_user, board: @board)
+    end
+    redirect_to board_path(@board)
+    flash[:info] = "30秒以内に回答してください"
   end
 
   def edit

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     member do
       patch :make_board_private
       patch :make_board_publish
+      get :answer
     end
     resources :frames do
       member do

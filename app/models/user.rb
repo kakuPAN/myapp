@@ -2,7 +2,9 @@ class User < ApplicationRecord
   authenticates_with_sorcery!
   has_many :authentications, :dependent => :destroy
   accepts_nested_attributes_for :authentications
-  
+
+  has_many :user_boards
+  has_many :visit_boards, through: :user_boards, source: :board
   has_many :tasks, dependent: :destroy
   has_many :boards, dependent: :destroy
   has_many :replies, dependent: :destroy

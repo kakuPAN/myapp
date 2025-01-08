@@ -2,7 +2,8 @@ class Board < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
   has_many :frames, dependent: :destroy
-
+  has_many :user_boards
+  has_many :visit_users, through: :user_boards, source: :user
   validates :title, presence: true, length: { maximum: 100 }
 
   enum :access_level, { private_access: 0, public_access: 1 }

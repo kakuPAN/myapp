@@ -4,6 +4,7 @@ class RepliesController < ApplicationController
   before_action :set_variables
 
   def new
+    @visitor = UserBoard.find_by(user_id: current_user, board_id: @board.id)
     @reply = @reply_comment.replies.build
     @context = :reply
     render "boards/show"
