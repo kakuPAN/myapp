@@ -10,6 +10,13 @@
     <% end %>
   </div>
   <div class="container">
+    <div class="board-hide <%= "disabled" if @visitor && (@visitor.visited? || @visitor.answering?) || board.user_id == current_user&.id %>">
+      <div class="hide-label">
+        <div class="hide-label-text"><%= board.title %></div>
+        <div class="answer-button"><%= link_to "回答する", answer_board_path(board) %></div>
+      
+      </div>
+    </div>
     <% @frames.each do |frame| %>
       <div class="section">
         <div class="board-body">
@@ -70,7 +77,19 @@
 </div>
 <div class="comment-area-wrapper">
   <div class="comment-area">
-    <div class="comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%><%# フォロー中のユーザーのコメントは強調表示 %>
+    <div class="comment-area-hide <%= "disabled" if @visitor&.visited? || board.user_id == current_user&.id %>" id="comment-area-hide">
+      <div class="hide-label">
+        <% if @visitor&.answering? %>
+          <div class="answering-container">
+            <div id="now-answering">回答中です</div>
+            <div id="countdown-timer">残り30秒</div>
+          </div>
+        <% else %>
+          <div class="hide-label-text">コメント欄閉鎖中</div>
+        <% end%>
+      </div>
+    </div>
+    <div class="comment-track" id="comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%><%# フォロー中のユーザーのコメントは強調表示 %>
       <% board.comments.each do |comment| %>
         <%= link_to new_board_comment_reply_path(board,comment), class: "comment-link" do %>
           <% comment_class_name = comment_class_name(board, comment) %>
@@ -118,7 +137,7 @@
     </div>
   </div>
   <div class="comment-form-wrapper">
-    <div class="comment-form"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
+    <div class="comment-form <%= "disabled" unless @visitor&.answering? %>"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
       <%= form_with model: [board, @comment], local: true do |f| %>
         <%= f.text_area :body, class: "form-control form-textarea" %>
         <div>

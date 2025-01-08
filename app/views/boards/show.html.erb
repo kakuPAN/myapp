@@ -34,14 +34,40 @@
     <% end %>
   </div>
 </div>
-<style>
-  
-  .page-numbers a {
+<script>
+document.addEventListener("turbo:load", function () {
+  const nowAnswering = document.getElementById("now-answering");
+  const countdownDisplay = document.getElementById("countdown-timer");
+  const hideComment = document.getElementById("comment-area-hide");
+  const commentTrack = document.getElementById("comment-track");
+  if (countdownDisplay) {
     
-  }
-</style>
+      let timeLeft = 30; // 初期値は30秒
 
-<!-- 投稿者の他の投稿表示用　--> <!-- 投稿の数が奇数の場合、余ったスペースに「リアクションの多い投稿」や「新しい投稿」などへのリンクをつけたカードを配置する-->
+      // カウントダウンを表示する
+      countdownDisplay.textContent = `残り${timeLeft}秒`;
+
+      // 1秒ごとにカウントを減らす
+      const countdownInterval = setInterval(function () {
+        timeLeft--;
+        if (timeLeft >= 0) {
+          countdownDisplay.textContent = `残り${timeLeft}秒`;
+        }
+        // カウントが0になったら終了
+        if (timeLeft <= 0) {
+          nowAnswering.textContent = "時間切れ！";
+          countdownDisplay.textContent = ``
+        }
+        if (timeLeft <= -5) {
+          clearInterval(countdownInterval); // カウントダウンを停止
+          hideComment.classList.add("disabled");
+          commentTrack.style.animation = "slideDown var(--animation-duration) linear infinite";
+        }
+      }, 1000); // 1秒ごとに実行
+    ;
+  };
+});
+</script>
 
 <!-- ユーザーコメント欄 !-->
 <!-- 表示領域の幅を変更する場合には"800"も同時に変更すること!-->
@@ -309,7 +335,40 @@
   height: 100%;
   border: 2px solid pink;
   padding-top: 10px;
+  position: relative;
 }
+
+<%# コメント欄閉鎖 %>
+.comment-area-hide, .board-hide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background: #ddd;
+  opacity: 1;
+}
+.comment-area-hitde.disabled {
+  display: none;
+}
+.board-hide.disabled {
+  display: none;
+}
+.comment-area-hide.disabled {
+  display: none;
+}
+.hide-label {
+  display: flex;
+  text-align: center;
+}
+.hide-label-text, .answering-container {
+  z-index: 101;
+  font-size: 40px;
+  margin: auto;
+}
+<%# ここまで %>
+<%# 投稿閉鎖 %>
+
+<%# ここまで %>
 .comment-area {
   position: relative;
   height: 400px; /* コンテナの高さ */
@@ -346,7 +405,7 @@
 
 @keyframes slideDown {
   from {
-    transform: translateY(var(--start-translate, -100%));
+    transform: translateY(var(--start-translate, -120%));
   }
   to {
     transform: translateY(var(--end-translate, -200px));
@@ -361,6 +420,9 @@
     position: relative;
     border: 2px solid pink;
   }
+  .comment-form.disabled textarea,.comment-form.disabled input {
+    pointer-events: none;
+  } 
   .comment-form textarea {
     position: absolute;
     height: 100%;

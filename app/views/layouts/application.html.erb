@@ -23,3 +23,21 @@
     <%= yield %>
   </body>
 </html>
+
+<script>
+document.addEventListener("turbo:load", function () {
+  const flashMessage = document.getElementById('flash-message'); 
+  if (flashMessage) {
+    let timeLeft = 5; // 表示時間を5秒に設定
+
+    const countdownInterval = setInterval(function () {
+      timeLeft--; // カウントダウン
+      if (timeLeft <= 0) { // 0秒になったら
+        clearInterval(countdownInterval); // タイマー停止
+        flashMessage.remove(); // 要素を削除
+        console.log("実行")
+      }
+    }, 1000); // 1秒ごとに実行
+  }
+});
+</script>
