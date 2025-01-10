@@ -1,6 +1,7 @@
-<div class="reply-container">
-  
-  <i class="bi bi-x-circle-fill check-icon"></i>
+<div class="reply-container" id="reply-container">
+  <%= link_to board_path(board), class: "check-icon" do %>
+    <i class="bi bi-x-circle-fill"></i>
+  <% end %>
   <div class="reply-label">
     <%= link_to user_path(comment.user_id) do %>
       <% if comment.user.avatar_image.attached? %>

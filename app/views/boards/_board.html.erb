@@ -1,98 +1,44 @@
 <div class="scroll-content">
-  <div class="delete-edit-button">
-    <% if current_user&.id == board.user_id%>
+  <div class="container">
+    <% @frames.each do |frame| %>
+      <div class="section">
+        <div class="frame-number">
+          <% total_number = @frames.size %>
+          <% current_number = @frames.index(frame) + 1 %>
+          <p><%= current_number %>／<%= total_number%></p>
+        </div>
+        <div class="board-body">
+          <% if frame.image.attached? %>
+            <%= image_tag frame.image %>
+          <% else %>
+            <div class="board-body-text"><%= simple_format(frame.body) %></div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="board-title-label <%= board_color(board) %>">
+    <%= @board.title %>
+    <div class="delete-edit-button">
       <%= link_to board_path(board), data: { turbo_method: :delete }, class: "delete-button" do %>
         <i class="bi bi-trash3-fill"></i>
       <% end %>
       <%= link_to edit_board_path(board), class: "edit-button" do %>
         <i class="bi bi-pencil-fill"></i>
       <% end %>
-    <% end %>
-  </div>
-  <div class="container">
-    <div class="board-hide <%= "disabled" if @visitor && (@visitor.visited? || @visitor.answering?) || board.user_id == current_user&.id %>">
-      <div class="hide-label">
-        <div class="hide-label-text"><%= board.title %></div>
-        <div class="answer-button"><%= link_to "回答する", answer_board_path(board) %></div>
-      
-      </div>
     </div>
-    <% @frames.each do |frame| %>
-      <div class="section">
-        <div class="board-body">
-          <% if frame.image.attached? %>
-            <%= image_tag frame.image %>
-          <% else %>
-            <%= simple_format(frame.body) %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-  <div class="user-comment-area">
-    <%= link_to user_path(board.user_id), class: "user_page_link" do %>
-      <div class="user-comment-track"> 
-        <span class="user-comment-text"><i class="bi bi-emoji-sunglasses-fill"></i></span>
-        <span class="user-comment-text board-user-name"><%= board.user.user_name %></span>
-        <span class="user-comment-text" id="user-comment-body"><%= board.user.profile %></span> 
-      </div>
-    <% end %>
-  </div>
-  <div class="latest-board"> <!-- 前後の投稿に移動するボタン -->
-    <% if latest_board(board) %><!-- 最新 -->
-      <%= link_to board_path(latest_board(board)) do %>
-        <i class="bi bi-chevron-double-left prev-board-link"></i>
-      <% end %>
-    <% else %>
-      <i class="bi bi-chevron-double-left prev-board-link disabled"></i>
-    <% end %>
-  </div>
-  <div class="prev-board"><!-- 一つ新しい -->
-    <% if previous_board(board) %>
-      <%= link_to board_path(previous_board(board)) do %>
-        <i class="bi bi bi-chevron-left prev-board-link"></i>
-      <% end %>
-    <% else %>
-      <i class="bi bi bi-chevron-left prev-board-link disabled"></i>
-    <% end %>
-  </div>
-  <div class="next-board">
-    <% if next_board(board) %><!-- 一つ古い -->
-      <%= link_to board_path(next_board(board)) do %>
-        <i class="bi bi bi-chevron-right next-board-link"></i>
-      <% end %>
-    <% else %>
-      <i class="bi bi bi-chevron-right next-board-link disabled"></i>
-    <% end %>
-  </div>
-  <div class="oldest-board">
-    <% if oldest_board(board) %><!-- 最古 -->
-      <%= link_to board_path(oldest_board(board)) do %>
-        <i class="bi bi-chevron-double-right next-board-link"></i>
-      <% end %>
-    <% else %>
-      <i class="bi bi-chevron-double-right next-board-link disabled"></i>
-    <% end %>
   </div>
 </div>
 <div class="comment-area-wrapper">
+  <div class="comment-area-label <%= board_color(board) %>">
+    みんなのコメント
+  </div>
   <div class="comment-area">
-    <div class="comment-area-hide <%= "disabled" if @visitor&.visited? || board.user_id == current_user&.id %>" id="comment-area-hide">
-      <div class="hide-label">
-        <% if @visitor&.answering? %>
-          <div class="answering-container">
-            <div id="now-answering">回答中です</div>
-            <div id="countdown-timer">残り30秒</div>
-          </div>
-        <% else %>
-          <div class="hide-label-text">コメント欄閉鎖中</div>
-        <% end%>
-      </div>
-    </div>
     <div class="comment-track" id="comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%><%# フォロー中のユーザーのコメントは強調表示 %>
       <% board.comments.each do |comment| %>
-        <%= link_to new_board_comment_reply_path(board,comment), class: "comment-link" do %>
-          <% comment_class_name = comment_class_name(board, comment) %>
+        <%= link_to board_comments_path(board), class: "comment-link" do %>
+          <div id="reply-form-<%= comment.id %>"></div> <!-- リプライフォームを挿入する場所 -->
+          <% comment_class_name = comment_class_name(comment) %>
           <div class="comment-wrapper">
             <div class="comment-avatar">
               <% if comment.user.avatar_image.attached? %>
@@ -110,7 +56,7 @@
             <div class="replies-wrapper">
               <% comment.replies.order(:created_at).each do |reply| %>
                 <div class="reply-wrapper">
-                  <% reply_class_name = reply_class_name(board, reply) %>
+                  <% reply_class_name = reply_class_name(reply) %>
                   <div class="reply-avatar">
                     <% if reply.user.avatar_image.attached? %>
                       <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
@@ -137,11 +83,11 @@
     </div>
   </div>
   <div class="comment-form-wrapper">
-    <div class="comment-form <%= "disabled" unless @visitor&.answering? %>"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
+    <div class="comment-form"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
       <%= form_with model: [board, @comment], local: true do |f| %>
-        <%= f.text_area :body, class: "form-control form-textarea" %>
+        <%= f.text_area :body, class: "form-control" %>
         <div>
-          <%= f.submit "コメントを送信" %>
+          <%= f.submit "コメントを送信", class: "submit #{board_color(board)}" %>
         </div>
       <% end %> 
     </div>
@@ -163,6 +109,56 @@
 	scroll-snap-align: start;
 	height: 100%;
   border: 2px solid #ddd;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 100px;
+  position: relative;
+}
+.frame-number {
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ddd;
+  height: 30px;
+  padding: 2px 5px;
+  text-align: center;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+.board-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+}
+.board-body-text {
+  text-align: left;
+  padding: 0 10px;
+  font-size: 28px;
+}
+.board-body-text p {
+  word-break: break-word;
+  overflow-wrap: break-word; <%# 折り返しに必要 %>
+}
+.board-body img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  margin: auto;
+  display: block;
+}
+.create-board {
+  width: 100px;
+  text-align: center;
+}
+.create-board i {
+  font-size: 50px;
 }
 </style>
 

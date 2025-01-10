@@ -1,0 +1,13 @@
+<nav class="breadcrumbs">
+  <%= link_to root_path do %>
+    <span>HOME</span>
+  <% end %>
+  <% @breadcrumbs.each_with_index do |crumb, index| %>
+    <span>></span>
+    <% if index == @breadcrumbs.size - 1 %>
+      <span><%= crumb.title %></span> <!-- 現在のノード -->
+    <% else %>
+      <%= link_to crumb.title, board_path(crumb) %>
+    <% end %>
+  <% end %>
+</nav>

@@ -1,10 +1,11 @@
 <%= search_form_for @q, url: boards_path do |f| %>
-  <%= f.search_field :user_user_name_or_title_cont, placeholder: "投稿を検索" %>
+  <%= f.search_field :title_cont, placeholder: "投稿を検索" %>
   <%= f.submit "検索" %>
 <% end %>
 
 <style>
   input[type="search"] {
-        width: 300px;
+        width: 400px;
+        height: 50px;
     }
 </style>

@@ -10,72 +10,84 @@ module BoardsHelper
     (board_index / per_page) + 1
   end
 
-  def board_check(board)
-    if board.user_id == current_user&.id
-      boards = Board.where(user_id: board.user_id).order(created_at: :desc).pluck(:id)
+  def board_color(board)
+    color_type = board.id % 6
+    if color_type == 1
+      color_name = "red"
+    elsif color_type == 2
+      color_name = "green"
+    elsif color_type == 3
+      color_name = "blue"
+    elsif color_type == 4
+      color_name = "brown"
     else
-      boards = Board.where("user_id = ? AND access_level = ?", board.user_id, 1).order(created_at: :desc).pluck(:id)
+      color_name = "emerald"
     end
-
-    return nil if boards.blank? || !boards.include?(board.id)
-    board_index = boards.index(board.id)
-    return boards, board_index
+    color_name
   end
+
+  def board_image(board)
+    board.frames.limit(10).find { |frame| frame.image.attached? }
+  end
+
+  # def board_check(board)
+  #   parent_board = Board.find_by(id: board.parent_id)
+  #   return nil if (parent_board.blank? || !parent_board.include?(board.id)) && !parent_board&.children&.empty?
+  #   boards = parent_board.children.order(created_at: :desc).pluck(:id)
+  #   board_index = boards.index(board.id)
+  #   return boards, board_index
+  # end
   
-  def latest_board(board)
-    boards, board_index = board_check(board) 
-    if board_index == 0
-      nil
-    else
-      latest_board_id = boards.first
-    end
-  end
+  # def latest_board(board)
+  #   boards, board_index = board_check(board) 
+  #   if board_index == 0
+  #     nil
+  #   else
+  #     latest_board_id = boards.first
+  #   end
+  # end
 
-  def previous_board(board)
-    boards, board_index = board_check(board) 
-    if board_index == 0
-      nil
-    else
-    # 前のボードのIDを返す
-      previous_board_id = boards[board_index - 1]
-    end
-  end
+  # def previous_board(board)
+  #   boards, board_index = board_check(board) 
+  #   if board_index == 0
+  #     nil
+  #   else
+  #   # 前のボードのIDを返す
+  #     previous_board_id = boards[board_index - 1]
+  #   end
+  # end
 
-  def next_board(board)
-    boards, board_index = board_check(board) 
-    if board_index == boards.length - 1
-      nil
-    else
-    # 次のボードのIDを返す
-      next_board_id = boards[board_index + 1]
-    end
-  end
+  # def next_board(board)
+  #   boards, board_index = board_check(board) 
+  #   if board_index == boards.length - 1
+  #     nil
+  #   else
+  #   # 次のボードのIDを返す
+  #     next_board_id = boards[board_index + 1]
+  #   end
+  # end
 
-  def oldest_board(board)
-    boards, board_index = board_check(board) 
-    if board_index == boards.length - 1
-      nil
-    else
-      oldest_board_id = boards.last
-    end
-  end
+  # def oldest_board(board)
+  #   boards, board_index = board_check(board) 
+  #   if board_index == boards.length - 1
+  #     nil
+  #   else
+  #     oldest_board_id = boards.last
+  #   end
+  # end
 
-  def comment_class_name(board, comment) 
+  def comment_class_name(comment) 
     if current_user && current_user.id == comment.user_id
       comment_class_name = "comment_by_current_user"
-    elsif comment.user_id == board.user_id
-      comment_class_name = "comment_by_board_user"
     else
       comment_class_name = "comment_by_other_user"
     end
     comment_class_name
   end
 
-  def reply_class_name(board, reply) 
+  def reply_class_name(reply) 
     if current_user && current_user.id == reply.user_id
       reply_class_name = "comment_by_current_user"
-    elsif reply.user_id == board.user_id
-      reply_class_name = "comment_by_board_user"
     else
       reply_class_name = "comment_by_other_user"
     end

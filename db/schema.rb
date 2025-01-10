@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_06_075739) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_08_071047) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,12 +52,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_06_075739) do
   end
 
   create_table "boards", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title", null: false
-    t.integer "access_level", default: 0, null: false
-    t.index ["user_id"], name: "index_boards_on_user_id"
+    t.integer "parent_id"
+    t.index ["parent_id", "title"], name: "index_boards_on_parent_id_and_title", unique: true
   end
 
   create_table "comments", force: :cascade do |t|
@@ -125,7 +124,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_06_075739) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "boards", "users"
+  add_foreign_key "boards", "boards", column: "parent_id"
   add_foreign_key "comments", "boards"
   add_foreign_key "comments", "users"
   add_foreign_key "frames", "boards"

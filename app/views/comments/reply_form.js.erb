@@ -1,0 +1,2 @@
+const replyFormContainer = document.getElementById("reply-form-<%= @comment.id %>");
+replyFormContainer.innerHTML = `<%= j render partial: "reply_form", locals: { board: @board, comment: @comment, reply: @reply } %>`;

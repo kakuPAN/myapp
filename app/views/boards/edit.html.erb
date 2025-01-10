@@ -1,32 +1,45 @@
-<%= render "shared/header" %>
-<div class="edit-wrapper">
-  <div class="frames-wrapper">
-    <div class="add-frame">
-      <% if @frames.size < 4 %>
-        <%= link_to "本文フレームを追加", new_board_frame_path(@board, frame_type: :text), class: "btn btn-primary" %>
-        <%= link_to "画像フレームを追加", new_board_frame_path(@board, frame_type: :image), class: "btn btn-primary" %>
-      <% else %>
-        <p>フレームの最大数に達しています</p>
-      <% end %>
-    </div>
-    <% @frames.each do |frame| %>
-      <div class="frame-container">
-        <div class="frame-content">
-          <% if frame.image.attached? %>
-            <%= image_tag frame.image %>
-            <% frame_type = :image %>
-          <% else %>
-            <%= simple_format(frame.body) %>
-            <% frame_type = :text%>
+<div class="whole-wrapper">
+  <div class="edit-wrapper">
+    <div class="frames-wrapper">
+      <div class="delete-button">
+        <%= link_to "削除", board_path(@board), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
+      </div>
+      <div class="save-button">
+        <%= link_to "保存", board_path(@board), class: "btn btn-outline-success" %>
+      </div>
+      <div class="edit-board-container">
+        <div class="edit-board-form">
+          <div class="edit-board-title" id="edit-board-title"><%= @board.title %></div>
+          <%= form_with model: @board, id:"edit-form" do |f| %>
+            <i class="bi bi-caret-down-fill edit-arrow"></i>
+            <%= f.text_field :title, id:"title-text" %>
+            <%= f.submit "変更", id:"submit" %>
           <% end %>
         </div>
-        <div class="edit-button">
-          <%= link_to "編集", edit_board_frame_path(@board, frame, frame_type: frame_type), class: "btn btn-outline-secondary" %>
+      </div>
+      <div class="add-frame">
+        <%= link_to "本文フレームを追加", new_board_frame_path(@board, frame_type: :text), class: "btn btn-primary" %>
+        <%= link_to "画像フレームを追加", new_board_frame_path(@board, frame_type: :image), class: "btn btn-primary" %>
+      </div>
+      <% @frames.each do |frame| %>
+        <div class="frame-container" id="frame-container-<%= frame.frame_number %>">
+          <div class="frame-content">
+            <% if frame.image.attached? %>
+              <%= image_tag frame.image %>
+              <% frame_type = :image %>
+            <% else %>
+              <%= frame.body %>
+              <% frame_type = :text%>
+            <% end %>
+          </div>
         </div>
-        <div class="edit-button">
-          <%= link_to "削除", board_frame_path(@board, frame), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
-        </div>
-        <div class="move-button">
+        <div class="edit-tools" id="edit-tools-<%= frame.frame_number %>">
+          <div class="edit-button">
+            <%= link_to "編集", edit_board_frame_path(@board, frame, frame_type: frame_type), class: "btn btn-outline-secondary" %>
+          </div>
+          <div class="edit-button">
+            <%= link_to "削除", board_frame_path(@board, frame), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
+          </div>
           <div class="edit-button <%= "disabled" if frame.frame_number == 1 %>">
             <%= link_to "前に移動", move_forward_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary" %>
           </div>
@@ -34,19 +47,50 @@
             <%= link_to "後ろに移動", move_back_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary" %>
           </div>
         </div>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="access-level">
-    <div class="buttons">
-      <%= link_to "公開", make_board_publish_board_path(@board), data: { turbo_method: :patch }, class: "btn btn-outline-success #{"status-public" if @board.public_access? }" %>
-      <%= link_to "非公開", make_board_private_board_path(@board), data: { turbo_method: :patch }, class: "btn btn-outline-secondary #{"status-private" if @board.private_access? }" %>
-      <%= link_to "削除", board_path(@board), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
+      <% end %>
     </div>
   </div>
 </div>
-<!-- @board.frames.size == 0 なら公開ボタンを非アクティブにする -->
+<script>
+  document.addEventListener("turbo:load", function(){
+    const editForm = document.getElementById("edit-form");
+    const boardTitle = document.getElementById("edit-board-title");
+
+    if (editForm && boardTitle) {
+      editForm.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+      boardTitle.addEventListener("mouseover", function(){
+      editForm.style.display = "block";
+      });
+
+      document.addEventListener("click", function(){
+      editForm.style.display = "none"
+      });
+    };
+  });
+</script>
+
+<script>
+  document.addEventListener("turbo:load", function () {
+  const frameContainers = document.querySelectorAll("[id^='frame-container-']");
+
+  frameContainers.forEach(container => {
+    const frameNumber = container.id.replace("frame-container-", "");// フレーム番号を取得（idから抽出）
+    const editTools = document.getElementById(`edit-tools-${frameNumber}`);
+    container.addEventListener("mouseover", () => {
+      if (editTools) {
+        editTools.style.display = "block";
+      }
+    });
+    document.addEventListener("click", () => {
+      if (editTools) {
+        editTools.style.display = "none";
+      }
+    });
+  });
+});
+</script>
 
 <style>
 <%# 全体のボーダーを表示・スクロールバーを非表示%>
@@ -54,6 +98,37 @@
   /*outline: 2px solid blue;*/
   /*scrollbar-width: none;*/
 }
+</style>
+<style>
+  .edit-board-container {
+    margin-bottom: 100px;
+  }
+  .edit-board-title {
+    font-size: 25px;
+    text-align: center;
+    padding: 5px 20px;
+    background: #ededed;
+    border: 2px solid #ddd;
+    width: 100%;
+  }
+  #edit-form {
+    display: none;
+  }
+  .edit-board-form .bi {
+    font-size: 30px;
+    color: #0f54ff;
+  }
+  .edit-board-form input {
+    display: flex;
+    flex-direction: column;
+  }
+  .edit-board-form input[type="text"] {
+    font-size: 25px;
+    text-align: center;
+    padding: 5px 20px;
+    background: #ededed;
+    border: 2px solid #ddd;
+  }
 </style>
 
 <style>
@@ -64,11 +139,6 @@
   .frames-wrapper {
     width: 60%;
   }
-  .access-level {
-    position: absolute;
-    top: 10%;
-    right: 5%;
-  }
 }
 @media (max-width: 1000px) {
   .edit-wrapper {
@@ -78,14 +148,7 @@
   }
   .frames-wrapper {
     width: 100%;
-    
-  }
-  .access-level {
-    flex-direction: column;
-    height: auto; /* 縦方向に制限を外す */
-    overflow-y: auto; /* 縦スクロールを有効にする */
-  }
-}
+}}
 </style>
 <style>
   .edit-wrapper {
@@ -107,70 +170,19 @@
     border: 2px solid #ddd;
     border-radius: 40px;
     padding: 10%;
-  }
-  .frame-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 縦方向に中央揃え */
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    max-height: 800px;
     position: relative;
   }
-  .frame-content {
-    border: 2px solid #ddd;
-    text-align: center;
-    overflow: hidden;
-    width: 100%;
-    font-size: 20px;
-    margin: 10px 0;
-    padding: 20px 0;
-    background: #ededed;
-    height: auto; /* 高さを自動調整 */
+  .delete-button {
+    position: absolute;
+    top:10px;
+    right: 20px;
   }
-  .frame-content img {
-    max-width: 100%;
-    max-height: 100%;
-    margin: auto;
-    object-fit: contain;  
-    display: block;
+  .save-button {
+    position: absolute;
+    top: 10px;
+    left: 20px;
   }
-  .add-frame {
-    margin-bottom: 20px;
-    font-size: 30px;
-    border-radius: 20px;
-  }
-  .add-frame a {
-    font-size: 25px;
-  }
-  .edit-button {
-    margin-bottom: 20px;
-  }
-  .edit-button a {
-    font-size: 20px;
-    border-radius: 10px;
-  }
-  .move-button {
-    display: flex;
-  }
-  .move-button a {
-    margin: 0 20px;
-  }
-  .edit-button.disabled a {
-    pointer-events: none;
-    background: #ddd;
-  }
-  .access-level {
-    display: flex;
-    flex-direction: column;
-  }
-  .access-level .buttons {
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-  }
-  .access-level a {
+  .delete-button a, .save-button a {
     font-size: 30px;
     text-decoration: none;
     padding: 5px 20px;
@@ -178,14 +190,64 @@
     text-align: center;
     margin: 10px;
   }
-  .status-public {
-    background: green;
-    color: white;
-    pointer-events: none;
+  .frame-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    height: 100%;
+    min-width: 200px;
+    position: relative;
   }
-  .status-private {
+  .frame-content {
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    margin-bottom: 50px;
+    font-size: 25px;
+    background: #ededed;
+    border: 2px solid #ddd;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .frame-content img {
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    object-fit: contain;  
+    display: block;
+    border: 3px solid #ddd;
+  }
+  .add-frame {
+    margin-bottom: 100px;
+    font-size: 30px;
+    border-radius: 20px;
+  }
+  .add-frame a {
+    font-size: 25px;
+  }
+  .edit-tools {
+    width: 200px;
+    display: none;
+  }
+  .edit-button {
+    width: 100%;
+    margin: 20px 20px 0 0;
+    margin-bottom: 20px;
+  }
+  .edit-button a {
+    width: 100%;
+    font-size: 20px;
+    border-radius: 10px;
+  }
+  .move-button a {
+    margin: 0 20px;
+  }
+  .edit-button.disabled a {
+    pointer-events: none;
     background: #ddd;
-    color: black;
-    pointer-events: none;
-  }
+  }}
 </style>

@@ -1,13 +1,41 @@
-<%= render "shared/header" %>
-<h1>New board</h1>
 <%= render "shared/error_messages", object: @board %>
-<%= form_with model: @board do |f| %>
-  <div class="mb-3">
-    <%= f.label :title, "タイトル", class: "form-label" %>
-    <%= f.text_field :title, size: "10x5", class: "form-control" %>
+<div class="new-board-wrapper">
+  <div class="new-board-parent">  
+    <%= @parent_board.title %>
   </div>
-  <div class="mb-3">
-  <%= f.submit "作成", class: "form-control btn btn-primary" %>
-  </div>
-<% end %>
+  <%= form_with model: @board do |f| %>
+    <div class="new-board-form">
+      <%= f.text_field :title, class: "form-control" %>
+      <%= f.hidden_field :parent_id, value: @parent_id %>
+      <%= f.submit "新しいルートを作成", class: "form-control btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+
+<style>
+  .new-board-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .new-board-parent {
+    font-size: 40px;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+  }
+  .new-board-form {
+    width: 600px;
+    margin: auto;
+    margin-top: 100px;
+    border-radius: 20px;
+  }
+  
+  .new-board-form input {
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 30px;
+  }
+</style>
 

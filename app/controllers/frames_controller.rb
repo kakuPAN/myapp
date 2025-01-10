@@ -2,7 +2,6 @@ class FramesController < ApplicationController
   before_action :require_login
   before_action :set_board
   before_action :set_search
-  before_action :check_frame_limit, only: [:new, :create]
 
   def index
     @board = Board.find(params[:board_id])
@@ -11,11 +10,7 @@ class FramesController < ApplicationController
 
   def new
     @frame_type = params[:frame_type] || :image
-    if @board.frames.size < 4
-      @frame = @board.frames.build
-    else
-      redirect_to edit_board_path(@board)
-    end
+    @frame = @board.frames.build
   end
 
   def create
@@ -24,7 +19,6 @@ class FramesController < ApplicationController
     @frame = @board.frames.build(frame_params.merge(frame_number: frame_number))
 
     if @frame.save
-      make_board_private(@board)
       redirect_to edit_board_path(@board)
       flash[:notice] = "フレームが作成されました"
     else
@@ -43,7 +37,6 @@ class FramesController < ApplicationController
     @frame = @board.frames.find(params[:id])
 
     if @frame.update(frame_params)
-      make_board_private(@board)
       redirect_to edit_board_path(@board)
       flash[:success] = "フレームが更新されました"
     else
@@ -67,21 +60,20 @@ class FramesController < ApplicationController
     rescue => e
       flash[:danger] = "フレームを削除できません"
     end
-    make_board_private(@board)
     redirect_to edit_board_path(@board)
     flash[:success] = "フレームを削除しました"
   end
 
   def move_forward
     @frame = Frame.find(params[:id])
+    last_frame_number = @board.frames.order(:frame_number).last.frame_number
     if @frame.frame_number > 1
       previous_frame = @board.frames.find_by(frame_number: @frame.frame_number - 1)
-
       current_number = @frame.frame_number
       previous_number = current_number-1
       begin 
         Frame.transaction do
-          previous_frame.update!(frame_number: 5)
+          previous_frame.update!(frame_number: last_frame_number+1)
           @frame.update!(frame_number: previous_number)
           previous_frame.update!(frame_number: current_number)
         end
@@ -96,14 +88,16 @@ class FramesController < ApplicationController
 
   def move_back
     @frame = Frame.find(params[:id])
-    if @frame.frame_number <4
-      next_frame = @board.frames.find_by(frame_number: @frame.frame_number + 1)
+    last_frame_number = @board.frames.order(:frame_number).last.frame_number
 
+    if @frame.frame_number < last_frame_number
+      next_frame = @board.frames.find_by(frame_number: @frame.frame_number + 1)
+      
       current_number = @frame.frame_number
       next_number = current_number+1
       begin 
         Frame.transaction do
-          next_frame.update!(frame_number: 5)
+          next_frame.update!(frame_number: last_frame_number+1)
           @frame.update!(frame_number: next_number)
           next_frame.update!(frame_number: current_number)
         end
@@ -118,12 +112,6 @@ class FramesController < ApplicationController
       
 
   private
-
-  def make_board_private(board)
-    if board.public_access?
-      board.update(access_level: 0)
-    end
-  end
 
   def set_board
     @board = Board.find(params[:board_id])
@@ -142,12 +130,5 @@ class FramesController < ApplicationController
 
   def frame_params
     params.require(:frame).permit(:body, :frame_number, :image)
-  end
-
-  def check_frame_limit
-    if @board.frames.size >= 4
-      redirect_to edit_board_path(@board)
-      flash[:danger] = "フレームは最大４つまでです"
-    end
   end
 end
