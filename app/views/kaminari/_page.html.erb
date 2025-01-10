@@ -1,12 +1,12 @@
 <% if page.current? %>
   <li class="page-item active">
-    <%= content_tag :a, class: "page-link #{ 'disabled' if context }", data: { remote: remote }, rel: page.rel do %>
+    <%= content_tag :a, class: "page-link", data: { remote: remote }, rel: page.rel do %>
       <%= page %> <!-- 任意のアイコン -->
     <% end %>
   </li>
 <% else %>
   <li class="page-item">
-    <%= link_to url, remote: remote, rel: page.rel, class: "page-link #{ 'disabled' if context }" do %>
+    <%= link_to url, remote: remote, rel: page.rel, class: "page-link" do %>
       <%= page %> <!-- 任意のアイコン -->
     <% end %>
   </li>
@@ -15,10 +15,6 @@
 <style>
   .page-item {
     margin: 10px;
-  }
-  .page-item.active .page-link {
-    background: pink;
-    border: none;
   }
   .page-link {
     color: pink;

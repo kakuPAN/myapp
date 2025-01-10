@@ -1,0 +1,277 @@
+<div class="index-board-container">
+  <div class="index-board-image">
+    <% if board_image(@board) %>
+      <%= image_tag board_image(@board).image %>
+    <% else %>
+      <%= image_tag "dev_images/tree_image.jpeg" %>
+    <% end %>
+  </div>
+  <div class="index-board-content">
+    <div class="index-board-title">
+      <%= link_to board_path(@board) do %>
+        <%= @board.title %>
+      <% end %>
+    </div>
+    <div class="index-board-body">
+      <% if @board.frames.empty? %>
+        コンテンツがありません
+      <% else %>
+        <%= @board&.frames&.order(:frame_number).first.body %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="comments-comment-form-container">
+  <div class="comments-comment-form">
+    <%= form_with model: [@board, @comment], local: true do |f| %>
+      <%= f.text_area :body, class: "form-control" %>
+      <div>
+        <%= f.submit "コメントを送信" %>
+      </div>
+    <% end %> 
+  </div>
+</div>
+<% @comments.each do |comment| %>
+  <div class="reply-container">
+    <div class="reply-label">
+      <%= link_to user_path(comment.user_id) do %>
+        <% if comment.user.avatar_image.attached? %>
+          <%= image_tag comment.user.avatar_image, class: "avatar-image" %>
+        <% else %>
+          <i class="bi bi-person-circle avatar-icon"></i>
+        <% end %>
+        <div class="to-comment-user"><%= comment.user.user_name %></div>
+      <% end %>
+      <div class="to-comment"><%= comment.body %></div>
+      <div class="reply-wrapper">
+        <% comment.replies.each do |reply| %>
+          <%= link_to user_path(reply.user_id) do %>
+            <% if reply.user.avatar_image.attached? %>
+              <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
+            <% else %>
+              <i class="bi bi-person-circle avatar-icon"></i>
+            <% end %>
+            <div class="to-comment-user"><%= reply.user.user_name %></div>
+          <% end %>
+          <div class="to-comment"><%= reply.body %></div>
+        <% end %>
+      </div>
+      <div class="to-comment-label" id="to-comment-<%= comment.id %>">このコメントに返信</div>
+    </div>
+    <div class="reply-form-container" id="reply-form-<%= comment.id %>">
+      <div class="reply-form">
+        <%= form_with model: [@board, comment, @reply] do |f| %>
+          <%= f.text_area :body %>
+          <%= f.submit "送信" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<div>
+  <% if @comments.present? && @comments.current_page %>
+    <div class="page-numbers">
+      <%= paginate @comments %>
+    </div>
+  <% else %>
+    <p>表示するデータがありません。</p>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener("turbo:load", function () {
+  const toComments = document.querySelectorAll("[id^='to-comment-']");
+    toComments.forEach(container => {
+      const commentNumber = container.id.replace("to-comment-", "");
+      const replyForm = document.getElementById(`reply-form-${commentNumber}`);
+      if (container && replyForm) {
+        container.addEventListener("click", function(e){
+          e.stopPropagation(); 
+          replyForm.style.display = "block";
+        });
+        document.addEventListener("click", function(e){
+          replyForm.style.display = "none";
+        });
+        replyForm.addEventListener("click", function(e){
+          e.stopPropagation(); 
+        });
+    }});
+  });
+</script>
+
+<style>
+<%# 全体のボーダーを表示・スクロールバーを非表示%>
+* {
+  /*outline: 2px solid blue;*/
+  scrollbar-width: none;
+}
+</style>
+<!-- コメント欄 -->
+<style>
+  .comments-comment-form-container {
+    width: 500px;
+    margin: 50px auto;
+  }
+  .comments-comment-form textarea {
+    min-height: 150px;
+    width: 100%;
+    text-align: left;
+    font-size: 20px;
+  }
+  .comments-comment-form input[type="submit"] {
+    font-size: 20px;
+  }
+</style>
+<!-- 投稿一覧と同じ -->
+<style>
+.index-board-container {
+    display: flex;
+    align-items: center; 
+    border: 1px solid #ddd; 
+    padding: 10px 20%; 
+  }
+
+  .index-board-image {
+    width: 200px;
+    height: 200px;
+    background-color: #FFFAF0;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ddd;
+  }
+  .index-board-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: auto;
+    display: block;
+  }
+
+  .index-board-content {
+    width: 100%;
+    height: 200px;
+    flex: 1;
+    background-color: #FFFAF0;
+    padding: 10px;
+    text-overflow: ellipsis;
+  }
+
+  .index-board-title {
+    text-align: left;
+    padding: 0 10px;
+    font-size: 30px;
+  }
+  .index-board-body {
+    text-align: left;
+    padding: 0 10px;
+    font-size: 20px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+</style>
+<style>
+@media(min-width: 900px){
+  .reply-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+    align-items: center;
+    width: 30%;
+    height: 50%;
+    background: white;
+    border-radius: 30px;
+  }
+  .check-icon {
+    position: relative;
+    top: 5%;
+    right: -40%;
+    color: pink;
+    font-size: 30px;
+  }
+  .reply-label {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  .reply-label a {
+    text-decoration: none;
+    color: black;
+  }
+  .reply-label a:hover {
+    font-weight: bold;
+    color: #ddd;
+  }
+  .avatar-image {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+  .avatar-icon {
+    font-size: 40px;
+    color: #aaa;
+  }
+  .to-comment {
+    border-bottom: 2px solid #ddd;
+    text-align: center;
+    width: 400px;
+    height: 100%;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    background:#ededed;
+    font-size: 20px;
+  }
+  .reply-wrapper {
+    padding-left: 20px;
+    border-left: 2px solid #ddd;
+  }
+  .to-comment-label {
+    color: #1431ff;
+  }
+  .reply-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    height: 90%;
+    margin-bottom: 20px;
+    display: none;
+  }
+  
+  .reply-form input {
+    display: block;
+    margin: auto;
+  }
+  .reply-form textarea {
+    min-height: 100px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: 2px solid #ddd;
+    font-size: 20px;
+  }
+  .reply-form input[type="submit"] {
+    width: 100px;
+    border: none;
+    background: pink;
+    border-radius: 5px;
+    color: white;
+    font-size: 20px;
+    margin-top: 10px;
+    padding: 5px;
+    opacity: 0.8;
+  }
+  .reply-form input[type="submit"]:hover {
+    font-weight: bold;
+    opacity: 1;
+  }
+} 
+</style>

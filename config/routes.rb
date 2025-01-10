@@ -11,19 +11,16 @@ Rails.application.routes.draw do
     end
   end
   resources :boards do
-    member do
-      patch :make_board_private
-      patch :make_board_publish
-      get :answer
-    end
     resources :frames do
       member do
-        delete :delete_image
         patch :move_forward
         patch :move_back
       end
     end
     resources :comments do
+      member do
+        get :reply_form
+      end
       resources :replies
     end
   end

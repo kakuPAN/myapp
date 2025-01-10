@@ -13,17 +13,30 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-
+    
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
     <%= stylesheet_link_tag "application" %>
   </head>
 
   <body>
     <%= render "shared/flash_message" %>
-    <%= yield %>
+    <div class="whole-wrapper">
+      <% unless controller_name == "static_pages" %>
+        <%= render "shared/header" %>
+      <% end %>
+      <%= yield %>
+      <%= render "shared/footer" %>
+    </div>
   </body>
 </html>
-
+<style>
+  .whole-wrapper {
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 120px;
+    box-sizing: border-box;
+  }
+</style>
 <script>
 document.addEventListener("turbo:load", function () {
   const flashMessage = document.getElementById('flash-message'); 

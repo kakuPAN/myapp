@@ -10,6 +10,7 @@ RUN apt-get update -qq \
 && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs yarn vim imagemagick
 RUN mkdir /myapp
+
 WORKDIR /myapp
 ADD Gemfile /myapp/Gemfile
 ADD Gemfile.lock /myapp/Gemfile.lock

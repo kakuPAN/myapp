@@ -2,96 +2,60 @@
   <%= render "replies/new", board: @board, comment: @reply_comment, reply: @reply %>
   <div class="background-cover"></div>
 <% end %>
-
-<div class="whole-wrapper">
-  <% if current_user %>
-    <%= render "shared/header" %>
-  <% end %>
-  <div class="wrapper">
-    <%= render @board %>
-  </div>
-  <div class="board-cards-title">
-    <span classs="user-name"><i class="bi bi-emoji-sunglasses-fill"></i><%= @board.user.user_name %></span></span><span>の他の投稿を見る</span>
-  </div>
-  <div class="board-cards users-other-boards"> <!-- 同じユーザーの投稿 -->
-    <% @boards.each do |board| %> 
-      <%= render "users_other_board", board: board, current_board: @board %>
-    <% end %>
-    <% if @boards.present? && @boards.current_page %> <!-- カード用ページネーション -->
-      <div class="page-numbers">
-        <%= paginate @boards, context: true %>
-      </div>
-    <% else %>
-      <p>表示するデータがありません。</p>
-    <% end %>
-  </div>
-  <div class="board-cards-title">
-    <span>おすすめの投稿一覧</span>
-  </div>
-  <div class="board-cards recommend-boards"> <!-- おすすめの投稿 -->
-    <% @recommend_boards.each do |board| %>
-      <%= render "users_other_board", board: board, current_board: @board %>
-    <% end %>
-  </div>
+<div class="wrapper">
+  <%= render @board %>
 </div>
-<script>
-document.addEventListener("turbo:load", function () {
-  const nowAnswering = document.getElementById("now-answering");
-  const countdownDisplay = document.getElementById("countdown-timer");
-  const hideComment = document.getElementById("comment-area-hide");
-  const commentTrack = document.getElementById("comment-track");
-  if (countdownDisplay) {
-    
-      let timeLeft = 30; // 初期値は30秒
 
-      // カウントダウンを表示する
-      countdownDisplay.textContent = `残り${timeLeft}秒`;
+<div class="board-container">
+  <div class="create-board">
+    <%= link_to new_board_path(parent_board: @board.id) do %>
+      <i class="bi bi-plus-square"></i>
+    <% end %>
+  </div>
+  <% @boards.each do |board| %>
+    <div class="board-thumbnail-wrapper" id="board-thumbnail-wrapper-<%= @boards.index(board)+1 %>">
+      <%= link_to board_path(board) do %>
+        <div class="board-thumbnail-container" id="board-thumbnail-container-<%= @boards.index(board)+1%>">
+          <div class="board-thumbnail">
+            <% if !board.frames.empty? %>
+              <% first_frame = board.frames.order(:frame_number).first %>
+              <% if first_frame.image.attached? %>
+                <%= image_tag first_frame.image %>
+              <% else %>
+                <div class="board-thumbnail-text"><%= simple_format(first_frame.body) %></div>
+              <% end %>
+            <% else %>
+              <p>まだコンテンツがありません</p>
+            <% end %>
+          </div>
+        </div>
+        <div class="board-content <%= board_color(board) %>" id="board-content-<%= @boards.index(board)+1%>">
+          <%= board.title %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<%= render "shared/breadcrumb", breadcrumb: @breadcrumb %>
 
-      // 1秒ごとにカウントを減らす
-      const countdownInterval = setInterval(function () {
-        timeLeft--;
-        if (timeLeft >= 0) {
-          countdownDisplay.textContent = `残り${timeLeft}秒`;
-        }
-        // カウントが0になったら終了
-        if (timeLeft <= 0) {
-          nowAnswering.textContent = "時間切れ！";
-          countdownDisplay.textContent = ``
-        }
-        if (timeLeft <= -5) {
-          clearInterval(countdownInterval); // カウントダウンを停止
-          hideComment.classList.add("disabled");
-          commentTrack.style.animation = "slideDown var(--animation-duration) linear infinite";
-        }
-      }, 1000); // 1秒ごとに実行
-    ;
-  };
-});
-</script>
-
-<!-- ユーザーコメント欄 !-->
-<!-- 表示領域の幅を変更する場合には"800"も同時に変更すること!-->
+<!-- ボードサムネイル表示用 -->
 <script>
   document.addEventListener("turbo:load", function () {
-    const commentTrack = document.querySelector(".user-comment-track");
-    if (!commentTrack) return;
-    const visibleWidth = commentTrack.offsetWidth;
-    const userComment = document.getElementById("user-comment-body");
-    const commenWidth = userComment.offsetWidth;
-    const totalWidth = visibleWidth + commenWidth
-    const speed = 80;
-    
-    let duration, endTranslate
-    if (totalWidth < 800) {
-      endTranslate = 800;
-    } else {
-      endTranslate = totalWidth;
-    }
-    duration = endTranslate / speed
-    commentTrack.style.setProperty("--end-translate", `-${endTranslate}px`);
-    commentTrack.style.setProperty("--animation-duration", `${duration}s`); //speedを一定にしてもコメントが増えるほど加速していくので、調整
-    }
-  );
+  const boardContainers = document.querySelectorAll("[id^='board-content-']");
+    boardContainers.forEach(container => {
+      const boardNumber = container.id.replace("board-content-", "");
+      const thumbnail = document.getElementById(`board-thumbnail-container-${boardNumber}`);
+      const thumbnailWrapper = document.getElementById(`board-thumbnail-wrapper-${boardNumber}`);
+      if (container && thumbnail) {
+        container.addEventListener("mouseover", () => {
+            thumbnail.style.display = "block";
+          })
+      }
+        thumbnailWrapper.addEventListener("mouseout", () => {
+            thumbnail.style.display = "none";
+        });
+    });
+  });
 </script>
 <!-- コメント欄　!-->
 <!-- 表示領域の高さを変更する場合には"500"も同時に変更すること!-->
@@ -105,7 +69,7 @@ document.addEventListener("turbo:load", function () {
     const speed = 50;
     
     let duration, endTranslate
-    endTranslate = 500
+    endTranslate = 550
     duration = endTranslate / speed
     commentTrack.style.setProperty("--end-translate", `${endTranslate}px`);
     commentTrack.style.setProperty("--animation-duration", `${duration+commentCount*0.1*commentCount}s`); //speedを一定にしてもコメントが増えるほど加速していくので、調整
@@ -130,16 +94,7 @@ document.addEventListener("turbo:load", function () {
   scrollbar-width: none;
 }
 </style>
-<%# 背景 %>
-<style>
-  .whole-wrapper {
-    background-size: auto auto;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: column;
-  }
-</style>
+
 <%# 投稿・コメント%>
 <style>
   .wrapper {
@@ -154,44 +109,16 @@ document.addEventListener("turbo:load", function () {
     display:none;
   }
   .scroll-content {
+    border-radius: 20px;
     position: relative;
     flex: 5; 
     width: 100%;
-    border: solid;
-    border-color: pink;
+    border: 1px solid;
     align-items: center; <%# 小要素の垂直位置を指定 %>
     display: flex;  <%# これなしではalign-itemsが解除される%>
     background-color: white;
     overflow: hidden;
-  }
-  .delete-edit-button {
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    font-size: 30px;
-    z-index: 99; <%# スクロール用のページの上に配置%>
-  }
-  .delete-edit-button a {
-    text-decoration: none;
-    color: pink;
-    padding: 5px;
-    border-radius: 10px;
-  }
-  .delete-button:hover,.edit-button:hover {
-    font-size: 40px;
-  }
-  .board-body {
-    position: relative;
-    text-align: center;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .board-body a{
-    text-decoration: none;
-    color: black;
-    font-size: 25px;
-  }
+  }  
   .user-name {
     display: inline-block;
     margin: auto;
@@ -205,46 +132,39 @@ document.addEventListener("turbo:load", function () {
     border-radius: 15px 15px 15px 15px;
   }
 </style>
-<!-- 投稿者コメント !-->
+<!-- ボードタイトル !-->
 <style>
-.user-comment-area {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  position: absolute;
-  top: 0;
-  background-color: pink;
-  border: 5px solid white;
-  margin: 0;
-  padding: 0;
-}
-.user_page_link {
-  text-decoration: none;
-}
-.user-comment-track {
-  width: 100%;
-  animation: scroll-left var(--animation-duration) linear infinite;
-}
-.user-comment-text {
-  display: inline-block;
-  margin-right: 50px; /* 各コメント間のスペース */
-  font-size: 30px;
-  font-weight: bold;
-  color: white;
-}
-.board-user-name {
-  font-size: 38px;
-}
+  .board-title-label {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    font-size: 30px;
+    font-weight: bold;
+    background-color: #C9E2C7;
+    border: 2px solid black;
+    border-radius: 20px 20px 0px 0px;
+    margin: 0;
+    padding: 0px 20px;
+  }
+  .delete-edit-button {
+    font-size: 30px;
+    z-index: 99; <%# スクロール用のページの上に配置%>
+  }
+  .delete-edit-button a {
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .delete-button:hover,.edit-button:hover {
+    font-size: 40px;
+  }
 
-@keyframes scroll-left {
-  from {
-    transform: translateX(var(--start-translate, 100%));
-  }
-  to {
-    transform: translateX(var(--end-translate, -200px));
-  }
-}
 </style>
+
 
 <!-- 前後の投稿への移動ボタン !-->
 <style>
@@ -275,17 +195,17 @@ document.addEventListener("turbo:load", function () {
   .prev-board-link {
     font-size: 20px;
     opacity: 0;
-    color: pink;
+    color: #C9E2C7;
     padding: 10px;
-    border: 2px solid pink;
+    border: 2px solid #C9E2C7;
     border-radius: 5px;
   }
   .next-board-link {
     font-size: 20px;
     opacity: 0;
-    color: pink;
+    color: #C9E2C7;
     padding: 10px;
-    border: 2px solid pink;
+    border: 2px solid #C9E2C7;
     border-radius: 8px;
   }
   .scroll-content:hover  .prev-board-link:not(.disabled) {
@@ -297,31 +217,128 @@ document.addEventListener("turbo:load", function () {
   .prev-board-link:hover {
     opacity: 1;
     font-size: 30px;
-    background: pink;
+    background: #C9E2C7;
     color: white;
   }
   .next-board-link:hover { 
     opacity: 1;
     font-size: 30px;
-    background: pink;
+    background: #C9E2C7;
     color: white;
   }
   .prev-board-link.disabled, .next-board-link.disabled {
     pointer-events: none;
   }
 </style>
+<!-- 子ノード部分 topと同じスタイル -->
+<style>
+  .board-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .board-thumbnail-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .board-thumbnail-container {
+    position: absolute;
+    top: -300px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 300px;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+  }
+  .board-thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .board-thumbnail-text {
+    text-align: center;
+    padding: 5px;
+  }
+  .board-thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: auto;
+    display: block;
+  }
+
+  .board-container .board-content {
+    border: 2px solid #ddd; 
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+    width: 100%;
+    min-width: 150px;
+    box-sizing: border-box;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .board-container .board-content.red, .board-title-label.red, .comment-form .submit.red, .comment-area-label.red, .title-board-content.red {
+    background: #F4ADB0;
+  }
+  .board-container .board-content.green, .board-title-label.green, .comment-form .submit.green, .comment-area-label.green, .title-board-content.green {
+    background: #C9E2C7;
+  }
+  .board-container .board-content.blue, .board-title-label.blue, .comment-form .submit.blue, .comment-area-label.blue, .title-board-content.blue {
+    background: #ABECF2;
+  }
+  .board-container .board-content.brown, .board-title-label.brown, .comment-form .submit.brown, .comment-area-label.brown, .title-board-content.brown {
+    background: #EFDDAA;
+  }
+  .board-container .board-content.emerald, .board-title-label.emerald, .comment-form .submit.emerald, .comment-area-label.emerald, .title-board-content.emerald {
+    background: #E4EDAA;
+  }
+
+  .board-thumbnail-wrapper a { 
+    color: black;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .board-content {
+      width: calc(50% - 20px); /* スマホ画面では2列表示 */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .board-content {
+      width: 100%; /* 狭い画面では1列表示 */
+    }
+  }
+</style>
+
 <!-- kaminari パーシャル -->
 <style>
   .page-item {
     margin: 10px;
   }
   .page-item.active .page-link {
-    background: pink;
+    background: #C9E2C7;
     border: none;
   }
   .page-link {
-    color: pink;
-    border-color: pink;
+    color: #C9E2C7;
+    border-color: #C9E2C7;
     border-radius: 5px;
   }
 </style>
@@ -329,59 +346,38 @@ document.addEventListener("turbo:load", function () {
 <!-- コメント欄 !-->
 <style>
 .comment-area-wrapper {
-  flex: 3;  /* コンテナの幅 */
+  flex: 3;
   display: flex;
   flex-direction: column;
   height: 100%;
-  border: 2px solid pink;
-  padding-top: 10px;
+  border: 1px solid;
   position: relative;
+  border-radius: 20px;
 }
-
-<%# コメント欄閉鎖 %>
-.comment-area-hide, .board-hide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-  background: #ddd;
-  opacity: 1;
-}
-.comment-area-hitde.disabled {
-  display: none;
-}
-.board-hide.disabled {
-  display: none;
-}
-.comment-area-hide.disabled {
-  display: none;
-}
-.hide-label {
-  display: flex;
-  text-align: center;
-}
-.hide-label-text, .answering-container {
-  z-index: 101;
-  font-size: 40px;
-  margin: auto;
-}
-<%# ここまで %>
-<%# 投稿閉鎖 %>
-
-<%# ここまで %>
 .comment-area {
   position: relative;
-  height: 400px; /* コンテナの高さ */
-  overflow: hidden; /* コンテナ外のテキストを隠す */
+  height: 550px;
+  overflow: hidden;
   background-color: white;
   border: 5px solid white;
-  
+  border-radius: 20px;
+}
+.comment-area-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: solid;
+  height: 50px;
+  font-size: 30px;
+  font-weight: bold;
+  border-radius: 20px 20px 0 0;
 }
 .comment-track {
   position: absolute;
   width: 100%;
   text-align: left;
-  animation: slideDown var(--animation-duration) linear infinite; /* 下に移動するアニメーション */
+  animation: slideDown var(--animation-duration) linear infinite;
 }
 
 .comment-image img {
@@ -418,67 +414,37 @@ document.addEventListener("turbo:load", function () {
   .comment-form-wrapper {
     flex: 1;
     position: relative;
-    border: 2px solid pink;
+    border-radius: 20px;
   }
-  .comment-form.disabled textarea,.comment-form.disabled input {
-    pointer-events: none;
-  } 
   .comment-form textarea {
     position: absolute;
     height: 100%;
     padding-top: 60px;
     bottom: 0;
     resize: none;
-    background-color: rgba(255, 192, 203, 0.2);
+    background-color: white;
     font-size: 30px;
+    border-radius: 20px;
   }
   .comment-form input {
-    color: white;
-    background: pink;
+    color: black;
     width: 100%;
-    opacity: 0.6;
+    opacity: 90%;
     height: 50px;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
-    border: none;
+    border: 2px solid black;
+    border-radius: 20px 20px 0px 0px;
   }
-  .comment-form input:hover {
-    color: white;
-    background: pink;
-    opacity: 0.8;
+  .comment-form input[type="submit"] {
+    display: block;
+    position: absolute;
+    top: 0;
   }
-</style>
-<!-- おすすめの投稿　-->
-<style>
-  .board-cards-title {
-    text-align: center;
-    background-color: pink;
-  }
-  .board-cards-title span:not(.user-name) {
-    font-size: 40px;
-    color: white;
-  }
-  .board-cards-title .user-name {
-    font-size: 100%;
-    max-width: 20%;
-  }
-  .board-cards {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap; /* 行をまたいで自動的に折り返す */
-    gap: 6px; /* カード間のスペースを設定 */
-    justify-content: space-between; /* 均等に配置 */
-    padding-bottom: 150px;
-    margin-top: 50px;
-  }
-  .users-other-boards {
-  
-  }
-  .recommend-boards {
-    margin-top: 100px;
+  .comment-form input[type="submit"]:hover {
+    opacity: 0.6;
   }
 </style>
-
 <!-- ページネーション -->
 <style>
   .page-numbers {
@@ -503,12 +469,12 @@ document.addEventListener("turbo:load", function () {
   .previous-link {
     font-size: 50px;
     opacity: 0;
-    color: pink;
+    color: #C9E2C7;
   }
   .next-link {
     font-size: 50px;
     opacity: 0;
-    color: pink;
+    color: #C9E2C7;
   }
   .previous-link:hover {
     font-size: 60px;

@@ -34,64 +34,113 @@ User.create!(
 Board.create!(
   [
     {
-      title: "桜の花びら見るたびに",
-      user_id: 1,
-      access_level: 1
-    },
-    {
-      title: "生麦生米生卵",
-      user_id: 2,
-      access_level: 1
-    },
-    {
-      title: "サザエさんじゃんけん勝った！！！！",
-      user_id: 3,
-      access_level: 1
-    },
-    {
-      title: "ギザ十ゲット！",
-      user_id: 2,
-      access_level: 1
-    },
-    {
-      title: "１０kmマラソン新記録！！！",
-      user_id: 1,
-      access_level: 1
-    },
-    {
-      title: "財布落としたんだけど、後ろ歩いてた外国の方が拾って届けてくれた\n優しい",
-      user_id: 1,
-      access_level: 1
-    },
-    {
-      title: "正月だ〜",
-      user_id: 3,
-      access_level: 1
-    },
-    {
-      title: "もう疲れたな",
-      user_id: 1,
-      access_level: 1
-    },
-    {
-      title: "ケルト音楽にハマってる",
-      user_id: 2,
-      access_level: 1
-    },
-    {
-      title: "最近腹筋ついてきた...かも？",
-      user_id: 1,
-      access_level: 1
-    },
-    {
-      title: "ハロワ行かねば",
-      user_id: 3,
-      access_level: 1
-    },
-    {
-      title: "流石に半袖は寒いか笑",
-      user_id: 1,
-      access_level: 1
+      title: "趣味"
+    },{
+      parent_id: 1,
+      title: "漫画"
+    },{
+      parent_id: 2,
+      title: "ONE PIECE"
+    },{
+      parent_id: 2,
+      title: "BLEACH"
+    },{
+      parent_id: 2,
+      title: "HUNTER×HUNTER"
+    },{
+      parent_id: 2,
+      title: "NARUTO"
+    },{
+      parent_id: 2,
+      title: "DRAGON BALL"
+    },{
+      parent_id: 2,
+      title: "SAKAMOTO DAYs"
+    },{
+      parent_id: 2,
+      title: "幽遊白書"
+    },{
+      parent_id: 2,
+      title: "呪術廻戦"
+    },{
+      parent_id: 2,
+      title: "Dr.STONE"
+    },{
+      parent_id: 2,
+      title: "７つの大罪"
+    },{
+      parent_id: 2,
+      title: "金色のガッシュ！！" # 13
+    },{
+      parent_id: 1,
+      title: "映画"
+    },{ parent_id: 14, title: "アクション映画" },
+    { parent_id: 14, title: "コメディ映画" },
+    { parent_id: 14, title: "ホラー映画" },
+    { parent_id: 14, title: "SF映画" },
+    { parent_id: 14, title: "アニメ映画" },
+    { parent_id: 14, title: "恋愛映画" },
+    { parent_id: 14, title: "サスペンス映画" },
+    { parent_id: 14, title: "歴史映画" },
+    { parent_id: 14, title: "ドキュメンタリー映画" },
+    { parent_id: 14, title: "ファンタジー映画" },{ # 24
+      title: "生活"
+    },{
+      parent_id: 1,
+      title: "Youtube"
+    },{
+      parent_id: 1,
+      title: "アニメ"
+    },{
+      parent_id: 1,
+      title: "スポーツ"
+    },{
+      parent_id: 1,
+      title: "テレビ"
+    },{
+      parent_id: 1,
+      title: "ゲーム" # 30
+    },{ parent_id: 30, title: "アクションゲーム" },
+    { parent_id: 30, title: "ロールプレイングゲーム（RPG）" },
+    { parent_id: 30, title: "シューティングゲーム" },
+    { parent_id: 30, title: "パズルゲーム" },
+    { parent_id: 30, title: "スポーツゲーム" },
+    { parent_id: 30, title: "ボードゲーム" },
+    { parent_id: 30, title: "シミュレーションゲーム" },
+    { parent_id: 30, title: "格闘ゲーム" },
+    { parent_id: 30, title: "レースゲーム" },
+    { parent_id: 30, title: "ソーシャルゲーム" },{ # 40
+      title: "仕事"
+    },{
+      title: "感情"
+    },{
+      title: "人"
+    },{
+      title: "動物"
+    },{
+      title: "食べ物"
+    },{
+      title: "飲み物"
+    },{
+      title: "地域"
+    },{
+      title: "自然"
+    },{
+      title: "歴史"
+    },{
+      title: "科学"
+    },{
+      title: "夢"
+    },{
+      title: "季節"
+    },{
+      title: "スポーツ"
+    },{
+      title: "健康"
+    },{
+      title: "技術"
+    },{
+      title: "遊び"
     }
   ]
 )
