@@ -1,0 +1,7 @@
+<div class="reply-form" id="reply-form-<%= comment.id %>">
+  <%= form_with model: [board, comment, reply], url: create_reply_board_comment_path(board, comment, reply), data: {turbo_method: :post}, remote: true do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+    <%= f.text_area :body %>
+    <%= f.submit "送信" %>
+  <% end %>
+</div>

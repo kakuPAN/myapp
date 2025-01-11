@@ -20,7 +20,7 @@
   <div class="board-title-label <%= board_color(board) %>">
     <%= @board.title %>
     <div class="delete-edit-button">
-      <%= link_to board_path(board), data: { turbo_method: :delete }, class: "delete-button" do %>
+      <%= link_to board_path(board), data: { turbo_method: :delete, turbo_confirm: '掲示板を削除してよろしいですか？' }, class: "delete-button" do %>
         <i class="bi bi-trash3-fill"></i>
       <% end %>
       <%= link_to edit_board_path(board), class: "edit-button" do %>
@@ -28,69 +28,19 @@
       <% end %>
     </div>
   </div>
+  <div class="like-button">
+    <%= render 'likes/like_button', board: board %>
+  </div>
 </div>
 <div class="comment-area-wrapper">
   <div class="comment-area-label <%= board_color(board) %>">
     みんなのコメント
   </div>
   <div class="comment-area">
-    <div class="comment-track" id="comment-track"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%><%# フォロー中のユーザーのコメントは強調表示 %>
-      <% board.comments.each do |comment| %>
-        <%= link_to board_comments_path(board), class: "comment-link" do %>
-          <div id="reply-form-<%= comment.id %>"></div> <!-- リプライフォームを挿入する場所 -->
-          <% comment_class_name = comment_class_name(comment) %>
-          <div class="comment-wrapper">
-            <div class="comment-avatar">
-              <% if comment.user.avatar_image.attached? %>
-                <%= image_tag comment.user.avatar_image, class: "avatar-image" %>
-              <% else %>
-                <i class="bi bi-person-circle avatar-icon"></i>
-              <% end %>
-              <div class="commented-user"><%= comment.user.user_name %></div>
-            </div>
-            <div class="comment-text <%= comment_class_name %>">
-              <%= simple_format(comment.body) %>
-            </div>
-          </div>
-          <% if comment.replies.any? %>
-            <div class="replies-wrapper">
-              <% comment.replies.order(:created_at).each do |reply| %>
-                <div class="reply-wrapper">
-                  <% reply_class_name = reply_class_name(reply) %>
-                  <div class="reply-avatar">
-                    <% if reply.user.avatar_image.attached? %>
-                      <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
-                    <% else %>
-                      <i class="bi bi-person-circle avatar-icon"></i>
-                    <% end %>
-                    <div class="replied-user"><%= reply.user.user_name %></div>
-                  </div>
-                  <div class="reply-text <%= reply_class_name %>">
-                    <%= simple_format(reply.body) %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
-      <% end %>
-      <% if board.comments.empty? %>
-        <span class="comment-text">盛り上げよう！</span>
-        <div class="comment-image"><%= image_tag "free_images/sakura.png"%></div><%# 画像などもコメントできるようにしたい%>
-        <span class="comment-text">コメントやリアクションをして</span>
-        <span class="comment-text">関心のある投稿には</span>
-      <% end %>
-    </div>
+    <%= render "comments/chat_track", board: board %>
   </div>
   <div class="comment-form-wrapper">
-    <div class="comment-form"> <%# 自分・投稿主のコメントにはマークをつける%><%#コメントに対する返信もできるようにする%>
-      <%= form_with model: [board, @comment], local: true do |f| %>
-        <%= f.text_area :body, class: "form-control" %>
-        <div>
-          <%= f.submit "コメントを送信", class: "submit #{board_color(board)}" %>
-        </div>
-      <% end %> 
-    </div>
+    <%= render "comments/chat_form", board: board, comment: @comment %>
   </div>
 </div>
 

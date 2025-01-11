@@ -2,25 +2,23 @@ class RepliesController < ApplicationController
   before_action :require_login
   before_action :set_search
 
-  def create
-    @comment = Comment.find(params[:comment_id])
-    @board = Board.find(@comment.board_id)
-    @reply = @comment.replies.new(reply_params.merge(user_id: current_user.id))
-    @breadcrumbs = @board.breadcrumbs
-    if @reply.save
-      redirect_to request.referer || board_comments_path(@board)
-      flash[:success] = "コメントに返信しました"
-    else
-      flash.now[:danger] = "コメントを作成できません"
-      render "comments/index", status: :unprocessable_entity
-    end
-  end
+  # def create
+  #   @comment = Comment.find(params[:comment_id])
+  #   @board = Board.find(@comment.board_id)
+  #   @reply = @comment.replies.new(reply_params.merge(user_id: current_user.id))
+  #   @breadcrumbs = @board.breadcrumbs
+  #   if @reply.save
+  #     redirect_to request.referer || board_comments_path(@board)
+  #     flash[:success] = "コメントに返信しました"
+  #   else
+  #     flash.now[:danger] = "コメントを作成できません"
+  #     render "comments/index", status: :unprocessable_entity
+  #   end
+  # end
 
   private
 
-  def reply_params
-    params.require(:reply).permit(:body)
-  end
+  
 
   def set_search
     @index_page = params[:page].to_i

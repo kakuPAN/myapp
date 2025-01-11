@@ -1,0 +1,12 @@
+<% if @comment.errors.present? %>
+  <%= turbo_stream.replace "chat-form" do %>
+    <%= render 'comments/chat_form', comment: @comment, board: @board %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.prepend "chat-table" do %>
+    <%= render 'comments/chat', comment: @comment, board: @board %>
+  <% end %>
+  <%= turbo_stream.replace "chat-form" do %>
+    <%= render 'comments/chat_form', comment: Comment.new, board: @board %>
+  <% end %>
+<% end %>

@@ -10,31 +10,35 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @board = Board.find(params[:board_id]) # どの投稿にコメントするかを特定
-    @comment = @board.comments.build(comment_params) # コメントを投稿に関連付け
-    @comment.user = current_user # ユーザーがログインしている場合に関連付け
-
-    if @comment.save
-      redirect_to request.referer || boards_path(@board)
-    else
-      redirect_to request.referer || boards_path(@board)
-    end
+    @board = Board.find(params[:board_id])
+    @comment = @board.comments.build(comment_params)
+    @comment.user = current_user
+    @comment.save
+    @reply = Reply.new(comment_id: @comment.id)
   end
 
-  def reply_form
+  def destroy
     @board = Board.find(params[:board_id])
     @comment = Comment.find(params[:id])
-    @reply = @comment.replies.build
-    respond_to do |format|
-      format.js {}
-      format.html
-    end
+    @comment.destroy
+    redirect_to board_comment_path(@board)
+  end
+
+  def create_reply
+    @comment = Comment.find(params[:id])
+    @board = Board.find(@comment.board_id)
+    @reply = @comment.replies.new(reply_params.merge(user_id: current_user.id))
+    @reply.save
   end
 
   private
 
   def comment_params
     params.require(:comment).permit(:body) # フォームから送信されたパラメータを許可
+  end
+  
+  def reply_params
+    params.require(:reply).permit(:body)
   end
 
   def set_search

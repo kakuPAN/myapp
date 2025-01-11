@@ -30,6 +30,7 @@ module BoardsHelper
     board.frames.limit(10).find { |frame| frame.image.attached? }
   end
 
+
   # def board_check(board)
   #   parent_board = Board.find_by(id: board.parent_id)
   #   return nil if (parent_board.blank? || !parent_board.include?(board.id)) && !parent_board&.children&.empty?

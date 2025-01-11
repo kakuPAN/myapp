@@ -2,5 +2,4 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import * as bootstrap from "bootstrap"
-import mojs from '@mojs/core'
 import "./script.js"

@@ -60,7 +60,7 @@
 <!-- コメント欄　!-->
 <!-- 表示領域の高さを変更する場合には"500"も同時に変更すること!-->
 <script>
-  document.addEventListener("turbo:load", function () {
+  function moveChat(){
     const commentTrack = document.querySelector(".comment-track");
     if (!commentTrack) return;
     const comments = document.querySelectorAll(".comment-text");
@@ -73,8 +73,22 @@
     duration = endTranslate / speed
     commentTrack.style.setProperty("--end-translate", `${endTranslate}px`);
     commentTrack.style.setProperty("--animation-duration", `${duration+commentCount*0.1*commentCount}s`); //speedを一定にしてもコメントが増えるほど加速していくので、調整
-  }
-);
+    };
+  document.addEventListener("turbo:load", function(){
+    moveChat();
+    const submitButton = document.querySelector(".chat-submit");
+    const commentTrack = document.querySelector(".comment-track");
+
+    submitButton.addEventListener("click", function(){
+      moveChat();
+      commentTrack.style.animation = "none"
+      commentTrack.offsetHeight;
+      commentTrack.style.animation = ""
+      console.log("チャットだよ");
+
+    });
+  });
+  
 </script>
 <!-- 背景暗転 -->
 <style>
@@ -164,7 +178,6 @@
   }
 
 </style>
-
 
 <!-- 前後の投稿への移動ボタン !-->
 <style>
@@ -293,19 +306,19 @@
     font-size: 20px;
     font-weight: bold;
   }
-  .board-container .board-content.red, .board-title-label.red, .comment-form .submit.red, .comment-area-label.red, .title-board-content.red {
+  .board-container .board-content.red, .board-title-label.red, .chat-form .submit.red, .comment-area-label.red, .title-board-content.red {
     background: #F4ADB0;
   }
-  .board-container .board-content.green, .board-title-label.green, .comment-form .submit.green, .comment-area-label.green, .title-board-content.green {
+  .board-container .board-content.green, .board-title-label.green, .chat-form .submit.green, .comment-area-label.green, .title-board-content.green {
     background: #C9E2C7;
   }
-  .board-container .board-content.blue, .board-title-label.blue, .comment-form .submit.blue, .comment-area-label.blue, .title-board-content.blue {
+  .board-container .board-content.blue, .board-title-label.blue, .chat-form .submit.blue, .comment-area-label.blue, .title-board-content.blue {
     background: #ABECF2;
   }
-  .board-container .board-content.brown, .board-title-label.brown, .comment-form .submit.brown, .comment-area-label.brown, .title-board-content.brown {
+  .board-container .board-content.brown, .board-title-label.brown, .chat-form .submit.brown, .comment-area-label.brown, .title-board-content.brown {
     background: #EFDDAA;
   }
-  .board-container .board-content.emerald, .board-title-label.emerald, .comment-form .submit.emerald, .comment-area-label.emerald, .title-board-content.emerald {
+  .board-container .board-content.emerald, .board-title-label.emerald, .chat-form .submit.emerald, .comment-area-label.emerald, .title-board-content.emerald {
     background: #E4EDAA;
   }
 
@@ -401,7 +414,7 @@
 
 @keyframes slideDown {
   from {
-    transform: translateY(var(--start-translate, -120%));
+    transform: translateY(var(--start-translate, -105%));
   }
   to {
     transform: translateY(var(--end-translate, -200px));
@@ -416,7 +429,7 @@
     position: relative;
     border-radius: 20px;
   }
-  .comment-form textarea {
+  .chat-form textarea {
     position: absolute;
     height: 100%;
     padding-top: 60px;
@@ -426,7 +439,7 @@
     font-size: 30px;
     border-radius: 20px;
   }
-  .comment-form input {
+  .chat-form input {
     color: black;
     width: 100%;
     opacity: 90%;
@@ -436,12 +449,12 @@
     border: 2px solid black;
     border-radius: 20px 20px 0px 0px;
   }
-  .comment-form input[type="submit"] {
+  .chat-form input[type="submit"] {
     display: block;
     position: absolute;
     top: 0;
   }
-  .comment-form input[type="submit"]:hover {
+  .chat-form input[type="submit"]:hover {
     opacity: 0.6;
   }
 </style>
