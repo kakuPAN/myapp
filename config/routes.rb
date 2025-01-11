@@ -11,6 +11,11 @@ Rails.application.routes.draw do
     end
   end
   resources :boards do
+    member do
+      post :create_like
+      delete :destroy_like
+      post :create_chat
+    end
     resources :frames do
       member do
         patch :move_forward
@@ -19,11 +24,11 @@ Rails.application.routes.draw do
     end
     resources :comments do
       member do
-        get :reply_form
+        post :create_reply
       end
-      resources :replies
     end
   end
+  resources :likes, only: [:create, :destroy]
   resources :tasks do
     member do
       patch :achieve_task

@@ -1,0 +1,4 @@
+<%= turbo_stream.replace "like-button-#{@board.id}" do %>
+  <%= render "boards/unlike", board: @board %>
+<% end %>
+

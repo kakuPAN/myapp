@@ -1,0 +1,12 @@
+<% if @reply.errors.present? %>
+  <%= turbo_stream.replace "reply-form" do %>
+    <%= render 'replies/form', board: @board, comment: @comment, reply: @reply %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.prepend "reply-table-#{@comment.id}" do %>
+    <%= render 'replies/reply', comment: @comment, board: @board, reply: @reply %>
+  <% end %>
+  <%= turbo_stream.replace "reply-form-#{@comment.id}" do %>
+    <%= render 'replies/form', comment: @comment, board: @board, reply: Reply.new %>
+  <% end %>
+<% end %>

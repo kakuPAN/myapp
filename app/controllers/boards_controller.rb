@@ -85,10 +85,33 @@ class BoardsController < ApplicationController
     redirect_to boards_path # 後、マイページの投稿一覧に変更
   end
 
+  def create_like
+    @board = Board.find(params[:id])
+    @like = @board.likes.new(user_id: current_user.id)
+    @like.save
+  end
+
+  def destroy_like
+    @board = Board.find(params[:id])
+    @like = @board.likes.find_by(user_id: current_user.id)
+    @like.destroy
+  end
+
+  def create_chat
+    @board = Board.find(params[:id])
+    @comment = @board.comments.new(comment_params)
+    @comment.user = current_user
+    @comment.save
+  end
+
   private
 
   def board_params
     params.require(:board).permit(:title, :parent_id)
+  end
+
+  def comment_params
+    params.require(:comment).permit(:body)
   end
 
   def set_breadcrumbs

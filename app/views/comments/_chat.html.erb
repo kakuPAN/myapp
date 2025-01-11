@@ -1,0 +1,36 @@
+<%= link_to board_comments_path(board), class: "comment-link" do %>  
+  <% comment_class_name = comment_class_name(comment) %>
+  <div class="comment-wrapper">
+    <div class="comment-avatar">
+      <% if comment.user.avatar_image.attached? %>
+        <%= image_tag comment.user.avatar_image, class: "avatar-image" %>
+      <% else %>
+        <i class="bi bi-person-circle avatar-icon"></i>
+      <% end %>
+      <div class="commented-user"><%= comment.user.user_name %></div>
+    </div>
+    <div class="comment-text <%= comment_class_name %>">
+      <%= simple_format(comment.body) %>
+    </div>
+  </div>
+  <% if comment.replies.any? %>
+    <div class="replies-wrapper">
+      <% comment.replies.order(:created_at).each do |reply| %>
+        <div class="reply-wrapper">
+          <% reply_class_name = reply_class_name(reply) %>
+          <div class="reply-avatar">
+            <% if reply.user.avatar_image.attached? %>
+              <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
+            <% else %>
+              <i class="bi bi-person-circle avatar-icon"></i>
+            <% end %>
+            <div class="replied-user"><%= reply.user.user_name %></div>
+          </div>
+          <div class="reply-text <%= reply_class_name %>">
+            <%= simple_format(reply.body) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

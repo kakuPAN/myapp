@@ -3,7 +3,7 @@
     <% if board_image(@board) %>
       <%= image_tag board_image(@board).image %>
     <% else %>
-      <%= image_tag "dev_images/tree_image.jpeg" %>
+      <%= image_tag "free_images/tree.png" %>
     <% end %>
   </div>
   <div class="index-board-content">
@@ -22,53 +22,18 @@
   </div>
 </div>
 
-<div class="comments-comment-form-container">
-  <div class="comments-comment-form">
-    <%= form_with model: [@board, @comment], local: true do |f| %>
-      <%= f.text_area :body, class: "form-control" %>
-      <div>
-        <%= f.submit "コメントを送信" %>
-      </div>
-    <% end %> 
-  </div>
-</div>
-<% @comments.each do |comment| %>
-  <div class="reply-container">
-    <div class="reply-label">
-      <%= link_to user_path(comment.user_id) do %>
-        <% if comment.user.avatar_image.attached? %>
-          <%= image_tag comment.user.avatar_image, class: "avatar-image" %>
-        <% else %>
-          <i class="bi bi-person-circle avatar-icon"></i>
-        <% end %>
-        <div class="to-comment-user"><%= comment.user.user_name %></div>
-      <% end %>
-      <div class="to-comment"><%= comment.body %></div>
-      <div class="reply-wrapper">
-        <% comment.replies.each do |reply| %>
-          <%= link_to user_path(reply.user_id) do %>
-            <% if reply.user.avatar_image.attached? %>
-              <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
-            <% else %>
-              <i class="bi bi-person-circle avatar-icon"></i>
-            <% end %>
-            <div class="to-comment-user"><%= reply.user.user_name %></div>
-          <% end %>
-          <div class="to-comment"><%= reply.body %></div>
-        <% end %>
-      </div>
-      <div class="to-comment-label" id="to-comment-<%= comment.id %>">このコメントに返信</div>
-    </div>
-    <div class="reply-form-container" id="reply-form-<%= comment.id %>">
-      <div class="reply-form">
-        <%= form_with model: [@board, comment, @reply] do |f| %>
-          <%= f.text_area :body %>
-          <%= f.submit "送信" %>
-        <% end %>
-      </div>
-    </div>
+<% if @comments.current_page == 1 %>
+  <div class="comments-comment-form-container">
+    <%= render "comments/form", board: @board, comment: @comment %>
   </div>
 <% end %>
+
+<div id="comment-table">
+  <% @comments.each do |comment| %>
+    <%= render "comments/comment", board: @board, comment: comment, reply: @reply %>
+  <% end %>
+</div>
+
 <div>
   <% if @comments.present? && @comments.current_page %>
     <div class="page-numbers">
@@ -80,11 +45,11 @@
 </div>
 
 <script>
-  document.addEventListener("turbo:load", function () {
+  function initializeReplyForm() {
   const toComments = document.querySelectorAll("[id^='to-comment-']");
     toComments.forEach(container => {
       const commentNumber = container.id.replace("to-comment-", "");
-      const replyForm = document.getElementById(`reply-form-${commentNumber}`);
+      const replyForm = document.getElementById(`reply-hundler-${commentNumber}`);
       if (container && replyForm) {
         container.addEventListener("click", function(e){
           e.stopPropagation(); 
@@ -97,6 +62,12 @@
           e.stopPropagation(); 
         });
     }});
+  };
+  document.addEventListener("turbo:load", function () {
+    initializeReplyForm();
+  });
+  document.addEventListener("click", function () {
+    initializeReplyForm();
   });
 </script>
 
@@ -249,6 +220,7 @@
   }
   .reply-form textarea {
     min-height: 100px;
+    min-width: 300px;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-wrap: break-word;
