@@ -1,0 +1,89 @@
+<div class="board-info-container">
+  <% unless @board_logs.empty? %>
+    <% @board_logs.each do |log| %>
+      <div class="board-info-content">
+        <div class="action-user-info">
+          <%= link_to user_path(log.user.id) do %>
+            <div class="action-user-image">
+              <% if log.user.avatar_image.attached? %>
+                <%= image_tag log.user.avatar_image %>
+              <% else %>
+                <i class="bi bi-person-circle avatar-icon"></i>
+              <% end %>
+            </div>
+            <div class="action-user-name"><%= log.user.user_name %></div>
+          <% end %>
+        </div>
+        <div class="action-details">
+          <p>
+            <% if log.frame %>
+              フレーム <%= log.frame&.frame_number %>
+            <% elsif log.action_type == 2 %>
+              タイトル
+            <% else %>
+              ボード
+            <% end %>
+            を<%= I18n.t("enums.board_log.action_type.#{log.action_type}") %>しました。
+          </p>
+          <p><%= l log.created_at %></p>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="no-content">このボードにはまだ変更はありません</div>
+  <% end %>
+</div>
+
+<style>
+  .board-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .board-info-content {
+    display: flex;
+    justify-content: center;
+    width: 500px;
+    margin: auto;
+    border-bottom: 2px solid #ddd;
+  }
+  .action-user-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .action-user-info a {
+    text-decoration: none;
+  }
+  .action-user-image img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+  .avatar-icon {
+    font-size: 40px;
+    color: #aaa;
+  }
+  .action-user-name {
+    font-size: 20px;
+  }
+  .action-details {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .action-details p {
+    margin: auto;
+    font-size: 20px;
+  }
+  .no-content {
+    color: #666;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 3px solid #ddd;
+  }
+</style>

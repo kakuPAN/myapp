@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_10_131644) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_11_233422) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,6 +49,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_10_131644) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["provider", "uid"], name: "index_authentications_on_provider_and_uid"
+  end
+
+  create_table "board_logs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "board_id", null: false
+    t.bigint "frame_id"
+    t.integer "action_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["board_id"], name: "index_board_logs_on_board_id"
+    t.index ["frame_id"], name: "index_board_logs_on_frame_id"
+    t.index ["user_id"], name: "index_board_logs_on_user_id"
   end
 
   create_table "boards", force: :cascade do |t|
@@ -133,6 +145,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_10_131644) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "board_logs", "boards"
+  add_foreign_key "board_logs", "frames"
+  add_foreign_key "board_logs", "users"
   add_foreign_key "boards", "boards", column: "parent_id"
   add_foreign_key "comments", "boards"
   add_foreign_key "comments", "users"

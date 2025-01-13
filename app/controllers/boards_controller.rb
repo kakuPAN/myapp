@@ -17,6 +17,7 @@ class BoardsController < ApplicationController
   def create
     @board = Board.new(board_params)
     if @board.save
+      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :create_action)
       redirect_to edit_board_path(@board)
       flash[:success] = "投稿を作成しました"
     else
@@ -27,19 +28,15 @@ class BoardsController < ApplicationController
 
   def show
     @board = Board.find_by(id: params[:id])
-    @same_title_boards = Board.where(title: @board.title)
-    @breadcrumbs = @board.breadcrumbs
-    
     if !@board
       redirect_to boards_path
       flash[:danger] = "投稿が存在しません"
       return 
     end
-
-    @visitor = UserBoard.find_by(user_id: current_user, board_id: @board.id)
-    if @visitor&.unvisited?
-      @visitor.update(trigger: 1)
-    end
+    @same_title_boards = Board.where(title: @board.title)
+    @breadcrumbs = @board.breadcrumbs
+    @visitor = UserBoard.create(user_id: current_user.id, board_id: @board.id) # 閲覧済みかどうかを表示
+    @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :view_action)
     
     @frames = Frame.where(board_id: @board.id).order(:frame_number)
 
@@ -70,6 +67,7 @@ class BoardsController < ApplicationController
     @board = Board.find_by(id: params[:id])
     @frames = @board.frames.order(:frame_number)
     if @board.update(board_params)
+      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :update_action)
       redirect_to edit_board_path(@board)
       flash[:success] = "タイトルを変更しました"
     else
@@ -102,6 +100,14 @@ class BoardsController < ApplicationController
     @comment = @board.comments.new(comment_params)
     @comment.user = current_user
     @comment.save
+  end
+
+  def board_info
+    @board = Board.find(params[:id])
+    @board_logs = @board.board_logs
+      .where.not(action_type: 0)
+      .includes(:user, :frame)
+      .order(created_at: :desc)
   end
 
   private

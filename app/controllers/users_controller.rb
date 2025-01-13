@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ edit update show show_profile all_users_boards bookmarked_boards ]
+  before_action :set_user, only: %i[ edit update show show_profile liked_boards visited_boards user_actions ]
   before_action :set_search
 
   def new
@@ -22,33 +22,37 @@ class UsersController < ApplicationController
   end
 
   def show
-    @most_popular_boards = Board.where(user_id: @user).limit(4) # 後で最もリアクションのついた投稿を取得する
-    @most_commented_board = Board.where(user_id: @user).limit(4) # 後で最もコメントのついた投稿を取得する
+    @boards = Kaminari.paginate_array(Board.all.sample(10)).page(@page).per(4)
   end
 
-  def all_users_boards
+  def liked_boards # ブックマークした投稿
     @page = params[:page].to_i
     @page = 1 if @page < 1
-    @context = :users
-    if current_user == @user
-      @board_scope = Board.where(user_id: @user)
-    else
-      @board_scope = Board.where("access_level = ? AND user_id = ?", 1, @user)
-    end
-    @boards = @board_scope.order(created_at: :desc).page(@page).per(4)
+    @context = :liked
+    @boards = Kaminari.paginate_array(@user.likes.includes(:board).order(created_at: :desc).map(&:board)).page(@page).per(4)
     render :show
   end
 
-  def bookmarked_boards # ブックマークした投稿
+  def visited_boards # 閲覧履歴
     @page = params[:page].to_i
     @page = 1 if @page < 1
-    @context = :bookmarked
-    if current_user == @user
-      @board_scope = Board.where(user_id: @user)
-    else
-      @board_scope = Board.where("access_level = ? AND user_id = ?", 1, @user)
-    end
-    @boards = @board_scope.order(created_at: :desc).page(@page).per(4)
+    @context = :visited
+    @boards = Kaminari.paginate_array(user_board_history(@user)).page(@page).per(4)
+    render :show
+  end
+
+  def user_actions
+    @page = params[:page].to_i
+    @page = 1 if @page < 1
+    @context = :user_action
+    @logs_with_boards = 
+      @user.board_logs.where("action_type != ?", 0)
+      .includes(:board, :frame)
+      .order(created_at: :desc)
+      .map do |log|
+        { board: log.board, frame: log.frame, action_date: log.created_at, action_type: log.action_type }
+      end
+    @boards = Kaminari.paginate_array(@logs_with_boards).page(@page).per(4)
     render :show
   end
 
@@ -97,5 +101,18 @@ class UsersController < ApplicationController
       @q = Board.where(access_level: 1).ransack(params[:q])
     end
     @index_boards = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(@index_page).per(2)
+  end
+
+  def user_board_history(user)
+    filtered_boards = []
+
+    all_visited_boards = user.user_boards.where(created_at: (Time.current - 1.week)..Time.current).order(created_at: :desc)
+    all_visited_boards.each do |visited_board|
+      unless filtered_boards.any? { |board| board.id == visited_board.board_id }
+        board = Board.find(visited_board.board_id) 
+        filtered_boards << board
+      end
+    end
+    filtered_boards
   end
 end

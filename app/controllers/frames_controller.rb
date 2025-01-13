@@ -19,6 +19,7 @@ class FramesController < ApplicationController
     @frame = @board.frames.build(frame_params.merge(frame_number: frame_number))
 
     if @frame.save
+      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, frame_id: @frame.id, action_type: :create_action)
       redirect_to edit_board_path(@board)
       flash[:notice] = "フレームが作成されました"
     else
@@ -35,8 +36,8 @@ class FramesController < ApplicationController
   def update
     @frame_type = params[:frame_type] || :image
     @frame = @board.frames.find(params[:id])
-
     if @frame.update(frame_params)
+      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, frame_id: @frame.id, action_type: :update_action)
       redirect_to edit_board_path(@board)
       flash[:success] = "フレームが更新されました"
     else

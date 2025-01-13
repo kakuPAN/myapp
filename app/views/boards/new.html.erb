@@ -8,34 +8,76 @@
       <%= f.text_field :title, class: "form-control" %>
       <%= f.hidden_field :parent_id, value: @parent_id %>
       <%= f.submit "新しいルートを作成", class: "form-control btn btn-primary" %>
+      <%= link_to "キャンセル", board_path(@parent_board) %>
     </div>
   <% end %>
 </div>
 
 
 <style>
+  @media (min-width: 600px) {
+    .new-board-wrapper {
+      justify-content: center;
+      align-items: center;
+    }
+    .new-board-parent {
+      font-size: 40px;
+    }
+    .new-board-form {
+      width: 600px;
+    }
+    .new-board-form input {
+      font-size: 30px;
+    }
+  }
+  @media (max-width: 600px) {
+    .new-board-wrapper {
+      margin: 0 20px;
+    }
+    .new-board-parent {
+      font-size: 30px;
+    }
+    .new-board-form {
+      width: 100%;
+    }
+    .new-board-form input {
+      font-size: 20px;
+    }
+  }
   .new-board-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
   }
   .new-board-parent {
-    font-size: 40px;
+    text-align: center;
     font-weight: bold;
     border-bottom: 2px solid #ddd;
+    overflow-x: auto;
   }
   .new-board-form {
-    width: 600px;
     margin: auto;
     margin-top: 100px;
     border-radius: 20px;
   }
-  
   .new-board-form input {
     width: 100%;
     margin-bottom: 20px;
+  }
+  .new-board-form a {
+    width: 100%;
     font-size: 30px;
+    display: block;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    background: #B7B7B7;
+    text-decoration: none;
+    color: #fff;
+  }
+  .new-board-form a:hover {
+    font-weight: bold;
+    background: #ddd;
+
   }
 </style>
 
