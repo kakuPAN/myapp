@@ -4,9 +4,11 @@ class Board < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :frames, dependent: :destroy
   has_many :user_boards
-  has_many :visit_users, through: :user_boards, source: :user
+  has_many :visited_users, through: :user_boards, source: :user
   has_many :likes, dependent: :destroy
   has_many :liked_users, through: :likes, source: :user
+  has_many :board_logs, dependent: :destroy
+  has_many :action_user, through: :board_logs, source: :user
 
   validates :title, presence: true, length: { maximum: 100 }
   validates :title, uniqueness: { scope: :parent_id, message: "は同じ親ノード内で一意である必要があります" }

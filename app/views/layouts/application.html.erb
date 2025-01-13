@@ -25,11 +25,17 @@
         <%= render "shared/header" %>
       <% end %>
       <%= yield %>
+      <%= render "shared/sub_footer" %>
       <%= render "shared/footer" %>
     </div>
   </body>
 </html>
 <style>
+  @media (max-width: 1000px) {
+    .whole-wrapper {
+      padding-bottom: 190px;
+    }
+  }
   .whole-wrapper {
     min-height: 100vh;
     position: relative;
@@ -54,3 +60,150 @@ document.addEventListener("turbo:load", function () {
   }
 });
 </script>
+
+<style>
+<%# ヘッダー・サブフッター %>
+@media (max-width: 599px) {
+  
+  .search-form-container {
+    width: 100%;
+    white-space: nowrap;
+  }
+  .search-form-container input[type="search"] {
+    width: 80%;
+  }
+  .mypage-container {
+    display: none;
+  }
+  .mypage-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    top: -50%;
+    display: none;
+  }
+  .logo {
+    display: none;
+  }
+  .sub-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    bottom: 120px;
+    padding: 10px;
+    height: 70px;
+    background: #333;
+    width: 100%;
+    min-width: 300px;
+    border-bottom: 2px solid #ddd;
+    padding: 0 50px;
+  }
+  .sub-footer-content span {
+    color: white;
+    font-size: 30px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1000px) {
+  .search-form-container {
+    width: 600px;
+  }
+  .search-form-container input[type="search"] {
+    width: 400px;
+  }
+  .mypage-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    top: -50%;
+    display: none;
+  }
+  .logo {
+    display: none;
+  }
+  .sub-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    height: 70px;
+    position: absolute;
+    bottom: 120px;
+    background: #333;
+    width: 100%;
+    min-width: 300px;
+    border-bottom: 2px solid #ddd;
+    padding: 0 50px;
+  }
+  .sub-footer-content span {
+    color: white;
+    font-size: 30px;
+  }
+
+}
+@media (min-width: 1001px) {
+  .search-form-container {
+    width: 600px;
+  }
+  .search-form-container input[type="search"] {
+    width: 400px;
+  }
+  .mypage-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    top: -50%;
+  }
+  .logo {
+    flex: 1;
+  }
+  .sub-footer-content {
+    display: none;
+  }
+}
+</style>
+
+<style>
+<%# // ページネーション %>
+.pagination-left {
+  position: absolute;
+  bottom: 0;
+  left: 45%;
+  font-size: 40px;
+}
+.pagination-right {
+  position: absolute;
+  bottom: 0;
+  right: 45%;
+  font-size: 40px;
+}
+.previous-link {
+  font-size: 50px;
+  opacity: 1;
+  color: pink;
+}
+.next-link {
+  font-size: 50px;
+  opacity: 1;
+  color: pink;
+}
+.previous-link:hover {
+  font-size: 60px;
+}
+.next-link:hover { 
+  font-size: 60px;
+}
+.previous-link.disabled, .next-link.disabled {
+  pointer-events: none;
+}
+.board-cards:hover .previous-link:not(.disabled) {
+  opacity: 1;
+}
+.board-cards:hover .next-link:not(.disabled) {
+  opacity: 1;
+}
+</style>

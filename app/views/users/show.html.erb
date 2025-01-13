@@ -1,245 +1,51 @@
-<%= render "shared/header" %>
 <div class="mypage-wrapper">  
   <%= render "mypage_header" %>
   <div class="board-tab">
     <div class="to-users-home <%= "disabled" if @context %>">
       <%= link_to "ホーム", user_path(@user) %>
     </div>
-    <div class="to-all-users-boards <%= "disabled" unless @context&.to_sym == :users %>">
-      <%= link_to "投稿一覧", all_users_boards_user_path(@user)%>
+    <div class="to-liked-boards <%= "disabled" unless @context&.to_sym == :liked %>">
+      <%= link_to "お気に入り", liked_boards_user_path(@user)%>
     </div>
-    <div class="to-bookmarked-boards <%= "disabled" unless @context&.to_sym == :bookmarked %>">
-      <%= link_to "ブックマーク", bookmarked_boards_user_path(@user)%>
+    <div class="to-useraction-boards <%= "disabled" unless @context&.to_sym == :user_action %>">
+      <%= link_to "ユーザーの活動", user_actions_user_path(@user)%>
     </div>
-  </div>
-  <% if @context %>
-    <div class="border-label">
-      <% if @context.to_sym == :users %>
-        <span>すべての投稿</span>
-      <% elsif @context.to_sym == :bookmarked %>
-        <span>ブックマーク</span>
-      <% end %>
-    </div>
-    <div class="all-users-boards">
-      <% if @boards.empty? %>
-        <li>投稿がありません</li>
-      <% else %>
-        <% @boards.each do |board| %>
-          <%= render "shared/board_card", board: board %>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="page-numbers">
-      <%= paginate @boards, context: false %>
-    </div>
-  <% else %>
-    <div class="border-label">
-      <span>コメントが多い投稿</span>
-    </div>
-    <div class="most-commented-boards">
-      <% if @most_commented_board.empty? %>
-        <li>投稿がありません</li>
-      <% else %>
-        <% @most_commented_board.each do |board| %>
-          <%= render "shared/board_card", board: board %>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="border-label">
-      <span>いいねが多い投稿</span>
-    </div>
-    <div class="most-popular-boards">
-      <% if @most_popular_boards.empty? %>
-      <li>投稿がありません</li>
-    <% else %>
-      <% @most_popular_boards.each do |board| %>
-        <%= render "shared/board_card", board: board %>
-      <% end %>
+    <% if current_user && current_user == @user %>
+      <div class="to-visited-boards <%= "disabled" unless @context&.to_sym == :visited %>">
+        <%= link_to "閲覧履歴", visited_boards_user_path(@user)%>
+      </div>
     <% end %>
+  </div>
+  <% if @boards&.empty? %>
+    <div class="no-content">投稿がありません</div>
+  <% else %>
+    <div class="index-board-wrapper">
+      <% @boards.each do |board| %>
+        <% unless @context&.to_sym == :user_action %>
+          <%= render "shared/index_board", board: board %>
+        <% else %>
+          <%= render "shared/user_actions", log: board %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= paginate @boards %>
   <% end %>
 </div>
 
 <style>
-  .mypage-wrapper {
-    margin: auto;
-    position: relative;
-    padding: 20px;
-    padding-bottom: 100px;
+* {
+    /*outline: 2px solid blue;*/
+    scrollbar-width: none;
   }
-  .border-label {
-    width: 100%;
-    height: 100%;
-    margin: 20px 0;
-    text-align: center;
-    background: #FFE8EC;
-  }
-  .border-label span {
-    font-size: 30px;
-    font-weight: bold;
-    color: rgb(112, 112, 112);
-  }
-  .most-popular-boards, .most-commented-boards, .all-users-boards, .bookmarked-boards {
-    display: flex; /* Flexbox を有効化 */
-    justify-content: space-between; /* コンテナ内のスペースを均等配置 */
-    align-items: center; /* 垂直方向を中央揃え */
-    flex-wrap: wrap;
-    border-bottom: 3px solid #ddd;
-  }
-  .card-area {
-    position: relative;
-    overflow: hidden; /* 画像がスライドしてもカード外に出ないようにする */
-    width: 400px; /* カードの幅を指定 */
-    height: 500px; /* カードの高さを指定 */
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    margin: 20px;
-  }
-  @media ( max-width: 900px ){
-    .most-commented-boards, .most-popular-boards {
-      flex-direction: column;
-    }
-  }
-</style>
-
-<style>
-.border-label {
-    width: 100%;
-    height: 100%;
-    margin: 20px 0;
-    text-align: center;
-    background: #FFE8EC;
-  }
-  .border-label span {
-    font-size: 30px;
-    font-weight: bold;
-    color: rgb(112, 112, 112);
-  }
-  .all-users-boards, .bookmarked-boards {
-    display: flex; /* Flexbox を有効化 */
-    justify-content: space-between; /* コンテナ内のスペースを均等配置 */
-    align-items: center; /* 垂直方向を中央揃え */
-    flex-wrap: wrap;
-    border-bottom: 3px solid #ddd;
-  }
-  </style>
-
-<!-- 投稿一覧・ブックマークページ-->
-<style>
-.border-label {
-    width: 100%;
-    height: 100%;
-    margin: 20px 0;
-    text-align: center;
-    background: #FFE8EC;
-  }
-  .border-label span {
-    font-size: 30px;
-    font-weight: bold;
-    color: rgb(112, 112, 112);
-  }
-.all-users-boards, .bookmarked-boards {
-    display: flex; /* Flexbox を有効化 */
-    justify-content: space-between; /* コンテナ内のスペースを均等配置 */
-    align-items: center; /* 垂直方向を中央揃え */
-    flex-wrap: wrap;
-    border-bottom: 3px solid #ddd;
-  }
-
-.board-tab {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  height: 60px;
-  padding: 0 10%;
+  // マイページ
+.mypage-wrapper {
+  margin: auto;
   position: relative;
+  margin-bottom: 50px;
 }
-
-.to-all-users-boards, .to-bookmarked-boards, .to-users-home {
-  font-size: 20px;
-  min-width: 200px;
+.mypage-wrapper .no-content {
   text-align: center;
-  border-top: 8px solid pink;
-  padding: 10px 0;
+  font-size: 20px;
 }
-
-.to-all-users-boards a, .to-bookmarked-boards a, .to-users-home a {
-  text-decoration: none;
-  font-size: 30px;
-  font-weight: bold;
-  color: rgb(112, 112, 112);
-  pointer-events: none;
-}
-.to-users-home.disabled {
-  opacity: 0.5;
-  border-top: none;
-}
-.to-users-home.disabled a {
-  pointer-events: auto;
-}
-.to-bookmarked-boards.disabled {
-  opacity: 0.5;
-  border-top: none;
-}
-.to-bookmarked-boards.disabled a {
-  pointer-events: auto;
-}
-
-.to-all-users-boards.disabled {
-  opacity: 0.5;
-  border-top: none;
-  pointer-events: auto;
-}
-.to-all-users-boards.disabled a {
-  pointer-events: auto;
-}
-  </style>
-
-  <style>
-  .page-numbers {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
-    font-size: 40px;
-  }
-  .pagination-left {
-    position: absolute;
-    bottom: 0;
-    left: 45%;
-    font-size: 40px;
-  }
-  .pagination-right {
-    position: absolute;
-    bottom: 0;
-    right: 45%;
-    font-size: 40px;
-  }
-  .previous-link {
-    font-size: 50px;
-    opacity: 1;
-    color: pink;
-  }
-  .next-link {
-    font-size: 50px;
-    opacity: 1;
-    color: pink;
-  }
-  .previous-link:hover {
-    font-size: 60px;
-  }
-  .next-link:hover { 
-    font-size: 60px;
-  }
-  .previous-link.disabled, .next-link.disabled {
-    pointer-events: none;
-  }
-  .board-cards:hover .previous-link:not(.disabled) {
-    opacity: 1;
-  }
-  .board-cards:hover .next-link:not(.disabled) {
-    opacity: 1;
-  }
 </style>
+

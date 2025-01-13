@@ -31,6 +31,11 @@ ja:
       access_level:
         private_access: 非公開
         public_access: 公開
+    board_log:
+      action_type:
+        view_action: 閲覧
+        create_action: 作成
+        update_action: 編集
   time:
     formats:
       default: "%Y/%m/%d %H:%M"

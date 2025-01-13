@@ -1,158 +1,71 @@
-<div class="scroll-content">
-  <div class="container">
-    <% @frames.each do |frame| %>
-      <div class="section">
-        <div class="frame-number">
-          <% total_number = @frames.size %>
-          <% current_number = @frames.index(frame) + 1 %>
-          <p><%= current_number %>／<%= total_number%></p>
+<div class="wrapper">  
+  <div class="scroll-content">
+    <div class="container">
+      <% @frames.each do |frame| %>
+        <div class="section">
+          <div class="frame-number">
+            <% total_number = @frames.size %>
+            <% current_number = @frames.index(frame) + 1 %>
+            <p><%= current_number %>／<%= total_number%></p>
+          </div>
+          <div class="board-body">
+            <% if frame.image.attached? %>
+              <%= image_tag frame.image %>
+            <% else %>
+              <div class="board-body-text"><%= simple_format(frame.body) %></div>
+            <% end %>
+          </div>
         </div>
-        <div class="board-body">
-          <% if frame.image.attached? %>
-            <%= image_tag frame.image %>
-          <% else %>
-            <div class="board-body-text"><%= simple_format(frame.body) %></div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-  <div class="board-title-label <%= board_color(board) %>">
-    <%= @board.title %>
-    <div class="delete-edit-button">
-      <%= link_to board_path(board), data: { turbo_method: :delete, turbo_confirm: '掲示板を削除してよろしいですか？' }, class: "delete-button" do %>
-        <i class="bi bi-trash3-fill"></i>
-      <% end %>
-      <%= link_to edit_board_path(board), class: "edit-button" do %>
-        <i class="bi bi-pencil-fill"></i>
       <% end %>
     </div>
+    <div class="board-title-label <%= board_color(board) %>">
+      <%= @board.title %>
+      <div class="delete-edit-button">
+        <%= link_to board_path(board), data: { turbo_method: :delete, turbo_confirm: '掲示板を削除してよろしいですか？' }, class: "delete-button" do %>
+          <i class="bi bi-trash3-fill"></i>
+        <% end %>
+        <%= link_to edit_board_path(board), class: "edit-button" do %>
+          <i class="bi bi-pencil-fill"></i>
+        <% end %>
+        <%= link_to board_info_board_path(board), class: "info-button" do %>
+          <i class="bi bi-bell"></i>
+        <% end %>
+        <i class="bi bi-chat-dots comment-button"></i>
+      </div>
+    </div>
+    <div class="like-button">
+      <%= render 'likes/like_button', board: board %>
+    </div>
   </div>
-  <div class="like-button">
-    <%= render 'likes/like_button', board: board %>
+  <div class="comment-area-wrapper">
+    <div class="comment-area-label <%= board_color(board) %>">
+      みんなのコメント
+    </div>
+    <div class="comment-area">
+      <%= render "comments/chat_track", board: board %>
+    </div>
+    <div class="comment-form-wrapper">
+      <%= render "comments/chat_form", board: board, comment: @comment %>
+    </div>
   </div>
 </div>
-<div class="comment-area-wrapper">
-  <div class="comment-area-label <%= board_color(board) %>">
-    みんなのコメント
-  </div>
-  <div class="comment-area">
-    <%= render "comments/chat_track", board: board %>
-  </div>
-  <div class="comment-form-wrapper">
-    <%= render "comments/chat_form", board: board, comment: @comment %>
-  </div>
-</div>
 
-<style>
-.container {
-	overflow: auto;
-	scroll-snap-type: y mandatory;
-	height: 80%;
-  width: 100%;
-  position: absolute;
-  top:10%;
-  margin: auto;
-  z-index: 1;
-}
-.section {
-	scroll-snap-align: start;
-	height: 100%;
-  border: 2px solid #ddd;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 100px;
-  position: relative;
-}
-.frame-number {
-  font-size: 20px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #ddd;
-  height: 30px;
-  padding: 2px 5px;
-  text-align: center;
-  border-radius: 50%;
-  opacity: 0.6;
-}
-.board-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: left;
-  width: 100%;
-  height: 100%;
-}
-.board-body-text {
-  text-align: left;
-  padding: 0 10px;
-  font-size: 28px;
-}
-.board-body-text p {
-  word-break: break-word;
-  overflow-wrap: break-word; <%# 折り返しに必要 %>
-}
-.board-body img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  margin: auto;
-  display: block;
-}
-.create-board {
-  width: 100px;
-  text-align: center;
-}
-.create-board i {
-  font-size: 50px;
-}
-</style>
+<script>
+ document.addEventListener("turbo:load", function(){
+  const commentForm = document.querySelector(".comment-form-wrapper");
+  const commentButton = document.querySelector(".comment-button");
+  if(commentForm){
+    commentButton.addEventListener("click", function(e){
+      e.stopPropagation(); 
+      commentForm.style.display = "block";
+    })
+    document.addEventListener("click", function(e){
+      commentForm.style.display = "none";
+    });
+    commentForm.addEventListener("click", function(e){
+      e.stopPropagation(); 
+    });
+  };
+ })
+</script>
 
-<style>
-.replies-wrapper {
-  margin-left: 20px;
-  border-left: 2px solid #ddd;
-}
-.reply-wrapper {
-  margin-bottom: 10px;
-}
-.comment-text, .reply-text {
-  display: block;
-  margin: 20px;
-  font-size: 20px;
-}
-.comment-text {
-  color: black;
-}
-.reply-text {
-  color: #555;
-}
-.comment-avatar, .reply-avatar {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  width: 100%;
-  overflow: hidden;
-  margin: 20px;
-}
-.commented-user, .replied-user {
-  font-size: 20px;
-  color: black;
-  margin-left: 10px;
-}
-.avatar-image {
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-}
-.avatar-icon {
-  font-size: 40px;
-  color: #aaa;
-}
-
-</style>

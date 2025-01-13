@@ -5,9 +5,10 @@ Rails.application.routes.draw do
 
   resources :users do
     member do
-      get :all_users_boards
-      get :bookmarked_boards
+      get :liked_boards
+      get :visited_boards
       get :show_profile
+      get :user_actions
     end
   end
   resources :boards do
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
       post :create_like
       delete :destroy_like
       post :create_chat
+      get :board_info
     end
     resources :frames do
       member do

@@ -1,56 +1,57 @@
-<div class="whole-wrapper">
-  <div class="edit-wrapper">
-    <div class="frames-wrapper">
+<div class="edit-wrapper">
+  <div class="frames-wrapper">
+    <div class="edit-buttons">
       <div class="delete-button">
         <%= link_to "削除", board_path(@board), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
       </div>
       <div class="save-button">
         <%= link_to "保存", board_path(@board), class: "btn btn-outline-success" %>
       </div>
-      <div class="edit-board-container">
-        <div class="edit-board-form">
-          <div class="edit-board-title" id="edit-board-title"><%= @board.title %></div>
-          <%= form_with model: @board, id:"edit-form" do |f| %>
-            <i class="bi bi-caret-down-fill edit-arrow"></i>
-            <%= f.text_field :title, id:"title-text" %>
-            <%= f.submit "変更", id:"submit" %>
+    </div>
+    <div class="edit-board-container">
+      <div class="edit-board-form">
+        <div class="edit-board-title" id="edit-board-title"><%= @board.title %></div>
+        <%= form_with model: @board, id:"edit-form" do |f| %>
+          <i class="bi bi-caret-down-fill edit-arrow"></i>
+          <%= f.text_field :title, id:"title-text" %>
+          <%= f.submit "変更", id:"submit" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="add-frame">
+      <%= link_to "本文フレームを追加", new_board_frame_path(@board, frame_type: :text), class: "btn btn-primary" %>
+      <%= link_to "画像フレームを追加", new_board_frame_path(@board, frame_type: :image), class: "btn btn-primary" %>
+    </div>
+    <% @frames.each do |frame| %>
+      <div class="frame-container" id="frame-container-<%= frame.frame_number %>">
+        <div class="frame-content">
+          <% if frame.image.attached? %>
+            <%= image_tag frame.image %>
+            <% frame_type = :image %>
+          <% else %>
+            <%= frame.body %>
+            <% frame_type = :text%>
           <% end %>
         </div>
       </div>
-      <div class="add-frame">
-        <%= link_to "本文フレームを追加", new_board_frame_path(@board, frame_type: :text), class: "btn btn-primary" %>
-        <%= link_to "画像フレームを追加", new_board_frame_path(@board, frame_type: :image), class: "btn btn-primary" %>
+      <div class="edit-tools" id="edit-tools-<%= frame.frame_number %>">
+        <div class="edit-button">
+          <%= link_to "編集", edit_board_frame_path(@board, frame, frame_type: frame_type), class: "btn btn-outline-secondary" %>
+        </div>
+        <div class="edit-button">
+          <%= link_to "削除", board_frame_path(@board, frame), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
+        </div>
+        <div class="edit-button <%= "disabled" if frame.frame_number == 1 %>">
+          <%= link_to "前に移動", move_forward_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary" %>
+        </div>
+        <div class="edit-button <%= "disabled" if @board.frames.where( "frame_number > ?", frame.frame_number ).empty? %>" >
+          <%= link_to "後ろに移動", move_back_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary" %>
+        </div>
       </div>
-      <% @frames.each do |frame| %>
-        <div class="frame-container" id="frame-container-<%= frame.frame_number %>">
-          <div class="frame-content">
-            <% if frame.image.attached? %>
-              <%= image_tag frame.image %>
-              <% frame_type = :image %>
-            <% else %>
-              <%= frame.body %>
-              <% frame_type = :text%>
-            <% end %>
-          </div>
-        </div>
-        <div class="edit-tools" id="edit-tools-<%= frame.frame_number %>">
-          <div class="edit-button">
-            <%= link_to "編集", edit_board_frame_path(@board, frame, frame_type: frame_type), class: "btn btn-outline-secondary" %>
-          </div>
-          <div class="edit-button">
-            <%= link_to "削除", board_frame_path(@board, frame), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
-          </div>
-          <div class="edit-button <%= "disabled" if frame.frame_number == 1 %>">
-            <%= link_to "前に移動", move_forward_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary" %>
-          </div>
-          <div class="edit-button <%= "disabled" if @board.frames.where( "frame_number > ?", frame.frame_number ).empty? %>" >
-            <%= link_to "後ろに移動", move_back_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary" %>
-          </div>
-        </div>
-      <% end %>
-    </div>
+    <% end %>
   </div>
 </div>
+
 <script>
   document.addEventListener("turbo:load", function(){
     const editForm = document.getElementById("edit-form");
@@ -100,77 +101,22 @@
 }
 </style>
 <style>
-  .edit-board-container {
-    margin-bottom: 100px;
-  }
-  .edit-board-title {
-    font-size: 25px;
-    text-align: center;
-    padding: 5px 20px;
-    background: #ededed;
-    border: 2px solid #ddd;
-    width: 100%;
-  }
-  #edit-form {
-    display: none;
-  }
-  .edit-board-form .bi {
-    font-size: 30px;
-    color: #0f54ff;
-  }
-  .edit-board-form input {
-    display: flex;
-    flex-direction: column;
-  }
-  .edit-board-form input[type="text"] {
-    font-size: 25px;
-    text-align: center;
-    padding: 5px 20px;
-    background: #ededed;
-    border: 2px solid #ddd;
-  }
-</style>
-
-<style>
 @media (min-width: 1000px) {
-  .edit-wrapper {
-    position: relative;
-  }
-  .frames-wrapper {
-    width: 60%;
-  }
-}
-@media (max-width: 1000px) {
   .edit-wrapper {
     flex-direction: column;
     height: auto; /* 縦方向に制限を外す */
-    overflow-y: auto; /* 縦スクロールを有効にする */
+    overflow-y: auto;
   }
   .frames-wrapper {
-    width: 100%;
-}}
-</style>
-<style>
-  .edit-wrapper {
-    height: 100%;
-    display: flex;
-    align-items: center; /* 縦方向に中央揃え */
-    gap: 20px; /* コンテナ間のスペース */
-    flex-wrap: wrap; /* 画面サイズが小さい場合は折り返す */
-    margin: auto;
-    overflow: auto; /* 必要に応じてスクロール */
-    margin-bottom: 50px;
-    margin-top: 100px;
+    width: 60%;
+    min-width: 1000px;
   }
-  .frames-wrapper {
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    align-items: center; <%# 小要素の垂直位置を指定 %>
-    border: 2px solid #ddd;
-    border-radius: 40px;
-    padding: 10%;
+  .edit-buttons {
     position: relative;
+    margin-bottom: 50px;
+    width: 100%;
+    height: 100px;
+    margin-top: 0;
   }
   .delete-button {
     position: absolute;
@@ -182,72 +128,60 @@
     top: 10px;
     left: 20px;
   }
-  .delete-button a, .save-button a {
-    font-size: 30px;
-    text-decoration: none;
-    padding: 5px 20px;
-    border-radius: 20px;
-    text-align: center;
-    margin: 10px;
-  }
-  .frame-container {
-    display: flex;
+}
+@media (min-width: 700px) and (max-width: 1000px) {
+  .edit-wrapper {
     flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-    height: 100%;
-    min-width: 200px;
+    padding: 0 20px;
+    min-width: 300px;
+  }
+  .frames-wrapper {
+    width: 100%;
+  }
+  .edit-buttons {
     position: relative;
-  }
-  .frame-content {
-    text-align: center;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 500px;
     margin-bottom: 50px;
-    font-size: 25px;
-    background: #ededed;
-    border: 2px solid #ddd;
-    word-break: break-word;
-    overflow-wrap: break-word;
+    width: 100%;
+    height: 100px;
+    margin-top: 0;
   }
-  .frame-content img {
-    max-width: 100%;
-    max-height: 100%;
-    margin: auto;
-    object-fit: contain;  
-    display: block;
-    border: 3px solid #ddd;
+  .delete-button {
+    position: absolute;
+    top:10px;
+    right: 20px;
+  }
+  .save-button {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+}
+@media (max-width: 700px){
+  .edit-wrapper {
+    flex-direction: column;
+    padding: 0 20px;
+    min-width: 300px;
+  }
+  .frames-wrapper {
+    width: 100%;
   }
   .add-frame {
-    margin-bottom: 100px;
-    font-size: 30px;
-    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
   }
-  .add-frame a {
-    font-size: 25px;
+  .edit-buttons {
+    margin-bottom: 50px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    height: 100px;
   }
-  .edit-tools {
-    width: 200px;
-    display: none;
-  }
-  .edit-button {
+  .save-button, .delete-button {
+    margin: auto;
     width: 100%;
-    margin: 20px 20px 0 0;
-    margin-bottom: 20px;
+    text-align: center;
   }
-  .edit-button a {
-    width: 100%;
-    font-size: 20px;
-    border-radius: 10px;
-  }
-  .move-button a {
-    margin: 0 20px;
-  }
-  .edit-button.disabled a {
-    pointer-events: none;
-    background: #ddd;
-  }}
+}
 </style>

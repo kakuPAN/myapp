@@ -2,4 +2,5 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import * as bootstrap from "bootstrap"
-import "./script.js"
+import "./move_chat.js"
+import "./board_thumbnail.js"

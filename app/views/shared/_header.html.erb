@@ -13,14 +13,13 @@
       <div class="mypage-dropdown" id="mypageDropdown">
         <ul>
           <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete } %></li>
-          <li><%= link_to "新規投稿", new_board_path %></li>
-          <li><%= link_to "投稿一覧", boards_path %></li>
+          <li><%= link_to "マイページ", user_path(current_user) %></li>
           <li><%= link_to "ユーザー情報", show_profile_user_path(current_user) %></li>
         </ul>
       </div>
     </div>
   <% else %>
-    <div id="mypageContainer">
+    <div class="mypage-container" id="mypageContainer">
       <span class="user-title header-text">ゲストユーザー</span>
       <div class="mypage-dropdown" id="mypageDropdown">
         <ul>
@@ -69,30 +68,26 @@
     height: 70px;
     background: #333;
     position: relative;
+    min-width: 300px;
     border-bottom: 2px solid #ddd;
   }
   .search-form-container {
-    flex: 2; /* 中央部分に広いスペースを割り当て */
     display: flex;
-    justify-content: center; /* 水平方向に中央揃え */
+    justify-content: center;
+    margin: auto;
   }
   .header-content a:hover {
     color: rgba(233, 155, 0, 0.946);
   }
 </style>
 <style>
-  .mypage-container {
-    position: relative;
-    flex: 1; /* 右側の部分に適切な幅を確保 */
-    display: flex;
-    justify-content: flex-end; /* 要素を右揃え */
-    top: -50%;
-  }
+  
   .header-user-name {
     font-size: 20px;
     margin: auto;
     position: absolute;
     right: 5%;
+    color: white;
     cursor: pointer;
   }
   .mypage-dropdown {
@@ -126,9 +121,7 @@
   }
 </style>
 <style>
-  .logo {
-    flex: 1;
-  }
+  
   .logo a {
     text-decoration: none;
     color: white;

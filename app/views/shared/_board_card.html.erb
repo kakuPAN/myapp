@@ -1,6 +1,6 @@
 <div class="card-area">
   <%= link_to board_path(board) do %>
-    <% frame = board&.frames.order(:frame_number).first %>
+    <% frame = board&.frames&.order(:frame_number).first %>
     <% if frame&.image&.attached? %>
       <div class="card-content card-image">
         <%= image_tag frame.image %>

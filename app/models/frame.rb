@@ -1,8 +1,10 @@
 class Frame < ApplicationRecord
   belongs_to :board
+  has_many :board_logs, dependent: :destroy
+  has_many :frame_logs, through: :board_logs, source: :user
   has_one_attached :image
 
-  validates :body, length: { maximum: 250 }, allow_nil: true # content_or_image_presence でnilチェック
+  validates :body, length: { maximum: 500 }, allow_nil: true # content_or_image_presence でnilチェック
   validates :frame_number, presence: true, uniqueness: { scope: :board_id }
   validate :body_or_image_presence
   validate :image_content_type

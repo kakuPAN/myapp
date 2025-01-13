@@ -50,40 +50,30 @@
 </script>
 
 <style>
-* {
-    /*outline: 2px solid blue;*/
-    scrollbar-width: none;
-  }
-</style>
-
-<style>
 .mypage-header {
-  display: flex; /* Flexbox を有効化 */
-  justify-content: space-between; /* コンテナ内のスペースを均等配置 */
-  align-items: center; /* 垂直方向を中央揃え */
-  gap: 20px; /* 要素間の間隔を設定 */
-  padding: 20px 15%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
   padding-bottom: 20px;
   margin: auto;
   text-align: center;
   border: 3px solid #ddd;
+  min-width: 300px;
 }
-@media (max-width: 900px){
-  .mypage-header {
-   flex-direction: column;
-  }  
-}
-@media (max-width: 1500px){
+@media (min-width: 900px){
+  .mypage-header{
+    padding: 20px 15%;
+  }
   .user-profile {
-   flex-direction: column;
-  }  
-}
-.user-profile {
   padding-left: 20px;
+  }
+}
+
+.user-profile {
   display: flex;
-  justify-content: space-between; /* コンテナ内のスペースを均等配置 */
-  align-items: center; /* 垂直方向を中央揃え */
-  width: 60%;
+  justify-content: space-between; 
+  align-items: center; 
 }
 .users-info {
   display: flex;
@@ -122,16 +112,14 @@
 .users-intro {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* コンテナ内のスペースを均等配置 */
-  align-items: center; /* 垂直方向を中央揃え */
-  word-wrap: break-word; /* 長い単語で適宜改行 */
-  word-break: break-word; /* 必要に応じて単語を分割して改行 */
-  overflow: hidden; /* はみ出た部分を隠す */
+  justify-content: space-between;
+  align-items: center;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow: auto;
   flex-wrap: wrap;
   padding: 20px;
   margin: auto;
-  max-width: 400px;
-  
 }
 .users-name {
   max-width: 300px;
@@ -141,8 +129,9 @@
  
 }
 .most-frequent-comment {
-  flex: 1;
+  flex: 2;
   border: 2px solid #ddd;
   padding-right: 20px;
+  min-width: 300px;
 }
 </style>

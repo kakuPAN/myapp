@@ -1,101 +1,23 @@
 <div class="index-board-wrapper">
   <% if @index_boards %>
     <% @index_boards.each do |board| %>
-      <div class="index-board-container">
-        <div class="index-board-image">
-          <% if board_image(board) %>
-            <%= image_tag board_image(board).image %>
-          <% else %>
-            <%= image_tag "free_images/tree.png" %>
-          <% end %>
-        </div>
-        <div class="index-board-content">
-          <div class="index-board-title">
-            <%= link_to board_path(board) do %>
-              <%= board.title %>
-            <% end %>
-          </div>
-          <div class="index-board-body">
-            <% if board.frames.empty? %>
-              コンテンツがありません
-            <% else %>
-              <%= board&.frames&.order(:frame_number).first.body %>
-            <% end %>
-          </div>
-        </div>
-      </div>
+      <%= render "shared/index_board", board: board %>
     <% end %>
   <% else %>
     <div class="no-boards">
       該当する投稿はありません
     </div>
   <% end %>
-  <div>
-    <% if @index_boards.present? && @index_boards.current_page %>
-      <div class="page-numbers">
-        <%= paginate @index_boards %>
-      </div>
-    <% else %>
-      <p>表示するデータがありません。</p>
-    <% end %>
-  </div>
+  <% if @index_boards.present? && @index_boards.current_page %>
+    <%= paginate @index_boards %>
+
+  <% else %>
+    <p>表示するデータがありません。</p>
+  <% end %>
 </div>
 
 <style>
-  * {
-    /*outline: 2px solid blue;*/
-    scrollbar-width: none;
-  }
   .index-board-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
-    }
-
-  .index-board-container {
-    display: flex;
-    align-items: center; 
-    border: 1px solid #ddd; 
-    padding: 10px 20%; 
-  }
-
-  .index-board-image {
-    width: 200px;
-    height: 200px;
-    background-color: #FFFAF0;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ddd;
-  }
-  .index-board-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    margin: auto;
-    display: block;
-  }
-
-  .index-board-content {
-    width: 100%;
-    height: 200px;
-    flex: 1;
-    background-color: #FFFAF0;
-    padding: 10px;
-    text-overflow: ellipsis;
-  }
-
-  .index-board-title {
-    text-align: left;
-    padding: 0 10px;
-    font-size: 30px;
-  }
-  .index-board-body {
-    text-align: left;
-    padding: 0 10px;
-    font-size: 20px;
-    word-break: break-word;
-    overflow-wrap: break-word;
+ 
   }
 </style>
