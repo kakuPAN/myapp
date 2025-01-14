@@ -8,7 +8,7 @@
       <%= f.text_field :title, class: "form-control" %>
       <%= f.hidden_field :parent_id, value: @parent_id %>
       <%= f.submit "新しいルートを作成", class: "form-control btn btn-primary" %>
-      <%= link_to "キャンセル", board_path(@parent_board) %>
+      <%= link_to "キャンセル", board_path(@parent_board), class: "cancel btn btn-outline-danger" %>
     </div>
   <% end %>
 </div>
@@ -29,6 +29,9 @@
     .new-board-form input {
       font-size: 30px;
     }
+    .new-board-form a {
+      font-size: 30px;
+    }
   }
   @media (max-width: 600px) {
     .new-board-wrapper {
@@ -41,6 +44,9 @@
       width: 100%;
     }
     .new-board-form input {
+      font-size: 20px;
+    }
+    .new-board-form a {
       font-size: 20px;
     }
   }
@@ -65,19 +71,12 @@
   }
   .new-board-form a {
     width: 100%;
-    font-size: 30px;
     display: block;
     padding: 5px;
     border-radius: 5px;
     text-align: center;
-    background: #B7B7B7;
     text-decoration: none;
-    color: #fff;
   }
-  .new-board-form a:hover {
-    font-weight: bold;
-    background: #ddd;
-
-  }
+  
 </style>
 

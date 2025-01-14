@@ -1,4 +1,76 @@
-<div class="sub-footer-content">
-  <span>Root</span>
-  <span><i class="bi bi-person-circle"></i></span>
+<div class="sub-footer-menu-wrapper" id="sub-footer-menu">
+  <div class="sub-footer-menu">
+    <% if current_user %>
+      <span><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete } %></span>
+      <span><%= link_to "マイページ", user_path(current_user) %></span>
+      <span><%= link_to "ユーザー情報", show_profile_user_path(current_user) %></span>
+    <% else %>
+      <span><%= link_to "ユーザー登録", new_user_path %></span>
+      <span><%= link_to "ログイン", login_path %></span>
+      <span><%= link_to "トップ", root_path %></span>
+    <% end %>
+  </div>
 </div>
+
+<div class="sub-footer-content">
+  <%= link_to root_path do %>  
+    <span>Root</span>
+  <% end %>
+  <span id="sub-footer-icon"><i class="bi bi-person-circle"></i></span>
+</div>
+
+<script>
+  document.addEventListener("turbo:load", function(){
+    const userIcon = document.getElementById("sub-footer-icon");
+    const menu = document.getElementById("sub-footer-menu");
+    if (userIcon&&menu){
+      userIcon.addEventListener("click", function(){
+        menu.style.display = "block";
+        event.stopPropagation(); 
+      });
+      document.addEventListener("click", function(){
+        menu.style.display = "none";
+      });
+    };
+  });
+</script>
+
+<style>
+  .sub-footer-menu-wrapper {
+    display:none;
+  }
+  .sub-footer-menu {
+    position: absolute;
+    right: 0;
+    bottom: 220px;
+    width: 50vw;
+    min-width: 300px;
+    height: 200px;
+    border-bottom: 2px solid #fff;
+    background: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: auto;
+    border-radius: 8px;
+    z-index: 999;
+  }
+  .sub-footer-menu span {
+    border-bottom: 1px solid #ddd;
+    width: 80%;
+    text-align: center;
+  }
+  .sub-footer-menu a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 30px;
+  }
+  .sub-footer-content a {
+    text-decoration: none;
+  }
+</style>
+
+
+

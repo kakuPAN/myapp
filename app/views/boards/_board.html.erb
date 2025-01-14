@@ -1,3 +1,12 @@
+<div  id="login-tab">  
+  <div class="login-tab-container">
+    <div class="login-tab-title">Roots</div>
+    <span>LINEでログインorユーザー登録</span>
+    <%= link_to auth_at_provider_path(provider: :line), class: "line-icon" do %>
+      <%= image_tag "free_images/LINE_Brand_icon.png" %>
+    <% end %>
+  </div>
+</div>
 <div class="wrapper">  
   <div class="scroll-content">
     <div class="container">
@@ -20,20 +29,36 @@
     </div>
     <div class="board-title-label <%= board_color(board) %>">
       <%= @board.title %>
-      <div class="delete-edit-button">
-        <%= link_to board_path(board), data: { turbo_method: :delete, turbo_confirm: '掲示板を削除してよろしいですか？' }, class: "delete-button" do %>
-          <i class="bi bi-trash3-fill"></i>
-        <% end %>
-        <%= link_to edit_board_path(board), class: "edit-button" do %>
-          <i class="bi bi-pencil-fill"></i>
-        <% end %>
-        <%= link_to board_info_board_path(board), class: "info-button" do %>
-          <i class="bi bi-bell"></i>
-        <% end %>
-        <i class="bi bi-chat-dots comment-button"></i>
-      </div>
+      <% if current_user %>
+        <div class="delete-edit-button">
+          <%= link_to board_path(board), data: { turbo_method: :delete, turbo_confirm: '掲示板を削除してよろしいですか？' }, class: "delete-button" do %>
+            <i class="bi bi-trash3-fill"></i>
+          <% end %>
+          <%= link_to edit_board_path(board), class: "edit-button" do %>
+            <i class="bi bi-pencil-fill"></i>
+          <% end %>
+          <%= link_to board_info_board_path(board), class: "info-button" do %>
+            <i class="bi bi-bell"></i>
+          <% end %>
+          <i class="bi bi-chat-dots comment-button"></i>
+        </div>
+      <% else %>
+        <div class="delete-edit-button funcs">
+          <div class= "delete-button <%= "func-icon" unless current_user %>">
+            <i class="bi bi-trash3-fill"></i>
+          </div>
+          <div class= "edit-button <%= "func-icon" unless current_user %>">
+            <i class="bi bi-pencil-fill"></i>
+          </div>
+          <%= link_to board_info_board_path(board), class: "info-button" do %>
+            <i class="bi bi-bell"></i>
+          <% end %>
+          <i class="bi bi-chat-dots <%= "func-icon" unless current_user %>"></i>
+        </div>
+      <% end %>
+
     </div>
-    <div class="like-button">
+    <div class="like-button <%= "func-icon" unless current_user %>">
       <%= render 'likes/like_button', board: board %>
     </div>
   </div>
@@ -51,21 +76,51 @@
 </div>
 
 <script>
- document.addEventListener("turbo:load", function(){
-  const commentForm = document.querySelector(".comment-form-wrapper");
-  const commentButton = document.querySelector(".comment-button");
-  if(commentForm){
-    commentButton.addEventListener("click", function(e){
-      e.stopPropagation(); 
-      commentForm.style.display = "block";
-    })
-    document.addEventListener("click", function(e){
-      commentForm.style.display = "none";
-    });
-    commentForm.addEventListener("click", function(e){
-      e.stopPropagation(); 
-    });
+  function displayForm(){
+    const commentForm = document.querySelector(".comment-form-wrapper");
+    const commentButton = document.querySelector(".comment-button");
+    const backgroundCover = document.getElementById("background-cover");
+    if(commentForm&&commentButton){
+      commentButton.addEventListener("click", function(e){
+        e.stopPropagation(); 
+        commentForm.style.display = "block";
+        backgroundCover.style.display = "block";
+      })
+      document.addEventListener("click", function(e){
+        commentForm.style.display = "none";
+        backgroundCover.style.display = "none";
+      });
+      commentForm.addEventListener("click", function(e){
+        e.stopPropagation(); 
+      });
+    };
+  }
+
+  function recommendLogin(){
+    const funcIcons = document.querySelectorAll(".func-icon");
+    const loginTab = document.getElementById("login-tab");
+    const backgroundCover = document.getElementById("background-cover");
+    if (funcIcons&&loginTab) {
+      funcIcons.forEach(icon => {
+        icon.addEventListener("click", function(e){
+          e.stopPropagation(); 
+          loginTab.style.display = "block";
+          backgroundCover.style.display = "block";
+        });
+      });
+      document.addEventListener("click", function(e){
+        loginTab.style.display = "none";
+        backgroundCover.style.display = "none";
+      });
+      loginTab.addEventListener("click", function(e){
+        e.stopPropagation(); 
+      });
+    };
   };
- })
+
+  document.addEventListener("turbo:load", function(){
+    displayForm();
+    recommendLogin();
+  });
 </script>
 

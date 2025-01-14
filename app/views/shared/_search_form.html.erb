@@ -1,5 +1,5 @@
 <%= search_form_for @q, url: boards_path do |f| %>
-  <%= f.search_field :title_cont, placeholder: "ルートを検索" %>
+  <%= f.search_field :title_cont, placeholder: "ボードを検索" %>
   <%= f.submit "検索" %>
 <% end %>
 
@@ -7,7 +7,8 @@
 <style>
   .search-form-container input[type="search"] {
     height: 40px;
-    }
+    border: 2px solid #ddd;
+  }
   .search-form-container input[type="submit"] {
     height: 40px;
     background: #ff701e;
@@ -21,6 +22,9 @@
     border: none;
     transition: .4s cubic-bezier(0.37, 0, 0.63, 1);
     }
+  .search-form-container.top-page input[type="submit"] {
+    padding: 5px 20px;
+  }
   .search-form-container input[type="submit"]:hover {
     background: #fff;
     color: #ff701e;

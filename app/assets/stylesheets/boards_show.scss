@@ -63,7 +63,6 @@
     text-align: left;
     width: 100%;
     height: 100%;
-    
   }
   .board-body-text {
     text-align: left;
@@ -102,38 +101,6 @@
     border-radius: 15px 15px 15px 15px;
   }
 
-// <!-- ボードタイトル !-->
-
-  .board-title-label {
-    width: 100%;
-    display: flex;
-    
-    justify-content: space-between;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    font-weight: bold;
-    background-color: #C9E2C7;
-    border: 2px solid black;
-    border-radius: 20px 20px 0px 0px;
-    margin: 0;
-    padding: 0px 20px;
-    overflow: auto;
-    white-space: nowrap;
-  }
-  .delete-edit-button {
-    font-size: 30px;
-    z-index: 99; //<%# スクロール用のページの上に配置%>
-  }
-  .delete-edit-button a {
-    text-decoration: none;
-    color: black;
-    padding: 5px;
-    border-radius: 10px;
-  }
-  .delete-button:hover,.edit-button:hover, .info-button:hover, .comment-button:hover  {
-    color: gold;
-  }
 
 //  <!-- コメント欄 !-->
 .comment-area-wrapper {
