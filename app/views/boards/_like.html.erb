@@ -1,3 +1,9 @@
-<%= link_to create_like_board_path(board), data: {turbo_method: :post}, remote: true, id: "like-button-#{board.id}", class: "like" do %>
-  <span><i class="bi bi-pin-angle"></i>お気に入りに登録 <%= board.likes.count %></span>
+<% if current_user %>  
+  <%= link_to create_like_board_path(board), data: {turbo_method: :post}, remote: true, id: "like-button-#{board.id}", class: "like" do %>
+    <span><i class="bi bi-pin-angle"></i>お気に入りに登録 <%= board.likes.count %></span>
+  <% end %>
+<% else %>
+  <div class="like not-login">
+    <span><i class="bi bi-pin-angle"></i>お気に入りに登録 <%= board.likes.count %></span>
+  </div>
 <% end %>

@@ -32,36 +32,39 @@
       <%= link_to "プロフィールを変更", edit_user_path(@user), class: "btn btn-outline-primary" %>
     </div>
   </div>
-  <div class="user-content email-container">
-    <div class="email">
-      <%= @user.email %>
-    </div>
-    <div class="edit">
-      <div>メールアドレス</div>
-    </div>
-  </div>
-  <div class="edit">
-    <%= link_to "メールアドレスを変更", boards_path, class: "btn btn-outline-primary" %>
-  </div> 
-  <div class="user-content password-container">
-    <div class="edit">
-      <div>パスワード</div>
-    </div>
-  </div>
-  <div class="edit">
-    <%= link_to "パスワードを変更", boards_path, class: "btn btn-outline-primary" %>
-  </div>
 </div>
 
 <style>
+  @media(min-width: 800px){
+    .user-wrapper {
+      margin: 100px 20%;
+      border: 2px solid #ddd;
+    }
+    .user-content {
+      width: 400px;
+    }
+    .user-content.avatar-container {
+      width: 400px;
+    }
+  }
+  @media(max-width: 800px){
+    .user-wrapper {
+      padding: 100px 10px;
+    }
+    .user-content {
+      width: 100%;
+    }
+    .user-content.avatar-container {
+      width: 100%;
+    }
+  }
   .user-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 30px;
-    margin: 100px 20%;
     padding: 10%;
-    border: 2px solid #ddd;
+    min-width: 300px;
   }
   .users-profile-wrapper {
     display: flex;
@@ -76,7 +79,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 400px;
     border-bottom: 2px solid #ddd;
   }
   .user-content.avatar-container {
@@ -84,7 +86,7 @@
     flex-direction: column;
     align-items: center;
     height: 400px;
-    width: 400px;
+    
   }
   .edit {
     display: flex;

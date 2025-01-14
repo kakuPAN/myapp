@@ -4,7 +4,9 @@
     <a href="https://lin.ee/ptXYQmj"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36"></a>
     <%= link_to 'LINEでログインorユーザー登録', auth_at_provider_path(provider: :line) %>
   </div>
-  <%= render "shared/search_form" %>
+  <div class="search-form-container top-page">
+    <%= render "shared/search_form" %>
+  </div>
   <% @boards.each do |board| %>
     <%= link_to board_path(board) do %>
       <div class="title-board-content anim-box poyopoyo <%= board_color(board) %>" id= "title-board-content-<%= board.id%>">
@@ -18,6 +20,25 @@
   * {
     /*outline: 2px solid blue;*/
     scrollbar-width: none;
+  }
+  .title-board-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .title-board-container .title-board-content {
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 20px;
+    font-weight: bold;
   }
   .title-container {
     display: flex;
@@ -47,26 +68,7 @@
   .background-image img {
     width: 1000px;
   }
-  .title-board-container {
-    max-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .title-board-container .title-board-content {
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 20px;
-    font-weight: bold;
-  }
+  
   .title-board-container a { 
     color: black;
     text-decoration: none;

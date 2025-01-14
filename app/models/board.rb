@@ -36,6 +36,10 @@ class Board < ApplicationRecord
   end
 
   def liked_by?(user)
-    likes.where(user_id: user.id).exists?
+    if user
+      likes.where(user_id: user.id).exists?
+    else
+      nil
+    end
   end
 end

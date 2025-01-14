@@ -1,5 +1,5 @@
 class BoardsController < ApplicationController
-  before_action :require_login, only: %i[edit destroy]
+  before_action :require_login, except: %i[index show board_info]
   before_action :set_search
 
   def index
@@ -35,9 +35,12 @@ class BoardsController < ApplicationController
     end
     @same_title_boards = Board.where(title: @board.title)
     @breadcrumbs = @board.breadcrumbs
-    @visitor = UserBoard.create(user_id: current_user.id, board_id: @board.id) # 閲覧済みかどうかを表示
-    @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :view_action)
-    
+
+    if current_user
+      @visitor = UserBoard.create(user_id: current_user.id, board_id: @board.id) # 閲覧済みかどうかを表示
+      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :view_action)
+    end
+
     @frames = Frame.where(board_id: @board.id).order(:frame_number)
 
     @page = boards_page_for(@board)

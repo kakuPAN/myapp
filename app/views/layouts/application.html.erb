@@ -20,6 +20,7 @@
 
   <body>
     <%= render "shared/flash_message" %>
+    <div class="background-cover" id="background-cover"></div>
     <div class="whole-wrapper">
       <% unless controller_name == "static_pages" %>
         <%= render "shared/header" %>
@@ -33,13 +34,17 @@
 <style>
   @media (max-width: 1000px) {
     .whole-wrapper {
-      padding-bottom: 190px;
+      padding-bottom: 220px;
+    }
+  }
+  @media (min-width: 1000px) {
+    .whole-wrapper {
+      padding-bottom: 120px;
     }
   }
   .whole-wrapper {
     min-height: 100vh;
     position: relative;
-    padding-bottom: 120px;
     box-sizing: border-box;
   }
 </style>
@@ -93,16 +98,16 @@ document.addEventListener("turbo:load", function () {
     position: absolute;
     bottom: 120px;
     padding: 10px;
-    height: 70px;
+    height: 100px;
     background: #333;
     width: 100%;
     min-width: 300px;
     border-bottom: 2px solid #ddd;
-    padding: 0 50px;
+    padding: 0 80px;
   }
   .sub-footer-content span {
     color: white;
-    font-size: 30px;
+    font-size: 50px;
   }
 }
 
@@ -129,18 +134,21 @@ document.addEventListener("turbo:load", function () {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    height: 70px;
+    height: 100px;
     position: absolute;
     bottom: 120px;
     background: #333;
     width: 100%;
     min-width: 300px;
     border-bottom: 2px solid #ddd;
-    padding: 0 50px;
+    padding: 0 100px;
   }
   .sub-footer-content span {
     color: white;
-    font-size: 30px;
+    font-size: 50px;
+  }
+  .sub-footer-content a {
+    text-decoration: none;
   }
 
 }

@@ -1,14 +1,14 @@
-<% if @context %>
-  <%= render "replies/new", board: @board, comment: @reply_comment, reply: @reply %>
-  <div class="background-cover"></div>
-<% end %>
-
 <%= render @board %>
-
 <div class="board-container">
   <div class="create-board">
-    <%= link_to new_board_path(parent_board: @board.id) do %>
-      <i class="bi bi-plus-square"></i>
+    <% if current_user %>
+      <%= link_to new_board_path(parent_board: @board.id), class: "#{"func-icon" unless current_user}" do %>
+        <i class="bi bi-plus-square"></i>
+      <% end %>
+    <% else %>
+      <div class= "<%= "func-icon" unless current_user %>">
+        <i class="bi bi-plus-square"></i>
+      </div>
     <% end %>
   </div>
   <% @boards.each do |board| %>
@@ -130,6 +130,41 @@
 }
 </style>
 
+<!-- ボードタイトル !-->
+<style>
+  .board-title-label {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    font-weight: bold;
+    background-color: #C9E2C7;
+    border: 2px solid black;
+    border-radius: 20px 20px 0px 0px;
+    margin: 0;
+    padding: 0px 20px;
+    overflow: auto;
+    white-space: nowrap;
+  }
+  .delete-edit-button {
+    font-size: 30px;
+    z-index: 99;
+  }
+  .delete-edit-button.funcs div{
+    display: inline;
+  }
+  .delete-edit-button a {
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .delete-button:hover,.edit-button:hover, .info-button:hover, .comment-button:hover  {
+    color: gold;
+  }
+</style>
 <!-- タグ -->
 <style>
 .board-container {
@@ -262,13 +297,77 @@
     font-size: 20px;
     text-decoration: none;
    }
+   .like.not-login span {
+    padding: 5px 10px;
+    font-size: 20px;
+    text-decoration: none;
+    cursor: pointer;
+   }
 </style>
 
+黒背景
+<style>
+.background-cover {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #333;
+  opacity: 0.3;
+  z-index: 990;
+  display: none;
+}
+</style>
+
+<!-- 未ログイン時のボード機能表示タブ -->
+<style>
+  #login-tab {
+    display: none;
+  }
+  .login-tab-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 300px;
+    z-index: 999;
+    background: #fff;
+    border-radius: 10px;
+  }
+  .login-tab-title {
+    font-size: 30px;
+    color: #333;
+    margin: 30px;
+  }
+  .login-tab-container span {
+    color: #333;
+  }
+  .login-tab-container a {
+    width: 40px;
+  }
+  .login-tab-container .line-icon, .login-tab-container .line-friend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 20px;
+  }
+  .login-tab-container .line-icon img {
+    width: 80px;
+    height: 80px;
+   }
+  
+</style>
 <!-- チャット入力フォーム -->
 <style>
   .comment-form-wrapper {
     position: fixed;
-    top: 80%;
+    top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
     height: 300px;

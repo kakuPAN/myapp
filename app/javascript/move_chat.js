@@ -16,15 +16,4 @@ function moveChat(){
   };
 document.addEventListener("turbo:load", function(){
   moveChat();
-  const submitButton = document.querySelector(".chat-submit");
-  const commentTrack = document.querySelector(".comment-track");
-
-submitButton.addEventListener("click", function(){
-  moveChat();
-  commentTrack.style.animation = "none"
-  commentTrack.offsetHeight;
-  commentTrack.style.animation = ""
-  console.log("チャットだよ");
-
-  });
 });
