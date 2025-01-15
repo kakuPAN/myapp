@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_11_233422) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_15_013539) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -122,7 +122,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_11_233422) do
   end
 
   create_table "user_boards", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.bigint "board_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -5,11 +5,10 @@ function moveChat(){
   if (!commentTrack) return;
   const comments = document.querySelectorAll(".comment-text");
   const commentCount = comments.length;
-  const totalHeight = commentTrack.offsetHeight;
   const speed = 50;
   
   let duration, endTranslate
-  endTranslate = 550
+  endTranslate = 600
   duration = endTranslate / speed
   commentTrack.style.setProperty("--end-translate", `${endTranslate}px`);
   commentTrack.style.setProperty("--animation-duration", `${duration+commentCount*0.1*commentCount}s`); //speedを一定にしてもコメントが増えるほど加速していくので、調整

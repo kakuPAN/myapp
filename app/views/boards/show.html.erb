@@ -56,6 +56,7 @@
   }
   .comment-area-wrapper {
     width: 100%;
+    margin-top: 10px;
   }
   .board-body-text {
     font-size: 20px;
@@ -98,6 +99,7 @@
   }
   .comment-area-wrapper {
     width: 100%;
+    margin-top: 10px;
   }
   .board-body-text {
     font-size: 20px;
@@ -121,6 +123,9 @@
   .board-body-text {
     font-size: 24px;
   }
+  .comment-area-wrapper {
+    margin-left: 10px;
+  }
   .comment-form-wrapper {
     width: 50%;
   }
@@ -130,6 +135,160 @@
 }
 </style>
 
+<style>
+  <%# // ボード　スクロール部分 %>
+  .scroll-content {
+    border-radius: 5px;
+    position: relative;
+    flex: 5; 
+    width: 100%;
+    border: 1px solid;
+    align-items: center;
+    display: flex;
+    background-color: white;
+    overflow: hidden;
+  }
+  .container {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    height: 80%;
+    width: 100%;
+    margin: auto;
+    z-index: 1;
+  }
+  .section {
+    scroll-snap-align: start;
+    height: 100%;
+    border: 2px solid #ddd;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+    position: relative;
+  }
+  .frame-number {
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ddd;
+    height: 30px;
+    padding: 2px 5px;
+    text-align: center;
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+  .board-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    height: 100%;
+  }
+  .board-body-text {
+    text-align: left;
+    padding: 0 10px;
+    overflow: auto;
+  }
+  .board-body-text p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .board-body img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: auto;
+    display: block;
+  }
+  .create-board {
+    width: 100px;
+    text-align: center;
+  }
+  .create-board i {
+    font-size: 50px;
+  }
+  
+  .user-name {
+    display: inline-block;
+    margin: auto;
+  }
+  .board-image img {  <%# これらのプロパティはimgに直接指定することに注意 %>
+    max-width: 100%; <%# 100％で表示できるのは元の大きさまで %><%# クリックで100%に変更　＝＞　全体表示 %>
+    max-height: 100%; <%# 小さい画像をあえてはみ出させたい場合は直接指定するしかない、比率を維持したまま親要素に合わせて自動でサイズを調整することができなくなる %>
+    min-width: 100px;
+    min-height: 100px;
+    object-fit: cover;
+    border-radius: 15px 15px 15px 15px;
+  }
+</style>
+<style>
+.comment-area-wrapper {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid;
+  position: relative;
+  border-radius: 5px;
+}
+.comment-area {
+  position: relative;
+  height: 600px;
+  overflow: auto;
+  background-color: #fff;
+  border: 5px solid white;
+  border-radius: 5px;
+}
+.comment-area-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  font-size: 30px;
+  font-weight: bold;
+  border-bottom: 2px solid black;
+  border-radius: 5px 5px 0 0;
+}
+.comment-track {
+  position: absolute;
+  width: 100%;
+  text-align: left;
+  animation: slideDown var(--animation-duration) linear infinite;
+}
+
+.comment-image img {
+  width: 100px;
+}
+.comment-link {
+  text-decoration: none;
+}
+.comment-link:hover {
+  font-weight: bold;
+}
+.comment_by_current_user.comment_by_board_user {
+  border-bottom: 2px solid green;
+}
+.comment_by_current_user {
+  border-bottom: 2px solid green;;
+}
+.comment_by_board_user {
+  border-bottom: 2px solid red;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(var(--start-translate, -105%));
+  }
+  to {
+    transform: translateY(var(--end-translate, -200px));
+  }
+}
+</style>
 <!-- ボードタイトル !-->
 <style>
   .board-title-label {
@@ -141,12 +300,12 @@
     top: 0;
     font-weight: bold;
     background-color: #C9E2C7;
-    border: 2px solid black;
-    border-radius: 20px 20px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
     margin: 0;
     padding: 0px 20px;
     overflow: auto;
     white-space: nowrap;
+    border-bottom: 2px solid black;
   }
   .delete-edit-button {
     font-size: 30px;
@@ -165,6 +324,67 @@
     color: gold;
   }
 </style>
+<style>
+ <%# 閲覧者数 %>
+  .visitor-like-container {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    transform: translate(-50%, 0);
+    z-index: 100;
+    display: flex;
+    gap: 20px;
+  }
+  .visitor-count {
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 5px 10px;
+  }
+  .visitor-count i {
+    font-size: 20px;
+  }
+  <%# お気に入りボタン %>
+  .like-button {
+    background: #ff701e;
+    border: 2px solid #ff701e;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
+    background-size: 200% 100%;
+    border: none;
+    transition: .4s cubic-bezier(0.37, 0, 0.63, 1);
+    box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    min-width: 180px;
+   }
+   .like-button:hover {
+    background: #fff;
+    letter-spacing: 0.15em;
+    border: 2px solid #ff701e;
+   }
+   .like-button .unlike span, .like-button .like span {
+    color: #fff;
+    font-weight: bold;
+   }
+   .like-button:hover span {
+    color: #ff701e;
+   }
+   .like-button a {
+    font-size: 20px;
+    text-decoration: none;
+   }
+   .like.not-login span {
+    padding: 5px 10px;
+    font-size: 20px;
+    text-decoration: none;
+    cursor: pointer;
+   }
+</style>
+
 <!-- タグ -->
 <style>
 .board-container {
@@ -260,53 +480,6 @@
 </style>
 
 <style>
-
-  <%# お気に入りボタン %>
-  .like-button {
-    position: absolute;
-    left: 50%;
-    bottom: 10px;
-    transform: translate(-50%, 0);
-    z-index: 100;
-    background: #ff701e;
-    border: 2px solid #ff701e;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: bold;
-    text-align: center;
-    background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
-    background-size: 200% 100%;
-    border: none;
-    transition: .4s cubic-bezier(0.37, 0, 0.63, 1);
-    box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
-   }
-   .like-button:hover {
-    background: #fff;
-    letter-spacing: 0.15em;
-    border: 2px solid #ff701e;
-   }
-   .like-button .unlike span, .like-button .like span {
-    color: #fff;
-    font-weight: bold;
-   }
-   .like-button:hover span {
-    color: #ff701e;
-   }
-   .like-button a {
-    padding: 5px 10px;
-    font-size: 20px;
-    text-decoration: none;
-   }
-   .like.not-login span {
-    padding: 5px 10px;
-    font-size: 20px;
-    text-decoration: none;
-    cursor: pointer;
-   }
-</style>
-
-黒背景
-<style>
 .background-cover {
   position: fixed;
   width: 100%;
@@ -349,7 +522,7 @@
   .login-tab-container a {
     width: 40px;
   }
-  .login-tab-container .line-icon, .login-tab-container .line-friend {
+  .line-icon,.line-friend {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -357,7 +530,7 @@
     height: 100%;
     margin: 20px;
   }
-  .login-tab-container .line-icon img {
+  .line-icon img {
     width: 80px;
     height: 80px;
    }
@@ -378,12 +551,12 @@
   .chat-form textarea {
     position: absolute;
     height: 100%;
-    padding-top: 60px;
+    padding-bottom: 60px;
     bottom: 0;
     resize: none;
     background-color: white;
-    font-size: 30px;
-    border-radius: 20px;
+    font-size: 20px;
+    border-radius: 5px;
     box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
   }
   .chat-form input {
@@ -391,9 +564,9 @@
     opacity: 90%;
     height: 50px;
     font-size: 20px;
-    border-radius: 20px 20px 0px 0px;
+    border-radius: 0px 0px 5px 5px;
     background: #ff701e;
-    border: 2px solid #ff701e;
+    border: none;
     font-weight: bold;
     background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
     background-size: 200% 100%;
@@ -403,12 +576,11 @@
     background: #fff;
     color: #ff701e;
     letter-spacing: 0.15em;
-    border: 2px solid #ff701e;
   }
   .chat-form input[type="submit"] {
     color: #fff;
     position: absolute;
-    top: 0;
+    bottom: 0;
   }
   .chat-form input[type="submit"]:hover {
     opacity: 0.6;

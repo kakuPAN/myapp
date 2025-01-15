@@ -1,6 +1,5 @@
 class CommentsController < ApplicationController
   before_action :require_login
-  before_action :set_search
 
   def index
     @board = Board.find(params[:board_id])
@@ -39,12 +38,5 @@ class CommentsController < ApplicationController
   
   def reply_params
     params.require(:reply).permit(:body)
-  end
-
-  def set_search
-    @index_page = params[:page].to_i
-    @index_page = 1 if @index_page < 1
-    @q = Board.ransack(params[:q])
-    @index_boards = @q.result(distinct: true).order(created_at: :desc).page(@index_page).per(10)
   end
 end

@@ -1,29 +1,83 @@
 <div class="title-board-container">
   <div class="title-container">
     <div class="title-text">Roots</div>
-    <a href="https://lin.ee/ptXYQmj"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36"></a>
-    <%= link_to 'LINEでログインorユーザー登録', auth_at_provider_path(provider: :line) %>
-  </div>
-  <div class="search-form-container top-page">
-    <%= render "shared/search_form" %>
-  </div>
-  <% @boards.each do |board| %>
-    <%= link_to board_path(board) do %>
-      <div class="title-board-content anim-box poyopoyo <%= board_color(board) %>" id= "title-board-content-<%= board.id%>">
-        <%= board.title %>
+    <div class="top-page-login-container">
+      <div class="line-login">
+        <%= link_to auth_at_provider_path(provider: :line), class: "line-icon" do %>
+          <%= image_tag "free_images/LINE_Brand_icon.png" %>
+        <% end %>
+        <span>LINEでログイン</span>
       </div>
+      <a href="https://lin.ee/ptXYQmj"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36"></a>
+    </div>
+  </div>
+  <%= render "shared/search_form_container" %>
+  <div class="title-board-content-wrapper">
+    <% @boards.each do |board| %>
+      <%= link_to board_path(board) do %>
+        <div class="title-board-content anim-box poyopoyo <%= board_color(board) %>" id= "title-board-content-<%= board.id%>">
+          <%= board.title %>
+        </div>
+      <% end %>
     <% end %>
+  </div>
+</div>
+<div class="boards-list hidden">
+  <% @all_boards.each do |board| %>
+    <span id="hidden-board-<%= board.id %>" class="list-child"><%= board.title %></span>
   <% end %>
 </div>
-
 <style>
   * {
     /*outline: 2px solid blue;*/
     scrollbar-width: none;
   }
+  <%# トップ画面 lineログイン %>
+  @media (min-width: 800px) {
+    .top-page-login-container {
+      flex-direction: column;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+  }
+  @media (max-width: 800px) {
+    .top-page-login-container {
+      flex-direction: column;
+    }
+  }
+  .top-page-login-container {
+    display: flex;
+    padding: 10px;
+    border: 2px solid #ddd;
+    background: #f7f5f5;
+    border-radius: 15px;
+  }
+  .line-login {
+    display: flex;
+    justify-content: center;
+  }
+  .line-login span {
+    margin: auto;
+    font-weight: bold;
+    color: #333;
+  }
+  .line-login .line-icon {
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  .line-icon img {
+    width: 40px;
+    height: 40px;
+   }
+
   .title-board-container {
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
@@ -65,8 +119,15 @@
   .title-text {
     font-size:80px;
   }
-  .background-image img {
-    width: 1000px;
+  .title-board-content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .title-board-container a { 
@@ -99,6 +160,3 @@
     }
   }
 </style>
-<script>
-
-</script>

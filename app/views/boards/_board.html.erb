@@ -40,7 +40,7 @@
           <%= link_to board_info_board_path(board), class: "info-button" do %>
             <i class="bi bi-bell"></i>
           <% end %>
-          <i class="bi bi-chat-dots comment-button"></i>
+          <i class="bi bi-chat-dots comment-button" id="comment-button"></i>
         </div>
       <% else %>
         <div class="delete-edit-button funcs">
@@ -53,18 +53,22 @@
           <%= link_to board_info_board_path(board), class: "info-button" do %>
             <i class="bi bi-bell"></i>
           <% end %>
-          <i class="bi bi-chat-dots <%= "func-icon" unless current_user %>"></i>
+          <i class="bi bi-chat-dots comment-button <%= "func-icon" unless current_user %>"></i>
         </div>
       <% end %>
-
     </div>
-    <div class="like-button <%= "func-icon" unless current_user %>">
-      <%= render 'likes/like_button', board: board %>
+    <div class="visitor-like-container">
+      <div class="visitor-count">
+        <i class="bi bi-person-fill"></i><%= @visitor_count %>
+      </div>
+      <div class="like-button <%= "func-icon" unless current_user %>">
+        <%= render 'likes/like_button', board: board %>
+      </div>
     </div>
   </div>
   <div class="comment-area-wrapper">
     <div class="comment-area-label <%= board_color(board) %>">
-      みんなのコメント
+      コメント
     </div>
     <div class="comment-area">
       <%= render "comments/chat_track", board: board %>
@@ -78,7 +82,7 @@
 <script>
   function displayForm(){
     const commentForm = document.querySelector(".comment-form-wrapper");
-    const commentButton = document.querySelector(".comment-button");
+    const commentButton = document.getElementById("comment-button");
     const backgroundCover = document.getElementById("background-cover");
     if(commentForm&&commentButton){
       commentButton.addEventListener("click", function(e){
@@ -124,3 +128,6 @@
   });
 </script>
 
+
+
+ 

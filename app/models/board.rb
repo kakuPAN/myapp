@@ -13,7 +13,6 @@ class Board < ApplicationRecord
   validates :title, presence: true, length: { maximum: 100 }
   validates :title, uniqueness: { scope: :parent_id, message: "は同じ親ノード内で一意である必要があります" }
 
-
   def self.ransackable_attributes(auth_object = nil)
     # 検索可能にしたい属性を配列で返す
     [ "title" ]

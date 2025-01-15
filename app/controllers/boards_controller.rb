@@ -1,6 +1,5 @@
 class BoardsController < ApplicationController
   before_action :require_login, except: %i[index show board_info]
-  before_action :set_search
 
   def index
     if @index_boards.empty? && @index_boards.current_page > 1 # 表示できる投稿が存在しない場合、このコードがないとリダイレクトが繰り返されエラーになる。
@@ -28,6 +27,7 @@ class BoardsController < ApplicationController
 
   def show
     @board = Board.find_by(id: params[:id])
+    @visitor = UserBoard.create(board_id: @board.id)
     if !@board
       redirect_to boards_path
       flash[:danger] = "投稿が存在しません"
@@ -35,9 +35,10 @@ class BoardsController < ApplicationController
     end
     @same_title_boards = Board.where(title: @board.title)
     @breadcrumbs = @board.breadcrumbs
+    @visitor_count = UserBoard.where(board_id: @board.id).count
 
     if current_user
-      @visitor = UserBoard.create(user_id: current_user.id, board_id: @board.id) # 閲覧済みかどうかを表示
+      @visitor.user_id = current_user.id
       @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :view_action)
     end
 
@@ -125,13 +126,6 @@ class BoardsController < ApplicationController
 
   def set_breadcrumbs
     add_breadcrumb("HOME", root_path)
-  end
-
-  def set_search
-    @index_page = params[:page].to_i
-    @index_page = 1 if @index_page < 1
-    @q = Board.ransack(params[:q])
-    @index_boards = @q.result(distinct: true).order(created_at: :desc).page(@index_page).per(10)
   end
 
   def boards_page_for(board) # 詳細ページ上にある投稿一覧の同じページを表示するためのメソッド

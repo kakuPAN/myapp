@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ edit update show show_profile liked_boards visited_boards user_actions ]
-  before_action :set_search
 
   def new
     if current_user
@@ -90,17 +89,6 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
-  end
-
-  def set_search
-    @index_page = params[:page].to_i # 不正なページ番号を補正（0以下の値や文字列を1にする）
-    @index_page = 1 if @index_page < 1
-    if current_user
-      @q = Board.where("access_level = ? OR user_id = ?", 1, current_user.id).ransack(params[:q])
-    else
-      @q = Board.where(access_level: 1).ransack(params[:q])
-    end
-    @index_boards = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(@index_page).per(2)
   end
 
   def user_board_history(user)
