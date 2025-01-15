@@ -1,7 +1,6 @@
 class FramesController < ApplicationController
   before_action :require_login
   before_action :set_board
-  before_action :set_search
 
   def index
     @board = Board.find(params[:board_id])
@@ -116,17 +115,6 @@ class FramesController < ApplicationController
 
   def set_board
     @board = Board.find(params[:board_id])
-  end
-
-  def set_search
-    @index_page = params[:page].to_i # 不正なページ番号を補正（0以下の値や文字列を1にする）
-    @index_page= 1 if @index_page < 1
-    if current_user
-      @q = Board.where("access_level = ? OR user_id = ?", 1, current_user.id).ransack(params[:q])
-    else
-      @q = Board.where(access_level: 1).ransack(params[:q])
-    end
-    @index_boards = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(@index_page).per(2)
   end
 
   def frame_params

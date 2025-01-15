@@ -4,9 +4,7 @@
       Roots
     <% end %>
   </div>
-  <div class="search-form-container">
-    <%= render "shared/search_form", q: @q %>
-  </div>
+  <%= render "shared/search_form_container" %>
   <% if current_user %>
     <div class="mypage-container" id="mypageContainer">
       <span class="header-user-name"><%= current_user.user_name %>さん</span>
@@ -31,6 +29,13 @@
     </div>
   <% end %> 
 </div>
+<div class="boards-list hidden">
+  <% @all_boards.each do |board| %>
+    <span id="hidden-board-<%= board.id %>" class="list-child"><%= board.title %></span>
+  <% end %>
+</div>
+
+
 <!--ユーザーネームをマウスオーバーでプルダウン表示 !-->
 <script>
   document.addEventListener('turbo:load', function() {
@@ -71,11 +76,7 @@
     min-width: 300px;
     border-bottom: 2px solid #ddd;
   }
-  .search-form-container {
-    display: flex;
-    justify-content: center;
-    margin: auto;
-  }
+  
   .header-content a:hover {
     color: rgba(233, 155, 0, 0.946);
   }

@@ -1,13 +1,23 @@
 <%= search_form_for @q, url: boards_path do |f| %>
-  <%= f.search_field :title_cont, placeholder: "ボードを検索" %>
+  <%= f.search_field :title_cont, placeholder: "ボードを検索", id: "search-field",onkeyup: "AutoComplete(value);" %>
   <%= f.submit "検索" %>
 <% end %>
 
 <!-- 検索フォーム -->
 <style>
+  .search-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+    position: relative;
+    max-width: 600px;
+    width: auto;
+  }
   .search-form-container input[type="search"] {
     height: 40px;
     border: 2px solid #ddd;
+    border-radius: 5px;
   }
   .search-form-container input[type="submit"] {
     height: 40px;
@@ -19,15 +29,40 @@
     text-align: center;
     background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
     background-size: 200% 100%;
-    border: none;
     transition: .4s cubic-bezier(0.37, 0, 0.63, 1);
     }
-  .search-form-container.top-page input[type="submit"] {
-    padding: 5px 20px;
+  .search-form-container input[type="submit"] {
+    position: absolute;
+    right: 0;
   }
+ 
   .search-form-container input[type="submit"]:hover {
     background: #fff;
     color: #ff701e;
     letter-spacing: 0.15em;
   }
+  <%# オートコンプリート %>
+  .candidate-container {
+    display: none;
+    z-index: 999;
+    margin-top: 10px;
+    position: absolute;
+    top: 40px;
+  }
+  .candidate-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid #ddd;
+    background: #fff;
+    overflow: auto;
+  }
+  .boards-list.hidden {
+    display: none;
+  }
+  .list-child.hight-light {
+    background: lightblue;
+    color: #fff;
+  }
+
 </style>
