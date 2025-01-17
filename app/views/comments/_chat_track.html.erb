@@ -1,6 +1,6 @@
 <div class="comment-track" id="comment-track">
   <div id="chat-table">
-    <% board.comments.order(created_at: :desc).each do |comment| %>
+    <% board.comments.where(parent_id: nil).order(created_at: :desc).each do |comment| %>
       <%= render "comments/chat", comment: comment, board: board %>
     <% end %>
   </div>

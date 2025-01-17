@@ -1,0 +1,12 @@
+<div class="reply-content" id="reply-<%= reply.id%>">  
+  <%= link_to user_path(reply.user_id) do %>
+    <% if reply.user.avatar_image.attached? %>
+      <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
+    <% else %>
+      <i class="bi bi-person-circle avatar-icon"></i>
+    <% end %>
+    <div class="to-comment-user"><%= reply.user.user_name %></div>
+  <% end %>
+  <div class="to-comment"><%= reply.body %></div>
+  <%= link_to "削除", board_comment_path(board, reply), class: "btn btn-outline-danger delete-button", data: { turbo_method: :delete}, remote: true %>
+</div>

@@ -253,6 +253,27 @@
   font-weight: bold;
   border-bottom: 2px solid black;
   border-radius: 5px 5px 0 0;
+  position: relative;
+  background: #333;
+}
+.comment-area-label a {
+  text-decoration: none;
+  color: #fff;
+}
+.comment-area-label a::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background-color: #fff;
+	transform: scaleX(0);
+	transition: transform 0.3s;
+}
+
+.comment-area-label a:hover::after {
+	transform: scaleX(1);
 }
 .comment-track {
   position: absolute;
@@ -299,7 +320,12 @@
     position: absolute;
     top: 0;
     font-weight: bold;
-    background-color: #C9E2C7;
+    background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
+    background-size: 200% 100%;
+    border: none;
+    transition: .4s cubic-bezier(0.37, 0, 0.63, 1);
+    box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
     border-radius: 5px 5px 0px 0px;
     margin: 0;
     padding: 0px 20px;
@@ -314,14 +340,18 @@
   .delete-edit-button.funcs div{
     display: inline;
   }
+  .delete-edit-button i {
+    color: #333;
+  }
   .delete-edit-button a {
     text-decoration: none;
     color: black;
     padding: 5px;
     border-radius: 10px;
   }
-  .delete-button:hover,.edit-button:hover, .info-button:hover, .comment-button:hover  {
-    color: gold;
+ 
+  .delete-edit-button i:hover  {
+    color: #fff;
   }
 </style>
 <style>
@@ -457,19 +487,19 @@
   font-size: 20px;
   font-weight: bold;
 }
-.board-container .board-content.red, .board-title-label.red, .comment-area-label.red, .title-board-content.red {
+.board-container .board-content.red, .title-board-content.red {
   background: #F4ADB0;
 }
-.board-container .board-content.green, .board-title-label.green, .comment-area-label.green, .title-board-content.green {
+.board-container .board-content.green, .title-board-content.green {
   background: #C9E2C7;
 }
-.board-container .board-content.blue, .board-title-label.blue, .comment-area-label.blue, .title-board-content.blue {
+.board-container .board-content.blue, .title-board-content.blue {
   background: #ABECF2;
 }
-.board-container .board-content.brown, .board-title-label.brown, .comment-area-label.brown, .title-board-content.brown {
+.board-container .board-content.brown, .title-board-content.brown {
   background: #EFDDAA;
 }
-.board-container .board-content.emerald, .board-title-label.emerald, .comment-area-label.emerald, .title-board-content.emerald {
+.board-container .board-content.emerald, .title-board-content.emerald {
   background: #E4EDAA;
 }
 
@@ -479,63 +509,6 @@
 }
 </style>
 
-<style>
-.background-cover {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: #333;
-  opacity: 0.3;
-  z-index: 990;
-  display: none;
-}
-</style>
-
-<!-- 未ログイン時のボード機能表示タブ -->
-<style>
-  #login-tab {
-    display: none;
-  }
-  .login-tab-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px;
-    height: 300px;
-    z-index: 999;
-    background: #fff;
-    border-radius: 10px;
-  }
-  .login-tab-title {
-    font-size: 30px;
-    color: #333;
-    margin: 30px;
-  }
-  .login-tab-container span {
-    color: #333;
-  }
-  .login-tab-container a {
-    width: 40px;
-  }
-  .line-icon,.line-friend {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 20px;
-  }
-  .line-icon img {
-    width: 80px;
-    height: 80px;
-   }
-  
-</style>
 <!-- チャット入力フォーム -->
 <style>
   .comment-form-wrapper {

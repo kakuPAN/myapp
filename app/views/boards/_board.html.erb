@@ -1,12 +1,4 @@
-<div  id="login-tab">  
-  <div class="login-tab-container">
-    <div class="login-tab-title">Roots</div>
-    <span>LINEでログインorユーザー登録</span>
-    <%= link_to auth_at_provider_path(provider: :line), class: "line-icon" do %>
-      <%= image_tag "free_images/LINE_Brand_icon.png" %>
-    <% end %>
-  </div>
-</div>
+<%= render "shared/login_tab" %>
 <div class="wrapper">  
   <div class="scroll-content">
     <div class="container">
@@ -38,9 +30,9 @@
             <i class="bi bi-pencil-fill"></i>
           <% end %>
           <%= link_to board_info_board_path(board), class: "info-button" do %>
-            <i class="bi bi-bell"></i>
+            <i class="bi bi-bell-fill"></i>
           <% end %>
-          <i class="bi bi-chat-dots comment-button" id="comment-button"></i>
+          <i class="bi bi-chat-left-dots-fill comment-button" id="comment-button"></i>
         </div>
       <% else %>
         <div class="delete-edit-button funcs">
@@ -51,9 +43,9 @@
             <i class="bi bi-pencil-fill"></i>
           </div>
           <%= link_to board_info_board_path(board), class: "info-button" do %>
-            <i class="bi bi-bell"></i>
+            <i class="bi bi-bell-fill"></i>
           <% end %>
-          <i class="bi bi-chat-dots comment-button <%= "func-icon" unless current_user %>"></i>
+          <i class="bi bi-chat-left-dots-fill comment-button <%= "func-icon" unless current_user %>"></i>
         </div>
       <% end %>
     </div>
@@ -68,7 +60,7 @@
   </div>
   <div class="comment-area-wrapper">
     <div class="comment-area-label <%= board_color(board) %>">
-      コメント
+      <%= render "boards/comment_count", board: board %>
     </div>
     <div class="comment-area">
       <%= render "comments/chat_track", board: board %>
@@ -100,31 +92,9 @@
     };
   }
 
-  function recommendLogin(){
-    const funcIcons = document.querySelectorAll(".func-icon");
-    const loginTab = document.getElementById("login-tab");
-    const backgroundCover = document.getElementById("background-cover");
-    if (funcIcons&&loginTab) {
-      funcIcons.forEach(icon => {
-        icon.addEventListener("click", function(e){
-          e.stopPropagation(); 
-          loginTab.style.display = "block";
-          backgroundCover.style.display = "block";
-        });
-      });
-      document.addEventListener("click", function(e){
-        loginTab.style.display = "none";
-        backgroundCover.style.display = "none";
-      });
-      loginTab.addEventListener("click", function(e){
-        e.stopPropagation(); 
-      });
-    };
-  };
 
   document.addEventListener("turbo:load", function(){
     displayForm();
-    recommendLogin();
   });
 </script>
 

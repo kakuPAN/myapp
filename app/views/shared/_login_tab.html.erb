@@ -1,0 +1,94 @@
+<div  class="login-tab">  
+  <div class="login-tab-container">
+    <div class="login-tab-title">Roots</div>
+    <span>LINEでログインorユーザー登録</span>
+    <%= link_to auth_at_provider_path(provider: :line), class: "line-icon" do %>
+      <%= image_tag "free_images/LINE_Brand_icon.png" %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  function recommendLogin(){
+    const funcIcons = document.querySelectorAll(".func-icon");
+    const loginTab = document.querySelector(".login-tab");
+    const backgroundCover = document.getElementById("background-cover");
+    if (funcIcons&&loginTab) {
+      funcIcons.forEach(icon => {
+        icon.addEventListener("click", function(e){
+          e.stopPropagation(); 
+          loginTab.style.display = "block";
+          backgroundCover.style.display = "block";
+        });
+      });
+      document.addEventListener("click", function(e){
+        loginTab.style.display = "none";
+        backgroundCover.style.display = "none";
+      });
+      loginTab.addEventListener("click", function(e){
+        e.stopPropagation(); 
+      });
+    };
+  };
+ document.addEventListener("turbo:load", function(){
+    recommendLogin();
+  });
+</script>
+
+<!-- 未ログイン時のボード機能表示タブ -->
+<style>
+  .login-tab {
+    display: none;
+  }
+  .login-tab-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 300px;
+    z-index: 999;
+    background: #fff;
+    border-radius: 10px;
+  }
+  .login-tab-title {
+    font-size: 30px;
+    color: #333;
+    margin: 30px;
+  }
+  .login-tab-container span {
+    color: #333;
+  }
+  .login-tab-container a {
+    width: 40px;
+  }
+  .line-icon,.line-friend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 20px;
+  }
+  .line-icon img {
+    width: 80px;
+    height: 80px;
+   }
+  
+</style>
+<!-- 黒背景 -->
+<style>
+.background-cover {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #333;
+  opacity: 0.3;
+  z-index: 990;
+  display: none;
+}
+</style>

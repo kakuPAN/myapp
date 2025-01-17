@@ -1,8 +1,8 @@
 <div class="chat-form" id="chat-form">
   <%= form_with model: [board, comment],url: create_chat_board_path(board), data: {turbo_method: :post} do |f| %>
-    <%= f.text_area :body, class: "form-control" %>
+    <%= f.text_area :body, maxlength: 100, class: "form-control" %>
     <div>
-      <%= f.submit "コメントを送信", class: "submit #{board_color(board)} chat-submit" %>
+      <%= f.submit "コメントを送信", class: "submit chat-submit" %>
     </div>
   <% end %> 
 </div>

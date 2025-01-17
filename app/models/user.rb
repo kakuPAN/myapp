@@ -9,7 +9,6 @@ class User < ApplicationRecord
   has_many :visited_boards, through: :user_boards, source: :board
   has_many :tasks, dependent: :destroy
   has_many :boards, dependent: :destroy
-  has_many :replies, dependent: :destroy
   has_many :board_logs, dependent: :destroy
   has_many :user_board_actions, through: :board_logs, source: :board
   has_many :user_frame_actions, through: :board_logs, source: :frame

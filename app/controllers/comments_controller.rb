@@ -1,39 +1,44 @@
 class CommentsController < ApplicationController
-  before_action :require_login
+  before_action :require_login, except: %i[ index ]
 
   def index
     @board = Board.find(params[:board_id])
-    @comments = @board.comments.order(created_at: :desc).page(params[:page]).per(10)
+    @comments = @board.comments.where(parent_id: nil).includes(:children).order(created_at: :desc).page(params[:page]).per(2)
     @comment = Comment.new
-    @reply = Reply.new
   end
 
   def create
+    @parent_id = params[:parent_id]
     @board = Board.find(params[:board_id])
     @comment = @board.comments.build(comment_params)
     @comment.user = current_user
+    @comment.parent_id = @parent_id
     @comment.save
-    @reply = Reply.new(comment_id: @comment.id)
+    @reply = Comment.new(parent_id: @comment.id)
   end
 
   def destroy
     @board = Board.find(params[:board_id])
     @comment = Comment.find(params[:id])
     @comment.destroy
-    redirect_to board_comment_path(@board)
+    @comments = @board.comments
+
   end
 
   def create_reply
-    @comment = Comment.find(params[:id])
-    @board = Board.find(@comment.board_id)
-    @reply = @comment.replies.new(reply_params.merge(user_id: current_user.id))
-    @reply.save
+    @parent = Comment.find(params[:parent_id])
+    @board = Board.find(params[:board_id])
+    @comment = @board.comments.build(comment_params)
+    @comment.user = current_user
+    @comment.parent_id = @parent.id
+    @comment.save
+    @reply = Comment.new(parent_id: @comment.id)
   end
 
   private
 
   def comment_params
-    params.require(:comment).permit(:body) # フォームから送信されたパラメータを許可
+    params.require(:comment).permit(:body, :parent_id)
   end
   
   def reply_params
