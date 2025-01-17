@@ -11,7 +11,7 @@
     <%= form_with model: [@board, @frame] do |f| %>
       <% if  @frame_type.to_sym == :text %>
         <div class="mb-3">
-          <%= f.text_area :body,maxlength: 500, size: "10x5", class: "form-control", placeholder: "本文を入力してください", id: "frame_body", onkeyup: "ShowLength(value);" %>
+          <%= f.text_area :body, maxlength: 500, size: "10x5", class: "form-control", placeholder: "本文を入力してください", id: "frame_body", onkeyup: "ShowLength(value);" %>
           <p id="inputlength"><%= @frame.body.length %>文字/250文字</p>
       </div>
       <% elsif @frame_type.to_sym == :image %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_15_013539) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_17_022753) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -77,6 +77,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_15_013539) do
     t.bigint "board_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "parent_id"
     t.index ["board_id"], name: "index_comments_on_board_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -100,33 +101,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_15_013539) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
-  create_table "replies", force: :cascade do |t|
-    t.string "body", null: false
-    t.bigint "comment_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["comment_id"], name: "index_replies_on_comment_id"
-    t.index ["user_id"], name: "index_replies_on_user_id"
-  end
-
-  create_table "tasks", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "title", null: false
-    t.text "body", null: false
-    t.datetime "deadline"
-    t.integer "access_level", default: 0, null: false
-    t.integer "progress_status", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "user_boards", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "board_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "trigger", default: 0, null: false
     t.index ["board_id"], name: "index_user_boards_on_board_id"
     t.index ["user_id"], name: "index_user_boards_on_user_id"
   end
@@ -150,12 +129,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_15_013539) do
   add_foreign_key "board_logs", "users"
   add_foreign_key "boards", "boards", column: "parent_id"
   add_foreign_key "comments", "boards"
+  add_foreign_key "comments", "comments", column: "parent_id"
   add_foreign_key "comments", "users"
   add_foreign_key "frames", "boards"
   add_foreign_key "likes", "boards"
   add_foreign_key "likes", "users"
-  add_foreign_key "replies", "comments"
-  add_foreign_key "replies", "users"
   add_foreign_key "user_boards", "boards"
   add_foreign_key "user_boards", "users"
 end

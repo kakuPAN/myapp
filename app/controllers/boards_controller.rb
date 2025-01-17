@@ -38,7 +38,7 @@ class BoardsController < ApplicationController
     @visitor_count = UserBoard.where(board_id: @board.id).count
 
     if current_user
-      @visitor.user_id = current_user.id
+      @visitor.update(user_id: current_user.id)
       @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :view_action)
     end
 

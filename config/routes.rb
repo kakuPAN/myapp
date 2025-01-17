@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :comments do
       member do
         post :create_reply
+        delete :destroy_reply
       end
     end
   end

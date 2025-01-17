@@ -1,0 +1,5 @@
+<% if @comment.parent_id %>
+  <%= turbo_stream.remove "reply-#{@comment.id}" %>
+<% else %>
+  <%= turbo_stream.remove "reply-container-#{@comment.id}" %>
+<% end %>

@@ -1,50 +1,31 @@
-<div class="index-board-container">
-  <div class="index-board-image">
-    <% if board_image(@board) %>
-      <%= image_tag board_image(@board).image %>
-    <% else %>
-      <%= image_tag "free_images/tree.png" %>
+<%= render "shared/index_board", board: @board  %>
+<%= render "shared/login_tab" %>
+<div class="comments-comment-wrapper">
+  <% if @comments.current_page == 1 %>
+    <div class="comments-comment-form-container">
+      <%= render "comments/form", board: @board, comment: @comment %>
+    </div>
+  <% end %>
+
+  <div id="comment-table">
+    <% @comments.each do |comment| %>
+      <%= render "comments/comment", board: @board, comment: comment %>
     <% end %>
   </div>
-  <div class="index-board-content">
-    <div class="index-board-title">
-      <%= link_to board_path(@board) do %>
-        <%= @board.title %>
-      <% end %>
-    </div>
-    <div class="index-board-body">
-      <% if @board.frames.empty? %>
-        コンテンツがありません
-      <% else %>
-        <%= @board&.frames&.order(:frame_number).first.body %>
-      <% end %>
-    </div>
+
+  <div class="">
+    <% if @comments.present? && @comments.current_page %>
+      <div class="page-numbers">
+        <%= paginate @comments %>
+      </div>
+    <% else %>
+      <p>コメントがありません</p>
+    <% end %>
   </div>
-</div>
-
-<% if @comments.current_page == 1 %>
-  <div class="comments-comment-form-container">
-    <%= render "comments/form", board: @board, comment: @comment %>
-  </div>
-<% end %>
-
-<div id="comment-table">
-  <% @comments.each do |comment| %>
-    <%= render "comments/comment", board: @board, comment: comment, reply: @reply %>
-  <% end %>
-</div>
-
-<div>
-  <% if @comments.present? && @comments.current_page %>
-    <div class="page-numbers">
-      <%= paginate @comments %>
-    </div>
-  <% else %>
-    <p>表示するデータがありません。</p>
-  <% end %>
 </div>
 
 <script>
+// リプライフォームの表示
   function initializeReplyForm() {
   const toComments = document.querySelectorAll("[id^='to-comment-']");
     toComments.forEach(container => {
@@ -71,6 +52,44 @@
   });
 </script>
 
+<script>
+// コメント一覧　コメント送信ボタンの有効化
+  function ActivateCommentSubmit(str) {
+    const maxLength = 100;
+    const value = str.trim()
+    const inputLength = str.trim().length;
+    const submitButton = document.getElementById("comments-comment-submit");
+    const commentForm = document.getElementById("comment-form");
+
+    document.getElementById("comments-inputlength").innerHTML = `${inputLength}/${maxLength}文字`;
+
+    if (value === "") {
+        commentForm.removeAttribute("class");
+        commentForm.classList.add("comments-comment-form");
+    } else {
+        commentForm.classList.add("active");
+    };
+  };
+// コメント一覧　リプライ送信ボタンの有効化
+  function ActivateReplySubmit(textarea, commentId) {
+    const maxLength = 100;
+    const value = textarea.value.trim()
+    const inputLength = value.trim().length;
+    const submitButton = document.getElementById(`reply-submit-${commentId}`);
+    const replyForm = document.getElementById(`reply-form-${commentId}`)
+    document.getElementById(`reply-inputlength-${commentId}`).innerHTML = `${inputLength}/${maxLength}文字`;
+    
+    if (value === "") {
+        replyForm.removeAttribute("class");
+        replyForm.classList.add("reply-form");
+        console.log(replyForm.classList)
+    } else {
+        replyForm.classList.add("active");
+        console.log(replyForm.classList)
+    };
+  };
+</script>
+
 <style>
 <%# 全体のボーダーを表示・スクロールバーを非表示%>
 * {
@@ -80,172 +99,215 @@
 </style>
 <!-- コメント欄 -->
 <style>
+  .comments-comment-wrapper {
+    margin: 10px;
+    min-width: 300px;
+  }
   .comments-comment-form-container {
-    width: 500px;
     margin: 50px auto;
   }
+  .comments-comment-form p {
+    padding-left: 10px;
+  }
+  .comments-comment-form.disabled textarea {
+    pointer-events: none;
+  }
   .comments-comment-form textarea {
-    min-height: 150px;
     width: 100%;
+    height: 50px;
     text-align: left;
     font-size: 20px;
-  }
-  .comments-comment-form input[type="submit"] {
-    font-size: 20px;
-  }
-</style>
-<!-- 投稿一覧と同じ -->
-<style>
-.index-board-container {
-    display: flex;
-    align-items: center; 
-    border: 1px solid #ddd; 
-    padding: 10px 20%; 
-  }
-
-  .index-board-image {
-    width: 200px;
-    height: 200px;
-    background-color: #FFFAF0;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ddd;
-  }
-  .index-board-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    margin: auto;
-    display: block;
-  }
-
-  .index-board-content {
-    width: 100%;
-    height: 200px;
-    flex: 1;
-    background-color: #FFFAF0;
-    padding: 10px;
-    overflow: hidden;
-  }
-
-  .index-board-title {
-    text-align: left;
-    padding: 0 10px;
-    font-size: 30px;
-  }
-  .index-board-body {
-    height: 120px;
-    text-align: left;
-    padding: 0 10px;
-    font-size: 20px;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    overflow: hidden;
-  }
-</style>
-<style>
-@media(min-width: 900px){
-  .reply-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: auto;
-    align-items: center;
-    width: 30%;
-    height: 50%;
-    background: white;
-    border-radius: 30px;
-  }
-  .check-icon {
-    position: relative;
-    top: 5%;
-    right: -40%;
-    color: pink;
-    font-size: 30px;
-  }
-  .reply-label {
-    font-size: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-  }
-  .reply-label a {
-    text-decoration: none;
-    color: black;
-  }
-  .reply-label a:hover {
-    font-weight: bold;
-    color: #ddd;
-  }
-  .avatar-image {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-  }
-  .avatar-icon {
-    font-size: 40px;
-    color: #aaa;
-  }
-  .to-comment {
+    margin-bottom: 10px;
+    background: #F2EFEF;
+    border: none;
     border-bottom: 2px solid #ddd;
-    text-align: center;
-    width: 400px;
-    height: 100%;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    background:#ededed;
-    font-size: 20px;
-  }
-  .reply-wrapper {
-    padding-left: 20px;
-    border-left: 2px solid #ddd;
-  }
-  .to-comment-label {
-    color: #1431ff;
-  }
-  .reply-form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    height: 90%;
-    margin-bottom: 20px;
-    display: none;
   }
   
-  .reply-form input {
+  .comments-comment-form input[type="submit"] {
+    font-size: 20px;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    margin-top: 10px;
     display: block;
     margin: auto;
-  }
-  .reply-form textarea {
-    min-height: 100px;
-    min-width: 300px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    border: 2px solid #ddd;
-    font-size: 20px;
-  }
-  .reply-form input[type="submit"] {
-    width: 100px;
-    border: none;
-    background: pink;
     border-radius: 5px;
-    color: white;
-    font-size: 20px;
-    margin-top: 10px;
-    padding: 5px;
-    opacity: 0.8;
-  }
-  .reply-form input[type="submit"]:hover {
     font-weight: bold;
-    opacity: 1;
+    color: #ddd;
+    padding: 5px 10px;
   }
-} 
+  .comments-comment-form:not(.active) input[type="submit"] {
+    pointer-events: none;
+  }
+  .comments-comment-form.active  input[type="submit"] {
+    color: #fff;
+    background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
+    background-size: 200% 100%;
+    border: none;
+    transition: .4s cubic-bezier(0.37, 0, 0.63, 1);
+    box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
+  }
+  .comments-comment-form.active input[type="submit"]:hover {
+    background: #fff;
+    color: #ff701e;
+    letter-spacing: 0.15em;
+    border: 2px solid #ff701e;
+  }
+  .comments-comment-delete {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 3px 10px;
+    margin: 10px 0;
+  }
+</style>
+<style>
+@media (min-width: 600px) {
+  .comments-comment-form-container {
+    width: 500px;
+  }
+  .to-comment {
+    width: 400px;
+  }
+  .reply-container {
+    width: 500px;
+  }
+}
+@media (max-width: 600px;) {
+.comments-comment-form-container {
+     margin: 0 10px;
+  }
+  .comments-comment-form textarea {
+    margin: 0 10px;
+    width: 200px;
+  }
+}
+.reply-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 30px;
+  align-items: center;
+  height: 50%;
+  background: white;
+  border-radius: 10px;
+  position: relative;
+  min-width: 300px;
+}
+.check-icon {
+  position: relative;
+  top: 5%;
+  right: -40%;
+  color: pink;
+  font-size: 30px;
+}
+.reply-label {
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  min-width: 300px;
+  width: 100%;
+  padding: 0 10px;
+}
+.reply-label a {
+  text-decoration: none;
+  color: black;
+}
+.reply-label .to-comment-user:hover {
+  font-weight: bold;
+  color: #ddd;
+}
+.avatar-image {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+.avatar-icon {
+  font-size: 40px;
+  color: #aaa;
+}
+.to-comment {
+  border-bottom: 2px solid #ddd;
+  text-align: center;
+  height: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  background:#ededed;
+  font-size: 20px;
+  min-width: 200px;
+  width: 90%;
+  margin: 10px;
+}
+.reply-wrapper {
+  padding-left: 20px;
+  border-left: 2px solid #ddd;
+  width: 100%;
+}
+.to-comment-label {
+  color: #1431ff;
+  cursor: pointer;
+}
+.reply-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  height: 90%;
+  margin-bottom: 20px;
+  display: none;
+}
+
+.reply-form input {
+  display: block;
+  margin: auto;
+}
+.reply-form textarea {
+  min-height: 100px;
+  min-width: 300px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  font-size: 20px;
+}
+.reply-form:not(.active) input[type="submit"] {
+    font-size: 20px;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    margin-top: 10px;
+    display: block;
+    margin: auto;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #ddd;
+    padding: 5px 10px;
+    pointer-events: none;
+  }
+  .reply-form.active input[type="submit"] {
+    color: #fff;
+    background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
+    background-size: 200% 100%;
+    border: none;
+    transition: .4s cubic-bezier(0.37, 0, 0.63, 1);
+    box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 5px 10px;
+    font-weight: bold;
+  }
+  .reply-form.active input[type="submit"]:hover {
+    background: #fff;
+    color: #ff701e;
+    letter-spacing: 0.15em;
+    border: 2px solid #ff701e;
+  }
+  .reply-content .delete-button {
+    padding: 3px 8px;
+    margin: 10px 0;
+  }
 </style>

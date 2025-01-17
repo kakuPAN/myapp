@@ -1,6 +1,8 @@
-<div class="reply-container">
+<div class="reply-container" id="reply-container-<%= comment.id%>">
+  <% if current_user == User.find(comment.user_id) %>
+    <%= link_to "削除", board_comment_path(board, comment), class: "comments-comment-delete btn btn-outline-danger", data: { turbo_method: :delete}, remote: true %>
+  <% end %>
   <div class="reply-label">
-    <%= link_to "削除", board_comment_path(board, comment), data: { turbo_method: :delete} %>
     <%= link_to user_path(comment.user_id) do %>
       <% if comment.user.avatar_image.attached? %>
         <%= image_tag comment.user.avatar_image, class: "avatar-image" %>
@@ -12,14 +14,16 @@
     <div class="to-comment"><%= comment.body %></div>
     <div class="reply-wrapper">
       <div id="reply-table-<%= comment.id %>">
-        <% comment.replies.order(created_at: :desc).each do |reply| %>
-          <%= render "replies/reply", board: board, comment: comment, reply: reply %>
+        <% comment.children.order(created_at: :desc).each do |child| %>
+          <%= render "comments/reply", board: board, comment: comment, reply: child %>
         <% end %>
       </div>
     </div>
-    <div class="to-comment-label" id="to-comment-<%= comment.id %>">このコメントに返信</div>
+    
+    <div class="to-comment-label <%= "func-icon" unless current_user %>" id="<%= "to-comment-#{ comment.id }" if current_user %>" data-comment-id="<%= comment.id %>">コメントに返信する</div>
+
   </div>
   <div class="reply-form-container" id="reply-hundler-<%= comment.id %>">
-      <%= render "replies/form", board: board, comment: comment, reply: @reply %>
+      <%= render "comments/reply_form", board: board, parent: comment, reply: Comment.new %>
   </div>
 </div>

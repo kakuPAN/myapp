@@ -13,21 +13,21 @@
       <%= simple_format(comment.body) %>
     </div>
   </div>
-  <% if comment.replies.any? %>
+  <% if comment.children.any? %>
     <div class="replies-wrapper">
-      <% comment.replies.order(:created_at).each do |reply| %>
+      <% comment.children.order(:created_at).each do |child| %>
         <div class="reply-wrapper">
-          <% reply_class_name = reply_class_name(reply) %>
+          <% reply_class_name = reply_class_name(child) %>
           <div class="reply-avatar">
-            <% if reply.user.avatar_image.attached? %>
-              <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
+            <% if child.user.avatar_image.attached? %>
+              <%= image_tag child.user.avatar_image, class: "avatar-image" %>
             <% else %>
               <i class="bi bi-person-circle avatar-icon"></i>
             <% end %>
-            <div class="replied-user"><%= reply.user.user_name %></div>
+            <div class="replied-user"><%= child.user.user_name %></div>
           </div>
           <div class="reply-text <%= reply_class_name %>">
-            <%= simple_format(reply.body) %>
+            <%= simple_format(child.body) %>
           </div>
         </div>
       <% end %>
