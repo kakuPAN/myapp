@@ -3,26 +3,70 @@ class CommentsController < ApplicationController
 
   def index
     @board = Board.find(params[:board_id])
-    @comments = @board.comments.where(parent_id: nil).includes(:children).order(created_at: :desc).page(params[:page]).per(2)
+    @comments = @board.comments.where(parent_id: nil).includes(:children).order(created_at: :desc)
     @comment = Comment.new
   end
 
   def create
-    @parent_id = params[:parent_id]
     @board = Board.find(params[:board_id])
     @comment = @board.comments.build(comment_params)
     @comment.user = current_user
-    @comment.parent_id = @parent_id
     @comment.save
-    @reply = Comment.new(parent_id: @comment.id)
+
+    respond_to do |format|
+      if @comment.save
+        format.html { redirect_to board_comments_path(@board) }
+        format.turbo_stream {flash.now[:success] = "コメントしました" }
+      else
+        flash.now[:danger] = "コメントを作成できません"
+        format.html { render :index, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def edit
+    @board = Board.find(params[:board_id])
+    @comment = Comment.find(params[:id])
+  end
+
+  def update
+    @board = Board.find(params[:board_id])
+    @comment = Comment.find(params[:id])
+    @comments = @board.comments.where(parent_id: nil).includes(:children).order(created_at: :desc)
+
+    respond_to do |format|
+      if @comment.update(comment_params.merge(user_id: current_user.id))
+       
+        format.html { redirect_to board_comments_path(@board) }
+        format.turbo_stream do
+          flash.now[:success] = "コメントを更新しました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "コメントを更新できません"
+        end
+        format.html { render :index, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
     @board = Board.find(params[:board_id])
     @comment = Comment.find(params[:id])
-    @comment.destroy
-    @comments = @board.comments
-
+    respond_to do |format|
+      if @comment.destroy
+        @comments = @board.comments
+        format.html { redirect_to board_comments_path(@board) }
+        format.turbo_stream do
+          flash.now[:success] = "コメントを削除しました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "コメントを削除できません"
+        end
+        format.html { render :index, status: :unprocessable_entity }
+      end
+    end
   end
 
   def create_reply
@@ -31,8 +75,19 @@ class CommentsController < ApplicationController
     @comment = @board.comments.build(comment_params)
     @comment.user = current_user
     @comment.parent_id = @parent.id
-    @comment.save
-    @reply = Comment.new(parent_id: @comment.id)
+    respond_to do |format|
+      if @comment.save
+        format.html { redirect_to board_comments_path(@board) }
+        format.turbo_stream do
+          flash.now[:success] = "コメントを作成しました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:danger] = "コメントを作成できません"
+        end
+        format.html { render :index, status: :unprocessable_entity }
+      end
+    end
   end
 
   private

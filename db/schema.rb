@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_17_022753) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_18_082540) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,6 +88,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_17_022753) do
     t.bigint "board_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "frame_type", null: false
     t.index ["board_id", "frame_number"], name: "index_frames_on_board_id_and_frame_number", unique: true
     t.index ["board_id"], name: "index_frames_on_board_id"
   end

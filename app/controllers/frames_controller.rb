@@ -8,40 +8,47 @@ class FramesController < ApplicationController
   end
 
   def new
-    @frame_type = params[:frame_type] || :image
-    @frame = @board.frames.build
+    @frame_type = params[:frame_type].to_i
+    @frame = @board.frames.build(frame_type: @frame_type)
   end
 
   def create
-    @frame_type = params[:frame_type] || :image
     frame_number = @board.frames.size + 1
+    @frame_type = params[:frame_type].to_i
     @frame = @board.frames.build(frame_params.merge(frame_number: frame_number))
-
-    if @frame.save
-      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, frame_id: @frame.id, action_type: :create_action)
-      redirect_to edit_board_path(@board)
-      flash[:notice] = "フレームが作成されました"
-    else
-      @frame_type = 
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @frame.save
+        @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, frame_id: @frame.id, action_type: :create_action)
+        format.html do 
+          redirect_to edit_board_path(@board)
+          flash[:success] = "フレームが作成されました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "フレームを作成できません"
+        end
+      end
     end
   end
 
   def edit
-    @frame_type = params[:frame_type] || :image
     @frame = @board.frames.find(params[:id])
   end
 
   def update
-    @frame_type = params[:frame_type] || :image
     @frame = @board.frames.find(params[:id])
-    if @frame.update(frame_params)
-      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, frame_id: @frame.id, action_type: :update_action)
-      redirect_to edit_board_path(@board)
-      flash[:success] = "フレームが更新されました"
-    else
-      flash.now[:danger] = "変更を保存できません"
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @frame.update(frame_params)
+        @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, frame_id: @frame.id, action_type: :update_action)
+        format.html do  
+          redirect_to edit_board_path(@board)
+          flash[:success] = "フレームが更新されました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "変更を保存できません"
+        end
+      end
     end
   end
 
@@ -118,6 +125,6 @@ class FramesController < ApplicationController
   end
 
   def frame_params
-    params.require(:frame).permit(:body, :frame_number, :image)
+    params.require(:frame).permit(:body, :frame_number, :image, :frame_type)
   end
 end

@@ -1,41 +1,17 @@
 <div class="form-label">
-  <% if  @frame_type.to_sym == :text %>
+  <% if  @frame_type == 0 %>
     <span>本文を追加</span>
-  <% else @frame_type.to_sym == :image %>
+  <% else %>
     <span>画像を追加</span>
   <% end %>
 </div>
 <%= render "shared/error_messages", object: @frame %>
 <div class="form-wrapper">
-  <div class="form-container">
-    <%= form_with model: [@board, @frame] do |f| %>
-      <% if  @frame_type.to_sym == :text %>
-        <div class="mb-3">
-          <%= f.text_area :body, maxlength: 500, size: "10x5", class: "form-control", placeholder: "本文を入力してください", id: "frame_body", onkeyup: "ShowLength(value);" %>
-          <p id="inputlength">0文字/250文字</p>
-      </div>
-      <% elsif @frame_type.to_sym == :image %>
-        <div class="mb-3">
-          <%= f.label :image, "画像" %>
-          <%= f.file_field :image, onchange: "loadImage(this);" %>
-        </div>
-        <div class="preview-container">
-          <div id="post_images" style="display: none;">
-            <div id="preview"></div>
-          </div>
-        </div>
-      <% end %>
-      <div class="mb-3">
-      <%= f.submit "作成", class: "form-control btn btn-outline-primary", id: "submit_button", disabled: @frame_type.to_sym == :text %>
-      </div>
-    <% end %>
-  </div>
-  <div class="cancel-button">
-      <%= link_to "キャンセル", edit_board_path(@board),class: "cancel btn btn-outline-danger" %>
-  </div>
+  <%= render "frames/form", board: @board, frame: @frame, frame_type: @frame_type %>
 </div>
 
 <style>
+<%# スタイル全て編集用と同じ %>
 * {
     /*outline: 2px solid blue;*/
     scrollbar-width: none;
@@ -53,13 +29,13 @@
     color: rgb(112, 112, 112);
   }
   .form-wrapper {
-  display: flex;
-  flex-direction: column; /* 縦並び */
-  align-items: center;    /* 中央揃え */
-  width: 100%;        /* 親要素の幅いっぱいを使用 */
-  max-width: 700px;       /* 必要に応じて最大幅を制限 */
-  margin: 0 auto;    /* 中央に配置 */
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+  }
 
 .form-container, .cancel-button {
   width: 100%;
@@ -73,14 +49,12 @@
   display: block;
   margin: auto;
 }
-#frame_image {
-  display: block; /* ブロック要素として表示 */
-  margin: 10px 0; /* 上下に余白を追加 */
-  padding: 5px; /* 内側の余白を追加 */
-  border: 1px solid #ccc; /* 薄いグレーの枠線 */
-  border-radius: 4px; /* 角を丸くする */
-  width: 100%; /* 幅を100%にしてコンテナにフィットさせる */
-  cursor: pointer; /* マウスカーソルをポインターに変更 */
+#frame-image {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
   font-size: 20px;
 }
 .form-container textarea {
@@ -91,10 +65,14 @@
   font-size: 25px;
 }
 
+.form-container input[type="submit"] {
+  margin: 50px 0;
+  width: 100%;
+}
 .cancel-button {
-  margin-top: 20px;       /* フォームとの間隔を設定 */
+  margin-top: 20px;
   text-align: center;
-  width: 50%; /* ボタンを中央揃え */
+  width: 300px;
 }
 
 .cancel-button .cancel {
@@ -104,15 +82,13 @@
 }
 
 .preview-container {
-  display: flex; /* フレックスボックスを使用 */
-  justify-content: center; /* 水平方向に中央揃え */
-  align-items: center; /* 垂直方向に中央揃え */
-  width: 100%; /* コンテナの幅を全体に合わせる */
-  height: 100%; /* 必要に応じて高さを指定 */
-  border: 1px dashed #ccc; /* プレビューエリアの見た目を調整 */
-  margin-top: 20px; /* フォームとの間隔を設定 */
-  background-color: #f8f9fa; /* 見やすくするための背景色 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 100%;
+  margin-top: 20px;
   overflow: hidden;
+  margin: auto;
 }
 
 #post_images {
@@ -124,8 +100,19 @@
 }
 
 #post_images img {
-  max-width: 100%; /* 画像が横方向に収まりきるように調整 */
-  max-height: 100%; /* 画像が縦方向に収まりきるように調整 */
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  object-fit: contain;  
+  display: block;
+  border: 1px dashed #ccc;
+  margin-top: 20px;
+}
+.image-label {
+  text-align: center;
+  width: 300px;
+  margin: auto;
+  font-size: 20px;
 }
 </style>
 
@@ -133,6 +120,7 @@
   console.log("読み込んだ");
   function loadImage(obj) {
   // プレビュー表示エリアを取得
+  const newImageLabel = document.getElementById("new-image-label");
   var allPreview = document.getElementById("post_images");
   
   // 既存のプレビューを削除
@@ -159,7 +147,9 @@
 
   // ファイルが選択されていれば処理を続行
   if (obj.files && obj.files[0]) {
+    console.log("ファイルがあるよ");
     fileReader.readAsDataURL(obj.files[0]);
+    newImageLabel.innerHTML = "追加した画像";
   }
 }
 </script>
@@ -168,10 +158,10 @@
     const maxLength = 500;
     const value = str.trim()
     const inputLength = str.trim().length;
-    const submitButton = document.getElementById("submit_button");
+    const submitButton = document.getElementById("frame-submit-button");
 
     // 文字数を表示
-    document.getElementById("inputlength").innerHTML = `${inputLength}/${maxLength}文字`;
+    document.getElementById("inputlength").innerHTML = `${inputLength}文字/${maxLength}文字`;
 
     // ボタンの有効/無効を切り替え
     if (value === "") {
@@ -180,5 +170,20 @@
         submitButton.disabled = false; // 入力がある場合はボタンを有効化
     }
 }
+</script>
+<script>
+  function checkFrameImage() {
+    const frameImageInput = document.getElementById("frame-image");
+    const submitButton = document.getElementById("frame-submit-button");
+
+    const isImageSelected = frameImageInput.files.length > 0;
+
+    // 
+    if (isImageSelected) {
+      submitButton.disabled = false;
+    } else {
+      submitButton.disabled = true;
+    }
+  }
 </script>
 

@@ -5,6 +5,8 @@ class Comment < ApplicationRecord
   has_many :children, class_name: 'Comment', foreign_key: 'parent_id', dependent: :destroy
 
   validates :body, presence: true
-  validates :body, length: { maximum: 100 }, allow_nil: true
+  validates :body, length: { maximum: 100 }
 
+  def comment_page
+  end
 end

@@ -1,0 +1,10 @@
+<div class="comment" id="edit-comment-form-<%= comment.id %>">
+  <%= form_with model:[board, comment],local:true, remote: true do |f|%>
+    <%= render 'shared/error_messages', object: f.object %>
+    <div class="edit-comment-form">
+      <%= f.text_area :body, maxlength: 100 %>
+      <%= link_to 'キャンセル', board_comments_path(board),remote: true, class: "btn btn-outline-danger" %>
+      <%= f.submit "更新", class: "btn btn-outline-primary" %>
+    </div>
+  <% end %>
+</div>

@@ -3,3 +3,20 @@
 <% else %>
   <%= turbo_stream.remove "reply-container-#{@comment.id}" %>
 <% end %>
+<% if @board.comments.empty? %>
+  <%= turbo_stream.remove "no-comment" %>
+  <%= turbo_stream.append "is-comment-exist" do %>
+    <p id="no-comment">コメントがありません</p>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.remove "replace-flash-message" %>
+ 
+<%= turbo_stream.append "error-messages" do %>
+  <div id="replace-flash-message">
+    <% if flash.now[:success] %>
+      <div class="alert-label">ダブルクリックで削除</div>
+      <div class="alert alert-success flash-message"><%= flash.now[:success] %></div>
+    <% end %>
+  </div>
+<% end %>
