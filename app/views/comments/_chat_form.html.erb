@@ -1,8 +1,18 @@
 <div class="chat-form" id="chat-form">
   <%= form_with model: [board, comment],url: create_chat_board_path(board), data: {turbo_method: :post} do |f| %>
-    <%= f.text_area :body, maxlength: 100, class: "form-control" %>
-    <div>
-      <%= f.submit "コメントを送信", class: "submit chat-submit" %>
-    </div>
+    <div class="delete-error-messages"><%= render 'shared/error_messages', object: f.object %></div>
+    <%= f.text_area :body, class: "form-control" %>
+    <%= f.submit "コメントを送信", class: "submit chat-submit" %>
   <% end %> 
 </div>
+<!-- チャット１００字エラー -->
+<style>
+.alert.alert-danger {
+  position:absolute;
+  top: -50px;
+  z-index: 1000;
+  overflow: auto;
+  white-space: nowrap;
+  width: 100%;
+}
+</style>

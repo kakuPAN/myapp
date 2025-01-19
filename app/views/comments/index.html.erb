@@ -1,11 +1,9 @@
 <%= render "shared/index_board", board: @board  %>
 <%= render "shared/login_tab" %>
 <div class="comments-comment-wrapper">
-  <% if @comments.current_page == 1 %>
-    <div class="comments-comment-form-container">
-      <%= render "comments/form", board: @board, comment: @comment %>
-    </div>
-  <% end %>
+  <div class="comments-comment-form-container">
+    <%= render "comments/form", board: @board, comment: @comment %>
+  </div>
 
   <div id="comment-table">
     <% @comments.each do |comment| %>
@@ -13,14 +11,10 @@
     <% end %>
   </div>
 
-  <div class="">
-    <% if @comments.present? && @comments.current_page %>
-      <div class="page-numbers">
-        <%= paginate @comments %>
-      </div>
-    <% else %>
-      <p>コメントがありません</p>
-    <% end %>
+  <div class="comments-page" id="is-comment-exist">
+      <% if @comments.empty? %>
+        <p id="no-comment">コメントがありません</p>
+      <% end %>
   </div>
 </div>
 
@@ -101,7 +95,7 @@
 <style>
   .comments-comment-wrapper {
     margin: 10px;
-    min-width: 300px;
+    min-width: 250px;
   }
   .comments-comment-form-container {
     margin: 50px auto;
@@ -159,6 +153,10 @@
     padding: 3px 10px;
     margin: 10px 0;
   }
+  .comments-page p {
+    text-align: center;
+    font-size: 20px;
+  }
 </style>
 <style>
 @media (min-width: 600px) {
@@ -192,7 +190,6 @@
   background: white;
   border-radius: 10px;
   position: relative;
-  min-width: 300px;
 }
 .check-icon {
   position: relative;
@@ -206,7 +203,7 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  min-width: 300px;
+  min-width: 250px;
   width: 100%;
   padding: 0 10px;
 }
@@ -228,6 +225,10 @@
   font-size: 40px;
   color: #aaa;
 }
+.comment-reply-container {
+  width: 100%;
+  margin: 10px;
+}
 .to-comment {
   border-bottom: 2px solid #ddd;
   text-align: center;
@@ -236,9 +237,24 @@
   overflow-wrap: break-word;
   background:#ededed;
   font-size: 20px;
-  min-width: 200px;
   width: 90%;
   margin: 10px;
+  text-align: left;
+}
+.edit-comment-form textarea {
+  width: 90%;
+}
+.edit-comment-form input[type="submit"] {
+  
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 5px 10px;
+}
+
+.edit-comment-form a {
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 5px 10px;
 }
 .reply-wrapper {
   padding-left: 20px;
@@ -248,6 +264,10 @@
 .to-comment-label {
   color: #1431ff;
   cursor: pointer;
+}
+.comment-links a {
+  font-size: 20px;
+  padding: 5px 10px;
 }
 .reply-form-container {
   display: flex;
@@ -265,7 +285,7 @@
 }
 .reply-form textarea {
   min-height: 100px;
-  min-width: 300px;
+  
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -306,7 +326,7 @@
     letter-spacing: 0.15em;
     border: 2px solid #ff701e;
   }
-  .reply-content .delete-button {
+  .comment-delete-edit-button {
     padding: 3px 8px;
     margin: 10px 0;
   }

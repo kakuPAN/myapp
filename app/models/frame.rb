@@ -10,6 +10,8 @@ class Frame < ApplicationRecord
   validate :image_content_type
   validate :image_size
 
+  enum :frame_type, { text_frame: 0, image_frame: 1 }
+
   def image_content_type
     if image.attached? && !image.content_type.in?(%w[image/jpeg image/jpg image/png])
       errors.add(:image, '：ファイル形式が、JPEG, JPG, PNG以外になってます。ファイル形式をご確認ください。')

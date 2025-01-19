@@ -2,19 +2,20 @@ ja:
   activerecord:
     models:
       user: ユーザー
-      task: タスク
+      board: ボード
+      frame: フレーム
     attributes:
       user:
         email: メールアドレス
         user_name: ユーザーネーム
         password: パスワード
         password_confirmation: パスワード確認
-      task:
+      board:
         title: タイトル
-        body: 内容
-        deadline: 期限
-        progress_status: 進行状況
-        access_level: 公開設定
+      frame: 
+        body: テキスト
+      comment:
+        body: コメント
   views:
     pagination:
       first: <i class="bi bi-chevron-double-left"></i>
@@ -23,14 +24,6 @@ ja:
       next: <i class="bi bi-chevron-right"></i>
       truncate: "..."
   enums:
-    task:
-      progress_status:
-        not_started: 未着手
-        in_progress: 進行中
-        done: 達成済み
-      access_level:
-        private_access: 非公開
-        public_access: 公開
     board_log:
       action_type:
         view_action: 閲覧

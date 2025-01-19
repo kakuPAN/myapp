@@ -1,6 +1,7 @@
 <div class="title-board-container">
   <div class="title-container">
-    <div class="title-text">Roots</div>
+    <div class="title-text">LinkBoard</div>
+    <div class="title-jp">リンクボード</div>
     <div class="top-page-login-container">
       <div class="line-login">
         <%= link_to auth_at_provider_path(provider: :line), class: "line-icon" do %>
@@ -118,6 +119,10 @@
 
   .title-text {
     font-size:80px;
+    font-weight: bold;
+  }
+  .title-jp {
+    font-size: 20px;
   }
   .title-board-content-wrapper {
     display: flex;

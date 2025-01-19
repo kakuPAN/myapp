@@ -3,7 +3,7 @@
 </div>
 <%= render "shared/error_messages", object: @user %>
 <div class="form-wrapper">
-  <div class="form-container">
+  <div class="users-form-container">
     <%= form_with model: @user do |f| %>
       <div class="preset-preview-container">
         <div id="preset-post_images" style="">
@@ -34,7 +34,13 @@
       </div>
       <div class="mb-3">
         <%= f.text_area :profile, maxlength: 250, class: "form-control", placeholder: "自己紹介を入力してください", onkeyup: "ShowProfileLength(value);" %>
-        <p id="profile-length"><%= @user&.profile&.length %>文字/250文字</p>
+        <p id="profile-length">
+          <% if !@user&.profile || @user&.profile&.length == 0 %>
+            0文字/250文字
+          <% else %>
+             <%= @user&.profile&.length %>文字/250文字
+          <% end %>
+        </p>
       </div>
       
       <div class="mb-3">
@@ -76,11 +82,11 @@
     padding: 0 10px 20px 10px;
   }
 
-.form-container, .cancel-button {
+.users-form-container, .cancel-button {
   width: 100%;
   margin: auto;
 }
-.form-container input, .cancel {
+.users-form-container input, .cancel {
   font-size: 30px;
   padding: 10px 10px;
   border-radius: 20px;
@@ -98,7 +104,7 @@
   cursor: pointer;
   font-size: 20px;
 }
-.form-container textarea {
+.users-form-container textarea {
   min-height: 300px;
   height: 100%;
   resize: none;

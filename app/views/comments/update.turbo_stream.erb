@@ -1,0 +1,20 @@
+<% if @comment.errors.present? %>
+  <%= turbo_stream.replace "edit-comment-form-#{@comment.id}" do %>
+    <%= render "comments/edit_comment_form", board: @board, comment: @comment %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "edit-comment-wrapper-#{@comment.id}" do %>
+    <%= render "comments/edit_comment_wrapper", board: @board, comment: @comment %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.remove "replace-flash-message" %>
+ 
+<%= turbo_stream.append "error-messages" do %>
+  <div id="replace-flash-message">
+    <% if flash.now[:success] %>
+      <div class="alert-label">Wクリックで削除</div>
+      <div class="alert alert-success flash-message"><%= flash.now[:success] %></div>
+    <% end %>
+  </div>
+<% end %>

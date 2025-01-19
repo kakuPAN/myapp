@@ -13,3 +13,16 @@
     <%= render "boards/comment_count", board: @board %>
   <% end %>
 <% end %>
+
+<%= turbo_stream.remove "replace-flash-message" %>
+ 
+<%= turbo_stream.append "error-messages" do %>
+  <div id="replace-flash-message">
+    <% if flash.now[:success] %>
+      <div class="alert-label">Wクリックで削除</div>
+      <div class="alert alert-success flash-message">
+        <%= flash.now[:success] %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

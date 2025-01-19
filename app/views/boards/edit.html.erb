@@ -19,24 +19,22 @@
       </div>
     </div>
     <div class="add-frame">
-      <%= link_to "本文フレームを追加", new_board_frame_path(@board, frame_type: :text), class: "btn btn-primary" %>
-      <%= link_to "画像フレームを追加", new_board_frame_path(@board, frame_type: :image), class: "btn btn-primary" %>
+      <%= link_to "本文フレームを追加", new_board_frame_path(@board, frame_type: 0), class: "btn btn-primary" %>
+      <%= link_to "画像フレームを追加", new_board_frame_path(@board, frame_type: 1), class: "btn btn-primary" %>
     </div>
     <% @frames.each do |frame| %>
       <div class="frame-container" id="frame-container-<%= frame.frame_number %>">
         <div class="frame-content">
           <% if frame.image.attached? %>
             <%= image_tag frame.image %>
-            <% frame_type = :image %>
           <% else %>
             <%= frame.body %>
-            <% frame_type = :text%>
           <% end %>
         </div>
       </div>
       <div class="edit-tools" id="edit-tools-<%= frame.frame_number %>">
         <div class="edit-button">
-          <%= link_to "編集", edit_board_frame_path(@board, frame, frame_type: frame_type), class: "btn btn-outline-secondary" %>
+          <%= link_to "編集", edit_board_frame_path(@board, frame), class: "btn btn-outline-secondary" %>
         </div>
         <div class="edit-button">
           <%= link_to "削除", board_frame_path(@board, frame), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>

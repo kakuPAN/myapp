@@ -3,7 +3,7 @@ class Board < ApplicationRecord
   has_many :children, class_name: 'Board', foreign_key: 'parent_id', dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :frames, dependent: :destroy
-  has_many :user_boards
+  has_many :user_boards, dependent: :destroy
   has_many :visited_users, through: :user_boards, source: :user
   has_many :likes, dependent: :destroy
   has_many :liked_users, through: :likes, source: :user

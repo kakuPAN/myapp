@@ -20,6 +20,7 @@
 
   <body>
     <%= render "shared/flash_message" %>
+    <div id="error-messages"></div>
     <div class="background-cover" id="background-cover"></div>
     <div class="whole-wrapper">
       <% unless controller_name == "static_pages" %>
@@ -49,21 +50,46 @@
   }
 </style>
 <script>
-document.addEventListener("turbo:load", function () {
-  const flashMessage = document.getElementById('flash-message'); 
-  if (flashMessage) {
-    let timeLeft = 5; // 表示時間を5秒に設定
 
-    const countdownInterval = setInterval(function () {
-      timeLeft--; // カウントダウン
-      if (timeLeft <= 0) { // 0秒になったら
-        clearInterval(countdownInterval); // タイマー停止
-        flashMessage.remove(); // 要素を削除
-        console.log("実行")
-      }
-    }, 1000); // 1秒ごとに実行
-  }
-});
+  function flashMessage() {
+    const flashMessage = document.getElementById('flash-message'); 
+    const replaceFlash = document.getElementById('replace-flash-message'); 
+    if (flashMessage || replaceFlash) {
+      let timeLeft = 4;
+
+      const countdownInterval = setInterval(function () {
+        timeLeft--;
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          if (flashMessage){
+            flashMessage.remove();
+          };
+          if (replaceFlash){
+            replaceFlash.remove();
+          };
+        };
+      }, 1000);
+    }
+  };
+  function errorMessage() {
+    const replaceFlash = document.getElementById('replace-flash-message'); 
+    if (replaceFlash) {
+      replaceFlash.addEventListener("click", function () {
+        replaceFlash.remove();
+        console.log(replaceFlash);
+      });
+    };
+  };
+  document.addEventListener("turbo:load", function(){
+    flashMessage();
+    errorMessage()
+  });
+  document.addEventListener("click", function(){
+    flashMessage();
+    errorMessage()
+    console.log("フラッシュ")
+  });
+
 </script>
 <!-- オートコンプリート　-->
 <script>
@@ -351,5 +377,57 @@ document.addEventListener("turbo:load", function () {
 <style>
 body {
   background: #F2EFEF;
+}
+</style>
+
+<style>
+.alert-label {
+  position: fixed;
+  left: 0;
+  bottom: 100px;
+  z-index: 999;
+  font-size: 15px;
+  padding: 10px 30px;
+  font-weight: bold;
+  color: #fff;
+  border:2px solid #fff;
+  border-radius: 0px 20px 20px 0px;
+  cursor: pointer;
+  background: #333;
+}
+.flash-message {
+  position: fixed;
+  left: 0;
+  bottom: 10px;
+  z-index: 999;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  padding: 10px 30px;
+  font-weight: bold;
+  color: #fff;
+  border:2px solid #fff;
+  border-radius: 0px 20px 20px 0px;
+  cursor: pointer;
+  box-shadow: 0px 5px 0 #000;
+}
+.flash-message:hover {
+  transform: translate3d(0, 5px, 0);
+  color: #555;
+  box-shadow: none;
+  background: #fff;
+}
+.alert.alert-success {
+  background: #FF9226;
+}
+</style>
+
+<style>
+ul {
+  padding-left:0;
+}
+li {
+  list-style: none;
 }
 </style>

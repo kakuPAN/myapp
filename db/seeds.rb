@@ -162,13 +162,15 @@ boards.each do |board|
     frame = Frame.create!(
       board_id: board.id,
       frame_number: 1,
-      body: "サンプルフレーム for board #{board.title}"
+      body: "サンプルフレーム for board #{board.title}",
+      frame_type: 0
     )
   else
     frame = Frame.create!(
       board_id: board.id,
       frame_number: 1,
-      body: "あとで画像入れる予定"
+      body: "あとで画像入れる予定",
+      frame_type: 0
     )
   end
 #インスタンスを作成しないとattachできないが、bodyを入れないとvalidationで弾かれる。

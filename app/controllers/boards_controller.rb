@@ -2,7 +2,7 @@ class BoardsController < ApplicationController
   before_action :require_login, except: %i[index show board_info]
 
   def index
-    if @index_boards.empty? && @index_boards.current_page > 1 # 表示できる投稿が存在しない場合、このコードがないとリダイレクトが繰り返されエラーになる。
+    if @index_boards.empty? && @index_boards.current_page > 1 # 表示できるボードが存在しない場合、このコードがないとリダイレクトが繰り返されエラーになる。
       redirect_to boards_path(page: @index_boards.total_pages) and return
     end
   end
@@ -18,7 +18,7 @@ class BoardsController < ApplicationController
     if @board.save
       @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :create_action)
       redirect_to edit_board_path(@board)
-      flash[:success] = "投稿を作成しました"
+      flash[:success] = "ボードを作成しました"
     else
       flash.now[:danger] = "入力に不足があります"
       render :new, status: :unprocessable_entity
@@ -30,7 +30,7 @@ class BoardsController < ApplicationController
     @visitor = UserBoard.create(board_id: @board.id)
     if !@board
       redirect_to boards_path
-      flash[:danger] = "投稿が存在しません"
+      flash[:danger] = "ボードが存在しません"
       return 
     end
     @same_title_boards = Board.where(title: @board.title)
@@ -84,7 +84,7 @@ class BoardsController < ApplicationController
     @board = Board.find(params[:id])
     @board.destroy
     flash[:success] = "#{@board.title}を削除しました"
-    redirect_to boards_path # 後、マイページの投稿一覧に変更
+    redirect_to boards_path
   end
 
   def create_like
@@ -103,7 +103,19 @@ class BoardsController < ApplicationController
     @board = Board.find(params[:id])
     @comment = @board.comments.new(comment_params)
     @comment.user = current_user
-    @comment.save
+    respond_to do |format|
+      if @comment.save
+        format.html { redirect_to board_path(@board) }
+        format.turbo_stream do
+          flash.now[:success] = "コメントを作成しました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "コメントを作成できません"
+        end
+        format.html { render :show, status: :unprocessable_entity }
+      end
+    end
   end
 
   def board_info
@@ -128,7 +140,7 @@ class BoardsController < ApplicationController
     add_breadcrumb("HOME", root_path)
   end
 
-  def boards_page_for(board) # 詳細ページ上にある投稿一覧の同じページを表示するためのメソッド
+  def boards_page_for(board) # 詳細ページ上にあるボード一覧の同じページを表示するためのメソッド
     per_page = 10
     parent_board = Board.find_by(id: board.parent_id)
     if parent_board && !parent_board.children.empty?

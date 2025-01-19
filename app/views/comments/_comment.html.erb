@@ -1,7 +1,4 @@
 <div class="reply-container" id="reply-container-<%= comment.id%>">
-  <% if current_user == User.find(comment.user_id) %>
-    <%= link_to "削除", board_comment_path(board, comment), class: "comments-comment-delete btn btn-outline-danger", data: { turbo_method: :delete}, remote: true %>
-  <% end %>
   <div class="reply-label">
     <%= link_to user_path(comment.user_id) do %>
       <% if comment.user.avatar_image.attached? %>
@@ -11,12 +8,14 @@
       <% end %>
       <div class="to-comment-user"><%= comment.user.user_name %></div>
     <% end %>
-    <div class="to-comment"><%= comment.body %></div>
-    <div class="reply-wrapper">
-      <div id="reply-table-<%= comment.id %>">
-        <% comment.children.order(created_at: :desc).each do |child| %>
-          <%= render "comments/reply", board: board, comment: comment, reply: child %>
-        <% end %>
+    <div class="comment-reply-container">
+      <%= render "comments/edit_comment_wrapper", board: board, comment: comment %>
+      <div class="reply-wrapper">
+        <div id="reply-table-<%= comment.id %>">
+          <% comment.children.order(created_at: :desc).each do |child| %>
+            <%= render "comments/reply", board: board, comment: comment, reply: child %>
+          <% end %>
+        </div>
       </div>
     </div>
     

@@ -27,7 +27,7 @@ module BoardsHelper
   end
 
   def board_image(board)
-    board.frames.limit(10).find { |frame| frame.image.attached? }
+    board.frames.limit(30).find { |frame| frame.image.attached? }
   end
 
 

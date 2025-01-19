@@ -1,0 +1,24 @@
+ <div class="form-container" id="form-container">
+  <%= form_with model: [board, frame] do |f| %>
+    <% if  frame.text_frame? %>
+      <div class="mb-3">
+        <%= f.text_area :body, size: "10x5", class: "form-control", placeholder: "本文を入力してください", id: "frame_body", onkeyup: "ShowLength(value);" %>
+        <p id="inputlength"><%= frame&.body&.length %>文字/500文字</p>
+      </div>
+    <% else %>
+      <div class="image-form" id="frame-form">
+        <%= f.file_field :image, id: "frame-image", onchange: "loadImage(this); checkFrameImage();" %>
+      </div>
+      <div class="image-label" id="new-image-label"></div>
+      <div class="preview-container">
+        <div id="post_images" style="display: none;">
+          <div id="preview"></div>
+        </div>
+      </div>
+    <% end %>
+    <div class="cancel-button">
+      <%= f.submit "作成", class: "form-control btn btn-outline-primary", id: "frame-submit-button", disabled: true %>
+      <%= link_to "キャンセル", edit_board_path(@board),class: "cancel btn btn-outline-danger" %>
+    </div>
+  <% end %>
+</div>

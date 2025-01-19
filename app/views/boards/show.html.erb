@@ -17,14 +17,14 @@
         <div class="board-thumbnail-container" id="board-thumbnail-container-<%= @boards.index(board)+1%>">
           <div class="board-thumbnail">
             <% if !board.frames.empty? %>
-              <% first_frame = board.frames.order(:frame_number).first %>
-              <% if first_frame.image.attached? %>
-                <%= image_tag first_frame.image %>
+              <% if board_image(board) %>
+                <%= image_tag board_image(board).image %>
               <% else %>
+                <% first_frame = board.frames.order(:frame_number).first %>
                 <div class="board-thumbnail-text"><%= simple_format(first_frame.body) %></div>
               <% end %>
             <% else %>
-              <p>まだコンテンツがありません</p>
+              <p>コンテンツがありません</p>
             <% end %>
           </div>
         </div>
