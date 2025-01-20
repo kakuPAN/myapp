@@ -1,5 +1,6 @@
  <div class="form-container" id="form-container">
   <%= form_with model: [board, frame] do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
     <% if  frame.text_frame? %>
       <div class="mb-3">
         <%= f.text_area :body, size: "10x5", class: "form-control", placeholder: "本文を入力してください", id: "frame_body", onkeyup: "ShowLength(value);" %>

@@ -5,8 +5,9 @@
     <span>画像を追加</span>
   <% end %>
 </div>
-<%= render "shared/error_messages", object: @frame %>
+
 <div class="form-wrapper">
+
   <%= render "frames/form", board: @board, frame: @frame, frame_type: @frame_type %>
 </div>
 

@@ -1,5 +1,6 @@
 <div class="form-container" id="form-container">
   <%= form_with model: [board, frame] do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
     <% if  frame_type == 0 %>
       <div class="text-form">
         <%= f.hidden_field :frame_type, value: "text_frame" %>
