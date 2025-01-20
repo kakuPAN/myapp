@@ -57,6 +57,13 @@
         <%= render 'likes/like_button', board: board %>
       </div>
     </div>
+    <style>
+      .twitter-button {
+        position: absolute;
+        bottom: 0;
+        z-index: 990;
+      }
+    </style>
   </div>
   <div class="comment-area-wrapper">
     <div class="comment-area-label <%= board_color(board) %>">

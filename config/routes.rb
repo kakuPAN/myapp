@@ -40,6 +40,8 @@ Rails.application.routes.draw do
     end
   end
   root "static_pages#top"
+  get "privacy_policy", to: "static_pages#privacy_policy"
+  get "terms_of_service", to: "static_pages#terms_of_service"
   get "login", to: "user_sessions#new"
   post "login", to: "user_sessions#create"
   delete "logout", to: "user_sessions#destroy"

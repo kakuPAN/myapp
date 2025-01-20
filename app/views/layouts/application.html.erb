@@ -16,6 +16,7 @@
     
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
     <%= stylesheet_link_tag "application" %>
+    <%= display_meta_tags(default_meta_tags) %>
   </head>
 
   <body>
@@ -23,7 +24,7 @@
     <div id="error-messages"></div>
     <div class="background-cover" id="background-cover"></div>
     <div class="whole-wrapper">
-      <% unless controller_name == "static_pages" %>
+      <% unless controller_name == "static_pages" && action_name == "top" %>
         <%= render "shared/header" %>
       <% end %>
       <%= yield %>
@@ -424,10 +425,49 @@ body {
 </style>
 
 <style>
-ul {
+.alert ul {
   padding-left:0;
 }
-li {
+.alert li {
   list-style: none;
 }
+</style>
+<!-- プライバシーポリシー・利用規約 -->
+<style>
+  .service-info-wrapper {
+    max-width: 900px;
+    min-width: 300px;
+    width: 80%;
+    margin: auto;
+    background: #fff;
+    padding: 30px;
+    margin-bottom: 100px;
+    height: auto;
+  }
+  .service-info-wrapper h3 {
+    text-align: center;
+    margin: 20px 0 20px 0;
+    font-weight: bold;
+    color: #474747;
+  }
+  .service-info-wrapper h4 {
+    font-weight: bold;
+    margin-top: 30px;
+    color: #474747;
+  }
+  .service-info-wrapper h5 {
+    display: block;
+    font-size: 20px;
+    color: #474747;
+  }
+  .service-info-wrapper p {
+    display: block;
+    float: right;
+    font-size: 20px;
+    color: #474747;
+  }
+  .service-info-wrapper li {
+    font-size: 20px;
+    color: #474747;
+  }
 </style>

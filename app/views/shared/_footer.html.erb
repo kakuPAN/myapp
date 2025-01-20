@@ -1,10 +1,10 @@
 <footer>
   <div class="footer-content">
-    <p>&copy; 2023 あなたの会社名. All rights reserved.</p>
+
     <ul class="footer-links">
-      <li><a href="/privacy-policy">プライバシーポリシー</a></li>
-      <li><a href="/terms-of-service">利用規約</a></li>
-      <li><a href="/contact">お問い合わせ</a></li>
+      <li><%= link_to "プライバシーポリシー", privacy_policy_path, target: :_blank %></li>
+      <li><%= link_to "利用規約", terms_of_service_path, target: :_blank %></li>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScyWfOx1ezyRz_1TFlh-1Wk5AGrRsgfAYAsu9rCogQTzfLwsA/viewform?usp=header" target: :_blank>お問い合わせ</a></li>
     </ul>
   </div>
 </footer>
