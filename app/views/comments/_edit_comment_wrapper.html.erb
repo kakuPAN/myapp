@@ -1,5 +1,5 @@
 <div id="edit-comment-wrapper-<%= comment.id %>">
-  <%= turbo_frame_tag id="edit-comment-#{ comment.id }" do%>
+  <%= turbo_frame_tag id="edit-comment-#{ comment.id }" do %>
     <div class="to-comment"><%= simple_format(comment.body) %></div>
     <% if current_user && current_user == User.find(comment.user_id) %>
       <div class="comment-links">

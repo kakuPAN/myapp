@@ -3,12 +3,11 @@ class User < ApplicationRecord
   has_many :authentications, :dependent => :destroy
   accepts_nested_attributes_for :authentications
 
+  has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_boards, through: :likes, source: :board
   has_many :user_boards, dependent: :destroy
   has_many :visited_boards, through: :user_boards, source: :board
-  has_many :tasks, dependent: :destroy
-  has_many :boards, dependent: :destroy
   has_many :board_logs, dependent: :destroy
   has_many :user_board_actions, through: :board_logs, source: :board
   has_many :user_frame_actions, through: :board_logs, source: :frame
@@ -26,21 +25,13 @@ class User < ApplicationRecord
 
   def image_content_type
     if avatar_image.attached? && !avatar_image.content_type.in?(%w[image/jpeg image/jpg image/png])
-      errors.add(:avatar_image, '：ファイル形式が、JPEG, JPG, PNG以外になってます。ファイル形式をご確認ください。')
+      errors.add(:base, 'ファイル形式が、JPEG, JPG, PNG以外になっています')
     end
   end
 
   def image_size
-    if avatar_image.attached? && avatar_image.blob.byte_size > 3.megabytes
-      errors.add(:avatar_image, '：3MB以下のファイルをアップロードしてください。')
+    if avatar_image.attached? && avatar_image.blob.byte_size > 200.kilobytes
+      errors.add(:base, '200KB以下のファイルをアップロードしてください')
     end
-  end
-
-  def self.ransackable_attributes(auth_object = nil)
-    [ "user_name", "email" ]
-  end
-
-  def self.ransackable_associations(auth_object = nil)
-    [ "boards" ]
   end
 end

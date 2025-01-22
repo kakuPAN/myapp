@@ -32,8 +32,51 @@
       <%= link_to "プロフィールを変更", edit_user_path(@user), class: "btn btn-outline-primary" %>
     </div>
   </div>
+  <div class="delete-user-container">
+    <div class="delete-user-label">
+      退会
+    </div>
+      <%= form_with(url: user_path(current_user), method: :delete, data: { turbo_confirm: '退会してよろしいですか？' }, class: "delete-user-form") do |f| %>
+        <ul>
+          <li>
+            <label>
+              <%= check_box_tag 'confirmation_1', 'yes', false, id: 'confirmation_1' %>
+              退会するとコメント・お気に入りなどすべてのデータが削除されます。
+            </label>
+          </li>
+          <li>
+            <label>
+              <%= check_box_tag 'confirmation_2', 'yes', false, id: 'confirmation_2' %>
+              退会後のデータ復旧などは承っていませんので、ご注意ください。
+            </label>
+          </li>
+        </ul>
+        <%= f.submit '退会する', class: 'btn btn-outline-danger', disabled: true, id: 'delete-button' %>
+      <% end %>
+  </div>
 </div>
 
+<script>
+document.addEventListener('turbo:load', () => {
+  const checkbox1 = document.getElementById('confirmation_1');
+  const checkbox2 = document.getElementById('confirmation_2');
+  const deleteButton = document.getElementById('delete-button');
+
+  function updateButtonState() {
+    if (checkbox1.checked && checkbox2.checked) {
+      deleteButton.disabled = false;
+    } else {
+      deleteButton.disabled = true;
+    }
+  }
+
+  // チェックボックスの変更を監視
+  checkbox1.addEventListener('change', updateButtonState);
+  checkbox2.addEventListener('change', updateButtonState);
+});
+
+
+</script>
 <style>
   @media(min-width: 800px){
     .user-wrapper {
@@ -100,6 +143,34 @@
     text-decoration: none;
     color: black;
     font-size: 20px;
+  }
+  .delete-user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    margin-top: 50px;
+  }
+  .delete-user-label {
+    font-size: 23px;
+  }
+  .delete-user-container #confirmation_1, #confirmation_2 {
+    cursor: pointer;
+  }
+  .delete-user-form input[type="submit"] {
+    float: right;
+  }
+  .delete-user-container p {
+    font-size: 23px;
+  }
+  .delete-user-container ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .delete-user-container li {
+    text-align: left;
+    font-size: 18px;
   }
   .avatar-container .avatar img {
     height: 300px;

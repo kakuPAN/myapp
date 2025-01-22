@@ -1,0 +1,6 @@
+<%= form_with model: board, id:"edit-form" do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <%= f.text_area :title, id:"title-text" %>
+  <%= f.submit "変更", id:"submit", class: "btn btn-outline-primary" %>
+  <%= link_to "キャンセル", edit_board_path(board), remote: true,  class: "cancel btn btn-outline-danger" %>
+<% end %>

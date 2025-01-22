@@ -3,7 +3,7 @@
   <div class="create-board">
     <% if current_user %>
       <%= link_to new_board_path(parent_board: @board.id), class: "#{"func-icon" unless current_user}" do %>
-        <i class="bi bi-plus-square"></i>
+        <i class="bi bi-plus-square" id="create-new-board"></i>
       <% end %>
     <% else %>
       <div class= "<%= "func-icon" unless current_user %>">
@@ -339,17 +339,17 @@
   }
   .delete-edit-button.funcs div{
     display: inline;
+    margin: auto;
   }
   .delete-edit-button i {
     color: #333;
+    margin: auto;
   }
   .delete-edit-button a {
     text-decoration: none;
     color: black;
-    padding: 5px;
-    border-radius: 10px;
+    margin: auto;
   }
- 
   .delete-edit-button i:hover  {
     color: #fff;
   }

@@ -1,16 +1,11 @@
-<%= render "shared/error_messages", object: @board %>
+
 <div class="new-board-wrapper">
   <div class="new-board-parent">  
     <%= @parent_board.title %>
   </div>
-  <%= form_with model: @board do |f| %>
-    <div class="new-board-form">
-      <%= f.text_field :title, class: "form-control" %>
-      <%= f.hidden_field :parent_id, value: @parent_id %>
-      <%= f.submit "新しいトピックを作成", class: "form-control btn btn-primary" %>
-      <%= link_to "キャンセル", board_path(@parent_board), class: "cancel btn btn-outline-danger" %>
-    </div>
-  <% end %>
+  <div id="new-board-wrapper">
+    <%= render "boards/form", board: @board, parent_board: @parent_board %>
+  </div>
 </div>
 
 
@@ -65,7 +60,7 @@
     margin-top: 100px;
     border-radius: 20px;
   }
-  .new-board-form input {
+  .new-board-form textarea {
     width: 100%;
     margin-bottom: 20px;
   }
@@ -76,6 +71,7 @@
     border-radius: 5px;
     text-align: center;
     text-decoration: none;
+    margin-top: 20px;
   }
   
 </style>

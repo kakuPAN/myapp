@@ -173,7 +173,7 @@ boards.each do |board|
       frame_type: 0
     )
   end
-#インスタンスを作成しないとattachできないが、bodyを入れないとvalidationで弾かれる。
+#インスタンスを作成しないとattachできないが、bodyを入れないとvalidationで弾かれる。 => 一度buildした後でattachしてsaveすることでできる？
   # image_file = image_files.sample
   # # 画像をアタッチする
   # frame.image.attach(
