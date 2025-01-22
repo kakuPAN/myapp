@@ -1,3 +1,13 @@
 <%= turbo_stream.replace "unlike-button-#{@board.id}" do %>
   <%= render "boards/like", board: @board %>
 <% end %>
+<%= turbo_stream.append "error-messages" do %>
+  <div id="replace-flash-message">
+    <% if flash.now[:success] %>
+      <div class="alert-label">Wクリックで削除</div>
+      <div class="alert alert-success flash-message">
+        <%= flash.now[:success] %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

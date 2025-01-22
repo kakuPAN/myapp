@@ -15,13 +15,20 @@ class BoardsController < ApplicationController
 
   def create
     @board = Board.new(board_params)
-    if @board.save
-      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :create_action)
-      redirect_to edit_board_path(@board)
-      flash[:success] = "ボードを作成しました"
-    else
-      flash.now[:danger] = "入力に不足があります"
-      render :new, status: :unprocessable_entity
+    @parent_id = @board.parent_id
+    @parent_board = Board.find(@parent_id)
+    respond_to do |format|
+      if @board.save
+        @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :create_action)
+        format.html do
+          redirect_to edit_board_path(@board)
+          flash[:success] = "ボードを作成しました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "入力に不足があります"
+        end
+      end
     end
   end
 
@@ -51,7 +58,7 @@ class BoardsController < ApplicationController
   end
 
   def edit
-    @board = Board.find_by(id: params[:id])
+    @board = Board.find(params[:id])
     @frames = @board.frames.order(:frame_number)
     @parent_board = Board.find_by(id: @board.parent_id)
 
@@ -67,16 +74,24 @@ class BoardsController < ApplicationController
     end
   end
 
+  def edit_board
+    @board = Board.find(params[:id])
+  end
+
   def update
-    @board = Board.find_by(id: params[:id])
+    @board = Board.find(params[:id])
     @frames = @board.frames.order(:frame_number)
-    if @board.update(board_params)
-      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :update_action)
-      redirect_to edit_board_path(@board)
-      flash[:success] = "タイトルを変更しました"
-    else
-      render :edit
-      flash[:danger] = "タイトルを変更できません"
+    respond_to do |format|
+      if @board.update(board_params)
+        @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :update_action)
+        format.turbo_stream do
+          flash.now[:success] = "タイトルを変更しました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "タイトルを変更できません"
+        end
+      end
     end
   end
 
@@ -90,13 +105,33 @@ class BoardsController < ApplicationController
   def create_like
     @board = Board.find(params[:id])
     @like = @board.likes.new(user_id: current_user.id)
-    @like.save
+    respond_to do |format|
+      if @like.save
+        format.turbo_stream do
+          flash.now[:success] = "お気に入りに登録しました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "お気に入りに登録できません"
+        end
+      end
+    end
   end
 
   def destroy_like
     @board = Board.find(params[:id])
     @like = @board.likes.find_by(user_id: current_user.id)
-    @like.destroy
+    respond_to do |format|
+      if @like.destroy
+        format.turbo_stream do
+          flash.now[:success] = "お気に入りを解除しました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "お気に入りを解除できません"
+        end
+      end
+    end
   end
 
   def create_chat

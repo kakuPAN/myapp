@@ -3,13 +3,7 @@
     <div class="title-text">TopicBoard</div>
     <div class="title-jp">トピックボード</div>
     <div class="top-page-login-container">
-      <div class="line-login">
-        <%= link_to auth_at_provider_path(provider: :line), class: "line-icon" do %>
-          <%= image_tag "free_images/LINE_Brand_icon.png" %>
-        <% end %>
-        <span>LINEでログイン</span>
-      </div>
-      <a href="https://lin.ee/ptXYQmj"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36"></a>
+      <%= link_to "ログイン",login_path %>
     </div>
   </div>
   <%= render "shared/search_form_container" %>
@@ -54,26 +48,6 @@
     background: #f7f5f5;
     border-radius: 15px;
   }
-  .line-login {
-    display: flex;
-    justify-content: center;
-  }
-  .line-login span {
-    margin: auto;
-    font-weight: bold;
-    color: #333;
-  }
-  .line-login .line-icon {
-    display: flex;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-  }
-  .line-icon img {
-    width: 40px;
-    height: 40px;
-   }
 
   .title-board-container {
     display: flex;

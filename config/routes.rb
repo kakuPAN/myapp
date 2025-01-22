@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
   resources :boards do
     member do
+      get :edit_board
       post :create_like
       delete :destroy_like
       post :create_chat

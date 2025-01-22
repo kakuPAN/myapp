@@ -2,29 +2,27 @@
   <div class="frames-wrapper">
     <div class="edit-buttons">
       <div class="delete-button">
-        <%= link_to "削除", board_path(@board), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
+        <%= link_to "削除", board_path(@board), data: { turbo_method: :delete }, class: "btn btn-outline-danger", id: "delete-board-button" %>
       </div>
       <div class="save-button">
-        <%= link_to "保存", board_path(@board), class: "btn btn-outline-success" %>
+        <%= link_to "保存", board_path(@board), class: "btn btn-outline-primary", id: "save-board-button" %>
       </div>
     </div>
     <div class="edit-board-container">
       <div class="edit-board-form">
-        <div class="edit-board-title" id="edit-board-title"><%= @board.title %></div>
-        <%= form_with model: @board, id:"edit-form" do |f| %>
-          <i class="bi bi-caret-down-fill edit-arrow"></i>
-          <%= f.text_field :title, id:"title-text" %>
-          <%= f.submit "変更", id:"submit" %>
+        <%= turbo_frame_tag id= "replace-edit-board-form" do %>
+          <div class="edit-board-title" id="edit-board-title"><%= @board.title %></div>
+          <%= link_to "タイトルを編集", edit_board_board_path(@board), class: "btn btn-outline-success",id: "edit-board-link", remote: true %>
         <% end %>
       </div>
     </div>
     <div class="add-frame">
-      <%= link_to "本文フレームを追加", new_board_frame_path(@board, frame_type: 0), class: "btn btn-primary" %>
-      <%= link_to "画像フレームを追加", new_board_frame_path(@board, frame_type: 1), class: "btn btn-primary" %>
+      <%= link_to "本文フレームを追加", new_board_frame_path(@board, frame_type: 0), class: "btn btn-primary", id: "create-text-frame" %>
+      <%= link_to "画像フレームを追加", new_board_frame_path(@board, frame_type: 1), class: "btn btn-primary", id: "create-image-frame" %>
     </div>
     <% @frames.each do |frame| %>
       <div class="frame-container" id="frame-container-<%= frame.frame_number %>">
-        <div class="frame-content">
+        <div class="frame-content" id="frame-content-<%= frame.frame_number %>">
           <% if frame.image.attached? %>
             <%= image_tag frame.image %>
           <% else %>
@@ -37,38 +35,19 @@
           <%= link_to "編集", edit_board_frame_path(@board, frame), class: "btn btn-outline-secondary" %>
         </div>
         <div class="edit-button">
-          <%= link_to "削除", board_frame_path(@board, frame), data: { turbo_method: :delete }, class: "btn btn-outline-danger" %>
+          <%= link_to "削除", board_frame_path(@board, frame), data: { turbo_method: :delete }, class: "btn btn-outline-danger", id: "delete-frame-link-#{frame.frame_number}" %>
         </div>
-        <div class="edit-button <%= "disabled" if frame.frame_number == 1 %>">
-          <%= link_to "前に移動", move_forward_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary" %>
+        <div class="edit-button <%= "disabled" if frame.frame_number == 1 %>" id = "move-forword-button-<%= frame.frame_number %>">
+          <%= link_to "前に移動", move_forward_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary", id: "move-forword-#{frame.frame_number}" %>
         </div>
-        <div class="edit-button <%= "disabled" if @board.frames.where( "frame_number > ?", frame.frame_number ).empty? %>" >
-          <%= link_to "後ろに移動", move_back_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary" %>
+        <div class="edit-button <%= "disabled" if @board.frames.where( "frame_number > ?", frame.frame_number ).empty? %>" id = "move-back-button-<%= frame.frame_number %>">
+          <%= link_to "後ろに移動", move_back_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary", id: "move-back-#{frame.frame_number}" %>
         </div>
       </div>
     <% end %>
   </div>
 </div>
 
-<script>
-  document.addEventListener("turbo:load", function(){
-    const editForm = document.getElementById("edit-form");
-    const boardTitle = document.getElementById("edit-board-title");
-
-    if (editForm && boardTitle) {
-      editForm.addEventListener("click", function (event) {
-        event.stopPropagation();
-      });
-      boardTitle.addEventListener("mouseover", function(){
-      editForm.style.display = "block";
-      });
-
-      document.addEventListener("click", function(){
-      editForm.style.display = "none"
-      });
-    };
-  });
-</script>
 
 <script>
   document.addEventListener("turbo:load", function () {
@@ -105,6 +84,9 @@
     height: auto; /* 縦方向に制限を外す */
     overflow-y: auto;
   }
+  .edit-board-form textarea {
+    width: 500px;
+  }
   .frames-wrapper {
     width: 60%;
     min-width: 1000px;
@@ -133,6 +115,9 @@
     padding: 0 20px;
     min-width: 300px;
   }
+  .edit-board-form textarea {
+    width: 500px;
+  }
   .frames-wrapper {
     width: 100%;
   }
@@ -160,6 +145,9 @@
     padding: 0 20px;
     min-width: 300px;
   }
+  .edit-board-form textarea {
+    width: 250px;
+  }
   .frames-wrapper {
     width: 100%;
   }
@@ -182,4 +170,50 @@
     text-align: center;
   }
 }
+</style>
+
+<style>
+<%#ボードタイトル編集%>
+.edit-board-container {
+  margin-bottom: 100px;
+}
+.edit-board-title {
+  font-size: 25px;
+  text-align: center;
+  padding: 5px 20px;
+  background: #ededed;
+  border: 2px solid #ddd;
+  width: 100%;
+  margin-bottom: 20px;
+}
+#edit-board-link {
+  width: 100%;
+  font-size: 20px;
+  text-decoration: none;
+
+}
+.edit-board-form .bi {
+  font-size: 30px;
+  color: #0f54ff;
+}
+.edit-board-form input  {
+  display: flex;
+  flex-direction: column;
+}
+.edit-board-form textarea {
+  font-size: 25px;
+  background: #ededed;
+  border: 2px solid #ddd;
+}
+.edit-board-form input[type="submit"] {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 20px;
+}
+.edit-board-form a {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 20px;
+}
+
 </style>

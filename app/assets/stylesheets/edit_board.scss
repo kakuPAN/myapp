@@ -9,36 +9,6 @@
   max-width: 300px;
   margin-bottom: 20px;
 }
-// <%#ボードタイトル編集%>
-.edit-board-container {
-  margin-bottom: 100px;
-}
-.edit-board-title {
-  font-size: 25px;
-  text-align: center;
-  padding: 5px 20px;
-  background: #ededed;
-  border: 2px solid #ddd;
-  width: 100%;
-}
-#edit-form {
-  display: none;
-}
-.edit-board-form .bi {
-  font-size: 30px;
-  color: #0f54ff;
-}
-.edit-board-form input {
-  display: flex;
-  flex-direction: column;
-}
-.edit-board-form input[type="text"] {
-  font-size: 25px;
-  text-align: center;
-  padding: 5px 20px;
-  background: #ededed;
-  border: 2px solid #ddd;
-}
 
 
 

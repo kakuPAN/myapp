@@ -88,8 +88,10 @@ class FramesController < ApplicationController
         flash[:danger] = "フレームを移動できません"
       end
       redirect_to edit_board_path(@board)
+      flash[:success] = "フレームを移動しました"
     else
       redirect_to edit_board_path(@board)
+      flash[:success] = "フレームを移動できません"
     end
   end
 
@@ -112,8 +114,10 @@ class FramesController < ApplicationController
         flash[:danger] = "フレームを移動できません"
       end
       redirect_to edit_board_path(@board)
+      flash[:success] = "フレームを移動しました"
     else
       redirect_to edit_board_path(@board)
+      flash[:success] = "フレームを移動できません"
     end
   end
       

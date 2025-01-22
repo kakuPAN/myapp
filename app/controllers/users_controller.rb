@@ -24,7 +24,18 @@ class UsersController < ApplicationController
     @boards = Kaminari.paginate_array(Board.all.sample(10)).page(@page).per(4)
   end
 
-  def liked_boards # ブックマークした投稿
+  def destroy
+    @user =  User.find(params[:id])
+    if @user == current_user
+      @user.destroy
+      redirect_to root_path
+    else
+      redirect_to user_path(@user)
+      flash[:success] = "権限がありません"
+    end
+  end
+
+  def liked_boards # お気に入り
     @page = params[:page].to_i
     @page = 1 if @page < 1
     @context = :liked
@@ -40,7 +51,7 @@ class UsersController < ApplicationController
     render :show
   end
 
-  def user_actions
+  def user_actions # ユーザーの活動
     @page = params[:page].to_i
     @page = 1 if @page < 1
     @context = :user_action

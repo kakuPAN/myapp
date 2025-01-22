@@ -23,9 +23,6 @@
       <%= @board.title %>
       <% if current_user %>
         <div class="delete-edit-button">
-          <%= link_to board_path(board), data: { turbo_method: :delete, turbo_confirm: 'ボードを削除してよろしいですか？' }, class: "delete-button" do %>
-            <i class="bi bi-trash3-fill"></i>
-          <% end %>
           <%= link_to edit_board_path(board), class: "edit-button" do %>
             <i class="bi bi-pencil-fill"></i>
           <% end %>
@@ -36,9 +33,6 @@
         </div>
       <% else %>
         <div class="delete-edit-button funcs">
-          <div class= "delete-button <%= "func-icon" unless current_user %>">
-            <i class="bi bi-trash3-fill"></i>
-          </div>
           <div class= "edit-button <%= "func-icon" unless current_user %>">
             <i class="bi bi-pencil-fill"></i>
           </div>

@@ -33,11 +33,36 @@ RSpec.describe User, type: :model do
       expect(user_with_duplicated_email).to be_invalid
       expect(user_with_duplicated_email.errors[:email]).to eq [ "はすでに存在します" ]
     end
-    it 'titleが被らない場合にバリデーションエラーが起きないか' do
+    it 'emailが被らない場合にバリデーションエラーが起きないか' do
       user = create(:user)
       user_with_another_email= build(:user, email: "another@email.com")
       expect(user_with_another_email).to be_valid
       expect(user_with_another_email.errors).to be_empty
+    end 
+
+    it "profileが250字以上の場合、無効である" do
+      user = build(:user)
+      user.profile = Faker::Lorem.paragraph_by_chars(number: 251)
+      user.validate
+      expect(user.errors[:profile]).to include("は250文字以内で入力してください")
+    end
+
+    context "image_content_typeのバリデーション" do
+      it "ファイル形式が、JPEG, JPG, PNG以外の場合、無効である" do
+        user = build(:user)
+        user.avatar_image.attach(io: File.open(Rails.root.join('spec/fixtures/files/webp_test.webp')), filename: 'webp_test.webp', content_type: 'avatar_image/webp')
+        user.validate
+        expect(user.errors[:base]).to include("ファイル形式が、JPEG, JPG, PNG以外になっています")
+      end
+    end
+
+    context "image_sizeのバリデーション" do
+      it "200KB以上のファイルをアップロードしたとき、無効である" do
+        user = build(:user)
+        user.avatar_image.attach(io: File.open(Rails.root.join('spec/fixtures/files/over_size.png')), filename: 'over_size.png', content_type: 'avatar_image/png')
+        user.validate
+        expect(user.errors[:base]).to include("200KB以下のファイルをアップロードしてください")
+      end
     end
   end
 end

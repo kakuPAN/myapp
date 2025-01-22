@@ -1,5 +1,5 @@
-<h1>Login</h1>
-<%= form_with url: login_path do |f| %>
+<div class="login-container">
+  <%= form_with url: login_path do |f| %>
     <div class="mb-3">
       <%= f.label :email, "メールアドレス", class: "form-label" %>
       <%= f.email_field :email, class: "form-control", id: "session-email" %>
@@ -9,9 +9,69 @@
       <%= f.password_field :password, class: "form-control", id: "session-password" %>
     </div>
     <div class="mb-3">
-      <%= f.submit "ログイン", class: "form-control btn btn-primary" %>
+      <%= f.submit "ログイン", class: "form-control btn btn-primary", id: "login-submit" %>
     </div>
-<% end %>
-<div class="mb-3">
+  <% end %>
+</div>
+
+<style>
+  .login-container {
+    width: 60%;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 100px;
+  }
+
+</style>
+<div class="or-login">
+  or
+</div>
+<div class="line-login">
+  <%= link_to auth_at_provider_path(provider: :line), class: "line-icon" do %>
+    <%= image_tag "free_images/LINE_Brand_icon.png" %>
+  <% end %>
+  <span>LINEでログイン</span>
+</div>
+
+
+<div class="recommend-link">
   <p>アカウントをお持ちではない方は<%= link_to "こちら", new_user_path %></p>
 </div>
+
+<style>
+  .line-login {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    width: 200px;
+    background: #f7f5f5;
+    border: 2px solid #ddd;
+  }
+  .or-login {
+    text-align: center;
+    font-size: 20px;
+    margin: 20px 0px;
+  }
+  .line-login span {
+    margin: auto;
+    font-weight: bold;
+    color: #333;
+  }
+  .line-login .line-icon {
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+    margin: auto;
+  }
+  .line-icon img {
+    width: 40px;
+    height: 40px;
+   }
+
+   .recommend-link {
+    margin: 50px;
+    text-align: center;
+  }
+</style>
