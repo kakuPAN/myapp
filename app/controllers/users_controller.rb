@@ -7,13 +7,19 @@ class UsersController < ApplicationController
       flash[:danger] = "すでにログインしています"
     end
     @user = User.new
+    @security_questions = SecurityQuestion.all
   end
 
   def create
     @user = User.new(user_params)
+
+    if params[:user][:security_answer].present?
+      @user.encrypt_security_answer(params[:user][:security_answer])
+    end
     if @user.save
-      redirect_to login_path
-      flash[:primary] = "#{@user.user_name}さまを登録しました"
+      auto_login(@user)
+      redirect_to user_path(@user)
+      flash[:primary] = "#{@user.user_name}さまがログインしました"
     else
       flash.now[:danger] = "入力に不足があります"
       render :new, status: :unprocessable_entity
@@ -83,19 +89,24 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update(user_params)
-      flash[:success] = "ユーザープロフィールを変更しました"
-      redirect_to show_profile_user_path(@user)
-    else
-      render :edit, status: :unprocessable_entity
-      flash[:danger] = "変更を保存できません"
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html do
+          redirect_to user_path(@user)
+          flash[:success] = "プロフィールを変更しました"
+        end
+      else
+        format.turbo_stream do
+          flash.now[:success] = "プロフィールを変更できません"
+        end
+      end
     end
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avatar_image)
+    params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avatar_image, :security_question_id)
   end
 
   def set_user

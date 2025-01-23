@@ -2,9 +2,11 @@
   <div class="title-container">
     <div class="title-text">TopicBoard</div>
     <div class="title-jp">トピックボード</div>
-    <div class="top-page-login-container">
-      <%= link_to "ログイン",login_path %>
-    </div>
+    <% unless current_user %>
+      <div class="top-page-login-container">
+        <%= link_to "ログイン",login_path %>
+      </div>
+    <% end %>
   </div>
   <%= render "shared/search_form_container" %>
   <div class="title-board-content-wrapper">
@@ -47,6 +49,7 @@
     border: 2px solid #ddd;
     background: #f7f5f5;
     border-radius: 15px;
+    font-weight: bold;
   }
 
   .title-board-container {

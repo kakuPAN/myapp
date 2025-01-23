@@ -4,12 +4,15 @@ ja:
       user: ユーザー
       board: ボード
       frame: フレーム
+      like: お気に入り
     attributes:
       user:
         email: メールアドレス
         user_name: ユーザーネーム
         password: パスワード
         password_confirmation: パスワード確認
+        security_question_id: 秘密の質問
+        security_answer_digest: 秘密の質問の答え
       board:
         title: タイトル
       frame: 

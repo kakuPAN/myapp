@@ -36,8 +36,17 @@
 </script>
 
 <style>
+  @media (max-width: 500px) {
+    .sub-footer-content {
+      overflow: auto;
+    }
+    .sub-footer-content a {
+      margin: 0 40px;
+    }
+  }
   .sub-footer-menu-wrapper {
     display:none;
+    min-width: 300px;
   }
   .sub-footer-menu {
     position: absolute;
@@ -69,6 +78,7 @@
   }
   .sub-footer-content a {
     text-decoration: none;
+
   }
 </style>
 
