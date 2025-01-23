@@ -11,6 +11,15 @@ Rails.application.routes.draw do
       get :user_actions
     end
   end
+
+  resources :password_resets do
+    collection do
+      get ':token/edit', action: :edit, as: 'edit_password_reset'
+      post 'create', action: :create, as: 'password_resets'
+      patch "update", action: :update, as: "update_password_reset"
+    end
+  end
+
   resources :boards do
     member do
       get :edit_board

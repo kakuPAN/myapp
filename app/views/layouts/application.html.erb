@@ -52,7 +52,7 @@
 </style>
 <script>
 
-  function flashMessage() {
+  function flashMessageTimeOut() {
     const flashMessage = document.getElementById('flash-message'); 
     const replaceFlash = document.getElementById('replace-flash-message'); 
     if (flashMessage || replaceFlash) {
@@ -70,25 +70,24 @@
           };
         };
       }, 1000);
-    }
-  };
-  function errorMessage() {
-    const replaceFlash = document.getElementById('replace-flash-message'); 
-    if (replaceFlash) {
+      if (flashMessage){
+      flashMessage.addEventListener("click", function () {
+        flashMessage.remove();
+      })};
+      if (replaceFlash){
       replaceFlash.addEventListener("click", function () {
         replaceFlash.remove();
-        console.log(replaceFlash);
-      });
-    };
+      })};
+
+    }
   };
   document.addEventListener("turbo:load", function(){
-    flashMessage();
-    errorMessage()
+    flashMessageTimeOut();
+    eflashMessageClick();
   });
   document.addEventListener("click", function(){
-    flashMessage();
-    errorMessage()
-    console.log("フラッシュ")
+    flashMessageTimeOut();
+    flashMessageClick();
   });
 
 </script>
@@ -401,7 +400,7 @@ body {
   left: 0;
   bottom: 10px;
   z-index: 999;
-  max-width: 400px;
+  max-width: 500px;
   width: 100%;
   text-align: center;
   font-size: 18px;
@@ -470,4 +469,9 @@ body {
     font-size: 20px;
     color: #474747;
   }
+</style>
+<style>
+ a {
+  cursor: pointer;
+ }
 </style>

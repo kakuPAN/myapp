@@ -7,29 +7,41 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+SecurityQuestion.create!([
+  { question_text: "あなたの母親・父親の旧姓は？" },
+  { question_text: "あなたの子供の頃のあだ名は？" },
+  { question_text: "あなたの小学校の名前は？" }
+])
 
-User.create!(
-  [
+users_data = [
     {
      email: "nanaka@email.com",
      password: "pass",
      password_confirmation: "pass",
-     user_name: "志田"
+     user_name: "志田",
+     security_question_id: 1
     },
     {
       email: "ishigami@email.com",
       password: "pass",
       password_confirmation: "pass",
-      user_name: "石上"
+      user_name: "石上",
+      security_question_id: 1
      },
      {
      email: "kasuga@email.com",
      password: "pass",
      password_confirmation: "pass",
-     user_name: "春日"
+     user_name: "春日",
+     security_question_id: 1
     }
   ]
-)
+  users_data.each do |user_data|
+    user = User.new(user_data)
+    user.security_answer_digest = BCrypt::Password.create("山田") # セキュリティ回答をハッシュ化
+    user.save!
+  end
+
 
 Board.create!(
   [

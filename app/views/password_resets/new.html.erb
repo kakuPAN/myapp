@@ -1,0 +1,60 @@
+<div class="secret-question-title">
+  ユーザー登録時に設定した<span>メールアドレス/秘密の質問/質問の答え</span>を入力してください。
+</div>
+<div class="secret-question-container">  
+  <%= form_with url: password_resets_path, data: { turbo_method: :post }, local: true do |f| %>
+    <div class="form-group"> 
+      <%= f.email_field :email, class: "form-control", placeholder: "メールアドレス" %>
+    </div>
+    <div class="form-group">
+      <%= f.select :security_question_id, 
+          options_from_collection_for_select(SecurityQuestion.all, :id, :question_text), 
+          class: 'form-control' 
+      %>
+      <%= f.text_field :security_answer, class: "form-control", placeholder: "秘密の質問の答え" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit "送信", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+<div class="recommend-link">
+  <%= link_to 'ログインページに戻る', login_path %>
+</div>
+
+<style>
+.secret-question-title {
+  text-align: center;
+  margin: 20px 0;
+}
+.secret-question-title span {
+  font-weight: bold;
+  color: #333;
+}
+.secret-question-container {
+  width: 60%;
+  max-width: 600px;
+  margin: auto;
+  min-width: 300px;
+}
+
+.secret-question-container .form-group {
+  margin-top: 10px;
+}
+.secret-question-container .form-group input {
+  font-size: 20px;
+}
+.secret-question-container .form-group input[type="submit"] {
+  width: 100%;
+}
+.secret-question-container .form-group select {
+    font-size: 18px;
+    border: none;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+.recommend-link {
+    margin: 50px;
+    text-align: center;
+}
+</style>
