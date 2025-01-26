@@ -175,14 +175,14 @@ RSpec.describe "Users", type: :system do
       end
     end
   end
-  
+
   describe "ユーザーマイページ" do
     let!(:board) { create(:board) }
     describe "自分以外のユーザーのマイページにアクセス" do
-      let!(:registered_user_board_log) { create(:board_log, user_id: registered_user.id, board_id: board.id, action_type: 1)}
+      let!(:registered_user_board_log) { create(:board_log, user_id: registered_user.id, board_id: board.id, action_type: 1) }
       let!(:registered_user_like) { create(:like, user_id: registered_user.id, board_id: board.id) }
       let!(:registered_user_visiter_board) { create(:user_board, user_id: registered_user.id, board_id: board.id) }
-  
+
       it "ユーザーのマイページにアクセスできる" do
         visit user_path(registered_user)
         expect(current_path).to eq user_path(registered_user)
@@ -233,11 +233,11 @@ RSpec.describe "Users", type: :system do
       end
     end
     describe "自分のマイページにアクセス" do
-      let!(:user_board_log) { create(:board_log, user_id: user.id, board_id: board.id, action_type: 1)}
+      let!(:user_board_log) { create(:board_log, user_id: user.id, board_id: board.id, action_type: 1) }
       let!(:user_like) { create(:like, user_id: user.id, board_id: board.id) }
       let!(:user_visiter_board) { create(:user_board, user_id: user.id, board_id: board.id) }
       before { login(user) }
-  
+
       it "ユーザーのマイページにアクセスできる" do
         visit user_path(user)
         expect(current_path).to eq user_path(user)
@@ -378,19 +378,19 @@ RSpec.describe "Users", type: :system do
           check 'confirmation_2'
           expect(page).to have_button('退会する', disabled: false)
           click_button '退会する'
-    
+
           expect(page).to have_content('退会が完了しました')
           expect(page).to have_content('ログイン')
           expect(page).to have_current_path(root_path, wait: 5) # ユーザーがログアウト済み
           expect(User.exists?(id: user.id)).to be_falsey # ユーザーが存在しないことを確認
         end
       end
-    
+
       context "規約に同意しない場合" do
         it "退会ボタンが有効にならない" do
           visit show_profile_user_path(user)
           expect(page).to have_button('退会する', disabled: true) # チェックボックスが未選択の場合、無効
-    
+
           expect(User.exists?(id: user.id)).to be_truthy # ユーザーがまだ存在していることを確認
         end
       end

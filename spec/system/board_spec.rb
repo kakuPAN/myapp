@@ -21,7 +21,7 @@ RSpec.describe "Boards", type: :system do
           expect(current_path).to eq login_path
         end
       end
-      
+
       context "ボードの詳細ページにアクセス" do
         it "公開のボードにアクセスし、詳細情報が表示される" do
           visit board_path(board)
@@ -49,7 +49,7 @@ RSpec.describe "Boards", type: :system do
         it "ボードの作成が成功する" do
           visit board_path(board)
           find('#create-new-board').click
-          
+
           fill_in "board_title", with: "test_title"
           find("#create-new-board").click
           expect(page).to have_content("test_title", wait: 5)
@@ -98,7 +98,7 @@ RSpec.describe "Boards", type: :system do
 
           find('#edit-board-link').click
           expect(page).to have_selector('#edit-form', visible: true, wait: 5)
-    
+
           fill_in "title-text", with: "変更後のタイトル"
           find("#submit").click
 
@@ -115,7 +115,7 @@ RSpec.describe "Boards", type: :system do
 
           find('#edit-board-link').click
           expect(page).to have_selector('#edit-form', visible: true, wait: 5)
-    
+
           fill_in "title-text", with: ""
           find("#submit").click
 
@@ -132,7 +132,7 @@ RSpec.describe "Boards", type: :system do
 
           find('#edit-board-link').click
           expect(page).to have_selector('#edit-form', visible: true, wait: 5)
-    
+
           fill_in "title-text", with: Faker::Lorem.paragraph_by_chars(number: 101)
           find("#submit").click
 

@@ -70,10 +70,10 @@ RSpec.describe "Frames", type: :system do
           visit edit_board_path(board)
           find("#create-image-frame").click
           attach_file("frame-image", Rails.root.join("spec/fixtures/files/sample_image.png"))
-        
+
           expect(page).to have_selector("#frame-submit-button:not([disabled])", visible: true, wait: 10)
           find("#frame-submit-button").click
-          
+
           expect(page).to have_current_path(edit_board_path(board), wait: 5)
           expect(page).to have_content "フレームが作成されました"
         end
@@ -84,13 +84,13 @@ RSpec.describe "Frames", type: :system do
           visit edit_board_path(board)
           find("#create-image-frame").click
           attach_file("frame-image", Rails.root.join("spec/fixtures/files/over_size.png"))
-        
+
           expect(page).to have_selector("#frame-submit-button:not([disabled])", visible: true, wait: 10)
           find("#frame-submit-button").click
 
-          
-          expect(page).to have_content "200KB以下のファイルをアップロードしてください" 
-          expect(page).to have_content "フレームを作成できません" 
+
+          expect(page).to have_content "200KB以下のファイルをアップロードしてください"
+          expect(page).to have_content "フレームを作成できません"
           expect(current_url).to include("#{new_board_frame_path(board)}?frame_type=1")
         end
       end
@@ -100,12 +100,12 @@ RSpec.describe "Frames", type: :system do
           visit edit_board_path(board)
           find("#create-image-frame").click
           attach_file("frame-image", Rails.root.join("spec/fixtures/files/webp_test.webp"))
-        
+
           expect(page).to have_selector("#frame-submit-button:not([disabled])", visible: true, wait: 10)
           find("#frame-submit-button").click
 
-          expect(page).to have_content "ファイル形式が、JPEG, JPG, PNG以外になっています" 
-          expect(page).to have_content "フレームを作成できません" 
+          expect(page).to have_content "ファイル形式が、JPEG, JPG, PNG以外になっています"
+          expect(page).to have_content "フレームを作成できません"
           expect(current_url).to include("#{new_board_frame_path(board)}?frame_type=1")
         end
       end
@@ -123,7 +123,7 @@ RSpec.describe "Frames", type: :system do
         expect(current_path).to eq edit_board_path(board)
       end
     end
-    
+
     describe "フレームの移動" do
       let!(:first_frame) { create(:frame, board_id: board.id, body: "フレーム１", frame_number: 1) }
       let!(:second_frame) { create(:frame, board_id: board.id, body: "フレーム２", frame_number: 2) }

@@ -1,12 +1,12 @@
 <%= render "shared/header" %>
-<div class="mypage-wrapper">  
+<div class="mypage-wrapper">
   <%= render "mypage_header" %>
   <div class="board-tab">
     <div class="to-all-users-boards <%= "disabled" if @context.to_sym == :bookmarked %>">
-      <%= link_to "投稿一覧", all_users_boards_user_path(@user)%>
+      <%= link_to "投稿一覧", all_users_boards_user_path(@user) %>
     </div>
     <div class="to-bookmarked-boards <%= "disabled" if @context.to_sym == :users %>">
-      <%= link_to "ブックマーク", bookmarked_boards_user_path(@user)%>
+      <%= link_to "ブックマーク", bookmarked_boards_user_path(@user) %>
     </div>
   </div>
   <div class="border-label">
@@ -127,7 +127,7 @@
   .previous-link:hover {
     font-size: 60px;
   }
-  .next-link:hover { 
+  .next-link:hover {
     font-size: 60px;
   }
   .previous-link.disabled, .next-link.disabled {

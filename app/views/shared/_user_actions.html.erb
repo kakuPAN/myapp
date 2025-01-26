@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="index-board-actions"> <!-- ボードごとの編集履歴のリンク -->
-    <%= link_to board_info_board_path(log[:board].id) do %>  
+    <%= link_to board_info_board_path(log[:board].id) do %>
       <span><%= l log[:action_date] %></span>
       <span>
         <% if log[:frame] %>

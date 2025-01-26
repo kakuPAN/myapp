@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         format.html { redirect_to board_comments_path(@board) }
-        format.turbo_stream {flash.now[:success] = "コメントを作成しました" }
+        format.turbo_stream { flash.now[:success] = "コメントを作成しました" }
       else
         flash.now[:danger] = "コメントを作成できません"
         format.html { render :index, status: :unprocessable_entity }
@@ -36,7 +36,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.update(comment_params.merge(user_id: current_user.id))
-       
+
         format.html { redirect_to board_comments_path(@board) }
         format.turbo_stream do
           flash.now[:success] = "コメントを編集しました"
@@ -95,7 +95,7 @@ class CommentsController < ApplicationController
   def comment_params
     params.require(:comment).permit(:body, :parent_id)
   end
-  
+
   def reply_params
     params.require(:reply).permit(:body)
   end

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   describe 'バリデーションチェック' do
     let(:security_question) { create(:security_question) }
-    let!(:another_user) { create(:user, email: "another@email.com")}
+    let!(:another_user) { create(:user, email: "another@email.com") }
     let(:user) { create(:user) }
     describe "ユーザーの作成が成功する" do
       it '入力値が正常な場合、有効である' do

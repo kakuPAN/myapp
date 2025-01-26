@@ -1,4 +1,4 @@
-<%= render "shared/index_board", board: @board  %>
+<%= render "shared/index_board", board: @board %>
 <%= render "shared/login_tab" %>
 <div class="comments-comment-wrapper">
   <div class="comments-comment-form-container">
@@ -28,14 +28,14 @@
       const replyForm = document.getElementById(`reply-hundler-${commentNumber}`);
       if (container && replyForm) {
         container.addEventListener("click", function(e){
-          e.stopPropagation(); 
+          e.stopPropagation();
           replyForm.style.display = "block";
         });
         document.addEventListener("click", function(e){
           replyForm.style.display = "none";
         });
         replyForm.addEventListener("click", function(e){
-          e.stopPropagation(); 
+          e.stopPropagation();
         });
     }});
   };
@@ -73,7 +73,7 @@
     const submitButton = document.getElementById(`reply-submit-${commentId}`);
     const replyForm = document.getElementById(`reply-form-${commentId}`)
     document.getElementById(`reply-inputlength-${commentId}`).innerHTML = `${inputLength}/${maxLength}文字`;
-    
+
     if (value === "") {
         replyForm.removeAttribute("class");
         replyForm.classList.add("reply-form");
@@ -117,7 +117,7 @@
     border: none;
     border-bottom: 2px solid #ddd;
   }
-  
+
   .comments-comment-form input[type="submit"] {
     font-size: 20px;
     border: none;
@@ -246,7 +246,7 @@
   width: 90%;
 }
 .edit-comment-form input[type="submit"] {
-  
+
   border-radius: 5px;
   font-size: 20px;
   padding: 5px 10px;
@@ -286,7 +286,7 @@
 }
 .reply-form textarea {
   min-height: 100px;
-  
+
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;

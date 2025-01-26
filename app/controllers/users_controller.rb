@@ -67,7 +67,7 @@ class UsersController < ApplicationController
     @page = params[:page].to_i
     @page = 1 if @page < 1
     @context = :user_action
-    @logs_with_boards = 
+    @logs_with_boards =
       @user.board_logs.where("action_type != ?", 0)
       .includes(:board, :frame)
       .order(created_at: :desc)
@@ -129,7 +129,7 @@ class UsersController < ApplicationController
     all_visited_boards = user.user_boards.where(created_at: (Time.current - 1.week)..Time.current).order(created_at: :desc)
     all_visited_boards.each do |visited_board|
       unless filtered_boards.any? { |board| board.id == visited_board.board_id }
-        board = Board.find(visited_board.board_id) 
+        board = Board.find(visited_board.board_id)
         filtered_boards << board
       end
     end

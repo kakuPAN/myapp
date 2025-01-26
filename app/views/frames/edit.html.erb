@@ -88,7 +88,7 @@
 
 .cancel-button .cancel {
   display: block;
-  width: 100%; 
+  width: 100%;
   text-decoration: none;
 }
 </style>
@@ -114,7 +114,7 @@
   max-width: 100%;
   max-height: 100%;
   margin: auto;
-  object-fit: contain;  
+  object-fit: contain;
   display: block;
   border: 1px dashed #ccc;
   margin-top: 20px;
@@ -151,7 +151,7 @@
   max-height: 100%;
   border: 1px dashed #ccc;
   object-fit: contain;
-  
+
 }
 #preset-preview p {
   width:100%;
@@ -165,7 +165,7 @@
   function loadImage(obj) {
   const newImageLabel = document.getElementById("new-image-label");
   var allPreview = document.getElementById("post_images");
-  
+
   var existingPreview = allPreview.querySelector("#preview");
   if (existingPreview) {
     existingPreview.remove();
@@ -175,7 +175,6 @@
   newPreview.setAttribute("id", "preview");
   allPreview.style.display = "flex";
   allPreview.appendChild(newPreview);
-
 
   var fileReader = new FileReader();
   fileReader.onload = function (e) {
@@ -193,7 +192,7 @@
   }
 }
 </script>
- 
+
 <script>
   function ShowLength(str) {
     const maxLength = 500;
@@ -217,7 +216,7 @@
 
     const isImageSelected = frameImageInput.files.length > 0;
 
-    // 
+    //
     if (isImageSelected) {
       submitButton.disabled = false;
     } else {

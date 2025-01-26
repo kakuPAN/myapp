@@ -1,6 +1,6 @@
 <div class="reply-form" id="reply-form-<%= parent.id %>">
-  <%= form_with model: [board, parent, reply], url: create_reply_board_comment_path(board, parent, parent_id: parent.id), data: {turbo_method: :post}, remote: true do |f| %>
-    <div class="delete-error-messages"><%= render 'shared/error_messages', object: f.object %></div>
+  <%= form_with model: [ board, parent, reply ], url: create_reply_board_comment_path(board, parent, parent_id: parent.id), data: { turbo_method: :post }, remote: true do |f| %>
+    <div class="delete-error-messages"><%= render "shared/error_messages", object: f.object %></div>
     <%= f.text_area :body, onkeyup: "ActivateReplySubmit(this, #{ parent.id });", id: "reply-textarea-#{ parent.id }" %>
     <p id="reply-inputlength-<%= parent.id %>">0文字/100文字</p>
     <%= f.hidden_field :parent_id, value: parent.id %>

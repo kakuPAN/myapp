@@ -11,7 +11,7 @@ RSpec.describe UserBoard, type: :model do
     it "board_idがない場合、無効である" do
       user_board.board_id = nil
       expect(user_board).to be_invalid
-      expect(user_board.errors[:board_id]).to eq ["を入力してください"]
+      expect(user_board.errors[:board_id]).to eq [ "を入力してください" ]
     end
   end
 end

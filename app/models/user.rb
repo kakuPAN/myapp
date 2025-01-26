@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   authenticates_with_sorcery!
-  has_many :authentications, :dependent => :destroy
+  has_many :authentications, dependent: :destroy
   accepts_nested_attributes_for :authentications
-  
+
   belongs_to :security_question
 
   has_many :comments, dependent: :destroy
@@ -14,7 +14,7 @@ class User < ApplicationRecord
   has_many :user_board_actions, through: :board_logs, source: :board
   has_many :user_frame_actions, through: :board_logs, source: :frame
   has_one_attached :avatar_image
-  
+
   validates :user_name, presence: true, length: { maximum: 20 }
   validates :profile, length: { maximum: 250 }
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
@@ -31,13 +31,13 @@ class User < ApplicationRecord
 
   def image_content_type
     if avatar_image.attached? && !avatar_image.content_type.in?(%w[image/jpeg image/jpg image/png])
-      errors.add(:base, 'ファイル形式が、JPEG, JPG, PNG以外になっています')
+      errors.add(:base, "ファイル形式が、JPEG, JPG, PNG以外になっています")
     end
   end
 
   def image_size
     if avatar_image.attached? && avatar_image.blob.byte_size > 200.kilobytes
-      errors.add(:base, '200KB以下のファイルをアップロードしてください')
+      errors.add(:base, "200KB以下のファイルをアップロードしてください")
     end
   end
 

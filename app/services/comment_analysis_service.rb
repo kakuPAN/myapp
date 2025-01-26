@@ -1,5 +1,4 @@
 class CommentAnalysisService
-
   def self.call(board)
     new(board).call
   end
@@ -42,7 +41,7 @@ class CommentAnalysisService
 end
 
 
-####　今後実装
+# ###　今後実装
 # 呼び出す場合
 # board = Board.find(1)
 # analysis_result = CommentAnalysisService.call(board)

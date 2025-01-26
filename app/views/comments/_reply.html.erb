@@ -1,4 +1,4 @@
-<div class="reply-content" id="reply-<%= reply.id%>">  
+<div class="reply-content" id="reply-<%= reply.id %>">
   <%= link_to user_path(reply.user_id) do %>
     <% if reply.user.avatar_image.attached? %>
       <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
