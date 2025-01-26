@@ -44,8 +44,9 @@ RSpec.describe "UserSessions", type: :system do
   describe "ログアウト" do
     before { login(user) }
     it "ログアウト後、トップ画面にリダイレクトされる" do
-      find('#sub-footer-icon', visible: true, wait: 10).click # ホバーは名前(実際に表示中の要素)にする必要がある
-      expect(page).to have_selector('#sub-footer-logout', visible: true, wait: 5)
+      page.driver.browser.manage.window.resize_to(1024, 768) # 大サイズ
+      find('#header-user-name', visible: true, wait: 10).hover # ホバーは名前(実際に表示中の要素)にする必要がある
+      expect(page).to have_selector('#header-logout', visible: true, wait: 5)
 
       find('#header-logout').click
 
