@@ -111,7 +111,7 @@ GEM
     bootstrap5-kaminari-views (0.0.1)
       kaminari (>= 0.13)
       rails (>= 3.1)
-    brakeman (6.2.2)
+    brakeman (7.0.0)
       racc
     builder (3.3.0)
     capybara (3.40.0)
@@ -530,7 +530,7 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap
   bootstrap5-kaminari-views
-  brakeman
+  brakeman (~> 7.0.0)
   capybara
   cssbundling-rails
   database_cleaner
