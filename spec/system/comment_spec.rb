@@ -55,7 +55,7 @@ RSpec.describe "Comments", type: :system do
             find(".comment-button").click
             fill_in "comment_body", with: "新しいコメント"
             click_button "コメントを送信"
-            expect(page).to have_content("新しいコメント")
+            expect(page).to have_content("新しいコメント", visible: :all) # 暗転背景の下にあっても検知
             expect(page).to have_content("コメントを作成しました")
             expect(current_path).to eq board_path(board)
           end

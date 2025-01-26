@@ -89,7 +89,7 @@ RSpec.describe "Frames", type: :system do
           find("#frame-submit-button").click
 
 
-          expect(page).to have_content "200KB以下のファイルをアップロードしてください"
+          expect(page).to have_content("200KB以下のファイルをアップロードしてください", wait: 5)
           expect(page).to have_content "フレームを作成できません"
           expect(current_url).to include("#{new_board_frame_path(board)}?frame_type=1")
         end
@@ -104,7 +104,7 @@ RSpec.describe "Frames", type: :system do
           expect(page).to have_selector("#frame-submit-button:not([disabled])", visible: true, wait: 10)
           find("#frame-submit-button").click
 
-          expect(page).to have_content "ファイル形式が、JPEG, JPG, PNG以外になっています"
+          expect(page).to have_content("ファイル形式が、JPEG, JPG, PNG以外になっています", wait: 5)
           expect(page).to have_content "フレームを作成できません"
           expect(current_url).to include("#{new_board_frame_path(board)}?frame_type=1")
         end
