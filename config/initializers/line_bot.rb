@@ -1,4 +1,4 @@
-require 'line/bot'
+require "line/bot"
 
 LINE_NOTIFY_CLIENT = Line::Bot::Client.new { |config|
   config.channel_id = Rails.application.credentials.dig(:line_notify, :channel_id)

@@ -14,8 +14,8 @@ Rails.application.routes.draw do
 
   resources :password_resets do
     collection do
-      get ':token/edit', action: :edit, as: 'edit_password_reset'
-      post 'create', action: :create, as: 'password_resets'
+      get ":token/edit", action: :edit, as: "edit_password_reset"
+      post "create", action: :create, as: "password_resets"
       patch "update", action: :update, as: "update_password_reset"
     end
   end
@@ -41,7 +41,7 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :likes, only: [:create, :destroy]
+  resources :likes, only: [ :create, :destroy ]
   resources :tasks do
     member do
       patch :achieve_task

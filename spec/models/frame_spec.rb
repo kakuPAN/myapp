@@ -4,7 +4,7 @@ RSpec.describe Frame, type: :model do
   describe 'バリデーションチェック' do
     let!(:security_question) { create(:security_question) }
     let(:board) { create(:board) }
-    let(:frame) { create(:frame)}
+    let(:frame) { create(:frame) }
     it '全ての値が正しい場合、有効である' do
       expect(frame).to be_valid
       expect(frame.errors).to be_empty
@@ -12,22 +12,22 @@ RSpec.describe Frame, type: :model do
     it 'frame_numberがない場合、無効である' do
       frame.frame_number = nil
       expect(frame).to be_invalid
-      expect(frame.errors[:frame_number]).to eq ["を入力してください"]
+      expect(frame.errors[:frame_number]).to eq [ "を入力してください" ]
     end
     it 'frame_typeがない場合、無効である' do
       frame.frame_type = nil
       expect(frame).to be_invalid
-      expect(frame.errors[:frame_type]).to eq ["を入力してください"]
+      expect(frame.errors[:frame_type]).to eq [ "を入力してください" ]
     end
     it "board_idがない場合、無効である" do
       frame.board_id = nil
       expect(frame).to be_invalid
-      expect(frame.errors[:board_id]).to eq ["を入力してください"]
+      expect(frame.errors[:board_id]).to eq [ "を入力してください" ]
     end
     it "bodyが500文字を超える場合、無効である" do
       frame.body = Faker::Lorem.paragraph_by_chars(number: 501)
       expect(frame).to be_invalid
-      expect(frame.errors[:body]).to eq ["は500文字以内で入力してください"]
+      expect(frame.errors[:body]).to eq [ "は500文字以内で入力してください" ]
     end
     context "image_content_typeのバリデーション" do
       it "ファイル形式が、JPEG, JPG, PNG以外の場合、無効である" do
@@ -55,7 +55,7 @@ RSpec.describe Frame, type: :model do
         frame.validate
         expect(frame.errors[:base]).to include("画像ファイルを設定してください")
       end
-  
+
       it "画像が設定されておらず、かつ、frame_type=1である場合、無効である" do
         frame.body = "テスト本文"
         frame.frame_type = 1
@@ -66,7 +66,6 @@ RSpec.describe Frame, type: :model do
     end
 
     context 'body_or_image_presenceのバリデーション' do
-      
       it 'bodyもimageも設定されていない場合、無効である' do
         frame.body = nil
         frame.image = nil

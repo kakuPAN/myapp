@@ -13,7 +13,7 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-    
+
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
     <%= stylesheet_link_tag "application" %>
     <%= display_meta_tags(default_meta_tags) %>
@@ -53,8 +53,8 @@
 <script>
 
   function flashMessageTimeOut() {
-    const flashMessage = document.getElementById('flash-message'); 
-    const replaceFlash = document.getElementById('replace-flash-message'); 
+    const flashMessage = document.getElementById('flash-message');
+    const replaceFlash = document.getElementById('replace-flash-message');
     if (flashMessage || replaceFlash) {
       let timeLeft = 4;
 
@@ -111,7 +111,7 @@
           (child) => child.textContent === board.textContent
         );
         const normalizedSearchText = toHiragana(searchText);
-        const boardText = toHiragana(board.innerHTML); 
+        const boardText = toHiragana(board.innerHTML);
 
         if ((board.innerHTML.toLowerCase().indexOf(searchText) >= 0 || boardText.indexOf(normalizedSearchText) >= 0) && !duplicate){
           const clone = board.cloneNode(true);
@@ -157,7 +157,7 @@
     searchField.addEventListener("click", function(e){
       e.stopPropagation();
     });
-    
+
     if (candidateList.children.length !== 0) {
       searchField.addEventListener("click", function(){
       candidateContainer.style.display = "block";
@@ -215,7 +215,7 @@
   }
 }
 @media (min-width: 400px) and (max-width: 599px) {
-  
+
   .search-form-container {
     width: 100%;
     white-space: nowrap;
@@ -359,7 +359,7 @@
 .previous-link:hover {
   font-size: 60px;
 }
-.next-link:hover { 
+.next-link:hover {
   font-size: 60px;
 }
 .previous-link.disabled, .next-link.disabled {

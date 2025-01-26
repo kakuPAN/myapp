@@ -78,7 +78,7 @@
 
 .cancel-button .cancel {
   display: block;         /* ボタンをブロック要素化して中央揃えを強制 */
-  width: 100%; 
+  width: 100%;
   text-decoration: none;           /* ボタン幅をフォームと揃える */
 }
 
@@ -104,7 +104,7 @@
   max-width: 100%;
   max-height: 100%;
   margin: auto;
-  object-fit: contain;  
+  object-fit: contain;
   display: block;
   border: 1px dashed #ccc;
   margin-top: 20px;
@@ -123,7 +123,7 @@
   // プレビュー表示エリアを取得
   const newImageLabel = document.getElementById("new-image-label");
   var allPreview = document.getElementById("post_images");
-  
+
   // 既存のプレビューを削除
   var existingPreview = allPreview.querySelector("#preview");
   if (existingPreview) {
@@ -179,7 +179,7 @@
 
     const isImageSelected = frameImageInput.files.length > 0;
 
-    // 
+    //
     if (isImageSelected) {
       submitButton.disabled = false;
     } else {
@@ -187,4 +187,3 @@
     }
   }
 </script>
-

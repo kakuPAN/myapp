@@ -1,4 +1,4 @@
-<div class="card-area <%= 'current-board' if board.id == current_board&.id %>">
+<div class="card-area <%= "current-board" if board.id == current_board&.id %>">
   <%= link_to board_path(board, page: params[:page]) do %>
     <% if board.frames.present? && board.frames.order(:frame_number).first.image.attached? %>
       <div class="card-content card-image">

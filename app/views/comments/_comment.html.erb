@@ -1,4 +1,4 @@
-<div class="reply-container" id="reply-container-<%= comment.id%>">
+<div class="reply-container" id="reply-container-<%= comment.id %>">
   <div class="reply-label">
     <%= link_to user_path(comment.user_id) do %>
       <% if comment.user.avatar_image.attached? %>
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="to-comment-label <%= "func-icon" unless current_user %>" id="<%= "to-comment-#{ comment.id }" if current_user %>" data-comment-id="<%= comment.id %>">コメントに返信する</div>
 
   </div>

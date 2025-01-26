@@ -1,9 +1,9 @@
 module BoardsHelper
-  def page_for(board) #詳細ページから一覧ページに戻る際に、同じ投稿が表示されるページにアクセスするためのメソッド
+  def page_for(board) # 詳細ページから一覧ページに戻る際に、同じ投稿が表示されるページにアクセスするためのメソッド
     # 1ページあたりの投稿数
     per_page = 8
     # 投稿の全体の並び順を取得
-    boards = Board.order(created_at: :desc).pluck(:id) #表示順序によって変更が必要
+    boards = Board.order(created_at: :desc).pluck(:id) # 表示順序によって変更が必要
     # 対象の投稿の、並び替えた投稿の中のインデックス番号を取得
     board_index = boards.index(board.id)
     # ページ番号を計算
@@ -38,9 +38,9 @@ module BoardsHelper
   #   board_index = boards.index(board.id)
   #   return boards, board_index
   # end
-  
+
   # def latest_board(board)
-  #   boards, board_index = board_check(board) 
+  #   boards, board_index = board_check(board)
   #   if board_index == 0
   #     nil
   #   else
@@ -49,7 +49,7 @@ module BoardsHelper
   # end
 
   # def previous_board(board)
-  #   boards, board_index = board_check(board) 
+  #   boards, board_index = board_check(board)
   #   if board_index == 0
   #     nil
   #   else
@@ -59,7 +59,7 @@ module BoardsHelper
   # end
 
   # def next_board(board)
-  #   boards, board_index = board_check(board) 
+  #   boards, board_index = board_check(board)
   #   if board_index == boards.length - 1
   #     nil
   #   else
@@ -69,7 +69,7 @@ module BoardsHelper
   # end
 
   # def oldest_board(board)
-  #   boards, board_index = board_check(board) 
+  #   boards, board_index = board_check(board)
   #   if board_index == boards.length - 1
   #     nil
   #   else
@@ -77,7 +77,7 @@ module BoardsHelper
   #   end
   # end
 
-  def comment_class_name(comment) 
+  def comment_class_name(comment)
     if current_user && current_user.id == comment.user_id
       comment_class_name = "comment_by_current_user"
     else
@@ -86,7 +86,7 @@ module BoardsHelper
     comment_class_name
   end
 
-  def reply_class_name(reply) 
+  def reply_class_name(reply)
     if current_user && current_user.id == reply.user_id
       reply_class_name = "comment_by_current_user"
     else

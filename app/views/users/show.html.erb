@@ -1,18 +1,18 @@
-<div class="mypage-wrapper">  
+<div class="mypage-wrapper">
   <%= render "mypage_header" %>
   <div class="board-tab">
     <div class="to-users-home <%= "disabled" if @context %>">
       <%= link_to "ホーム", user_path(@user) %>
     </div>
     <div class="to-liked-boards <%= "disabled" unless @context&.to_sym == :liked %>">
-      <%= link_to "お気に入り", liked_boards_user_path(@user)%>
+      <%= link_to "お気に入り", liked_boards_user_path(@user) %>
     </div>
     <div class="to-useraction-boards <%= "disabled" unless @context&.to_sym == :user_action %>">
-      <%= link_to "ユーザーの活動", user_actions_user_path(@user)%>
+      <%= link_to "ユーザーの活動", user_actions_user_path(@user) %>
     </div>
     <% if current_user && current_user == @user %>
       <div class="to-visited-boards <%= "disabled" unless @context&.to_sym == :visited %>">
-        <%= link_to "閲覧履歴", visited_boards_user_path(@user)%>
+        <%= link_to "閲覧履歴", visited_boards_user_path(@user) %>
       </div>
     <% end %>
   </div>
@@ -44,4 +44,3 @@
   margin-bottom: 50px;
 }
 </style>
-

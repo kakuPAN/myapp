@@ -48,18 +48,18 @@
         <ul>
           <li>
             <label>
-              <%= check_box_tag 'confirmation_1', 'yes', false, id: 'confirmation_1' %>
+              <%= check_box_tag "confirmation_1", "yes", false, id: "confirmation_1" %>
               退会するとコメント・お気に入りなどすべてのデータが削除されます。
             </label>
           </li>
           <li>
             <label>
-              <%= check_box_tag 'confirmation_2', 'yes', false, id: 'confirmation_2' %>
+              <%= check_box_tag "confirmation_2", "yes", false, id: "confirmation_2" %>
               退会後のデータ復旧などは承っていませんので、ご注意ください。
             </label>
           </li>
         </ul>
-        <%= f.submit '退会する', class: 'btn btn-outline-danger', disabled: true, id: 'delete-button' %>
+        <%= f.submit "退会する", class: "btn btn-outline-danger", disabled: true, id: "delete-button" %>
       <% end %>
   </div>
 </div>
@@ -83,7 +83,6 @@ document.addEventListener('turbo:load', () => {
     checkbox2.addEventListener('change', updateButtonState);
   };
 });
-
 
 </script>
 <style>

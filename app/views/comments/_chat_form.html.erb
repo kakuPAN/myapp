@@ -1,9 +1,9 @@
 <div class="chat-form" id="chat-form">
-  <%= form_with model: [board, comment],url: create_chat_board_path(board), data: {turbo_method: :post} do |f| %>
-    <div class="delete-error-messages"><%= render 'shared/error_messages', object: f.object %></div>
+  <%= form_with model: [ board, comment ], url: create_chat_board_path(board), data: { turbo_method: :post } do |f| %>
+    <div class="delete-error-messages"><%= render "shared/error_messages", object: f.object %></div>
     <%= f.text_area :body, class: "form-control" %>
     <%= f.submit "コメントを送信", class: "submit chat-submit" %>
-  <% end %> 
+  <% end %>
 </div>
 <!-- チャット１００字エラー -->
 <style>

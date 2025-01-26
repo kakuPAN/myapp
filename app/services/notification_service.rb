@@ -10,9 +10,8 @@ class NotificationService
   private
 
   def send_push_message
-    
     message = {
-      type: 'text',
+      type: "text",
       text: "おはよ〜"
     }
 

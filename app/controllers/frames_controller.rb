@@ -19,7 +19,7 @@ class FramesController < ApplicationController
     respond_to do |format|
       if @frame.save
         @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, frame_id: @frame.id, action_type: :create_action)
-        format.html do 
+        format.html do
           redirect_to edit_board_path(@board)
           flash[:success] = "フレームが作成されました"
         end
@@ -40,7 +40,7 @@ class FramesController < ApplicationController
     respond_to do |format|
       if @frame.update(frame_params)
         @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, frame_id: @frame.id, action_type: :update_action)
-        format.html do  
+        format.html do
           redirect_to edit_board_path(@board)
           flash[:success] = "フレームが更新されました"
         end
@@ -60,7 +60,7 @@ class FramesController < ApplicationController
       Frame.transaction do
         @frame.destroy
         # 削除された番号より大きな番号を持つフレームを1つずつ繰り下げ
-        @board.frames.where('frame_number > ?', current_number).order(:frame_number).each do |frame|
+        @board.frames.where("frame_number > ?", current_number).order(:frame_number).each do |frame|
           frame.update!(frame_number: frame.frame_number - 1)
         end
       end
@@ -78,7 +78,7 @@ class FramesController < ApplicationController
       previous_frame = @board.frames.find_by(frame_number: @frame.frame_number - 1)
       current_number = @frame.frame_number
       previous_number = current_number-1
-      begin 
+      begin
         Frame.transaction do
           previous_frame.update!(frame_number: last_frame_number+1)
           @frame.update!(frame_number: previous_number)
@@ -101,10 +101,10 @@ class FramesController < ApplicationController
 
     if @frame.frame_number < last_frame_number
       next_frame = @board.frames.find_by(frame_number: @frame.frame_number + 1)
-      
+
       current_number = @frame.frame_number
       next_number = current_number+1
-      begin 
+      begin
         Frame.transaction do
           next_frame.update!(frame_number: last_frame_number+1)
           @frame.update!(frame_number: next_number)
@@ -120,7 +120,7 @@ class FramesController < ApplicationController
       flash[:success] = "フレームを移動できません"
     end
   end
-      
+
 
   private
 

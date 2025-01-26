@@ -47,7 +47,7 @@ RSpec.describe "Comments", type: :system do
       end
     end
     describe "コメントの作成" do
-      let!(:to_comment) { create(:comment, board_id: board.id)}
+      let!(:to_comment) { create(:comment, board_id: board.id) }
       describe "ボード詳細ページでコメントを作成" do
         context "入力内容が正常な場合" do
           it "コメントを作成できる" do
@@ -55,7 +55,7 @@ RSpec.describe "Comments", type: :system do
             find(".comment-button").click
             fill_in "comment_body", with: "新しいコメント"
             click_button "コメントを送信"
-            expect(page).to have_content("新しいコメント")
+            expect(page).to have_selector('div.comment-text p', text: "新しいコメント", visible: :all) # 暗転背景の下にあっても検知
             expect(page).to have_content("コメントを作成しました")
             expect(current_path).to eq board_path(board)
           end
@@ -114,7 +114,7 @@ RSpec.describe "Comments", type: :system do
       end
     end
     describe "コメントの編集" do
-      let!(:to_comment) { create(:comment, user_id: user.id, board_id: board.id)}
+      let!(:to_comment) { create(:comment, user_id: user.id, board_id: board.id) }
       let!(:reply) { create(:comment, user_id: user.id, board_id: board.id, parent_id: to_comment.id) }
       describe "ボード詳細ページでコメントを編集" do
         context "入力内容が正常な場合" do
@@ -166,7 +166,7 @@ RSpec.describe "Comments", type: :system do
       end
     end
     describe "コメントの削除" do
-      let!(:to_comment) { create(:comment, user_id: user.id, board_id: board.id)}
+      let!(:to_comment) { create(:comment, user_id: user.id, board_id: board.id) }
       let!(:reply) { create(:comment, user_id: user.id, board_id: board.id, parent_id: to_comment.id) }
       describe "コメント一覧ページでコメントを削除" do
         it "コメントを削除できる" do

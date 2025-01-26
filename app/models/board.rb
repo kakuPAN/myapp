@@ -1,6 +1,6 @@
 class Board < ApplicationRecord
-  belongs_to :parent, class_name: 'Board', optional: true
-  has_many :children, class_name: 'Board', foreign_key: 'parent_id', dependent: :destroy
+  belongs_to :parent, class_name: "Board", optional: true
+  has_many :children, class_name: "Board", foreign_key: "parent_id", dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :frames, dependent: :destroy
   has_many :user_boards, dependent: :destroy

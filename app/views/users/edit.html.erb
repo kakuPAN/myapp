@@ -19,7 +19,7 @@
   </div>
   <%= render "users/user_form_container", user: @user %>
   <div class="cancel-button">
-      <%= link_to "キャンセル", show_profile_user_path(@user),class: "cancel btn btn-outline-danger" %>
+      <%= link_to "キャンセル", show_profile_user_path(@user), class: "cancel btn btn-outline-danger" %>
   </div>
 </div>
 
@@ -89,7 +89,7 @@
 
 .cancel-button .cancel {
   display: block;
-  width: 100%; 
+  width: 100%;
   text-decoration: none;
 }
 </style>
@@ -127,7 +127,7 @@
   max-width: 100%;
   max-height: 100%;
   margin: auto;
-  object-fit: contain;  
+  object-fit: contain;
   display: block;
   border: 1px dashed #ccc;
 }
@@ -165,11 +165,11 @@
 </style>
 
 <!-- プレビュー表示 -->
-<script> 
+<script>
   function loadImage(obj) {
   const newImageLabel = document.getElementById("new-image-label");
   var allPreview = document.getElementById("post_images");
-  
+
   var existingPreview = allPreview.querySelector("#preview");
   if (existingPreview) {
     existingPreview.remove();
@@ -204,7 +204,6 @@
     const submitButton = document.getElementById("submit-button");
 
     document.getElementById("username-length").innerHTML = `${inputLength}/${maxLength}文字`;
-
 
     if (value === "") {
         submitButton.disabled = true;
@@ -245,7 +244,7 @@
 
     const isImageSelected = avatarImageInput.files.length > 0;
 
-    // 
+    //
     if (userName !== "" || isImageSelected) {
       submitButton.disabled = false;
     } else {

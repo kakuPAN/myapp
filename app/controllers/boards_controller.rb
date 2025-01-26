@@ -6,7 +6,7 @@ class BoardsController < ApplicationController
       redirect_to boards_path(page: @index_boards.total_pages) and return
     end
   end
-  
+
   def new
     @parent_id = params[:parent_board]
     @parent_board = Board.find(@parent_id)
@@ -38,7 +38,7 @@ class BoardsController < ApplicationController
     if !@board
       redirect_to boards_path
       flash[:danger] = "ボードが存在しません"
-      return 
+      return
     end
     @same_title_boards = Board.where(title: @board.title)
     @breadcrumbs = @board.breadcrumbs

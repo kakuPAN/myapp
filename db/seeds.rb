@@ -47,46 +47,46 @@ Board.create!(
   [
     {
       title: "趣味"
-    },{
+    }, {
       parent_id: 1,
       title: "漫画"
-    },{
+    }, {
       parent_id: 2,
       title: "ONE PIECE"
-    },{
+    }, {
       parent_id: 2,
       title: "BLEACH"
-    },{
+    }, {
       parent_id: 2,
       title: "HUNTER×HUNTER"
-    },{
+    }, {
       parent_id: 2,
       title: "NARUTO"
-    },{
+    }, {
       parent_id: 2,
       title: "DRAGON BALL"
-    },{
+    }, {
       parent_id: 2,
       title: "SAKAMOTO DAYs"
-    },{
+    }, {
       parent_id: 2,
       title: "幽遊白書"
-    },{
+    }, {
       parent_id: 2,
       title: "呪術廻戦"
-    },{
+    }, {
       parent_id: 2,
       title: "Dr.STONE"
-    },{
+    }, {
       parent_id: 2,
       title: "７つの大罪"
-    },{
+    }, {
       parent_id: 2,
       title: "金色のガッシュ！！" # 13
-    },{
+    }, {
       parent_id: 1,
       title: "映画"
-    },{ parent_id: 14, title: "アクション映画" },
+    }, { parent_id: 14, title: "アクション映画" },
     { parent_id: 14, title: "コメディ映画" },
     { parent_id: 14, title: "ホラー映画" },
     { parent_id: 14, title: "SF映画" },
@@ -95,24 +95,24 @@ Board.create!(
     { parent_id: 14, title: "サスペンス映画" },
     { parent_id: 14, title: "歴史映画" },
     { parent_id: 14, title: "ドキュメンタリー映画" },
-    { parent_id: 14, title: "ファンタジー映画" },{ # 24
+    { parent_id: 14, title: "ファンタジー映画" }, { # 24
       title: "生活"
-    },{
+    }, {
       parent_id: 1,
       title: "Youtube"
-    },{
+    }, {
       parent_id: 1,
       title: "アニメ"
-    },{
+    }, {
       parent_id: 1,
       title: "スポーツ"
-    },{
+    }, {
       parent_id: 1,
       title: "テレビ"
-    },{
+    }, {
       parent_id: 1,
       title: "ゲーム" # 30
-    },{ parent_id: 30, title: "アクションゲーム" },
+    }, { parent_id: 30, title: "アクションゲーム" },
     { parent_id: 30, title: "ロールプレイングゲーム（RPG）" },
     { parent_id: 30, title: "シューティングゲーム" },
     { parent_id: 30, title: "パズルゲーム" },
@@ -121,37 +121,37 @@ Board.create!(
     { parent_id: 30, title: "シミュレーションゲーム" },
     { parent_id: 30, title: "格闘ゲーム" },
     { parent_id: 30, title: "レースゲーム" },
-    { parent_id: 30, title: "ソーシャルゲーム" },{ # 40
+    { parent_id: 30, title: "ソーシャルゲーム" }, { # 40
       title: "仕事"
-    },{
+    }, {
       title: "感情"
-    },{
+    }, {
       title: "人"
-    },{
+    }, {
       title: "動物"
-    },{
+    }, {
       title: "食べ物"
-    },{
+    }, {
       title: "飲み物"
-    },{
+    }, {
       title: "地域"
-    },{
+    }, {
       title: "自然"
-    },{
+    }, {
       title: "歴史"
-    },{
+    }, {
       title: "科学"
-    },{
+    }, {
       title: "夢"
-    },{
+    }, {
       title: "季節"
-    },{
+    }, {
       title: "スポーツ"
-    },{
+    }, {
       title: "健康"
-    },{
+    }, {
       title: "技術"
-    },{
+    }, {
       title: "遊び"
     }
   ]
@@ -185,7 +185,7 @@ boards.each do |board|
       frame_type: 0
     )
   end
-#インスタンスを作成しないとattachできないが、bodyを入れないとvalidationで弾かれる。 => 一度buildした後でattachしてsaveすることでできる？
+  # インスタンスを作成しないとattachできないが、bodyを入れないとvalidationで弾かれる。 => 一度buildした後でattachしてsaveすることでできる？
   # image_file = image_files.sample
   # # 画像をアタッチする
   # frame.image.attach(
@@ -240,7 +240,7 @@ Comment.create!(
       body: "優しい人でよかったですね〜",
       user_id: 1,
       board_id: 6
-    },
+    }
 
   ]
 )

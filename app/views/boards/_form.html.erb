@@ -1,6 +1,6 @@
 <%= form_with model: board do |f| %>
   <div class="new-board-form">
-    <%= render 'shared/error_messages', object: f.object %>
+    <%= render "shared/error_messages", object: f.object %>
     <%= f.text_area :title, class: "form-control" %>
     <%= f.hidden_field :parent_id, value: parent_board.id %>
     <%= f.submit "新しいトピックを作成", class: "form-control btn btn-primary", id: "create-new-board" %>

@@ -12,7 +12,7 @@
       <div class="edit-board-form">
         <%= turbo_frame_tag id= "replace-edit-board-form" do %>
           <div class="edit-board-title" id="edit-board-title"><%= @board.title %></div>
-          <%= link_to "タイトルを編集", edit_board_board_path(@board), class: "btn btn-outline-success",id: "edit-board-link", remote: true %>
+          <%= link_to "タイトルを編集", edit_board_board_path(@board), class: "btn btn-outline-success", id: "edit-board-link", remote: true %>
         <% end %>
       </div>
     </div>
@@ -37,17 +37,16 @@
         <div class="edit-button">
           <%= link_to "削除", board_frame_path(@board, frame), data: { turbo_method: :delete }, class: "btn btn-outline-danger", id: "delete-frame-link-#{frame.frame_number}" %>
         </div>
-        <div class="edit-button <%= "disabled" if frame.frame_number == 1 %>" id = "move-forword-button-<%= frame.frame_number %>">
+        <div class="edit-button <%= "disabled" if frame.frame_number == 1 %>" id="move-forword-button-<%= frame.frame_number %>">
           <%= link_to "前に移動", move_forward_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary", id: "move-forword-#{frame.frame_number}" %>
         </div>
-        <div class="edit-button <%= "disabled" if @board.frames.where( "frame_number > ?", frame.frame_number ).empty? %>" id = "move-back-button-<%= frame.frame_number %>">
+        <div class="edit-button <%= "disabled" if @board.frames.where("frame_number > ?", frame.frame_number).empty? %>" id="move-back-button-<%= frame.frame_number %>">
           <%= link_to "後ろに移動", move_back_board_frame_path(@board, frame), data: { turbo_method: :patch }, class: "btn btn-outline-primary", id: "move-back-#{frame.frame_number}" %>
         </div>
       </div>
     <% end %>
   </div>
 </div>
-
 
 <script>
   document.addEventListener("turbo:load", function () {

@@ -1,5 +1,5 @@
 <%= render "shared/login_tab" %>
-<div class="wrapper">  
+<div class="wrapper">
   <div class="scroll-content">
     <div class="container">
       <% @frames.each do |frame| %>
@@ -7,7 +7,7 @@
           <div class="frame-number">
             <% total_number = @frames.size %>
             <% current_number = @frames.index(frame) + 1 %>
-            <p><%= current_number %>／<%= total_number%></p>
+            <p><%= current_number %>／<%= total_number %></p>
           </div>
           <div class="board-body">
             <% if frame.image.attached? %>
@@ -33,7 +33,7 @@
         </div>
       <% else %>
         <div class="delete-edit-button funcs">
-          <div class= "edit-button <%= "func-icon" unless current_user %>">
+          <div class="edit-button <%= "func-icon" unless current_user %>">
             <i class="bi bi-pencil-fill"></i>
           </div>
           <%= link_to board_info_board_path(board), class: "info-button" do %>
@@ -48,7 +48,7 @@
         <i class="bi bi-person-fill"></i><%= @visitor_count %>
       </div>
       <div class="like-button <%= "func-icon" unless current_user %>">
-        <%= render 'likes/like_button', board: board %>
+        <%= render "likes/like_button", board: board %>
       </div>
     </div>
     <style>
@@ -79,7 +79,7 @@
     const backgroundCover = document.getElementById("background-cover");
     if(commentForm&&commentButton){
       commentButton.addEventListener("click", function(e){
-        e.stopPropagation(); 
+        e.stopPropagation();
         commentForm.style.display = "block";
         backgroundCover.style.display = "block";
       })
@@ -88,17 +88,12 @@
         backgroundCover.style.display = "none";
       });
       commentForm.addEventListener("click", function(e){
-        e.stopPropagation(); 
+        e.stopPropagation();
       });
     };
   }
-
 
   document.addEventListener("turbo:load", function(){
     displayForm();
   });
 </script>
-
-
-
- 

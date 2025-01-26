@@ -1,6 +1,6 @@
 <div class="form-container" id="form-container">
-  <%= form_with model: [board, frame] do |f| %>
-    <%= render 'shared/error_messages', object: f.object %>
+  <%= form_with model: [ board, frame ] do |f| %>
+    <%= render "shared/error_messages", object: f.object %>
     <% if  frame_type == 0 %>
       <div class="text-form">
         <%= f.hidden_field :frame_type, value: "text_frame" %>
@@ -21,7 +21,7 @@
     <% end %>
     <div class="cancel-button">
       <%= f.submit "作成", class: "form-control btn btn-outline-primary", id: "frame-submit-button", disabled: true %>
-      <%= link_to "キャンセル", edit_board_path(@board),class: "cancel btn btn-outline-danger" %>
+      <%= link_to "キャンセル", edit_board_path(@board), class: "cancel btn btn-outline-danger" %>
     </div>
   <% end %>
 </div>

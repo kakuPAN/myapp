@@ -21,11 +21,11 @@ RSpec.describe "ResetPassword", type: :system do
             new_security_question = create(:security_question, question_text: "新しい質問")
             new_user = create(:user, security_question_id: new_security_question.id, security_answer_digest: BCrypt::Password.create("回答"))
             visit new_password_reset_path
-          
+
             fill_in "email", with: "#{new_user.email}"
             select new_user.security_question.question_text, from: "security_question_id"
             fill_in "security_answer", with: "回答"
-            
+
             find("#security-question-submit").click # 秘密の質問に回答し、リセット申請を送信
 
             fill_in "user_password", with: "new_pass"
@@ -35,8 +35,8 @@ RSpec.describe "ResetPassword", type: :system do
             expect(page).to have_content("パスワードをリセットしました")
 
             expect(current_path).to eq login_path
-            
-            fill_in "session-email", with: new_user.email 
+
+            fill_in "session-email", with: new_user.email
             fill_in "session-password", with: "new_pass"
             find('#login-submit').click
             expect(page).to have_content("#{new_user.user_name}さまがログインしました")
@@ -48,11 +48,11 @@ RSpec.describe "ResetPassword", type: :system do
             new_security_question = create(:security_question, question_text: "新しい質問")
             new_user = create(:user, security_question_id: new_security_question.id, security_answer_digest: BCrypt::Password.create("回答"))
             visit new_password_reset_path
-          
+
             fill_in "email", with: "#{new_user.email}"
             select new_user.security_question.question_text, from: "security_question_id"
             fill_in "security_answer", with: "回答"
-            
+
             find("#security-question-submit").click # 秘密の質問に回答し、リセット申請を送信
 
             fill_in "user_password", with: "new_pass"
@@ -62,7 +62,7 @@ RSpec.describe "ResetPassword", type: :system do
             expect(page).to have_content("パスワードをリセットしました")
 
             expect(current_path).to eq login_path
-            
+
             fill_in "session-email", with: new_user.email
             fill_in "session-password", with: "password"
             find('#login-submit').click
@@ -78,12 +78,12 @@ RSpec.describe "ResetPassword", type: :system do
             new_security_question = create(:security_question, question_text: "新しい質問")
             new_user = create(:user, security_question_id: new_security_question.id, security_answer_digest: BCrypt::Password.create("回答"))
             visit new_password_reset_path
-          
+
             fill_in "email", with: "miss@email.com"
             select new_user.security_question.question_text, from: "security_question_id"
             fill_in "security_answer", with: "回答"
             find("#security-question-submit").click # 秘密の質問に回答し、リセット申請を送信
-            
+
             expect(page).to have_content("入力内容に誤りがあります")
             expect(current_path).to eq new_password_reset_path
           end
@@ -93,12 +93,12 @@ RSpec.describe "ResetPassword", type: :system do
             new_security_question = create(:security_question, question_text: "新しい質問")
             new_user = create(:user, security_question_id: new_security_question.id, security_answer_digest: BCrypt::Password.create("回答"))
             visit new_password_reset_path
-          
+
             fill_in "email", with: new_user.email
             select security_question.question_text, from: "security_question_id"
             fill_in "security_answer", with: "回答"
             find("#security-question-submit").click # 秘密の質問に回答し、リセット申請を送信
-            
+
             expect(page).to have_content("入力内容に誤りがあります")
             expect(current_path).to eq new_password_reset_path
           end
@@ -108,12 +108,12 @@ RSpec.describe "ResetPassword", type: :system do
             new_security_question = create(:security_question, question_text: "新しい質問")
             new_user = create(:user, security_question_id: new_security_question.id, security_answer_digest: BCrypt::Password.create("回答"))
             visit new_password_reset_path
-          
+
             fill_in "email", with: new_user.email
             select new_user.security_question.question_text, from: "security_question_id"
             fill_in "security_answer", with: "間違った回答"
             find("#security-question-submit").click # 秘密の質問に回答し、リセット申請を送信
-            
+
             expect(page).to have_content("入力内容に誤りがあります")
             expect(current_path).to eq new_password_reset_path
           end
@@ -125,11 +125,11 @@ RSpec.describe "ResetPassword", type: :system do
             new_security_question = create(:security_question, question_text: "新しい質問")
             new_user = create(:user, security_question_id: new_security_question.id, security_answer_digest: BCrypt::Password.create("回答"))
             visit new_password_reset_path
-          
+
             fill_in "email", with: "#{new_user.email}"
             select new_user.security_question.question_text, from: "security_question_id"
             fill_in "security_answer", with: "回答"
-            
+
             find("#security-question-submit").click # 秘密の質問に回答し、リセット申請を送信
 
             fill_in "user_password", with: ""
@@ -145,11 +145,11 @@ RSpec.describe "ResetPassword", type: :system do
             new_security_question = create(:security_question, question_text: "新しい質問")
             new_user = create(:user, security_question_id: new_security_question.id, security_answer_digest: BCrypt::Password.create("回答"))
             visit new_password_reset_path
-          
+
             fill_in "email", with: "#{new_user.email}"
             select new_user.security_question.question_text, from: "security_question_id"
             fill_in "security_answer", with: "回答"
-            
+
             find("#security-question-submit").click # 秘密の質問に回答し、リセット申請を送信
             password = Faker::Lorem.paragraph_by_chars(number: 51)
             fill_in "user_password", with: password
@@ -165,11 +165,11 @@ RSpec.describe "ResetPassword", type: :system do
             new_security_question = create(:security_question, question_text: "新しい質問")
             new_user = create(:user, security_question_id: new_security_question.id, security_answer_digest: BCrypt::Password.create("回答"))
             visit new_password_reset_path
-          
+
             fill_in "email", with: "#{new_user.email}"
             select new_user.security_question.question_text, from: "security_question_id"
             fill_in "security_answer", with: "回答"
-            
+
             find("#security-question-submit").click # 秘密の質問に回答し、リセット申請を送信
             password = Faker::Lorem.paragraph_by_chars(number: 5)
             fill_in "user_password", with: password
