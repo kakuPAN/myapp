@@ -45,7 +45,7 @@ RSpec.describe "UserSessions", type: :system do
     before { login(user) }
     it "ログアウト後、トップ画面にリダイレクトされる" do
       visit boards_path
-      find('.header-user-name').hover # ホバーは名前(実際に表示中の要素)にする必要がある
+      find('.header-user-name', visible: true, wait: 5).hover # ホバーは名前(実際に表示中の要素)にする必要がある
       expect(page).to have_selector('#header-logout', visible: true, wait: 5)
 
       find('#header-logout').click
