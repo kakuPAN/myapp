@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Frame, type: :model do
   describe 'バリデーションチェック' do
+    let!(:security_question) { create(:security_question) }
     let(:board) { create(:board) }
     let(:frame) { create(:frame)}
     it '全ての値が正しい場合、有効である' do
@@ -23,7 +24,7 @@ RSpec.describe Frame, type: :model do
       expect(frame).to be_invalid
       expect(frame.errors[:board_id]).to eq ["を入力してください"]
     end
-    it "bodyが500文字以上の場合、無効である" do
+    it "bodyが500文字を超える場合、無効である" do
       frame.body = Faker::Lorem.paragraph_by_chars(number: 501)
       expect(frame).to be_invalid
       expect(frame.errors[:body]).to eq ["は500文字以内で入力してください"]
@@ -38,7 +39,7 @@ RSpec.describe Frame, type: :model do
     end
 
     context "image_sizeのバリデーション" do
-      it "200KB以上のファイルをアップロードしたとき、無効である" do
+      it "200KBを超えるファイルをアップロードしたとき、無効である" do
         frame.body = nil
         frame.image.attach(io: File.open(Rails.root.join('spec/fixtures/files/over_size.png')), filename: 'over_size.png', content_type: 'image/png')
         frame.validate

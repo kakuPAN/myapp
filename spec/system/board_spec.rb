@@ -155,4 +155,29 @@ RSpec.describe "Boards", type: :system do
       end
     end
   end
+  describe "ボードの検索" do
+    let!(:searchable_board) { create(:board, title: "一致したボード") }
+    let!(:not_searchable_board) { create(:board, title: "一致しないボード") }
+    context "検索フォームに部分一致するタイトルを入力した場合" do
+      it "部分一致するボードだけが表示される" do
+        visit boards_path
+        fill_in "search-field", with: "一致した"
+        click_button "検索"
+        expect(page).to have_css(".index-board-title a", text: searchable_board.title, wait: 5)
+        expect(page).not_to have_css(".index-board-title a", text: not_searchable_board.title, wait: 5)
+        expect(current_path).to eq boards_path
+      end
+    end
+    context "検索フォームに部分一致しないタイトルを入力した場合" do
+      it "ボードが表示されない" do
+        visit boards_path
+        fill_in "search-field", with: "存在しないタイトル"
+        click_button "検索"
+        expect(page).not_to have_css(".index-board-title a", text: searchable_board.title, wait: 5)
+        expect(page).not_to have_css(".index-board-title a", text: not_searchable_board.title, wait: 5)
+        expect(page).to have_content("該当するボードが見つかりません")
+        expect(current_path).to eq boards_path
+      end
+    end
+  end
 end

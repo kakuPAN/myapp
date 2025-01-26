@@ -83,11 +83,9 @@
   };
   document.addEventListener("turbo:load", function(){
     flashMessageTimeOut();
-    eflashMessageClick();
   });
   document.addEventListener("click", function(){
     flashMessageTimeOut();
-    flashMessageClick();
   });
 
 </script>
@@ -474,4 +472,12 @@ body {
  a {
   cursor: pointer;
  }
+   .no-content {
+    margin-top: 50px;
+    padding-bottom: 30px;
+    color: #666;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 3px solid #ddd;
+  }
 </style>

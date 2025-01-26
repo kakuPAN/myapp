@@ -45,10 +45,6 @@ class User < ApplicationRecord
     self.security_answer_digest = BCrypt::Password.create(security_answer)
   end
 
-  def correct_security_answer?(answer)
-    BCrypt::Password.new(security_answer_digest) == answer
-  end
-
   def generate_reset_token
     self.reset_token = SecureRandom.hex(20)
     self.reset_sent_at = Time.current

@@ -38,10 +38,10 @@
 </div>
 
 <div class="recommend-link">
-  <%= link_to "パスワードを忘れた方", new_password_reset_path %>
+  <%= link_to "パスワードを忘れた方", new_password_reset_path, id: "forget-password-link" %>
 </div>
 <div class="recommend-link">
-  <p>アカウントをお持ちではない方は<%= link_to "こちら", new_user_path %></p>
+  <p>アカウントをお持ちではない方は<%= link_to "こちら", new_user_path, id: "create-user-link" %></p>
 </div>
 
 <style>

@@ -29,14 +29,22 @@
       </div>
     </div>
     <div class="edit">
-      <%= link_to "プロフィールを変更", edit_user_path(@user), class: "btn btn-outline-primary" %>
+      <%= link_to "プロフィールを変更", edit_user_path(@user), class: "btn btn-outline-primary", id: "edit-profile-link" %>
     </div>
   </div>
+  <div class="user-content email-container">
+      <div class="email">
+        <%= @user.email %>
+      </div>
+      <div class="edit">
+        <div>メールアドレス</div>
+      </div>
+    </div>
   <div class="delete-user-container">
     <div class="delete-user-label">
       退会
     </div>
-      <%= form_with(url: user_path(current_user), method: :delete, data: { turbo_confirm: '退会してよろしいですか？' }, class: "delete-user-form") do |f| %>
+      <%= form_with(url: user_path(current_user), method: :delete, class: "delete-user-form") do |f| %>
         <ul>
           <li>
             <label>
@@ -61,18 +69,19 @@ document.addEventListener('turbo:load', () => {
   const checkbox1 = document.getElementById('confirmation_1');
   const checkbox2 = document.getElementById('confirmation_2');
   const deleteButton = document.getElementById('delete-button');
-
-  function updateButtonState() {
-    if (checkbox1.checked && checkbox2.checked) {
-      deleteButton.disabled = false;
-    } else {
-      deleteButton.disabled = true;
+  if (checkbox1&&checkbox2){
+    function updateButtonState() {
+      if (checkbox1.checked && checkbox2.checked) {
+        deleteButton.disabled = false;
+      } else {
+        deleteButton.disabled = true;
+      }
     }
-  }
 
-  // チェックボックスの変更を監視
-  checkbox1.addEventListener('change', updateButtonState);
-  checkbox2.addEventListener('change', updateButtonState);
+    // チェックボックスの変更を監視
+    checkbox1.addEventListener('change', updateButtonState);
+    checkbox2.addEventListener('change', updateButtonState);
+  };
 });
 
 
@@ -129,7 +138,6 @@ document.addEventListener('turbo:load', () => {
     flex-direction: column;
     align-items: center;
     height: 400px;
-    
   }
   .edit {
     display: flex;

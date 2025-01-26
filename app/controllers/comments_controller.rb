@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         format.html { redirect_to board_comments_path(@board) }
-        format.turbo_stream {flash.now[:success] = "コメントしました" }
+        format.turbo_stream {flash.now[:success] = "コメントを作成しました" }
       else
         flash.now[:danger] = "コメントを作成できません"
         format.html { render :index, status: :unprocessable_entity }
@@ -39,11 +39,11 @@ class CommentsController < ApplicationController
        
         format.html { redirect_to board_comments_path(@board) }
         format.turbo_stream do
-          flash.now[:success] = "コメントを更新しました"
+          flash.now[:success] = "コメントを編集しました"
         end
       else
         format.turbo_stream do
-          flash.now[:success] = "コメントを更新できません"
+          flash.now[:success] = "コメントを編集できません"
         end
         format.html { render :index, status: :unprocessable_entity }
       end
@@ -83,7 +83,7 @@ class CommentsController < ApplicationController
         end
       else
         format.turbo_stream do
-          flash.now[:danger] = "コメントを作成できません"
+          flash.now[:success] = "コメントを作成できません"
         end
         format.html { render :index, status: :unprocessable_entity }
       end

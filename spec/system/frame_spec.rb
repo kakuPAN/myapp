@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Frames", type: :system do
+  let!(:security_question) { create(:security_question) }
   let(:user) { create(:user) }
   let(:board) { create(:board) }
   let(:frame) { create(:frame) }
@@ -50,7 +51,7 @@ RSpec.describe "Frames", type: :system do
         end
       end
 
-      context "フォームの入力値が500文字以上の場合" do
+      context "フォームの入力値が500文字を超える場合" do
         it "フレームの作成が失敗する" do
           visit edit_board_path(board)
           find("#create-text-frame").click
@@ -78,7 +79,7 @@ RSpec.describe "Frames", type: :system do
         end
       end
 
-      context "200KB以上のファイルをアップロードした場合" do
+      context "200KBを超えるファイルをアップロードした場合" do
         it "フレームの作成が失敗する" do
           visit edit_board_path(board)
           find("#create-image-frame").click

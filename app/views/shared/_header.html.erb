@@ -11,8 +11,8 @@
       <div class="mypage-dropdown" id="mypageDropdown">
         <ul>
           <li><%= link_to "ログアウト",logout_path, id: "header-logout",  data: { turbo_method: :delete } %></li>
-          <li><%= link_to "マイページ", user_path(current_user) %></li>
-          <li><%= link_to "ユーザー情報", show_profile_user_path(current_user) %></li>
+          <li><%= link_to "マイページ", user_path(current_user), id: "header-mypage" %></li>
+          <li><%= link_to "ユーザー情報", show_profile_user_path(current_user), id: "header-user-info" %></li>
         </ul>
       </div>
     </div>

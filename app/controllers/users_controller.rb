@@ -35,6 +35,7 @@ class UsersController < ApplicationController
     if @user == current_user
       @user.destroy
       redirect_to root_path
+      flash[:success] = "退会が完了しました"
     else
       redirect_to user_path(@user)
       flash[:success] = "権限がありません"
@@ -50,6 +51,11 @@ class UsersController < ApplicationController
   end
 
   def visited_boards # 閲覧履歴
+    unless @user == current_user
+      redirect_to user_path(@user)
+      flash[:success] = "権限がありません"
+      return
+    end
     @page = params[:page].to_i
     @page = 1 if @page < 1
     @context = :visited
@@ -73,18 +79,18 @@ class UsersController < ApplicationController
   end
 
   def show_profile
-    unless current_user == @user
+    if @user && @user == current_user
+      render :show_profile
+    else
       redirect_to user_path(@user)
-      flash[:danger] = "権限がありません"
-      return
+      flash[:success] = "権限がありません"
     end
-    render :show_profile
   end
 
   def edit
     unless current_user == @user
       redirect_to user_path(@user)
-      flash[:danger] = "権限がありません"
+      flash[:success] = "権限がありません"
     end
   end
 
@@ -93,11 +99,11 @@ class UsersController < ApplicationController
       if @user.update(user_params)
         format.html do
           redirect_to user_path(@user)
-          flash[:success] = "プロフィールを変更しました"
+          flash[:success] = "プロフィールを編集しました"
         end
       else
         format.turbo_stream do
-          flash.now[:success] = "プロフィールを変更できません"
+          flash.now[:success] = "プロフィールを編集できません"
         end
       end
     end
@@ -111,6 +117,10 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+    unless @user
+      redirect_to boards_path
+      flash[:success] = "ユーザーが存在しません"
+    end
   end
 
   def user_board_history(user)

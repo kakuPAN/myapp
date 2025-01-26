@@ -6,13 +6,14 @@
   </div>
 
   <div id="comment-table">
-    <% @comments.each do |comment| %>
+    <% comments = @board.comments.where(parent_id: nil).includes(:children).order(created_at: :desc) %>
+    <% comments.each do |comment| %>
       <%= render "comments/comment", board: @board, comment: comment %>
     <% end %>
   </div>
 
   <div class="comments-page" id="is-comment-exist">
-      <% if @comments.empty? %>
+      <% if comments.empty? %>
         <p id="no-comment">コメントがありません</p>
       <% end %>
   </div>

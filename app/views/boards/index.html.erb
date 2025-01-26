@@ -1,17 +1,15 @@
 <div class="index-board-wrapper">
-  <% if @index_boards %>
+  <% if @index_boards.present? && @index_boards.current_page %>
     <% @index_boards.each do |board| %>
       <%= render "shared/index_board", board: board %>
     <% end %>
+    <%= paginate @index_boards %>
   <% else %>
-    <div class="no-boards">
-      該当する投稿はありません
+    <div class="no-content">
+      該当するボードが見つかりません
     </div>
   <% end %>
-  <% if @index_boards.present? && @index_boards.current_page %>
-    <%= paginate @index_boards %>
-
-  <% else %>
-    <p>表示するデータがありません。</p>
-  <% end %>
 </div>
+
+
+
