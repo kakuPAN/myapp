@@ -4,5 +4,7 @@ FactoryBot.define do
     sequence(:email) { |n| "user_#{n}@example.com" }
     password { "password" }
     password_confirmation { "password" }
+    security_answer_digest { BCrypt::Password.create("回答") }
+    association :security_question
   end
 end

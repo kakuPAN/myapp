@@ -1,7 +1,7 @@
 <div class="comments-comment-form <%= "func-icon disabled" unless current_user %>"  id="comment-form">
   <%= form_with model: [board, comment], data: {turbo_method: :post}, remote: true do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
-    <%= f.text_area :body, maxlength: 100, class: "form-control", placeholder: "コメントする", onkeyup: "ActivateCommentSubmit(value);" %>
+    <%= f.text_area :body, class: "form-control", placeholder: "コメントする", onkeyup: "ActivateCommentSubmit(value);" %>
     <p id="comments-inputlength">0文字/100文字</p>
     <%= f.submit "コメント", id: "comments-comment-submit" %>
   <% end %> 

@@ -2,21 +2,21 @@
   <%= form_with model: user do |f| %>
     
     <div class="preview-container">
-      <%= render "shared/error_messages", object: f.object %>
       <div id="post_images" style="display: none;">
         <div class="image-label" id="new-image-label">追加した画像</div>
         <div id="preview"></div>
       </div>
     </div>
+    <%= render "shared/error_messages", object: f.object %>
     <div class="form-group">
       <%= f.file_field :avatar_image, id: "avatar-image", onchange: "loadImage(this); checkImage();" %>
     </div>
     <div class="form-group">
-      <%= f.text_field :user_name, maxlength: 20, id: "user-name", class: "form-control", placeholder: "ユーザーネームを入力してください", onkeyup: "ShowUserNameLength(value);" %>
+      <%= f.text_field :user_name, id: "user-name", class: "form-control", placeholder: "ユーザーネームを入力してください", onkeyup: "ShowUserNameLength(value);" %>
       <p id="username-length"><%= user.user_name.length %>文字/20文字</p>
     </div>
     <div class="form-group">
-      <%= f.text_area :profile, maxlength: 250, class: "form-control", placeholder: "自己紹介を入力してください", onkeyup: "ShowProfileLength(value);" %>
+      <%= f.text_area :profile, class: "form-control", placeholder: "自己紹介を入力してください", onkeyup: "ShowProfileLength(value);" %>
       <p id="profile-length">
         <% if !user&.profile || user&.profile&.length == 0 %>
           0文字/250文字

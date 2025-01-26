@@ -1,4 +1,5 @@
 <div class="secret-question-title">
+  <p>パスワードをリセットするには、</p>
   ユーザー登録時に設定した<span>メールアドレス/秘密の質問/質問の答え</span>を入力してください。
 </div>
 <div class="secret-question-container">  
@@ -14,7 +15,7 @@
       <%= f.text_field :security_answer, class: "form-control", placeholder: "秘密の質問の答え" %>
     </div>
     <div class="form-group">
-      <%= f.submit "送信", class: "btn btn-primary" %>
+      <%= f.submit "送信", class: "btn btn-primary", id: "security-question-submit" %>
     </div>
   <% end %>
 </div>
