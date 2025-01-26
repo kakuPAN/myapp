@@ -7,7 +7,7 @@
   <%= render "shared/search_form_container" %>
   <% if current_user %>
     <div class="mypage-container" id="mypageContainer">
-      <span class="header-user-name"><%= current_user.user_name %></span>
+      <span class="header-user-name" id= "header-user-name"><%= current_user.user_name %></span>
       <div class="mypage-dropdown" id="mypageDropdown">
         <ul>
           <li><%= link_to "ログアウト", logout_path, id: "header-logout",  data: { turbo_method: :delete } %></li>
