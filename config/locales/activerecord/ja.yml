@@ -5,6 +5,7 @@ ja:
       board: ボード
       frame: フレーム
       like: お気に入り
+      report: 報告
     attributes:
       user:
         email: メールアドレス
@@ -15,13 +16,17 @@ ja:
         security_answer_digest: 秘密の質問の答え
         profile: プロフィール
         avatar_image: アバター画像
+        role: 属性
       board:
         title: タイトル
       frame: 
         body: テキスト
         image: 画像
+        frame_type: フレームタイプ
       comment:
         body: コメント
+      report: 
+        body: 報告理由
   views:
     pagination:
       first: <i class="bi bi-chevron-double-left"></i>
@@ -30,12 +35,19 @@ ja:
       next: <i class="bi bi-chevron-right"></i>
       truncate: "..."
   enums:
+    user:
+      role:
+        general: 一般
+        admin: 管理者
     board_log:
       action_type:
         view_action: 閲覧
         create_action: 作成
         update_action: 編集
-    
+    frame:
+      frame_type:
+        text_frame: テキスト
+        image_frame: 画像
   time:
     formats:
       default: "%Y/%m/%d %H:%M"

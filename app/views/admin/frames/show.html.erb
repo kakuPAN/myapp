@@ -1,0 +1,30 @@
+<div class="admin admin-container">
+  <div class="admin-content">
+    <div class="admin-title">
+      <%= link_to admin_board_path(@board) do %>
+        <%= @board.title %>
+      <% end %>
+      <div class="sub-title">
+        <%= link_to admin_board_frames_path(@board) do %>
+          フレーム一覧
+        <% end %>
+      </div>
+      <div class="sub-title">
+        フレームNo.<%= @frame.frame_number %>
+      </div>
+    </div>   
+    <div class="admin-frame-container">
+      <div class="board-body">
+        <% if @frame.image.attached? %>
+          <%= image_tag @frame.image %>
+        <% else %>
+          <div class="board-body-text"><%= simple_format(@frame.body) %></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="admin-delete-frame-button">
+    <%= link_to "フレームを削除", admin_board_frame_path(@board, @frame), data: { turbo_method: :delete}, class: "btn btn-outline-danger", id: "delete-frame-button" %>
+  </div>
+</div>
+

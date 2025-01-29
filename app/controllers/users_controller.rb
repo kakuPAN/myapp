@@ -26,12 +26,17 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
+  def show # 削除
     @boards = Kaminari.paginate_array(Board.all.sample(10)).page(@page).per(4)
   end
 
   def destroy
     @user =  User.find(params[:id])
+    if @user.admin?
+      redirect_to admin_users_path
+      flash[:danger] = "この操作はできません"
+      return
+    end
     if @user == current_user
       @user.destroy
       redirect_to root_path
@@ -43,6 +48,11 @@ class UsersController < ApplicationController
   end
 
   def liked_boards # お気に入り
+    if @user.admin? && !current_user&.admin?
+      flash[:success] = "ユーザーが存在しません"
+      redirect_to boards_path
+      return
+    end
     @page = params[:page].to_i
     @page = 1 if @page < 1
     @context = :liked
@@ -64,6 +74,11 @@ class UsersController < ApplicationController
   end
 
   def user_actions # ユーザーの活動
+    if @user.admin? && !current_user&.admin?
+      flash[:success] = "ユーザーが存在しません"
+      redirect_to boards_path
+      return
+    end
     @page = params[:page].to_i
     @page = 1 if @page < 1
     @context = :user_action

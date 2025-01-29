@@ -26,7 +26,7 @@ class BoardsController < ApplicationController
         end
       else
         format.turbo_stream do
-          flash.now[:success] = "入力に不足があります"
+          flash.now[:danger] = "入力に不足があります"
         end
       end
     end
@@ -34,12 +34,12 @@ class BoardsController < ApplicationController
 
   def show
     @board = Board.find_by(id: params[:id])
-    @visitor = UserBoard.create(board_id: @board.id)
     if !@board
       redirect_to boards_path
       flash[:danger] = "ボードが存在しません"
       return
     end
+    @visitor = UserBoard.create(board_id: @board.id)
     @same_title_boards = Board.where(title: @board.title)
     @breadcrumbs = @board.breadcrumbs
     @visitor_count = UserBoard.where(board_id: @board.id).count

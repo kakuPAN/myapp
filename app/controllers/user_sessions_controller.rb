@@ -6,10 +6,15 @@ class UserSessionsController < ApplicationController
     unless current_user
       @user = login(params[:email], params[:password])
       if @user
-        redirect_to user_path(@user)
-        flash[:success] = "#{@user.user_name}さまがログインしました"
+        if @user.admin?
+          redirect_to admin_users_path
+          flash[:success] = "管理者：#{@user.user_name}がログインしました"
+        else
+          redirect_to user_path(@user)
+          flash[:success] = "#{@user.user_name}さまがログインしました"
+        end
       else
-        flash.now[:success] = "ユーザーが存在しません"
+        flash.now[:danger] = "ユーザーが存在しません"
         render :new, status: :unprocessable_entity
       end
     else

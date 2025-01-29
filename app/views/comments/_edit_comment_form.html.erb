@@ -2,9 +2,31 @@
   <%= form_with model: [ board, comment ], local: true, remote: true do |f| %>
     <%= render "shared/error_messages", object: f.object %>
     <div class="edit-comment-form">
-      <%= f.text_area :body, id: "comment_body_#{comment.id}" %>
+      <%= f.text_area :body, id: "comment_body_#{comment.id}", onkeyup: "EditCommentShowLength(value, #{comment.id});" %>
+      <p id="inputlength">0文字/100文字</p>
       <%= link_to "キャンセル", board_comments_path(board), remote: true, class: "btn btn-outline-danger" %>
-      <%= f.submit "更新", class: "btn btn-outline-primary", id: "edit_comment_submit_#{comment.id}" %>
+      <%= f.submit "更新", class: "btn btn-outline-primary", id: "edit_comment_submit_#{comment.id}", disabled: true %>
     </div>
   <% end %>
 </div>
+
+
+<script>
+  function EditCommentShowLength(str, commentId) {
+    const Comments = document.querySelectorAll("[id^='edit_comment_submit_']");
+    const maxLength = 100;
+    const value = str.trim()
+    const inputLength = str.trim().length;
+    const submitButton = document.getElementById(`edit_comment_submit_${commentId}`);
+
+    // 文字数を表示
+    document.getElementById("inputlength").innerHTML = `${inputLength}文字/${maxLength}文字`;
+
+    // ボタンの有効/無効を切り替え
+    if (value === "") {
+        submitButton.disabled = true; // 入力が空の場合はボタンを無効化
+    } else {
+        submitButton.disabled = false; // 入力がある場合はボタンを有効化
+    };
+  };
+</script>

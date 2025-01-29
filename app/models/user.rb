@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :board_logs, dependent: :destroy
   has_many :user_board_actions, through: :board_logs, source: :board
   has_many :user_frame_actions, through: :board_logs, source: :frame
+  has_many :reports, dependent: :destroy
   has_one_attached :avatar_image
 
   validates :user_name, presence: true, length: { maximum: 20 }
@@ -28,6 +29,12 @@ class User < ApplicationRecord
   validate :image_content_type
   validate :image_size
 
+  enum :role, { general: 0, admin: 1}
+
+  def self.ransackable_attributes(auth_object = nil)
+    # 検索可能にしたい属性を配列で返す
+    [ "user_name" ]
+  end
 
   def image_content_type
     if avatar_image.attached? && !avatar_image.content_type.in?(%w[image/jpeg image/jpg image/png])

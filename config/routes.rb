@@ -3,6 +3,29 @@ Rails.application.routes.draw do
   get "oauth/callback", to: "oauths#callback"
   get "oauth/:provider", to: "oauths#oauth", as: :auth_at_provider
 
+
+  namespace :admin do
+    root "users#index"
+    resources :users
+    resources :dashboards, only: %i[index]
+    resources :boards do
+      member do
+        get :board_info
+      end
+      resources :frames
+      resources :comments
+    end
+    resources :reports
+  end
+  
+  resources :reports do
+    member do
+      get :new_board_report
+      post :create_board_report
+      get :new_comment_report
+      post :create_comment_report
+    end
+  end
   resources :users do
     member do
       get :liked_boards
@@ -55,4 +78,6 @@ Rails.application.routes.draw do
   get "login", to: "user_sessions#new"
   post "login", to: "user_sessions#create"
   delete "logout", to: "user_sessions#destroy"
+
+  match "*path", to: "application#raise_not_found", via: :all
 end

@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Myapp" %></title>
+    <title><%= page_title(yield(:title), admin: false) %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= yield :head %>
 
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -51,7 +49,6 @@
   }
 </style>
 <script>
-
   function flashMessageTimeOut() {
     const flashMessage = document.getElementById('flash-message');
     const replaceFlash = document.getElementById('replace-flash-message');
@@ -378,6 +375,7 @@ body {
 }
 </style>
 
+<!-- フラッシュ -->
 <style>
 .alert-label {
   position: fixed;
@@ -429,6 +427,7 @@ body {
   list-style: none;
 }
 </style>
+
 <!-- プライバシーポリシー・利用規約 -->
 <style>
   .service-info-wrapper {

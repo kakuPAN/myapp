@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= page_title(yield(:title), admin: true) %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <%= stylesheet_link_tag "application" %>
+    <%= display_meta_tags(default_meta_tags) %>
+  </head>
+
+  <body>
+    <%= render "shared/flash_message" %>
+    <div id="error-messages"></div>
+    <div class="whole-wrapper">
+      <%= render "admin/shared/header" %>
+      <%= yield %>
+      <%= render "admin/shared/sub_footer" %>
+      <%= render "shared/footer" %>
+    </div>
+  </body>
+</html>
+
+
+<style>
+  @media (max-width: 1000px) {
+    .whole-wrapper {
+      padding-bottom: 220px;
+    }
+  }
+  @media (min-width: 1000px) {
+    .whole-wrapper {
+      padding-bottom: 120px;
+    }
+  }
+  .whole-wrapper {
+    min-height: 100vh;
+    position: relative;
+    box-sizing: border-box;
+  }
+</style>
+
+<!-- フラッシュ削除 -->
+<script>
+  function flashMessageTimeOut() {
+    const flashMessage = document.getElementById('flash-message');
+    const replaceFlash = document.getElementById('replace-flash-message');
+    if (flashMessage || replaceFlash) {
+      let timeLeft = 4;
+
+      const countdownInterval = setInterval(function () {
+        timeLeft--;
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          if (flashMessage){
+            flashMessage.remove();
+          };
+          if (replaceFlash){
+            replaceFlash.remove();
+          };
+        };
+      }, 1000);
+      if (flashMessage){
+      flashMessage.addEventListener("click", function () {
+        flashMessage.remove();
+      })};
+      if (replaceFlash){
+      replaceFlash.addEventListener("click", function () {
+        replaceFlash.remove();
+      })};
+
+    }
+  };
+  document.addEventListener("turbo:load", function(){
+    flashMessageTimeOut();
+  });
+  document.addEventListener("click", function(){
+    flashMessageTimeOut();
+  });
+
+</script>
+
+<!-- オートコンプリート　--><!-- aplication.html　より-->
+<script>
+  function AutoComplete(str){
+    const candidateContainer = document.getElementById("candidate-container");
+    const candidateList = document.getElementById("candidate-list");
+    const boards = document.querySelectorAll("[id^='hidden-board-']");
+    const searchField = document.getElementById("search-field")
+    const searchText = str
+    const toHiragana = (text) => {
+      return text.normalize("NFKC").replace(/[\u30A1-\u30F6]/g, (char) => {
+        return String.fromCharCode(char.charCodeAt(0) - 0x60); // カタカナをひらがなに変換
+      });
+    };
+    if (boards) {
+      while (candidateList.firstChild) {
+        candidateList.removeChild(candidateList.firstChild);
+      };
+      boards.forEach(board => {
+        const duplicate = Array.from(candidateList.children).some(
+          (child) => child.textContent === board.textContent
+        );
+        const normalizedSearchText = toHiragana(searchText);
+        const boardText = toHiragana(board.innerHTML);
+
+        if ((board.innerHTML.toLowerCase().indexOf(searchText) >= 0 || boardText.indexOf(normalizedSearchText) >= 0) && !duplicate){
+          const clone = board.cloneNode(true);
+          clone.removeAttribute('id')
+          candidateList.append(clone);
+          candidateContainer.style.display = "block";
+          clone.addEventListener("mouseover", function(){
+            clone.classList.add("hight-light");
+          });
+          clone.addEventListener("mouseout", function(){
+            clone.classList.remove("hight-light");
+          });
+          clone.addEventListener("click", function(){
+            searchField.value = board.innerHTML;
+            while (candidateList.firstChild) {
+              candidateList.removeChild(candidateList.firstChild);
+            };
+            candidateContainer.style.display = "none";
+          })
+        };
+      });
+      if (searchText == "") {
+        while (candidateList.firstChild) {
+          candidateList.removeChild(candidateList.firstChild);
+        };
+        candidateContainer.style.display = "none";
+      };
+    };
+  };
+  document.getElementById("search-field").addEventListener("click", function() {
+    AutoComplete(this.value);
+  });
+  document.addEventListener("turbo:load", function(){
+    const candidateContainer = document.getElementById("candidate-container");
+    const candidateList = document.getElementById("candidate-list");
+    const searchField = document.getElementById("search-field");
+    document.addEventListener("click", function(){
+      candidateContainer.style.display = "none";
+    });
+    candidateContainer.addEventListener("click", function(e){
+      e.stopPropagation();
+    });
+    searchField.addEventListener("click", function(e){
+      e.stopPropagation();
+    });
+
+    if (candidateList.children.length !== 0) {
+      searchField.addEventListener("click", function(){
+      candidateContainer.style.display = "block";
+    });
+    };
+  });
+</script>
+
+<style>
+  body {
+    background: #F2EFEF;
+  }
+</style>
+<!-- ここから　aplication.html　より-->
+<style>
+<%# ヘッダー・サブフッター %>
+@media (max-width: 400px) {
+  .search-form-container {
+    width: 100%;
+    white-space: nowrap;
+  }
+  .search-form-container input[type="search"] {
+    width: 80%;
+    min-width: 200px;
+  }
+  .search-form-container .candidate-container {
+    width: 80%;
+    min-width: 200px;
+  }
+  .mypage-container {
+  display: none;
+  }
+  .mypage-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    top: -50%;
+    display: none;
+  }
+  .logo {
+    display: none;
+  }
+  .sub-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    bottom: 120px;
+    padding: 10px;
+    height: 100px;
+    background: #333;
+    width: 100%;
+    min-width: 300px;
+    border-bottom: 2px solid #ddd;
+    padding: 0 80px;
+  }
+  .sub-footer-content span {
+    color: white;
+    font-size: 50px;
+  }
+}
+@media (min-width: 400px) and (max-width: 599px) {
+
+  .search-form-container {
+    width: 100%;
+    white-space: nowrap;
+  }
+  .search-form-container input[type="search"] {
+    width: 85%;
+    min-width: 250px;
+  }
+  .search-form-container .candidate-container {
+    width: 85%;
+    min-width: 250px;
+  }
+  .mypage-container {
+    display: none;
+  }
+  .mypage-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    top: -50%;
+    display: none;
+  }
+  .logo {
+    display: none;
+  }
+  .sub-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    bottom: 120px;
+    padding: 10px;
+    height: 100px;
+    background: #333;
+    width: 100%;
+    min-width: 300px;
+    border-bottom: 2px solid #ddd;
+    padding: 0 80px;
+  }
+  .sub-footer-content span {
+    color: white;
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1000px) {
+  .search-form-container {
+    width: 600px;
+  }
+  .search-form-container input[type="search"] {
+    width: 90%;
+  }
+  .search-form-container .candidate-container {
+    width: 90%;
+  }
+  .mypage-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    top: -50%;
+    display: none;
+  }
+  .logo {
+    display: none;
+  }
+  .sub-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    height: 100px;
+    position: absolute;
+    bottom: 120px;
+    background: #333;
+    width: 100%;
+    min-width: 300px;
+    border-bottom: 2px solid #ddd;
+    padding: 0 100px;
+  }
+  .sub-footer-content span {
+    color: white;
+    font-size: 50px;
+  }
+  .sub-footer-content a {
+    text-decoration: none;
+  }
+
+}
+@media (min-width: 1001px) {
+  .search-form-container {
+    width: 600px;
+  }
+  .search-form-container input[type="search"] {
+    width: 90%;
+  }
+  .search-form-container .candidate-container {
+    width: 90%;
+  }
+  .mypage-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    top: -50%;
+  }
+  .logo {
+    flex: 1;
+  }
+  .sub-footer-content {
+    display: none;
+  }
+}
+</style>
+<!-- フラッシュ -->
+<style>
+.alert-label {
+  position: fixed;
+  left: 0;
+  bottom: 100px;
+  z-index: 999;
+  font-size: 15px;
+  padding: 10px 30px;
+  font-weight: bold;
+  color: #fff;
+  border:2px solid #fff;
+  border-radius: 0px 20px 20px 0px;
+  cursor: pointer;
+  background: #333;
+}
+.flash-message {
+  position: fixed;
+  left: 0;
+  bottom: 10px;
+  z-index: 999;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  padding: 10px 30px;
+  font-weight: bold;
+  color: #fff;
+  border:2px solid #fff;
+  border-radius: 0px 20px 20px 0px;
+  cursor: pointer;
+  box-shadow: 0px 5px 0 #000;
+}
+.flash-message:hover {
+  transform: translate3d(0, 5px, 0);
+  color: #555;
+  box-shadow: none;
+  background: #fff;
+}
+.alert.alert-success {
+  background: #FF9226;
+}
+</style>
+
+<style>
+.alert ul {
+  padding-left:0;
+}
+.alert li {
+  list-style: none;
+}
+</style>
+<!-- ここまで　aplication.html　より-->
+
+
+
+<!-- admin関連 -->
+
+<!-- admin/boards/index.html -->
+<style>
+  .admin-boards-list {
+    margin-top: 50px;
+  }
+  .admin-boards-list p {
+    font-size: 30px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+  }
+</style>
+<!--　admin/boards/show.html -->
+<style>
+  .admin-container {
+    margin: 50px 0 50px 0;
+  }
+  .admin .admin-content {
+    border-left: 2px solid #ddd;
+    width: 90%;
+    margin: auto;
+  }
+  .admin .admin-title {
+    font-size: 50px;
+    text-align: start;
+    margin-left: 10px;
+    margin-bottom: 20px;
+  }
+  .admin .admin-title a {
+    text-decoration: none;
+  }
+  .admin .admin-title .sub-title {
+    font-size: 35px;
+    border-bottom: 2px solid #ddd;
+    width: 300px;
+  }
+  .board-options {
+    width: 100%;
+    margin: auto;
+    margin-top: 50px;
+  }
+  .board-options p {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 30px;
+    border-bottom: 2px solid #ddd;
+    margin: auto;
+
+  }
+  .board-options p a {
+    text-decoration: none;
+    color: black;
+    padding: 5px 10px;
+  }
+  .board-options p a:hover {
+    border-bottom: solid;
+    color: #ff701e;
+  }
+  .board-options .button {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 30px;
+  }
+  .topics_link {
+    margin-left: 10px;
+  }
+</style>
+<!-- admin/frames/show.html -->
+<style>
+  .admin-frame-container {
+    border-bottom: 2px solid #ddd;
+  }
+  .admin-delete-frame-button {
+    text-align: center;
+    margin: 20px 0 50px 0;
+
+  }
+  .admin-delete-frame-button a {
+    width: 200px;
+  }
+  .admin .board-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    width: 600px;
+    height: 400px;
+    border: solid;
+    padding: 10px;
+    margin: auto;
+    margin-top: 50px;
+    background: #fff;
+  }
+</style>
+<!-- application.html から -->
+<style>
+  .no-content {
+    margin-top: 50px;
+    padding-bottom: 30px;
+    color: #666;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 3px solid #ddd;
+  }
+</style>
+
+<!--boards/ board_info.html より -->
+<style>
+  .board-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .board-info-content {
+    display: flex;
+    justify-content: center;
+    width: 500px;
+    margin: auto;
+    border-bottom: 2px solid #ddd;
+  }
+  .action-user-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .action-user-info a {
+    text-decoration: none;
+  }
+  .action-user-image img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+  .avatar-icon {
+    font-size: 40px;
+    color: #aaa;
+  }
+  .action-user-name {
+    font-size: 20px;
+  }
+  .action-details {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .action-details p {
+    margin: auto;
+    font-size: 20px;
+  }
+</style>
+
+<!-- admin/commnts/index, show.html -->
+<!-- テーブル関連 -->
+<style>
+  .cell-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+  .cell-link:hover {
+    color: #ff701e;
+    font-weight: bold;
+    border-bottom: inset;
+  }
+  .fixed-table.parent {
+    margin-bottom: 20px;
+  }
+  .table-label.reply {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px 0 0 0;
+    text-align: center;
+    color: #fff;
+    background: #333;
+    padding: 10px;
+  }
+
+  .fixed-table {
+    table-layout: fixed;
+    word-break: break-word;
+  overflow-wrap: break-word;
+  }
+ 
+.fixed-tableth.col-username {
+  width: 15%;
+}
+.fixed-table th.col-timestamp {
+  width: 10%;
+}
+
+.fixed-table th.col-title {
+  width: 55%;
+}
+ 
+.fixed-table th.col-content {
+  width: 55%;
+}
+.fixed-table th.col-reason {
+  width: 55%;
+}
+
+
+.fixed-table th.col-id {
+    width: 5%;
+}
+.fixed-table th.col-parent-id {
+  width: 5%;
+}
+.fixed-table .col-action {
+  width: 10%;
+}
+.fixed-table .col-role {
+  width: 10%;
+}
+.fixed-table .col-frame-number {
+  width: 5%;
+}
+.fixed-table .col-frame-type {
+  width: 10%;
+}
+.fixed-table th.col-target {
+  width: 10%;
+}
+th, td {
+  text-align: center;
+}
+
+</style>
+
+<!-- admin/users/show.html.erb -->
+<style>
+.user-profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 40%;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+.user-profile-container span {
+  font-size: 20px;
+}
+.user-profile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.label {
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+
+.value {
+  flex: 2;
+  text-align: right;
+  word-wrap: break-word;
+  overflow: auto;
+  max-width: 100%;
+  max-height: 200px;
+}
+
+.admin-avatar-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+</style>

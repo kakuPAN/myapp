@@ -14,26 +14,37 @@ SecurityQuestion.create!([
 ])
 
 users_data = [
+    {   
+    email: Rails.application.credentials.dig(:admin, :email),
+    password: Rails.application.credentials.dig(:admin, :password),
+    password_confirmation: Rails.application.credentials.dig(:admin, :password),
+    user_name: "マスター",
+    security_question_id: 1,
+    role: 1
+    },
     {
      email: "nanaka@email.com",
      password: "pass",
      password_confirmation: "pass",
      user_name: "志田",
-     security_question_id: 1
+     security_question_id: 1,
+     role: 0
     },
     {
       email: "ishigami@email.com",
       password: "pass",
       password_confirmation: "pass",
       user_name: "石上",
-      security_question_id: 1
+      security_question_id: 1,
+      role: 0
      },
      {
      email: "kasuga@email.com",
      password: "pass",
      password_confirmation: "pass",
      user_name: "春日",
-     security_question_id: 1
+     security_question_id: 1,
+     role: 0
     }
   ]
   users_data.each do |user_data|

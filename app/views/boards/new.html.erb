@@ -8,6 +8,24 @@
   </div>
 </div>
 
+<script>
+  function BoardShowLength(str) {
+    const maxLength = 100;
+    const value = str.trim()
+    const inputLength = str.trim().length;
+    const submitButton = document.getElementById("create-new-board");
+
+    // 文字数を表示
+    document.getElementById("inputlength").innerHTML = `${inputLength}文字/${maxLength}文字`;
+
+    // ボタンの有効/無効を切り替え
+    if (value === "") {
+        submitButton.disabled = true; // 入力が空の場合はボタンを無効化
+    } else {
+        submitButton.disabled = false; // 入力がある場合はボタンを有効化
+    }
+}
+</script>
 <style>
   @media (min-width: 600px) {
     .new-board-wrapper {

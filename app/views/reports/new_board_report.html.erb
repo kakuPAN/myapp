@@ -1,0 +1,49 @@
+<div class="report-form-wrapper">
+  <div class="report-label">
+    問題を報告
+  </div>
+  <%= render "reports/board_form", board: @board, report: @report %>
+</div>
+
+<script>
+  function ShowLength(str) {
+    const maxLength = 500;
+    const value = str.trim()
+    const inputLength = str.trim().length;
+    const submitButton = document.getElementById("report-submit-button");
+
+    // 文字数を表示
+    document.getElementById("inputlength").innerHTML = `${inputLength}文字/${maxLength}文字`;
+
+    // ボタンの有効/無効を切り替え
+    if (value === "") {
+        submitButton.disabled = true; // 入力が空の場合はボタンを無効化
+    } else {
+        submitButton.disabled = false; // 入力がある場合はボタンを有効化
+    }
+}
+</script>
+
+<style>
+  .report-form-wrapper {
+    width: 60%;
+    margin: auto;
+    margin-top: 50px;
+  }
+  .report-form-wrapper .buttons {
+    text-align: center;
+  }
+  .report-form-wrapper input[type="submit"] {
+    width: 200px;
+    margin: auto;
+    margin-top: 20px;
+  }
+  .report-form-wrapper textarea {
+    height: 200px;
+  }
+  .report-form-wrapper .cancel-button {
+    width: 200px;
+    margin: auto;
+    margin-top: 20px;
+  }
+</style>

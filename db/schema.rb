@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_22_072304) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_27_062014) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -102,6 +102,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_072304) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "board_id"
+    t.bigint "comment_id"
+    t.string "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["board_id"], name: "index_reports_on_board_id"
+    t.index ["comment_id"], name: "index_reports_on_comment_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
+  end
+
   create_table "security_questions", force: :cascade do |t|
     t.string "question_text", null: false
     t.datetime "created_at", null: false
@@ -122,7 +134,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_072304) do
     t.string "crypted_password"
     t.string "salt"
     t.string "user_name", null: false
-    t.string "avater_image"
     t.string "profile"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -130,6 +141,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_072304) do
     t.datetime "reset_sent_at"
     t.bigint "security_question_id", null: false
     t.string "security_answer_digest", null: false
+    t.integer "role", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["security_question_id"], name: "index_users_on_security_question_id"
   end
@@ -146,6 +158,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_072304) do
   add_foreign_key "frames", "boards"
   add_foreign_key "likes", "boards"
   add_foreign_key "likes", "users"
+  add_foreign_key "reports", "boards"
+  add_foreign_key "reports", "comments"
+  add_foreign_key "reports", "users"
   add_foreign_key "user_boards", "boards"
   add_foreign_key "user_boards", "users"
   add_foreign_key "users", "security_questions"

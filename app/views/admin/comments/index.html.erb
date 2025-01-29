@@ -1,0 +1,51 @@
+<div class="admin admin-container">
+  <div class="admin-content">
+    <div class="admin-title">
+      <%= link_to admin_board_path(@board) do %>
+        <%= @board.title %>
+      <% end %>
+      <p class="sub-title">コメント</p>
+    </div>
+    <% if @board.comments.empty? %>
+      <div class="no-content">まだコメントがありません</div>
+    <% else %>
+      <table class="table table-striped fixed-table">
+        <thead>
+          <tr>
+            <th class="col-id">id</th>
+            <th class="col-parent-id">親ID</th>
+            <th class="col-username">ユーザー名</th>
+            <th class="col-content">コメント内容</th>
+            <th class="col-timestamp">最終更新日時</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @comments.each do |comment| %>
+            <tr>
+              <td>
+                <%= link_to admin_board_comment_path(@board, comment), class: "cell-link", id: "comment-link-#{comment.id}" do %>
+                  <%= comment.id %>
+                <% end %>
+              </td>
+              <td>
+                <% if comment.parent %>
+                  <%= link_to admin_board_comment_path(@board, comment.parent), class: "cell-link" do %>
+                    <%= comment.parent_id %>
+                  <% end %>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to user_path(comment.user), class: "cell-link" do %>
+                  <%= comment.user.user_name %>
+                <% end %>
+              </td>
+              <td><%= comment.body %></td>
+              <td><%= comment.updated_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
+<%= paginate @comments %>
