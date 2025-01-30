@@ -1,6 +1,6 @@
 <div class="reply-container" id="reply-container-<%= comment.id %>">
   <div class="reply-label">
-    <%= link_to user_path(comment.user_id) do %>
+    <%= link_to liked_boards_user_path(comment.user_id) do %>
       <% if comment.user.avatar_image.attached? %>
         <%= image_tag comment.user.avatar_image, class: "avatar-image" %>
       <% else %>

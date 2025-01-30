@@ -10,7 +10,8 @@ RSpec.describe "Likes", type: :system do
         it "お気に入り登録が失敗する" do
           visit board_path(board)
           find("#like-button-not-login").click
-          expect(page).to have_content("LINEでログインorユーザー登録")
+          expect(page).to have_content("ログイン")
+          expect(page).to have_content("ユーザー登録")
           expect(current_path).to eq board_path(board)
         end
       end

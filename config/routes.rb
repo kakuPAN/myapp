@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  post "oauth/callback", to: "oauths#callback"
-  get "oauth/callback", to: "oauths#callback"
-  get "oauth/:provider", to: "oauths#oauth", as: :auth_at_provider
+  # LINEログイン
+  # post "oauth/callback", to: "oauths#callback"
+  # get "oauth/callback", to: "oauths#callback"
+  # get "oauth/:provider", to: "oauths#oauth", as: :auth_at_provider
 
   namespace :admin do
     root "users#index"
@@ -24,7 +25,7 @@ Rails.application.routes.draw do
       post :create_comment_report
     end
   end
-  resources :users, except: [ :index ] do
+  resources :users, except: [ :index, :show] do
     member do
       get :liked_boards
       get :visited_boards

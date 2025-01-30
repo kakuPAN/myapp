@@ -21,10 +21,25 @@
       <%= @user.profile %>
     </div>
   </div>
-  <div class="most-frequent-comment">
-    <p>サービスクラスでコメントを集計し分析。時間がかかるようなら1日１回か２回実行し、決まった時間に更新する最も多くコメントされたフレーズ（3種類）　件数</p>
+  <div class="users-logs">
+    <div class="log-items">
+      <p class="log-label">チェックしたトピック数：</p>
+      <p class="log-value"><%= @visited_boards_count %></p>
+    </div>
+    <div class="log-items">
+      <p class="log-label">貢献したトピック数：</p>
+      <p class="log-value"><%= @logs_with_boards.count %></p>
+    </div>
+    <div class="log-items">
+      <p class="log-label">お気に入りのトピック数：</p>
+      <p class="log-value"><%= Like.where(user_id: @user.id).count %></p>
+    </div>
+    <div class="log-items">
+      <p class="log-label">投稿したコメント数：</p>
+      <p class="log-value"><%= Comment.where(user_id: @user.id).count %></p>
+    </div>
   </div>
-</div> <!-- 右寄せ　-->
+</div>
 
 <script>
   document.addEventListener("turbo:load", function () {
@@ -78,8 +93,8 @@
 .users-info {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* コンテナ内のスペースを均等配置 */
-  align-items: center; /* 垂直方向を中央揃え */
+  justify-content: space-between;
+  align-items: center;
   margin: 20px
 }
 .users-avatar-image {
@@ -124,14 +139,33 @@
 .users-name {
   max-width: 300px;
   font-size: 30px;
-  word-wrap: break-word; /* 長い単語で適宜改行 */
-  word-break: break-word; /* 必要に応じて単語を分割して改行 */
+  word-wrap: break-word;
+  word-break: break-word;
 
 }
-.most-frequent-comment {
-  flex: 2;
-  border: 2px solid #ddd;
-  padding-right: 20px;
+.users-logs {
   min-width: 300px;
 }
+.users-logs p {
+  padding: 10px 10px 0px 10px;
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+}
+.log-items {
+  display: flex;
+  justify-content: space-between;
+  background:rgb(70, 70, 70);
+  border-radius: 5px;
+  margin: 5px;
+  align-items: center;
+  border-bottom: 4px inset #FF9226;
+}
+.log-label {
+  text-align: left;
+}
+.log-value {
+  text-align: right;
+}
+
 </style>

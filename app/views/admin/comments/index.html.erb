@@ -37,7 +37,7 @@
                 <% end %>
               </td>
               <td>
-                <%= link_to user_path(comment.user), class: "cell-link" do %>
+                <%= link_to admin_user_path(comment.user), class: "cell-link" do %>
                   <%= comment.user.user_name %>
                 <% end %>
               </td>

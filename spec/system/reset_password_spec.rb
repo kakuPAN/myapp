@@ -40,7 +40,7 @@ RSpec.describe "ResetPassword", type: :system do
             fill_in "session-password", with: "new_pass"
             find('#login-submit').click
             expect(page).to have_content("#{new_user.user_name}さまがログインしました")
-            expect(current_path).to eq user_path(new_user) # 新しいパスワードでログインできることを確認
+            expect(current_path).to eq visited_boards_user_path(new_user) # 新しいパスワードでログインできることを確認
           end
         end
         context "パスワードリセット後、元のパスワードでログインした場合" do
@@ -189,7 +189,7 @@ RSpec.describe "ResetPassword", type: :system do
       it "アクセスが失敗する" do
         visit new_password_reset_path
         expect(page).to have_content("すでにログインしています")
-        expect(current_path).to eq user_path(user)
+        expect(current_path).to eq visited_boards_user_path(user)
       end
     end
   end

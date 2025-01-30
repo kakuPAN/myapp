@@ -22,7 +22,7 @@ RSpec.describe "Users", type: :system do
         puts user.id
         expect(page).to have_content("#{user.user_name}さまがログインしました", wait: 5)
         created_user = User.find_by(email: "new_user@email.com")
-        expect(current_path).to eq user_path(created_user)
+        expect(current_path).to eq visited_boards_user_path(created_user)
       end
 
       it "ユーザーネームが未入力の場合" do
@@ -204,36 +204,35 @@ RSpec.describe "Users", type: :system do
       let!(:registered_user_visiter_board) { create(:user_board, user_id: registered_user.id, board_id: board.id) }
 
       it "ユーザーのマイページにアクセスできる" do
-        visit user_path(registered_user)
-        expect(current_path).to eq user_path(registered_user)
+        visit liked_boards_user_path(registered_user)
+        expect(current_path).to eq liked_boards_user_path(registered_user)
       end
       describe "ユーザープロフィールの編集" do
         it "ユーザーのプロフィール編集リンクが表示されない" do
-          visit user_path(registered_user)
+          visit liked_boards_user_path(registered_user)
           expect(page).not_to have_selector("#users-setting")
         end
         it "ユーザーのプロフィール編集ページにアクセスできない" do
           visit edit_user_path(registered_user)
           expect(page).to have_content "権限がありません"
-          expect(current_path).to eq user_path(registered_user)
+          expect(current_path).to eq liked_boards_user_path(registered_user)
         end
       end
       it "ユーザーのユーザー情報にアクセスできない" do
         visit show_profile_user_path(registered_user)
         expect(page).to have_content "権限がありません"
-        expect(current_path).to eq user_path(registered_user)
+        expect(current_path).to eq liked_boards_user_path(registered_user)
       end
       describe "ユーザーのお気に入り一覧ページにアクセス" do
         it "ユーザーがお気に入りに登録したボードが表示される" do
-          visit user_path(registered_user)
-          click_link "お気に入り"
+          visit liked_boards_user_path(registered_user)
           expect(page).to have_content registered_user.liked_boards.last.title
           expect(page).to have_current_path(liked_boards_user_path(registered_user), wait: 5)
         end
       end
       describe "ユーザーの活動一覧ページにアクセス" do
         it "ユーザーの活動に関連するボードが表示される" do
-          visit user_path(registered_user)
+          visit liked_boards_user_path(registered_user)
           click_link "ユーザーの活動"
           expect(page).to have_content registered_user.user_board_actions.last.title
           expect(page).to have_current_path(user_actions_user_path(registered_user), wait: 5)
@@ -241,14 +240,14 @@ RSpec.describe "Users", type: :system do
       end
       describe "ユーザーの閲覧履歴にアクセス" do
         it "閲覧履歴へのリンクが表示されない" do
-          visit user_path(registered_user)
+          visit liked_boards_user_path(registered_user)
           expect(page).not_to have_content "閲覧履歴"
-          expect(current_path).to eq user_path(registered_user)
+          expect(current_path).to eq liked_boards_user_path(registered_user)
         end
         it "閲覧履歴にアクセスできない" do
           visit visited_boards_user_path(registered_user)
           expect(page).not_to have_content("権限がありません", wait: 5)
-          expect(current_path).to eq user_path(registered_user)
+          expect(current_path).to eq liked_boards_user_path(registered_user)
         end
       end
     end
@@ -259,13 +258,13 @@ RSpec.describe "Users", type: :system do
       before { login(user) }
 
       it "ユーザーのマイページにアクセスできる" do
-        visit user_path(user)
-        expect(current_path).to eq user_path(user)
+        visit visited_boards_user_path(user)
+        expect(current_path).to eq visited_boards_user_path(user)
       end
       describe "ユーザープロフィールの編集" do
         context "入力内容が正常な場合" do
           it "プロフィールが編集できる" do
-            visit user_path(user)
+            visit visited_boards_user_path(user)
             find("#users-setting").click
             attach_file("avatar-image", Rails.root.join("spec/fixtures/files/sample_image.png"))
             fill_in "user-name", with: "編集したユーザー名"
@@ -275,12 +274,12 @@ RSpec.describe "Users", type: :system do
             expect(page).to have_content("編集したユーザー名")
             expect(page).to have_content("編集したプロフィール")
             expect(page).to have_selector("img[src*='sample_image.png']")
-            expect(current_path).to eq user_path(user)
+            expect(current_path).to eq visited_boards_user_path(user)
           end
         end
         context "200KBを超えるファイルをアップロードした場合" do
           it "プロフィールの編集が失敗する" do
-            visit user_path(user)
+            visit visited_boards_user_path(user)
             find("#users-setting").click
             attach_file("avatar-image", Rails.root.join("spec/fixtures/files/over_size.png"))
             fill_in "user-name", with: "編集したユーザー名"
@@ -293,7 +292,7 @@ RSpec.describe "Users", type: :system do
         end
         context "ファイル形式が、JPEG, JPG, PNG以外の場合" do
           it "プロフィールの編集が失敗する" do
-            visit user_path(user)
+            visit visited_boards_user_path(user)
             find("#users-setting").click
             attach_file("avatar-image", Rails.root.join("spec/fixtures/files/webp_test.webp"))
             fill_in "user-name", with: "編集したユーザー名"
@@ -306,7 +305,7 @@ RSpec.describe "Users", type: :system do
         end
         context "ユーザー名が空の場合" do
           it "プロフィールの編集が失敗する" do
-            visit user_path(user)
+            visit visited_boards_user_path(user)
             find("#users-setting").click
             attach_file("avatar-image", Rails.root.join("spec/fixtures/files/sample_image.png"))
             fill_in "user-name", with: ""
@@ -317,7 +316,7 @@ RSpec.describe "Users", type: :system do
         end
         context "ユーザー名の入力が20文字を超える場合" do
           it "プロフィールの編集が失敗する" do
-            visit user_path(user)
+            visit visited_boards_user_path(user)
             find("#users-setting").click
             attach_file("avatar-image", Rails.root.join("spec/fixtures/files/sample_image.png"))
             fill_in "user-name", with: Faker::Lorem.paragraph_by_chars(number: 21)
@@ -330,7 +329,7 @@ RSpec.describe "Users", type: :system do
         end
         context "プロフィールの入力が250文字を超える場合" do
           it "プロフィールの編集が失敗する" do
-            visit user_path(user)
+            visit visited_boards_user_path(user)
             find("#users-setting").click
             attach_file("avatar-image", Rails.root.join("spec/fixtures/files/sample_image.png"))
             fill_in "user-name", with: "編集したユーザー名"
@@ -344,7 +343,7 @@ RSpec.describe "Users", type: :system do
       end
       describe "ユーザーのお気に入り一覧ページにアクセス" do
         it "ユーザーがお気に入りに登録したボードが表示される" do
-          visit user_path(user)
+          visit visited_boards_user_path(user)
           click_link "お気に入り"
           expect(page).to have_content user.liked_boards.last.title
           expect(page).to have_current_path(liked_boards_user_path(user), wait: 5)
@@ -352,7 +351,7 @@ RSpec.describe "Users", type: :system do
       end
       describe "ユーザーの活動一覧ページにアクセス" do
         it "ユーザーの活動に関連するボードが表示される" do
-          visit user_path(user)
+          visit visited_boards_user_path(user)
           click_link "ユーザーの活動"
           expect(page).to have_content user.user_board_actions.last.title
           expect(page).to have_current_path(user_actions_user_path(user), wait: 5)
@@ -360,7 +359,7 @@ RSpec.describe "Users", type: :system do
       end
       describe "ユーザーの閲覧履歴にアクセス" do
         it "ユーザーの閲覧履歴が表示される" do
-          visit user_path(user)
+          visit liked_boards_user_path(user)
           click_link "閲覧履歴"
           expect(page).to have_content user.visited_boards.last.title
           expect(page).to have_current_path(visited_boards_user_path(user), wait: 5)

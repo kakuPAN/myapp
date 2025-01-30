@@ -3,7 +3,7 @@
     <% @board_logs.each do |log| %>
       <div class="board-info-content">
         <div class="action-user-info">
-          <%= link_to user_path(log.user.id) do %>
+          <%= link_to liked_boards_user_path(log.user.id) do %>
             <div class="action-user-image">
               <% if log.user.avatar_image.attached? %>
                 <%= image_tag log.user.avatar_image %>

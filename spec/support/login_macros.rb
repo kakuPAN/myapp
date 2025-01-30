@@ -9,7 +9,7 @@ module LoginMacros
       expect(current_path).to eq admin_users_path
     else
       expect(page).to have_content("#{user.user_name}さまがログインしました")
-      expect(current_path).to eq user_path(user)
+      expect(current_path).to eq visited_boards_user_path(user)
     end
   end
 end

@@ -1,10 +1,15 @@
 <div class="login-tab">
   <div class="login-tab-container">
-    <div class="login-tab-title">TopicBoard</div>
-    <span>LINEでログインorユーザー登録</span>
-    <%= link_to auth_at_provider_path(provider: :line), class: "line-icon" do %>
-      <%= image_tag "free_images/LINE_Brand_icon.png" %>
-    <% end %>
+    <div class="login-tab-title">
+      <%= link_to root_path do %>
+        TopicBoard
+      <% end %>
+    </div>
+    <div class="login-or-new">
+      <span class= "auth-link"><%= link_to "ログイン", login_path %></span>
+      <span class="or-text">or</span>
+      <span class= "auth-link"><%= link_to "ユーザー登録", new_user_path %></span>
+    </div>
   </div>
 </div>
 
@@ -56,9 +61,38 @@
     border-radius: 10px;
   }
   .login-tab-title {
-    font-size: 30px;
-    color: #333;
+    font-size: 40px;
+    
     margin: 30px;
+  }
+  .login-tab-title a{
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  .login-tab-title a:hover {
+    color: #FF9226;
+  }
+  .login-or-new a{
+    font-size: 23px;
+    text-decoration: none;
+    color: #333;
+  }
+  .login-or-new a:hover {
+    color: #FF9226;
+  }
+  .auth-link {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  .login-or-new {
+    gap: 8px;
+  }
+  .or-text {
+    font-weight: bold;
   }
   .login-tab-container span {
     color: #333;
