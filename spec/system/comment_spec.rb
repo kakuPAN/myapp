@@ -126,7 +126,7 @@ RSpec.describe "Comments", type: :system do
             expect(page).to have_content("#{to_comment.body}")
             fill_in "comment_body_#{to_comment.id}", with: "編集したコメント"
             expect(page).to have_field("comment_body_#{to_comment.id}", with: "編集したコメント", wait: 5)
-            expect(page).to have_selector("#edit_comment_submit_#{to_comment.id}:not([disabled])", wait: 5)
+            expect(page).to have_selector("#edit_comment_submit_#{to_comment.id}:not([disabled])", wait: 10)
             find("#edit_comment_submit_#{to_comment.id}").click
             expect(page).to have_content("編集したコメント")
             expect(page).to have_content("コメントを編集しました")

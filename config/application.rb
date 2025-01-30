@@ -12,6 +12,7 @@ module Myapp
     config.load_defaults 8.0
     config.time_zone = "Tokyo"
     config.hosts << "task-machi-app.onrender.com"
+    config.hosts << "topic-board.jp"
 
     config.active_record.default_timezone = :local
     # Please, add to the `ignore` list any other `lib` subdirectories that do
