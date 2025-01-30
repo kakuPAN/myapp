@@ -18,16 +18,12 @@ class UsersController < ApplicationController
     end
     if @user.save
       auto_login(@user)
-      redirect_to user_path(@user)
+      redirect_to visited_boards_user_path(@user)
       flash[:primary] = "#{@user.user_name}さまがログインしました"
     else
       flash.now[:danger] = "入力に不足があります"
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def show # 削除
-    @boards = Kaminari.paginate_array(Board.all.sample(10)).page(@page).per(4)
   end
 
   def destroy
@@ -41,17 +37,19 @@ class UsersController < ApplicationController
       redirect_to root_path
       flash[:success] = "退会が完了しました"
     else
-      redirect_to user_path(@user)
-      flash[:success] = "権限がありません"
+      redirect_to liked_boards_user_path(@user)
+      flash[:danger] = "権限がありません"
     end
   end
 
   def liked_boards # お気に入り
     if @user.admin? && !current_user&.admin?
-      flash[:success] = "ユーザーが存在しません"
+      flash[:danger] = "ユーザーが存在しません"
       redirect_to boards_path
       return
     end
+    @visited_boards_count = user_board_history(@user).count
+    @logs_with_boards = logs_with_boards(@user)
     @page = params[:page].to_i
     @page = 1 if @page < 1
     @context = :liked
@@ -61,10 +59,12 @@ class UsersController < ApplicationController
 
   def visited_boards # 閲覧履歴
     unless @user == current_user
-      redirect_to user_path(@user)
-      flash[:success] = "権限がありません"
+      redirect_to liked_boards_user_path(@user)
+      flash[:danger] = "権限がありません"
       return
     end
+    @visited_boards_count = user_board_history(@user).count
+    @logs_with_boards = logs_with_boards(@user)
     @page = params[:page].to_i
     @page = 1 if @page < 1
     @context = :visited
@@ -78,16 +78,11 @@ class UsersController < ApplicationController
       redirect_to boards_path
       return
     end
+    @visited_boards_count = user_board_history(@user).count
     @page = params[:page].to_i
     @page = 1 if @page < 1
     @context = :user_action
-    @logs_with_boards =
-      @user.board_logs.where("action_type != ?", 0)
-      .includes(:board, :frame)
-      .order(created_at: :desc)
-      .map do |log|
-        { board: log.board, frame: log.frame, action_date: log.created_at, action_type: log.action_type }
-      end
+    @logs_with_boards = logs_with_boards(@user)
     @boards = Kaminari.paginate_array(@logs_with_boards).page(@page).per(4)
     render :show
   end
@@ -96,14 +91,14 @@ class UsersController < ApplicationController
     if @user && @user == current_user
       render :show_profile
     else
-      redirect_to user_path(@user)
+      redirect_to liked_boards_user_path(@user)
       flash[:success] = "権限がありません"
     end
   end
 
   def edit
     unless current_user == @user
-      redirect_to user_path(@user)
+      redirect_to liked_boards_user_path(@user)
       flash[:success] = "権限がありません"
     end
   end
@@ -112,7 +107,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_params)
         format.html do
-          redirect_to user_path(@user)
+          redirect_to visited_boards_user_path(@user)
           flash[:success] = "プロフィールを編集しました"
         end
       else
@@ -140,7 +135,7 @@ class UsersController < ApplicationController
   def user_board_history(user)
     filtered_boards = []
 
-    all_visited_boards = user.user_boards.where(created_at: (Time.current - 1.week)..Time.current).order(created_at: :desc)
+    all_visited_boards = user.user_boards.order(created_at: :desc)
     all_visited_boards.each do |visited_board|
       unless filtered_boards.any? { |board| board.id == visited_board.board_id }
         board = Board.find(visited_board.board_id)
@@ -148,5 +143,16 @@ class UsersController < ApplicationController
       end
     end
     filtered_boards
+  end
+
+  def logs_with_boards(user)
+    logs_with_boards =
+    user.board_logs.where("action_type != ?", 0)
+    .includes(:board, :frame)
+    .order(created_at: :desc)
+    .map do |log|
+      { board: log.board, frame: log.frame, action_date: log.created_at, action_type: log.action_type }
+    end
+    logs_with_boards
   end
 end

@@ -1,9 +1,6 @@
 <div class="mypage-wrapper">
   <%= render "mypage_header" %>
   <div class="board-tab">
-    <div class="to-users-home <%= "disabled" if @context %>">
-      <%= link_to "ホーム", user_path(@user) %>
-    </div>
     <div class="to-liked-boards <%= "disabled" unless @context&.to_sym == :liked %>">
       <%= link_to "お気に入り", liked_boards_user_path(@user) %>
     </div>

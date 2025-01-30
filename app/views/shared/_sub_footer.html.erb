@@ -2,7 +2,7 @@
   <div class="sub-footer-menu">
     <% if current_user %>
       <span><%= link_to "ログアウト", logout_path, id: "sub-footer-logout", data: { turbo_method: :delete } %></span>
-      <span><%= link_to "マイページ", user_path(current_user) %></span>
+      <span><%= link_to "マイページ", visited_boards_user_path(current_user) %></span>
       <span><%= link_to "ユーザー情報", show_profile_user_path(current_user) %></span>
     <% else %>
       <span><%= link_to "ユーザー登録", new_user_path %></span>

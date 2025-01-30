@@ -41,12 +41,12 @@ RSpec.describe "StaticPages", type: :system do
         page.driver.browser.manage.window.resize_to(1001, 768) # 大サイズ
       end
       it "ヘッダーにロゴ、ユーザー名が表示される" do
-        visit user_path(user)
+        visit visited_boards_user_path(user)
         expect(page).to have_selector('.logo', visible: true, wait: 5)
         expect(page).to have_selector('#header-user-name', visible: true, wait: 5)
       end
       it "サブフッターが表示されない" do
-        visit user_path(user)
+        visit visited_boards_user_path(user)
         expect(page).not_to have_selector('.sub-footer-content', visible: true, wait: 5)
       end
     end
@@ -55,12 +55,12 @@ RSpec.describe "StaticPages", type: :system do
         page.driver.browser.manage.window.resize_to(1000, 768) # 小サイズ
       end
       it "ヘッダーにロゴ、ユーザー名が表示されない" do
-        visit user_path(user)
+        visit visited_boards_user_path(user)
         expect(page).not_to have_selector('.logo', visible: true, wait: 5)
         expect(page).not_to have_selector('#header-user-name', visible: true, wait: 5)
       end
       it "サブフッターにロゴ、ユーザー名が表示される" do
-        visit user_path(user)
+        visit visited_boards_user_path(user)
         expect(page).to have_selector('.sub-footer-content', visible: true, wait: 5)
         expect(page).to have_selector('#sub-footer-icon', visible: true, wait: 5)
         expect(page).to have_selector('#sub-footer-logo', visible: true, wait: 5)

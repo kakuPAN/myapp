@@ -39,7 +39,7 @@
               </td>
               <td>
                 <% if frame_logged_user %>
-                  <%= link_to user_path(frame_logged_user), class: "cell-link" do %>
+                  <%= link_to admin_user_path(frame_logged_user), class: "cell-link" do %>
                     <%= frame_logged_user.user_name %>
                   <% end %>
                 <% end %>

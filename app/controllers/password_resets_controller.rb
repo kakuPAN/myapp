@@ -1,7 +1,7 @@
 class PasswordResetsController < ApplicationController
   def new
     if current_user
-      redirect_to user_path(current_user)
+      redirect_to visited_boards_user_path(current_user)
       flash[:success] = "すでにログインしています"
       return
     end

@@ -12,6 +12,13 @@
   <% end %>
 </div>
 
+<div class="recommend-link">
+  <%= link_to "パスワードを忘れた方", new_password_reset_path, id: "forget-password-link" %>
+</div>
+<div class="recommend-link">
+  <p>アカウントをお持ちではない方は<%= link_to "こちら", new_user_path, id: "create-user-link" %></p>
+</div>
+
 <style>
   .login-container {
     width: 60%;
@@ -27,23 +34,6 @@
   }
 
 </style>
-<div class="or-login">
-  or
-</div>
-<div class="line-login">
-  <%= link_to auth_at_provider_path(provider: :line), class: "line-icon" do %>
-    <%= image_tag "free_images/LINE_Brand_icon.png" %>
-  <% end %>
-  <span>LINEでログイン</span>
-</div>
-
-<div class="recommend-link">
-  <%= link_to "パスワードを忘れた方", new_password_reset_path, id: "forget-password-link" %>
-</div>
-<div class="recommend-link">
-  <p>アカウントをお持ちではない方は<%= link_to "こちら", new_user_path, id: "create-user-link" %></p>
-</div>
-
 <style>
   .line-login {
     display: flex;

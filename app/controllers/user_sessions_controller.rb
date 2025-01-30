@@ -10,7 +10,7 @@ class UserSessionsController < ApplicationController
           redirect_to admin_users_path
           flash[:success] = "管理者：#{@user.user_name}がログインしました"
         else
-          redirect_to user_path(@user)
+          redirect_to visited_boards_user_path(@user)
           flash[:success] = "#{@user.user_name}さまがログインしました"
         end
       else
@@ -18,7 +18,7 @@ class UserSessionsController < ApplicationController
         render :new, status: :unprocessable_entity
       end
     else
-      redirect_to user_path(@user)
+      redirect_to visited_boards_user_path(@user)
     end
   end
 

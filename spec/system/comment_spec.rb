@@ -19,7 +19,8 @@ RSpec.describe "Comments", type: :system do
         it "コメントの作成ができない" do
           visit board_path(board)
           find(".comment-button").click
-          expect(page).to have_content("LINEでログインorユーザー登録")
+          expect(page).to have_content("ログイン")
+          expect(page).to have_content("ユーザー登録")
           expect(current_path).to eq board_path(board)
         end
       end
@@ -29,7 +30,8 @@ RSpec.describe "Comments", type: :system do
           find("#comment-form").click
           form = find("#comment-form")
           expect(form[:class]).to include("disabled")
-          expect(page).to have_content("LINEでログインorユーザー登録")
+          expect(page).to have_content("ログイン")
+          expect(page).to have_content("ユーザー登録")
           expect(current_path).to eq board_comments_path(board)
         end
       end
@@ -124,6 +126,7 @@ RSpec.describe "Comments", type: :system do
             expect(page).to have_content("#{to_comment.body}")
             fill_in "comment_body_#{to_comment.id}", with: "編集したコメント"
             expect(page).to have_field("comment_body_#{to_comment.id}", with: "編集したコメント", wait: 5)
+            expect(page).to have_selector("#edit_comment_submit_#{to_comment.id}:not([disabled])", wait: 5)
             find("#edit_comment_submit_#{to_comment.id}").click
             expect(page).to have_content("編集したコメント")
             expect(page).to have_content("コメントを編集しました")

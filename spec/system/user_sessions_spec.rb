@@ -14,7 +14,7 @@ RSpec.describe "UserSessions", type: :system do
           fill_in "session-password", with: "password"
           find('#login-submit').click
           expect(page).to have_content("#{user.user_name}さまがログインしました")
-          expect(current_path).to eq user_path(user)
+          expect(current_path).to eq visited_boards_user_path(user)
         end
       end
       context "管理者ユーザーの場合" do
