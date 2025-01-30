@@ -78,9 +78,3 @@ RSpec.describe "AdminFrames", type: :system do
     end
   end
 end
-
-
-
-
-
-

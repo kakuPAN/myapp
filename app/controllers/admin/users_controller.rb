@@ -1,6 +1,7 @@
 class Admin::UsersController < Admin::BaseController
   skip_before_action :set_search
   before_action :set_search_user
+  before_action :set_user, only: %i[show destroy]
 
   def index
   end
@@ -25,11 +26,9 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def show
-    @user = User.find(params[:id])
   end
 
   def destroy
-    @user = User.find(params[:id])
     if @user.admin? && (User.admin.count == 1 || @user == current_user)
       flash[:danger] = "このユーザーは削除できません"
       redirect_to admin_user_path(@user)
@@ -48,6 +47,14 @@ class Admin::UsersController < Admin::BaseController
 
   def user_params
     params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avatar_image, :security_question_id)
+  end
+
+  def set_user
+    @user = User.find_by(id: params[:id])
+    unless @user
+      flash[:danger] = "ユーザーが存在しません"
+      redirect_to admin_users_path
+    end
   end
 
   def set_search_user

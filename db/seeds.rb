@@ -15,9 +15,9 @@ SecurityQuestion.create!([
 
 users_data = [
     {   
-    email: Rails.application.credentials.dig(:admin, :email),
-    password: Rails.application.credentials.dig(:admin, :password),
-    password_confirmation: Rails.application.credentials.dig(:admin, :password),
+    email: "admin@email.com",
+    password: "pass",
+    password_confirmation: "pass",
     user_name: "マスター",
     security_question_id: 1,
     role: 1

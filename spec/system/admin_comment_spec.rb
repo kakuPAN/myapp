@@ -5,8 +5,8 @@ RSpec.describe "AdminFrames", type: :system do
   let!(:general_user) { create(:user, security_question_id: security_question.id) }
   let!(:admin_user) { create(:user, user_name: "admin_user", role: 1, security_question_id: security_question.id) }
   let!(:board) { create(:board) }
-  let!(:comment) { create(:comment, board_id: board.id, user_id: user.id) }
-  let!(:reply) { create(:comment, board_id: board.id, user_id: user.id, parent_id: comment.id) }
+  let!(:comment) { create(:comment, board_id: board.id, user_id: admin_user.id) }
+  let!(:reply) { create(:comment, board_id: board.id, user_id: admin_user.id, parent_id: comment.id) }
   describe "一般ユーザーによるアクセス" do
     describe "管理者ページへのアクセスが失敗する" do
       before { login(general_user) }
@@ -47,7 +47,19 @@ RSpec.describe "AdminFrames", type: :system do
         end
         expect(current_path).to eq admin_board_comment_path(board, comment)
       end
+      describe "コメントの削除" do
+        it "コメントの削除ができる" do
+          visit admin_board_path(board)
+          click_link "コメント"
+          find("#comment-link-#{comment.id}").click
+          find("#delete-comment").click
+          expect(page).to have_content("コメントを削除しました")
+          expect(current_path).to eq admin_board_comments_path(board)
+        end
+      end
     end
+  end
+end
 
 
 

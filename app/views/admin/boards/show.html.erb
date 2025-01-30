@@ -1,7 +1,13 @@
-<%= link_to "トピック一覧", admin_boards_path, class: "btn btn-outline-primary topics_link" %>
 <div class="admin admin-container">
   <div class="admin-content">
-    <div class="admin-title"><%= @board.title %></div>
+    <div class="admin-title">
+      <div class="sub-title">
+        <%= link_to admin_boards_path, class: "cell-link" do%>  
+          トピック
+        <% end %>
+      </div>
+      <div class="sub-title"><%= @board.title %></div>
+    </div>
     <div class="board-options">
       <p><%= link_to "変更履歴", board_info_admin_board_path(@board) %></p>
       <p><%= link_to "フレーム", admin_board_frames_path(@board) %></p>

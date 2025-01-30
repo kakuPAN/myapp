@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ edit update show show_profile liked_boards visited_boards user_actions ]
+  before_action :set_user, except: %i[ new create ]
 
   def new
     if current_user
@@ -31,7 +31,6 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user =  User.find(params[:id])
     if @user.admin?
       redirect_to admin_users_path
       flash[:danger] = "この操作はできません"
@@ -131,10 +130,10 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find_by(id: params[:id])
     unless @user
-      redirect_to boards_path
-      flash[:success] = "ユーザーが存在しません"
+      redirect_to root_path
+      flash[:danger] = "ユーザーが存在しません"
     end
   end
 

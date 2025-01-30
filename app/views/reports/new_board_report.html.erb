@@ -1,12 +1,12 @@
 <div class="report-form-wrapper">
   <div class="report-label">
-    問題を報告
+    トピックの問題を報告
   </div>
   <%= render "reports/board_form", board: @board, report: @report %>
 </div>
 
 <script>
-  function ShowLength(str) {
+  function ReportShowLength(str) {
     const maxLength = 500;
     const value = str.trim()
     const inputLength = str.trim().length;
@@ -29,6 +29,12 @@
     width: 60%;
     margin: auto;
     margin-top: 50px;
+  }
+  .report-form-wrapper .report-label {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px;
   }
   .report-form-wrapper .buttons {
     text-align: center;

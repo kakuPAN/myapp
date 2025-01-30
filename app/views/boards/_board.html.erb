@@ -23,7 +23,7 @@
       <%= board.title %>
       <% if current_user %>
         <div class="delete-edit-button">
-          <%= link_to new_board_report_report_path(board_id: board.id) do %>
+          <%= link_to new_board_report_report_path(board_id: board.id), class: "report-button" do %>
             <i class="bi bi-flag-fill"></i>
           <% end %>
           <%= link_to edit_board_path(board), class: "edit-button" do %>
@@ -36,7 +36,7 @@
         </div>
       <% else %>
         <div class="delete-edit-button funcs">
-          <i class="bi bi-flag-fill func-icon"></i>
+          <i class="bi bi-flag-fill func-icon report-button"></i>
           <div class="edit-button func-icon">
             <i class="bi bi-pencil-fill"></i>
           </div>

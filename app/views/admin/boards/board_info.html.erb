@@ -1,9 +1,11 @@
 <div class="admin admin-container">
   <div class="admin-content">
     <div class="admin-title">
-      <%= link_to admin_board_path(@board) do %>
-        <%= @board.title %>
-      <% end %>
+      <div class="sub-title">
+        <%= link_to admin_board_path(@board), class: "cell-link" do %>
+          <%= @board.title %>
+        <% end %>
+      </div>
       <p class="sub-title">変更履歴</p>
     </div>  
     <div class="board-info-container">
@@ -23,7 +25,7 @@
             <% @board_logs.each do |log| %>
               <tr>
                 <td>
-                  <%= link_to user_path(log.user), class: "cell-link" do %>
+                  <%= link_to admin_user_path(log.user), class: "cell-link" do %>
                     <%= log.user.user_name %>
                   <% end %>
                 </td>
@@ -44,6 +46,7 @@
             <% end %>
           </tbody>
         </table>
+        <%= paginate @board_logs %>
       <% end %>
     </div>
   </div>

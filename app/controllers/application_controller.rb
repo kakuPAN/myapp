@@ -25,8 +25,8 @@ class ApplicationController < ActionController::Base
     @all_boards = Board.all
   end
 
-  def raise_not_found
-    redirect_to root_path, alert: "そのページは存在しません"
+  def routing_error
+    redirect_to root_path, alert: "ページが見つかりませんでした"
   end
 
   private

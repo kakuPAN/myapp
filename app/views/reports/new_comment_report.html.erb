@@ -1,12 +1,14 @@
 <div class="report-form-wrapper">
   <div class="report-label">  
-    問題を報告
+    コメントの問題を報告
   </div>
   <%= render "reports/comment_form", board: @board, comment: @comment, report: @report %>
 </div>
 
+
+<!-- 以下、トピックと同じ -->
 <script>
-  function ShowLength(str) {
+  function ReportShowLength(str) {
     const maxLength = 500;
     const value = str.trim()
     const inputLength = str.trim().length;

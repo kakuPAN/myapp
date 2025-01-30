@@ -1,22 +1,21 @@
 class Admin::CommentsController < Admin::BaseController
-  before_action :set_board
+  before_action :set_board, only: %i[index destroy]
+  before_action :set_comment, only: %i[show destroy]
+
   def index
-    @comments = @board.comments.includes(:children).order(created_at: :desc).page(params[:page]).per(3)
+    @comments = @board.comments.includes(:children).order(created_at: :desc).page(params[:page]).per(2)
   end
 
   def show
-    @comment = Comment.find(params[:id])
     @board = @comment.board
   end
 
   def destroy
-    @board = Board.find(params[:board_id])
-    @comment = Comment.find(params[:id])
     if @comment.destroy
         flash[:seccess] = "コメントを削除しました"
         redirect_to admin_board_comments_path(@board)
     else
-      flash[:seccess] = "コメントを削除できません"
+      flash[:danger] = "コメントを削除できません"
       redirect_to admin_board_comment_path(@board, @comment)
     end
   end
@@ -24,6 +23,18 @@ class Admin::CommentsController < Admin::BaseController
   private
 
   def set_board
-    @board = Board.find(params[:board_id])
+    @board = Board.find_by(id: params[:board_id])
+    unless @board
+      flash[:danger] = "トピックが存在しません"
+      redirect_to admin_boards_path
+    end
+  end
+
+  def set_comment
+    @comment = Comment.find_by(id: params[:id])
+    unless @comment
+      flash[:danger] = "コメントが存在しません"
+      redirect_to admin_board_comments_path(@board)
+    end
   end
 end

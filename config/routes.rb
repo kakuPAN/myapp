@@ -3,22 +3,20 @@ Rails.application.routes.draw do
   get "oauth/callback", to: "oauths#callback"
   get "oauth/:provider", to: "oauths#oauth", as: :auth_at_provider
 
-
   namespace :admin do
     root "users#index"
-    resources :users
-    resources :dashboards, only: %i[index]
-    resources :boards do
+    resources :users, except: [:edit, :update]
+    resources :boards, only: [:index, :show, :destroy] do
       member do
         get :board_info
       end
-      resources :frames
-      resources :comments
+      resources :frames, only: [:index, :show, :destroy]
+      resources :comments, only: [:index, :show, :destroy]
     end
-    resources :reports
+    resources :reports, only: [:index, :show, :destroy]
   end
   
-  resources :reports do
+  resources :reports, only: [:new, :create] do
     member do
       get :new_board_report
       post :create_board_report
@@ -26,7 +24,7 @@ Rails.application.routes.draw do
       post :create_comment_report
     end
   end
-  resources :users do
+  resources :users, except: [:index] do
     member do
       get :liked_boards
       get :visited_boards
@@ -35,7 +33,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :password_resets do
+  resources :password_resets, except: [:index, :show, :destroy] do
     collection do
       get ":token/edit", action: :edit, as: "edit_password_reset"
       post "create", action: :create, as: "password_resets"
@@ -51,27 +49,20 @@ Rails.application.routes.draw do
       post :create_chat
       get :board_info
     end
-    resources :frames do
+    resources :frames, except: [:show] do
       member do
         patch :move_forward
         patch :move_back
       end
     end
-    resources :comments do
+    resources :comments, except: [:new, :show] do
       member do
         post :create_reply
         delete :destroy_reply
       end
     end
   end
-  resources :likes, only: [ :create, :destroy ]
-  resources :tasks do
-    member do
-      patch :achieve_task
-      patch :start_task
-      patch :reset_task
-    end
-  end
+
   root "static_pages#top"
   get "privacy_policy", to: "static_pages#privacy_policy"
   get "terms_of_service", to: "static_pages#terms_of_service"
@@ -79,5 +70,7 @@ Rails.application.routes.draw do
   post "login", to: "user_sessions#create"
   delete "logout", to: "user_sessions#destroy"
 
-  match "*path", to: "application#raise_not_found", via: :all
+  get '*not_found' => 'application#routing_error', constraints: lambda { |request| !request.path.include?("active_storage") }
+  post '*not_found' => 'application#routing_error', constraints: lambda { |request| !request.path.include?("active_storage") }
+  
 end

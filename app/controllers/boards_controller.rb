@@ -1,5 +1,6 @@
 class BoardsController < ApplicationController
   before_action :require_login, except: %i[index show board_info]
+  before_action :set_board, except: %i[index new create]
 
   def index
     if @index_boards.empty? && @index_boards.current_page > 1 # 表示できるボードが存在しない場合、このコードがないとリダイレクトが繰り返されエラーになる。
@@ -9,20 +10,30 @@ class BoardsController < ApplicationController
 
   def new
     @parent_id = params[:parent_board]
-    @parent_board = Board.find(@parent_id)
-    @board = Board.new
+    @parent_board = Board.find_by(id: @parent_id)
+    if @parent_board
+      @board = Board.new
+    else
+      flash[:danger] = "トピックが存在しません"
+      redirect_to boards_path
+    end
   end
 
   def create
     @board = Board.new(board_params)
     @parent_id = @board.parent_id
-    @parent_board = Board.find(@parent_id)
+    @parent_board = Board.find_by(id: @parent_id)
+    unless @parent_board
+      flash[:danger] = "トピックが存在しません"
+      redirect_to boards_path
+      return
+    end
     respond_to do |format|
       if @board.save
         @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :create_action)
         format.html do
           redirect_to edit_board_path(@board)
-          flash[:success] = "ボードを作成しました"
+          flash[:success] = "トピックを作成しました"
         end
       else
         format.turbo_stream do
@@ -33,12 +44,6 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @board = Board.find_by(id: params[:id])
-    if !@board
-      redirect_to boards_path
-      flash[:danger] = "ボードが存在しません"
-      return
-    end
     @visitor = UserBoard.create(board_id: @board.id)
     @same_title_boards = Board.where(title: @board.title)
     @breadcrumbs = @board.breadcrumbs
@@ -58,28 +63,14 @@ class BoardsController < ApplicationController
   end
 
   def edit
-    @board = Board.find(params[:id])
     @frames = @board.frames.order(:frame_number)
     @parent_board = Board.find_by(id: @board.parent_id)
-
-    if @board
-      @board
-    else
-      if @parent_board
-        redirect_to board_path(@parent_board)
-      else
-        redirect_to root_path
-      end
-      flash.now[:danger] = "#{@board.title}が見つかりませんでした。"
-    end
   end
 
   def edit_board
-    @board = Board.find(params[:id])
   end
 
   def update
-    @board = Board.find(params[:id])
     @frames = @board.frames.order(:frame_number)
     respond_to do |format|
       if @board.update(board_params)
@@ -96,14 +87,12 @@ class BoardsController < ApplicationController
   end
 
   def destroy
-    @board = Board.find(params[:id])
     @board.destroy
     flash[:success] = "#{@board.title}を削除しました"
     redirect_to boards_path
   end
 
   def create_like
-    @board = Board.find(params[:id])
     @like = @board.likes.new(user_id: current_user.id)
     respond_to do |format|
       if @like.save
@@ -119,7 +108,6 @@ class BoardsController < ApplicationController
   end
 
   def destroy_like
-    @board = Board.find(params[:id])
     @like = @board.likes.find_by(user_id: current_user.id)
     respond_to do |format|
       if @like.destroy
@@ -135,7 +123,6 @@ class BoardsController < ApplicationController
   end
 
   def create_chat
-    @board = Board.find(params[:id])
     @comment = @board.comments.new(comment_params)
     @comment.user = current_user
     respond_to do |format|
@@ -154,7 +141,6 @@ class BoardsController < ApplicationController
   end
 
   def board_info
-    @board = Board.find(params[:id])
     @board_logs = @board.board_logs
       .where.not(action_type: 0)
       .includes(:user, :frame)
@@ -162,6 +148,13 @@ class BoardsController < ApplicationController
   end
 
   private
+  def set_board
+    @board = Board.find_by(id: params[:id])
+    unless @board
+      flash[:danger] = "トピックが存在しません"
+      redirect_to boards_path
+    end
+  end
 
   def board_params
     params.require(:board).permit(:title, :parent_id)

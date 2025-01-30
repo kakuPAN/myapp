@@ -1,14 +1,13 @@
 class CommentsController < ApplicationController
   before_action :require_login, except: %i[ index ]
+  before_action :set_board
 
   def index
-    @board = Board.find(params[:board_id])
     @comments = @board.comments.where(parent_id: nil).includes(:children).order(created_at: :desc)
     @comment = Comment.new
   end
 
   def create
-    @board = Board.find(params[:board_id])
     @comment = @board.comments.build(comment_params)
     @comment.user = current_user
     @comment.save
@@ -25,13 +24,19 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    @board = Board.find(params[:board_id])
-    @comment = Comment.find(params[:id])
+    @comment = Comment.find_by(id: params[:id])
+    unless @comment
+      flash[:danger] = "コメントが存在しません"
+      redirect_to board_comments_path(@board)
+    end
   end
 
   def update
-    @board = Board.find(params[:board_id])
-    @comment = Comment.find(params[:id])
+    @comment = Comment.find_by(id: params[:id])
+    unless @comment
+      flash[:danger] = "コメントが存在しません"
+      redirect_to board_comments_path(@board)
+    end
     @comments = @board.comments.where(parent_id: nil).includes(:children).order(created_at: :desc)
 
     respond_to do |format|
@@ -51,8 +56,11 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @board = Board.find(params[:board_id])
-    @comment = Comment.find(params[:id])
+    @comment = Comment.find_by(id: params[:id])
+    unless @comment
+      flash[:danger] = "コメントが存在しません"
+      redirect_to board_comments_path(@board)
+    end
     respond_to do |format|
       if @comment.destroy
         @comments = @board.comments
@@ -70,8 +78,11 @@ class CommentsController < ApplicationController
   end
 
   def create_reply
-    @parent = Comment.find(params[:parent_id])
-    @board = Board.find(params[:board_id])
+    @parent = Comment.find_by(id: params[:parent_id])
+    unless @parent
+      flash[:danger] = "コメントが存在しません"
+      redirect_to board_comments_path(@board)
+    end
     @comment = @board.comments.build(comment_params)
     @comment.user = current_user
     @comment.parent_id = @parent.id
@@ -91,6 +102,15 @@ class CommentsController < ApplicationController
   end
 
   private
+
+  def set_board
+    @board = Board.find_by(id: params[:board_id])
+    unless @board
+      flash[:danger] = "トピックが存在しません"
+      redirect_to boards_path
+    end
+  end
+
 
   def comment_params
     params.require(:comment).permit(:body, :parent_id)
