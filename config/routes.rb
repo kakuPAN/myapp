@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       post :create_comment_report
     end
   end
-  resources :users, except: [ :index, :show] do
+  resources :users, except: [ :index, :show ] do
     member do
       get :liked_boards
       get :visited_boards
