@@ -1,7 +1,7 @@
 class Admin::BaseController < ApplicationController
   before_action :check_admin
   before_action :set_search
-  layout 'admin/layouts/application'
+  layout "admin/layouts/application"
 
   private
 

@@ -19,7 +19,7 @@ class Admin::FramesController < Admin::BaseController
       flash[:success] = "フレームを削除できません"
     end
   end
-  
+
   private
 
   def set_board

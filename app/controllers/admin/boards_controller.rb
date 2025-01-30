@@ -6,7 +6,7 @@ class Admin::BoardsController < Admin::BaseController
 
   def show
   end
-  
+
   def board_info
     @board_logs = @board.board_logs
       .where.not(action_type: 0)

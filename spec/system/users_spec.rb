@@ -185,7 +185,6 @@ RSpec.describe "Users", type: :system do
 
         expect(current_path).to eq new_user_path
       end
-
     end
     context "ログイン後" do
       before { login(user) }

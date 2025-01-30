@@ -31,7 +31,7 @@ RSpec.describe "AdminReports", type: :system do
       it "報告一覧に報告情報が表示される" do
         visit admin_board_path(board)
         click_link "報告"
-        reports = [board_report, comment_report]
+        reports = [ board_report, comment_report ]
         reports.each do |report|
           expect(page).to have_content(report.id)
           expect(page).to have_content(report.user.user_name)
@@ -74,6 +74,3 @@ RSpec.describe "AdminReports", type: :system do
     end
   end
 end
-
-
-
