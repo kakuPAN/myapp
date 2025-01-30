@@ -25,12 +25,14 @@ RSpec.describe "AdminFrames", type: :system do
   describe "管理者ユーザーによるアクセス" do
     before { login(admin_user) }
     describe "フレーム一覧ページにアクセス" do
+      let!(:frame_log) { create(:board_log, user_id: admin_user.id, board_id: board.id, frame_id: frame.id, action_type: 1) }
       it "フレーム一覧にフレーム情報が表示される" do
         visit admin_board_path(board)
         click_link "フレーム"
         expect(page).to have_content(frame.frame_number)
         expect(page).to have_content(I18n.t("enums.frame.frame_type.#{frame.frame_type}"))
-        expect(page).to have_content("作成")
+        expect(page).to have_content(I18n.t("enums.board_log.action_type.#{frame_log.action_type}"))
+        expect(page).to have_content(frame_log.user.user_name)
         expect(page).to have_content(frame.updated_at.strftime('%Y-%m-%d %H:%M:%S'))
         visit admin_board_frames_path(board)
       end
