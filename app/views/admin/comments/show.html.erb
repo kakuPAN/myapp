@@ -1,0 +1,105 @@
+<div class="admin admin-container">
+  <div class="admin-content">
+    <div class="admin-title">
+      <div class="sub-title">
+        <%= link_to admin_board_path(@board), class: "cell-link" do %>
+          <%= @board.title %>
+        <% end %>
+      </div>
+      <div class="sub-title">
+        <%= link_to admin_board_comments_path(@board), class: "cell-link" do %>  
+          コメント一覧
+        <% end %>
+      </div>
+      <div class="sub-title">コメント詳細</div>
+    </div>
+    <table class="table table-striped fixed-table parent">
+      <thead>
+        <tr>
+          <th class="col-id">id</th>
+          <th class="col-username">ユーザー名</th>
+          <th class="col-content">コメント内容</th>
+          <th class="col-timestamp">最終更新日時</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= @comment.id %></td>
+          <td>
+            <%= link_to admin_user_path(@comment.user), class: "cell-link" do %>
+              <%= @comment.user.user_name %>
+            <% end %>
+          </td>
+          <td><%= @comment.body %></td>
+          <td><%= @comment.updated_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+        </tr>
+      </tbody>
+    </table>
+    <td><%= link_to "コメントを削除", admin_board_comment_path(@board, @comment), data: { turbo_method: :delete}, class: "btn btn-outline-danger", id: "delete-comment" %></td>
+
+    <% if @comment.parent_id %>
+      <div class="table-label reply">親コメント</div>
+      <table class="table table-striped fixed-table">
+        <thead>
+          <tr>
+            <th class="col-id">id</th>
+            <th class="col-username">ユーザー名</th>
+            <th class="col-content">コメント内容</th>
+            <th class="col-timestamp">最終更新日時</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% parent_comment = @comment.parent %>
+          <tr>
+            <td>
+              <%= link_to admin_board_comment_path(@board, parent_comment), class: "cell-link" do %>
+                <%= parent_comment.id %>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to admin_user_path(parent_comment.user), class: "cell-link" do %>
+                <%= parent_comment.user.user_name %>
+              <% end %>  
+            </td>
+            <td><%= parent_comment.body %></td>
+            <td><%= parent_comment.updated_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+          </tr>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="table-label reply">返信コメント</div>
+      <% if @comment.children.empty? %>
+        <div class="no-content">返信はありません</div>
+      <% else %>
+        <table class="table table-striped fixed-table">
+          <thead>
+            <tr>
+              <th class="col-id">id</th>
+              <th class="col-username">ユーザー名</th>
+              <th class="col-content">コメント内容</th>
+              <th class="col-timestamp">最終更新日時</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @comment.children.each do |comment| %>
+              <tr>
+                <td>
+                  <%= link_to admin_board_comment_path(@board, comment), class: "cell-link" do %>
+                    <%= comment.id %>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to admin_user_path(comment.user), class: "cell-link" do %>
+                    <%= comment.user.user_name %>
+                  <% end %> 
+                </td>
+                <td><%= comment.body %></td>
+                <td><%= comment.updated_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    <% end %>
+  </div>
+</div>

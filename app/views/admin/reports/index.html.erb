@@ -1,0 +1,57 @@
+<div class="admin admin-container">
+  <div class="admin-content">
+    <div class="admin-title">
+      <div class="sub-title">
+        <%= link_to admin_board_path(@board), class: "cell-link" do %>
+          <%= @board.title %>
+        <% end %>
+      </div>
+      <div class="sub-title">報告一覧</div>
+    </div>
+    <% if @reports.empty? %>
+      <div class="no-content">報告がありません</div>
+    <% else %>
+      <table class="table table-striped fixed-table">
+        <thead>
+          <tr>
+            <th class="col-id">ID</th>
+            <th class="col-username">報告ユーザー名</th>
+            <th class="col-target">対象</th>
+            <th class="col-reason">理由</th>
+            <th class="col-timestamp">報告日時</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @reports.each do |report| %>
+            <tr>
+              <td>
+                <%= link_to admin_report_path(report, board_id: @board.id), class: "cell-link", id: "report-link-#{report.id}" do %>
+                  <%= report.id %>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to admin_user_path(report.user), class: "cell-link" do %>
+                  <%= report.user.user_name %>
+                <% end %>
+              </td>
+              <td>
+                <% if report.comment_id %>
+                  <%= link_to admin_board_comment_path(report.board, report.comment), class: "cell-link" do %>
+                    コメント
+                  <% end %>
+                <% else %>
+                  <%= link_to admin_board_path(report.board), class: "cell-link" do %>
+                    トピック
+                  <% end %>
+                <% end %>
+              </td>
+              <td><%= report.body %></td>
+              <td><%= report.updated_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= paginate @reports %>
+    <% end %>
+  </div>
+</div>

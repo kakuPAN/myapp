@@ -3,16 +3,29 @@ require 'rails_helper'
 RSpec.describe "UserSessions", type: :system do
   let!(:security_question) { create(:security_question) }
   let(:user) { create(:user) }
+  let(:admin_user) { create(:user, user_name: "admin_user", role: 1, security_question_id: security_question.id) }
 
   describe "ログイン" do
     context "認証情報が正しい場合" do
-      it "ログインが成功する" do
-        visit login_path
-        fill_in "session-email", with: user.email
-        fill_in "session-password", with: "password"
-        find('#login-submit').click
-        expect(page).to have_content("#{user.user_name}さまがログインしました")
-        expect(current_path).to eq user_path(user)
+      context "一般ユーザーの場合" do
+        it "ログイン後、ユーザーマイページに遷移" do
+          visit login_path
+          fill_in "session-email", with: user.email
+          fill_in "session-password", with: "password"
+          find('#login-submit').click
+          expect(page).to have_content("#{user.user_name}さまがログインしました")
+          expect(current_path).to eq user_path(user)
+        end
+      end
+      context "管理者ユーザーの場合" do
+        it "ログイン後、管理者ページに遷移" do
+          visit login_path
+          fill_in "session-email", with: admin_user.email
+          fill_in "session-password", with: "password"
+          find('#login-submit').click
+          expect(page).to have_content("管理者：#{admin_user.user_name}がログインしました")
+          expect(current_path).to eq admin_users_path
+        end
       end
     end
 

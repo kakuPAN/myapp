@@ -3,7 +3,6 @@ class FramesController < ApplicationController
   before_action :set_board
 
   def index
-    @board = Board.find(params[:board_id])
     @frames = Frame.where(board_id: @board.id)
   end
 
@@ -32,11 +31,19 @@ class FramesController < ApplicationController
   end
 
   def edit
-    @frame = @board.frames.find(params[:id])
+    @frame = Frame.find_by(id: params[:id])
+    unless @frame
+      flash[:danger] = "フレームが存在しません"
+      redirect_to edit_board_path(@board)
+    end
   end
 
   def update
-    @frame = @board.frames.find(params[:id])
+    @frame = Frame.find_by(id: params[:id])
+    unless @frame
+      flash[:danger] = "フレームが存在しません"
+      redirect_to edit_board_path(@board)
+    end
     respond_to do |format|
       if @frame.update(frame_params)
         @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, frame_id: @frame.id, action_type: :update_action)
@@ -53,7 +60,11 @@ class FramesController < ApplicationController
   end
 
   def destroy
-    @frame = Frame.find(params[:id])
+    @frame = Frame.find_by(id: params[:id])
+    unless @frame
+      flash[:danger] = "フレームが存在しません"
+      redirect_to edit_board_path(@board)
+    end
     current_number = @frame.frame_number
     @frame.destroy
     begin
@@ -72,7 +83,11 @@ class FramesController < ApplicationController
   end
 
   def move_forward
-    @frame = Frame.find(params[:id])
+    @frame = Frame.find_by(id: params[:id])
+    unless @frame
+      flash[:danger] = "フレームが存在しません"
+      redirect_to edit_board_path(@board)
+    end
     last_frame_number = @board.frames.order(:frame_number).last.frame_number
     if @frame.frame_number > 1
       previous_frame = @board.frames.find_by(frame_number: @frame.frame_number - 1)
@@ -96,7 +111,11 @@ class FramesController < ApplicationController
   end
 
   def move_back
-    @frame = Frame.find(params[:id])
+    @frame = Frame.find_by(id: params[:id])
+    unless @frame
+      flash[:danger] = "フレームが存在しません"
+      redirect_to edit_board_path(@board)
+    end
     last_frame_number = @board.frames.order(:frame_number).last.frame_number
 
     if @frame.frame_number < last_frame_number
@@ -121,11 +140,14 @@ class FramesController < ApplicationController
     end
   end
 
-
   private
 
   def set_board
-    @board = Board.find(params[:board_id])
+    @board = Board.find_by(id: params[:board_id])
+    unless @board
+      flash[:danger] = "トピックが存在しません"
+      redirect_to boards_path
+    end
   end
 
   def frame_params

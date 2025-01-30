@@ -8,6 +8,13 @@
       <% end %>
       <div class="to-comment-user"><%= comment.user.user_name %></div>
     <% end %>
+    <% if current_user && current_user != User.find(comment.user_id) %>
+      <div class="report-link">
+        <%= link_to new_comment_report_report_path(board.id, comment_id: comment.id), id: "comment-report-link-#{comment.id}" do %>
+          <i class="bi bi-flag-fill"></i>
+        <% end %>
+      </div>
+    <% end %>
     <div class="comment-reply-container">
       <%= render "comments/edit_comment_wrapper", board: board, comment: comment %>
       <div class="reply-wrapper">

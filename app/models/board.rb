@@ -9,7 +9,8 @@ class Board < ApplicationRecord
   has_many :liked_users, through: :likes, source: :user
   has_many :board_logs, dependent: :destroy
   has_many :action_user, through: :board_logs, source: :user
-
+  has_many :reports, dependent: :destroy
+  
   validates :title, presence: true, length: { maximum: 100 }
   validates :title, uniqueness: { scope: :parent_id, message: "はすでにこのトピック内に存在します" }
 

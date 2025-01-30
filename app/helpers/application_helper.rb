@@ -24,4 +24,9 @@ module ApplicationHelper
       }
     }
   end
+
+  def page_title(title = '', admin: false)
+    base_title = admin ? 'Topic Board Admin' : "Topic Board"
+    title.present? ? "#{title} | #{base_title}" : base_title
+  end
 end

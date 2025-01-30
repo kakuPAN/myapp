@@ -14,9 +14,15 @@
  
 <%= turbo_stream.append "error-messages" do %>
   <div id="replace-flash-message">
-    <% if flash.now[:success] %>
-      <div class="alert-label">ダブルクリックで削除</div>
-      <div class="alert alert-success flash-message"><%= flash.now[:success] %></div>
+    <% if flash.now[:success] || flash.now[:danger] %>
+      <div class="alert-label">Wクリックで削除</div>
+      <div class="alert alert-success flash-message">
+        <% if flash.now[:success] %>
+          <%= flash.now[:success] %>
+        <% elsif flash.now[:danger] %>
+          <%= flash.now[:danger] %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 <% end %>

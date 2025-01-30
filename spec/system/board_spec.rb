@@ -59,16 +59,12 @@ RSpec.describe "Boards", type: :system do
         end
       end
       context "タイトルが未入力の場合" do
-        it "ボードの作成が失敗する" do
+        it "作成ボタンを押下できない" do
           visit board_path(board)
           find('#create-new-board').click
 
           fill_in "board_title", with: ""
-          find("#create-new-board").click
-
-          expect(page).to have_content "入力に不足があります"
-          expect(page).to have_content "タイトルを入力してください"
-
+          expect(find("#create-new-board")[:disabled]).to eq "true" # 空の場合、作成ボタンを押下できない
           expect(current_path).to eq new_board_path
         end
       end

@@ -15,7 +15,7 @@ RSpec.describe "Users", type: :system do
         fill_in "user_email", with: "new_user@email.com"
         fill_in "user_password", with: "password"
         fill_in "user_password_confirmation", with: "password"
-        select user.security_question.question_text, from: "user_security_question_id"
+        select security_question.question_text, from: "user_security_question_id"
         fill_in "user_security_answer", with: "回答"
 
         click_button "登録"
@@ -34,7 +34,7 @@ RSpec.describe "Users", type: :system do
         fill_in "user_email", with: "new_user@email.com"
         fill_in "user_password", with: "password"
         fill_in "user_password_confirmation", with: "password"
-        select user.security_question.question_text, from: "user_security_question_id"
+        select security_question.question_text, from: "user_security_question_id"
         fill_in "user_security_answer", with: "回答"
 
         click_button "登録"
@@ -54,7 +54,7 @@ RSpec.describe "Users", type: :system do
         fill_in "user_email", with: ""
         fill_in "user_password", with: "password"
         fill_in "user_password_confirmation", with: "password"
-        select user.security_question.question_text, from: "user_security_question_id"
+        select security_question.question_text, from: "user_security_question_id"
         fill_in "user_security_answer", with: "回答"
 
         click_button "登録"
@@ -74,7 +74,7 @@ RSpec.describe "Users", type: :system do
         fill_in "user_email", with: registered_user.email
         fill_in "user_password", with: "password"
         fill_in "user_password_confirmation", with: "password"
-        select user.security_question.question_text, from: "user_security_question_id"
+        select security_question.question_text, from: "user_security_question_id"
         fill_in "user_security_answer", with: "回答"
 
         click_button "登録"
@@ -94,7 +94,7 @@ RSpec.describe "Users", type: :system do
         fill_in "user_email", with: "new_user@email.com"
         fill_in "user_password", with: ""
         fill_in "user_password_confirmation", with: ""
-        select user.security_question.question_text, from: "user_security_question_id"
+        select security_question.question_text, from: "user_security_question_id"
         fill_in "user_security_answer", with: "回答"
 
         click_button "登録"
@@ -114,7 +114,7 @@ RSpec.describe "Users", type: :system do
         password = Faker::Lorem.paragraph_by_chars(number: 3)
         fill_in "user_password", with: password
         fill_in "user_password_confirmation", with: ""
-        select user.security_question.question_text, from: "user_security_question_id"
+        select security_question.question_text, from: "user_security_question_id"
         fill_in "user_security_answer", with: "回答"
 
         click_button "登録"
@@ -135,7 +135,7 @@ RSpec.describe "Users", type: :system do
         password = "p"
         fill_in "user_password", with: password
         fill_in "user_password_confirmation", with: password
-        select user.security_question.question_text, from: "user_security_question_id"
+        select security_question.question_text, from: "user_security_question_id"
         fill_in "user_security_answer", with: "回答"
 
         click_button "登録"
@@ -156,7 +156,7 @@ RSpec.describe "Users", type: :system do
         password = Faker::Lorem.paragraph_by_chars(number: 3)
         fill_in "user_password", with: password
         fill_in "user_password_confirmation", with: "misspassword"
-        select user.security_question.question_text, from: "user_security_question_id"
+        select security_question.question_text, from: "user_security_question_id"
         fill_in "user_security_answer", with: "回答"
         click_button "登録"
 
@@ -165,6 +165,27 @@ RSpec.describe "Users", type: :system do
 
         expect(current_path).to eq new_user_path
       end
+
+      it "秘密の質問の回答を入力していない場合" do
+        visit root_path
+        find("#login-button").click
+        find("#create-user-link").click
+
+        fill_in "user_user_name", with: "new_user"
+        fill_in "user_email", with: "new_user@email.com"
+        password = Faker::Lorem.paragraph_by_chars(number: 3)
+        fill_in "user_password", with: password
+        fill_in "user_password_confirmation", with: "misspassword"
+        select security_question.question_text, from: "user_security_question_id"
+        fill_in "user_security_answer", with: ""
+        click_button "登録"
+
+        expect(page).to have_content("入力に不足があります")
+        expect(page).to have_content("秘密の質問の答えを入力してください")
+
+        expect(current_path).to eq new_user_path
+      end
+
     end
     context "ログイン後" do
       before { login(user) }

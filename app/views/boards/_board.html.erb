@@ -20,9 +20,12 @@
       <% end %>
     </div>
     <div class="board-title-label <%= board_color(board) %>">
-      <%= @board.title %>
+      <%= board.title %>
       <% if current_user %>
         <div class="delete-edit-button">
+          <%= link_to new_board_report_report_path(board_id: board.id), class: "report-button" do %>
+            <i class="bi bi-flag-fill"></i>
+          <% end %>
           <%= link_to edit_board_path(board), class: "edit-button" do %>
             <i class="bi bi-pencil-fill"></i>
           <% end %>
@@ -33,13 +36,14 @@
         </div>
       <% else %>
         <div class="delete-edit-button funcs">
-          <div class="edit-button <%= "func-icon" unless current_user %>">
+          <i class="bi bi-flag-fill func-icon report-button"></i>
+          <div class="edit-button func-icon">
             <i class="bi bi-pencil-fill"></i>
           </div>
           <%= link_to board_info_board_path(board), class: "info-button" do %>
             <i class="bi bi-bell-fill"></i>
           <% end %>
-          <i class="bi bi-chat-left-dots-fill comment-button <%= "func-icon" unless current_user %>"></i>
+          <i class="bi bi-chat-left-dots-fill comment-button func-icon"></i>
         </div>
       <% end %>
     </div>

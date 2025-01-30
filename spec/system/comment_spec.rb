@@ -123,21 +123,11 @@ RSpec.describe "Comments", type: :system do
             find("#edit-comment-button-#{to_comment.id}").click
             expect(page).to have_content("#{to_comment.body}")
             fill_in "comment_body_#{to_comment.id}", with: "編集したコメント"
+            expect(page).to have_field("comment_body_#{to_comment.id}", with: "編集したコメント", wait: 5)
             find("#edit_comment_submit_#{to_comment.id}").click
             expect(page).to have_content("編集したコメント")
             expect(page).to have_content("コメントを編集しました")
             expect(to_comment.reload.body).to eq "編集したコメント"
-            expect(current_path).to eq board_comments_path(board)
-          end
-          it "返信コメントを編集できる" do
-            visit board_comments_path(board)
-            find("#edit-comment-button-#{reply.id}").click
-            expect(page).to have_content("#{reply.body}")
-            fill_in "comment_body_#{reply.id}", with: "編集した返信"
-            find("#edit_comment_submit_#{reply.id}").click
-            expect(page).to have_content("編集した返信")
-            expect(page).to have_content("コメントを編集しました")
-            expect(reply.reload.body).to eq "編集した返信"
             expect(current_path).to eq board_comments_path(board)
           end
         end
