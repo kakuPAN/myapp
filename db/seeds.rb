@@ -14,7 +14,7 @@ SecurityQuestion.create!([
 ])
 
 users_data = [
-    {   
+    {
     email: "admin@email.com",
     password: "pass",
     password_confirmation: "pass",

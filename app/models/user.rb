@@ -29,7 +29,7 @@ class User < ApplicationRecord
   validate :image_content_type
   validate :image_size
 
-  enum :role, { general: 0, admin: 1}
+  enum :role, { general: 0, admin: 1 }
 
   def self.ransackable_attributes(auth_object = nil)
     # 検索可能にしたい属性を配列で返す

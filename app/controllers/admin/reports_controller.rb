@@ -17,7 +17,7 @@ class Admin::ReportsController < Admin::BaseController
       redirect_to admin_report_path(@report)
     end
   end
-  
+
   private
 
   def set_board

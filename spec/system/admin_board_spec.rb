@@ -46,7 +46,7 @@ RSpec.describe "AdminBoards", type: :system do
         expect(current_path).to eq admin_board_path(board)
       end
       describe "変更履歴にアクセス" do
-        let!(:board_edit_log) { create(:board_log, user_id: admin_user.id, board_id: board.id, action_type: 2)}
+        let!(:board_edit_log) { create(:board_log, user_id: admin_user.id, board_id: board.id, action_type: 2) }
         it "トピックに関する変更履歴が表示される" do
           visit admin_board_path(board)
           click_link "変更履歴"

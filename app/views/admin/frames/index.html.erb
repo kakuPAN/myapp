@@ -24,12 +24,8 @@
         <tbody>
           <% @frames.each do |frame| %>
             <% frame_logged_user = frame.frame_logs.order(updated_at: :desc).first %>
-            <% 
-              if frame_logged_user
-                frame_action = frame.board_logs.where(user_id: frame_logged_user.id).order(updated_at: :desc).first.action_type 
-              end
-            %>
             <tr>
+              <% frame_action = frame.board_logs.where(user_id: frame_logged_user.id).order(updated_at: :desc).first&.action_type if frame_logged_user %>
               <td>
                 <%= link_to admin_board_frame_path(@board, frame), class: "cell-link", id: "frame-link-#{frame.id}" do %>
                   <%= frame.frame_number %>
@@ -48,7 +44,7 @@
                   <% end %>
                 <% end %>
               </td>
-              <td><%= frame.updated_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+              <td><%= frame.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
             </tr>
           <% end %>
         </tbody>

@@ -7,7 +7,7 @@
         <% end %>
       </div>
       <div class="sub-title">
-        <%= link_to admin_reports_path(board_id: @board.id), class: "cell-link" do %>  
+        <%= link_to admin_reports_path(board_id: @board.id), class: "cell-link" do %>
           報告一覧
         <% end %>
       </div>
@@ -46,10 +46,9 @@
       </div>
       <div class="user-profile-row">
         <span class="label">報告日時:</span>
-        <span class="value"><%= @report.created_at.strftime('%Y-%m-%d %H:%M:%S') %></span>
+        <span class="value"><%= @report.created_at.strftime("%Y-%m-%d %H:%M:%S") %></span>
       </div>
     </div>
-    <%= link_to "報告を削除", admin_report_path(@report, board_id: @board.id), data: { turbo_method: :delete}, class: "btn btn-outline-danger", id: "delete-report-button" %>
+    <%= link_to "報告を削除", admin_report_path(@report, board_id: @board.id), data: { turbo_method: :delete }, class: "btn btn-outline-danger", id: "delete-report-button" %>
   </div>
 </div>
-

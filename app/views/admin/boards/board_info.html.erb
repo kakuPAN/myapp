@@ -7,7 +7,7 @@
         <% end %>
       </div>
       <p class="sub-title">変更履歴</p>
-    </div>  
+    </div>
     <div class="board-info-container">
       <% if @board_logs.empty? %>
         <div class="no-content">まだ変更はありません</div>
@@ -41,7 +41,7 @@
                     <% end %>
                 </td>
                 <td><%= I18n.t("enums.board_log.action_type.#{log.action_type}") %></td>
-                <td><%= log.created_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+                <td><%= log.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
               </tr>
             <% end %>
           </tbody>

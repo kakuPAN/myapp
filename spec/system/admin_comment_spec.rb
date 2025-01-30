@@ -38,7 +38,7 @@ RSpec.describe "AdminFrames", type: :system do
         visit admin_board_path(board)
         click_link "コメント"
         find("#comment-link-#{comment.id}").click
-        comments = [comment, reply]
+        comments = [ comment, reply ]
         comments.each do |content|
           expect(page).to have_content(content.id)
           expect(page).to have_content(content.user.user_name)
@@ -60,6 +60,3 @@ RSpec.describe "AdminFrames", type: :system do
     end
   end
 end
-
-
-

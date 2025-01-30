@@ -281,13 +281,12 @@ RSpec.describe "AdminUsers", type: :system do
           find("#delete-user-button").click
           expect(page).to have_content("ユーザーを削除しました")
           expect(current_path).to eq admin_users_path
-         
+
           expect(User.exists?(id: general_user.id)).to be_falsey # ユーザーが存在しないことを確認
         end
       end
       context "管理者ユーザーを削除する場合" do
         context "管理者ユーザーの数が２つ以上の場合" do # 管理者が１つの場合は自分自身を削除と同様
-
           let!(:admin_user_sub) { create(:user, user_name: "sub_admin_user", role: 1, security_question_id: security_question.id) }
           context "ユーザーが別の管理者を削除する場合" do
             it "ユーザーの削除が成功する" do
@@ -296,7 +295,7 @@ RSpec.describe "AdminUsers", type: :system do
               find("#delete-user-button").click
               expect(page).to have_content("ユーザーを削除しました")
               expect(current_path).to eq admin_users_path
-            
+
               expect(User.exists?(id: admin_user_sub.id)).to be_falsey # ユーザーが存在しないことを確認
             end
           end

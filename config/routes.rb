@@ -5,18 +5,18 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root "users#index"
-    resources :users, except: [:edit, :update]
-    resources :boards, only: [:index, :show, :destroy] do
+    resources :users, except: [ :edit, :update ]
+    resources :boards, only: [ :index, :show, :destroy ] do
       member do
         get :board_info
       end
-      resources :frames, only: [:index, :show, :destroy]
-      resources :comments, only: [:index, :show, :destroy]
+      resources :frames, only: [ :index, :show, :destroy ]
+      resources :comments, only: [ :index, :show, :destroy ]
     end
-    resources :reports, only: [:index, :show, :destroy]
+    resources :reports, only: [ :index, :show, :destroy ]
   end
-  
-  resources :reports, only: [:new, :create] do
+
+  resources :reports, only: [ :new, :create ] do
     member do
       get :new_board_report
       post :create_board_report
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
       post :create_comment_report
     end
   end
-  resources :users, except: [:index] do
+  resources :users, except: [ :index ] do
     member do
       get :liked_boards
       get :visited_boards
@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :password_resets, except: [:index, :show, :destroy] do
+  resources :password_resets, except: [ :index, :show, :destroy ] do
     collection do
       get ":token/edit", action: :edit, as: "edit_password_reset"
       post "create", action: :create, as: "password_resets"
@@ -49,13 +49,13 @@ Rails.application.routes.draw do
       post :create_chat
       get :board_info
     end
-    resources :frames, except: [:show] do
+    resources :frames, except: [ :show ] do
       member do
         patch :move_forward
         patch :move_back
       end
     end
-    resources :comments, except: [:new, :show] do
+    resources :comments, except: [ :new, :show ] do
       member do
         post :create_reply
         delete :destroy_reply
@@ -70,7 +70,6 @@ Rails.application.routes.draw do
   post "login", to: "user_sessions#create"
   delete "logout", to: "user_sessions#destroy"
 
-  get '*not_found' => 'application#routing_error', constraints: lambda { |request| !request.path.include?("active_storage") }
-  post '*not_found' => 'application#routing_error', constraints: lambda { |request| !request.path.include?("active_storage") }
-  
+  get "*not_found" => "application#routing_error", constraints: lambda { |request| !request.path.include?("active_storage") }
+  post "*not_found" => "application#routing_error", constraints: lambda { |request| !request.path.include?("active_storage") }
 end

@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  
   allow_browser versions: :modern
   helper_method :breadcrumbs
   before_action :set_search
@@ -30,5 +29,4 @@ class ApplicationController < ActionController::Base
   end
 
   private
-
 end

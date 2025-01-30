@@ -7,7 +7,7 @@
         <% end %>
       </div>
       <div class="sub-title">
-        <%= link_to admin_board_comments_path(@board), class: "cell-link" do %>  
+        <%= link_to admin_board_comments_path(@board), class: "cell-link" do %>
           コメント一覧
         <% end %>
       </div>
@@ -31,11 +31,11 @@
             <% end %>
           </td>
           <td><%= @comment.body %></td>
-          <td><%= @comment.updated_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+          <td><%= @comment.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
         </tr>
       </tbody>
     </table>
-    <td><%= link_to "コメントを削除", admin_board_comment_path(@board, @comment), data: { turbo_method: :delete}, class: "btn btn-outline-danger", id: "delete-comment" %></td>
+    <td><%= link_to "コメントを削除", admin_board_comment_path(@board, @comment), data: { turbo_method: :delete }, class: "btn btn-outline-danger", id: "delete-comment" %></td>
 
     <% if @comment.parent_id %>
       <div class="table-label reply">親コメント</div>
@@ -59,10 +59,10 @@
             <td>
               <%= link_to admin_user_path(parent_comment.user), class: "cell-link" do %>
                 <%= parent_comment.user.user_name %>
-              <% end %>  
+              <% end %>
             </td>
             <td><%= parent_comment.body %></td>
-            <td><%= parent_comment.updated_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+            <td><%= parent_comment.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
           </tr>
         </tbody>
       </table>
@@ -91,10 +91,10 @@
                 <td>
                   <%= link_to admin_user_path(comment.user), class: "cell-link" do %>
                     <%= comment.user.user_name %>
-                  <% end %> 
+                  <% end %>
                 </td>
                 <td><%= comment.body %></td>
-                <td><%= comment.updated_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+                <td><%= comment.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
               </tr>
             <% end %>
           </tbody>
