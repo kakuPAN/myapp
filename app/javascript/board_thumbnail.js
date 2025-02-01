@@ -1,4 +1,4 @@
-// ボードサムネイル表示
+// トピックサムネイル表示
 document.addEventListener("turbo:load", function () {
   const boardContainers = document.querySelectorAll("[id^='board-content-']");
     boardContainers.forEach(container => {

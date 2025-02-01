@@ -188,7 +188,7 @@ RSpec.describe "Users", type: :system do
     end
     context "ログイン後" do
       before { login(user) }
-      it "ボード一覧にリダイレクトする" do
+      it "トピック一覧にリダイレクトする" do
         visit new_user_path
         expect(page).to have_content("すでにログインしています")
         expect(current_path).to eq boards_path
@@ -224,14 +224,14 @@ RSpec.describe "Users", type: :system do
         expect(current_path).to eq liked_boards_user_path(registered_user)
       end
       describe "ユーザーのお気に入り一覧ページにアクセス" do
-        it "ユーザーがお気に入りに登録したボードが表示される" do
+        it "ユーザーがお気に入りに登録したトピックが表示される" do
           visit liked_boards_user_path(registered_user)
           expect(page).to have_content registered_user.liked_boards.last.title
           expect(page).to have_current_path(liked_boards_user_path(registered_user), wait: 5)
         end
       end
       describe "ユーザーの活動一覧ページにアクセス" do
-        it "ユーザーの活動に関連するボードが表示される" do
+        it "ユーザーの活動に関連するトピックが表示される" do
           visit liked_boards_user_path(registered_user)
           click_link "ユーザーの活動"
           expect(page).to have_content registered_user.user_board_actions.last.title
@@ -342,7 +342,7 @@ RSpec.describe "Users", type: :system do
         end
       end
       describe "ユーザーのお気に入り一覧ページにアクセス" do
-        it "ユーザーがお気に入りに登録したボードが表示される" do
+        it "ユーザーがお気に入りに登録したトピックが表示される" do
           visit visited_boards_user_path(user)
           click_link "お気に入り"
           expect(page).to have_content user.liked_boards.last.title
@@ -350,7 +350,7 @@ RSpec.describe "Users", type: :system do
         end
       end
       describe "ユーザーの活動一覧ページにアクセス" do
-        it "ユーザーの活動に関連するボードが表示される" do
+        it "ユーザーの活動に関連するトピックが表示される" do
           visit visited_boards_user_path(user)
           click_link "ユーザーの活動"
           expect(page).to have_content user.user_board_actions.last.title

@@ -4,7 +4,7 @@ module CommentsHelper
   end
 
   def comment_page_for(comment, comments_per_page = 2)
-    # コメントが属するボードのすべてのコメントを、ページネーション順で取得
+    # コメントが属するトピックのすべてのコメントを、ページネーション順で取得
     comments = comment.board.comments.order(created_at: :desc).pluck(:id)
 
     # コメントが配列内の何番目にあるかを取得

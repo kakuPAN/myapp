@@ -30,53 +30,6 @@ module BoardsHelper
     board.frames.limit(30).find { |frame| frame.image.attached? }
   end
 
-
-  # def board_check(board)
-  #   parent_board = Board.find_by(id: board.parent_id)
-  #   return nil if (parent_board.blank? || !parent_board.include?(board.id)) && !parent_board&.children&.empty?
-  #   boards = parent_board.children.order(created_at: :desc).pluck(:id)
-  #   board_index = boards.index(board.id)
-  #   return boards, board_index
-  # end
-
-  # def latest_board(board)
-  #   boards, board_index = board_check(board)
-  #   if board_index == 0
-  #     nil
-  #   else
-  #     latest_board_id = boards.first
-  #   end
-  # end
-
-  # def previous_board(board)
-  #   boards, board_index = board_check(board)
-  #   if board_index == 0
-  #     nil
-  #   else
-  #   # 前のボードのIDを返す
-  #     previous_board_id = boards[board_index - 1]
-  #   end
-  # end
-
-  # def next_board(board)
-  #   boards, board_index = board_check(board)
-  #   if board_index == boards.length - 1
-  #     nil
-  #   else
-  #   # 次のボードのIDを返す
-  #     next_board_id = boards[board_index + 1]
-  #   end
-  # end
-
-  # def oldest_board(board)
-  #   boards, board_index = board_check(board)
-  #   if board_index == boards.length - 1
-  #     nil
-  #   else
-  #     oldest_board_id = boards.last
-  #   end
-  # end
-
   def comment_class_name(comment)
     if current_user && current_user.id == comment.user_id
       comment_class_name = "comment_by_current_user"
