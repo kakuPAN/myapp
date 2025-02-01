@@ -2,7 +2,7 @@ ja:
   activerecord:
     models:
       user: ユーザー
-      board: ボード
+      board: トピック
       frame: フレーム
       like: お気に入り
       report: 報告

@@ -22,14 +22,14 @@
       </div>
     </div>
   </div>
-  <div class="index-board-actions"> <!-- ボードごとの編集履歴のリンク -->
+  <div class="index-board-actions"> <!-- トピックごとの編集履歴のリンク -->
     <%= link_to board_info_board_path(log[:board].id) do %>
       <span><%= l log[:action_date] %></span>
       <span>
         <% if log[:frame] %>
           フレーム<%= log[:frame].frame_number %>
         <% else %>
-          ボード
+          トピック
         <% end %>
         を<%= I18n.t("enums.board_log.action_type.#{log[:action_type]}") %>
       </span>

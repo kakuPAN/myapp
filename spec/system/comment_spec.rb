@@ -15,7 +15,7 @@ RSpec.describe "Comments", type: :system do
       end
     end
     describe "コメントの作成" do
-      context "ボード詳細ページでコメントを作成" do
+      context "トピック詳細ページでコメントを作成" do
         it "コメントの作成ができない" do
           visit board_path(board)
           find(".comment-button").click
@@ -50,7 +50,7 @@ RSpec.describe "Comments", type: :system do
     end
     describe "コメントの作成" do
       let!(:to_comment) { create(:comment, board_id: board.id) }
-      describe "ボード詳細ページでコメントを作成" do
+      describe "トピック詳細ページでコメントを作成" do
         context "入力内容が正常な場合" do
           it "コメントを作成できる" do
             visit board_path(board)
@@ -118,7 +118,7 @@ RSpec.describe "Comments", type: :system do
     describe "コメントの編集" do
       let!(:to_comment) { create(:comment, user_id: user.id, board_id: board.id) }
       let!(:reply) { create(:comment, user_id: user.id, board_id: board.id, parent_id: to_comment.id) }
-      describe "ボード詳細ページでコメントを編集" do
+      describe "トピック詳細ページでコメントを編集" do
         context "入力内容が正常な場合" do
           it "コメントを編集できる" do
             visit board_comments_path(board)

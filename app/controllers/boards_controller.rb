@@ -3,7 +3,7 @@ class BoardsController < ApplicationController
   before_action :set_board, except: %i[index new create]
 
   def index
-    if @index_boards.empty? && @index_boards.current_page > 1 # 表示できるボードが存在しない場合、このコードがないとリダイレクトが繰り返されエラーになる。
+    if @index_boards.empty? && @index_boards.current_page > 1 # 表示できるトピックが存在しない場合、このコードがないとリダイレクトが繰り返されエラーになる。
       redirect_to boards_path(page: @index_boards.total_pages) and return
     end
   end
@@ -168,7 +168,7 @@ class BoardsController < ApplicationController
     add_breadcrumb("HOME", root_path)
   end
 
-  def boards_page_for(board) # 詳細ページ上にあるボード一覧の同じページを表示するためのメソッド
+  def boards_page_for(board) # 詳細ページ上にあるトピック一覧の同じページを表示するためのメソッド
     per_page = 10
     parent_board = Board.find_by(id: board.parent_id)
     if parent_board && !parent_board.children.empty?

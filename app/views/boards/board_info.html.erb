@@ -21,7 +21,7 @@
             <% elsif log.action_type == 2 %>
               タイトル
             <% else %>
-              ボード
+              トピック
             <% end %>
             を<%= I18n.t("enums.board_log.action_type.#{log.action_type}") %>しました。
           </p>
@@ -30,6 +30,6 @@
       </div>
     <% end %>
   <% else %>
-    <div class="no-content">このボードにはまだ変更はありません</div>
+    <div class="no-content">このトピックにはまだ変更はありません</div>
   <% end %>
 </div>

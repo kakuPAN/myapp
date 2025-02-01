@@ -167,7 +167,6 @@ function ActivateReplySubmit(textarea, commentId) {
   };
 };
 
-
 // コメント編集
 function EditCommentShowLength(str, commentId) {
   const Comments = document.querySelectorAll("[id^='edit_comment_submit_']");
@@ -258,7 +257,7 @@ function ShowUserNameLength(str) {
 </script>
 
 <script>
-// ユーザー名が空でなく、かつ画像が選択されている場合にsubmitを有効化 
+// ユーザー名が空でなく、かつ画像が選択されている場合にsubmitを有効化
 function UserCheckImage() {
   const userNameInput = document.getElementById("user-name");
   const avatarImageInput = document.getElementById("avatar-image");
@@ -323,5 +322,3 @@ function checkFrameImage() {
   }
 }
 </script>
-
-
