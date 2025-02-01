@@ -1,0 +1,903 @@
+// boards/new
+@media (min-width: 600px) {
+  .new-board-wrapper {
+    justify-content: center;
+    align-items: center;
+  }
+  .new-board-parent {
+    font-size: 40px;
+  }
+  .new-board-form {
+    width: 600px;
+  }
+  .new-board-form input {
+    font-size: 30px;
+  }
+  .new-board-form textarea {
+    font-size: 30px;
+  }
+  .new-board-form a {
+    font-size: 30px;
+  }
+}
+@media (max-width: 599px) {
+  .new-board-wrapper {
+    margin: 0 20px;
+  }
+  .new-board-parent {
+    font-size: 30px;
+  }
+  .new-board-form {
+    width: 100%;
+  }
+  .new-board-form input {
+    font-size: 20px;
+  }
+  .new-board-form textarea {
+    font-size: 20px;
+  }
+  .new-board-form a {
+    font-size: 20px;
+  }
+}
+
+.new-board-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.new-board-parent {
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+  overflow-x: auto;
+}
+.new-board-form {
+  margin: auto;
+  margin-top: 100px;
+  border-radius: 20px;
+}
+.new-board-form textarea {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.new-board-form a {
+  width: 100%;
+  display: block;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 20px;
+}
+// boards/show
+//　トピック関連のスタイル
+// show.html
+
+@media (max-width: 599px){
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 1500px;
+    padding: 0 5px;
+  }
+  .comment-area-wrapper {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .board-body-text {
+    font-size: 20px;
+  }
+  .comment-form-wrapper {
+    min-width: 300px;
+    width: 90%;
+  }
+   .board-title-label {
+    font-size: 24px;
+  }
+  .board-title-label {
+  flex-direction: column;
+  }
+  .like-button a {
+    font-size: 15px;
+    text-decoration: none;
+   }
+}
+@media (min-width: 600px) and (max-width: 1000px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 1500px;
+    padding: 0 20px;
+  }
+  .comment-area-wrapper {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .board-body-text {
+    font-size: 20px;
+  }
+  .comment-form-wrapper {
+    width: 500px;
+  }
+  .board-title-label {
+    font-size: 30px;
+  }
+  .like-button a {
+    font-size: 20px;
+    text-decoration: none;
+   }
+
+}
+@media (min-width: 1001px) {
+  .wrapper {
+    height: 80vh;
+    padding: 0 20px;
+  }
+  .scroll-content .container {
+    position: absolute;
+    top:10%;
+  }
+  .board-body-text {
+    font-size: 24px;
+  }
+  .comment-area-wrapper {
+    margin-left: 10px;
+  }
+  .comment-form-wrapper {
+    width: 50%;
+  }
+  .board-title-label {
+    font-size: 30px;
+  }
+  .like-button a {
+    font-size: 20px;
+    text-decoration: none;
+   }
+}
+// <!-- ボード画面 -->
+  .wrapper {
+    display: flex;
+    width: 100%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    min-width: 300px;
+  }
+  .wrapper::-webkit-scrollbar {
+    display:none;
+  }
+  // スクロール部分
+  .scroll-content {
+    border-radius: 5px;
+    position: relative;
+    flex: 5;
+    width: 100%;
+    border: 1px solid;
+    align-items: center;
+    display: flex;
+    background-color: white;
+    overflow: hidden;
+  }
+  .container {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    height: 80%;
+    width: 100%;
+    margin: auto;
+    z-index: 1;
+  }
+  .section {
+    scroll-snap-align: start;
+    height: 100%;
+    border: 2px solid #ddd;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+    position: relative;
+  }
+  .frame-number {
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ddd;
+    height: 30px;
+    padding: 2px 5px;
+    text-align: center;
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+  .board-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    height: 100%;
+  }
+  .board-body-text {
+    text-align: left;
+    padding: 0 10px;
+    overflow: auto;
+  }
+  .board-body-text p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .board-body img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: auto;
+    display: block;
+  }
+  .create-board {
+    width: 100px;
+    text-align: center;
+  }
+  .create-board i {
+    font-size: 50px;
+  }
+
+  .user-name {
+    display: inline-block;
+    margin: auto;
+  }
+  .board-image img {
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 100px;
+    min-height: 100px;
+    object-fit: cover;
+    border-radius: 15px 15px 15px 15px;
+  }
+// コメント欄
+.comment-area-wrapper {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid;
+  position: relative;
+  border-radius: 5px;
+}
+.comment-area {
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  background-color: #fff;
+  border: 5px solid white;
+  border-radius: 5px;
+}
+.comment-area-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  font-size: 30px;
+  font-weight: bold;
+  border-bottom: 2px solid black;
+  border-radius: 5px 5px 0 0;
+  position: relative;
+  background: #333;
+}
+.comment-area-label a {
+  text-decoration: none;
+  color: #fff;
+}
+.comment-area-label a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #fff;
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.comment-area-label a:hover::after {
+  transform: scaleX(1);
+}
+.comment-track {
+  position: absolute;
+  width: 100%;
+  text-align: left;
+  animation: slideDown var(--animation-duration) linear infinite;
+}
+
+.comment-image img {
+  width: 100px;
+}
+.comment-link {
+  text-decoration: none;
+}
+.comment-link:hover {
+  font-weight: bold;
+}
+.comment_by_current_user.comment_by_board_user {
+  border-bottom: 2px solid green;
+}
+.comment_by_current_user {
+  border-bottom: 2px solid green;;
+}
+.comment_by_board_user {
+  border-bottom: 2px solid red;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(var(--start-translate, -105%));
+  }
+  to {
+    transform: translateY(var(--end-translate, -200px));
+  }
+}
+
+  // リプライ入力
+.replies-wrapper {
+  margin-left: 20px;
+  border-left: 2px solid #ddd;
+}
+.reply-wrapper {
+  margin-bottom: 10px;
+}
+.comment-text, .reply-text {
+  display: block;
+  margin: 20px;
+  font-size: 20px;
+}
+.comment-text {
+  color: black;
+}
+.reply-text {
+  color: #555;
+}
+.comment-avatar, .reply-avatar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  overflow: hidden;
+  margin: 20px;
+}
+.commented-user, .replied-user {
+  font-size: 20px;
+  color: black;
+  margin-left: 10px;
+}
+.avatar-image {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+.avatar-icon {
+  font-size: 40px;
+  color: #aaa;
+}
+// ボードタイトルラベル
+.board-title-label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  font-weight: bold;
+  background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
+  background-size: 200% 100%;
+  border: none;
+  transition: .4s cubic-bezier(0.37, 0, 0.63, 1);
+  box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  border-radius: 5px 5px 0px 0px;
+  margin: 0;
+  padding: 0px 20px;
+  overflow: auto;
+  white-space: nowrap;
+  border-bottom: 2px solid black;
+}
+.delete-edit-button {
+  font-size: 30px;
+  z-index: 99;
+}
+.delete-edit-button.funcs div{
+  display: inline;
+  margin: auto;
+}
+.delete-edit-button i {
+  color: #333;
+  margin: auto;
+}
+.delete-edit-button a {
+  text-decoration: none;
+  color: black;
+  margin: auto;
+}
+.delete-edit-button i:hover  {
+  color: #fff;
+}
+// チャット入力フォーム
+.comment-form-wrapper {
+  position: fixed;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 300px;
+  border-radius: 20px;
+  z-index: 999;
+  display: none;
+}
+.chat-form textarea {
+  position: absolute;
+  height: 100%;
+  padding-bottom: 60px;
+  bottom: 0;
+  resize: none;
+  background-color: white;
+  font-size: 20px;
+  border-radius: 5px;
+  box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
+}
+.chat-form input {
+  width: 100%;
+  opacity: 90%;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 0px 0px 5px 5px;
+  background: #ff701e;
+  border: none;
+  font-weight: bold;
+  background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
+  background-size: 200% 100%;
+  transition: .8s cubic-bezier(0.37, 0, 0.63, 1);
+}
+.chat-form input[type="submit"]:hover {
+  background: #fff;
+  color: #ff701e;
+  letter-spacing: 0.15em;
+}
+.chat-form input[type="submit"] {
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+}
+.chat-form input[type="submit"]:hover {
+  opacity: 0.6;
+}
+
+// タグ
+.board-container {
+  width: 100%;
+  min-width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.create-board i {
+  color: #ff701e;
+  transition: .7s;
+}
+.create-board i:hover {
+  color: gold;
+  letter-spacing: 0.2em;
+}
+.board-thumbnail-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.board-thumbnail-container {
+  position: absolute;
+  top: -300px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  display: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+.board-thumbnail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.board-thumbnail-text {
+  text-align: center;
+  padding: 5px;
+}
+.board-thumbnail img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  margin: auto;
+  display: block;
+}
+
+.board-container .board-content {
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 20px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: bold;
+}
+.board-container .board-content.red, .title-board-content.red {
+  background: #F4ADB0;
+}
+.board-container .board-content.green, .title-board-content.green {
+  background: #C9E2C7;
+}
+.board-container .board-content.blue, .title-board-content.blue {
+  background: #ABECF2;
+}
+.board-container .board-content.brown, .title-board-content.brown {
+  background: #EFDDAA;
+}
+.board-container .board-content.emerald, .title-board-content.emerald {
+  background: #E4EDAA;
+}
+
+.board-thumbnail-wrapper a {
+  color: black;
+  text-decoration: none;
+}
+// 閲覧者数
+.visitor-like-container {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translate(-50%, 0);
+  z-index: 100;
+  display: flex;
+  gap: 20px;
+}
+.visitor-count {
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 5px 10px;
+}
+.visitor-count i {
+  font-size: 20px;
+}
+// お気に入りボタン
+.like-button {
+  background: #ff701e;
+  border: 2px solid #ff701e;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  background: linear-gradient(90deg, rgba(255,112,30,1) 0%, rgba(255,191,48,1) 50%, rgba(255,77,48,1) 100%);
+  background-size: 200% 100%;
+  border: none;
+  transition: .4s cubic-bezier(0.37, 0, 0.63, 1);
+  box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  min-width: 180px;
+ }
+ .like-button:hover {
+  background: #fff;
+  letter-spacing: 0.15em;
+  border: 2px solid #ff701e;
+ }
+ .like-button .unlike span, .like-button .like span {
+  color: #fff;
+  font-weight: bold;
+ }
+ .like-button:hover span {
+  color: #ff701e;
+ }
+ 
+ .like.not-login span {
+  padding: 5px 10px;
+  font-size: 20px;
+  text-decoration: none;
+  cursor: pointer;
+ }
+
+
+// 報告 board_info.html
+.board-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.board-info-content {
+  display: flex;
+  justify-content: center;
+  width: 500px;
+  margin: auto;
+  border-bottom: 2px solid #ddd;
+}
+.action-user-info {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.action-user-info a {
+  text-decoration: none;
+}
+.action-user-image img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+.avatar-icon {
+  font-size: 40px;
+  color: #aaa;
+}
+.action-user-name {
+  font-size: 20px;
+}
+.action-details {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.action-details p {
+  margin: auto;
+  font-size: 20px;
+}
+
+// boards/edit
+@media (min-width: 1000px) {
+  .edit-wrapper {
+    flex-direction: column;
+    height: auto; /* 縦方向に制限を外す */
+    overflow-y: auto;
+  }
+  .edit-board-form textarea {
+    width: 500px;
+  }
+  .frames-wrapper {
+    width: 60%;
+    min-width: 1000px;
+  }
+  .edit-buttons {
+    position: relative;
+    margin-bottom: 50px;
+    width: 100%;
+    height: 100px;
+    margin-top: 0;
+  }
+  .delete-button {
+    position: absolute;
+    top:10px;
+    right: 20px;
+  }
+  .save-button {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+}
+@media (min-width: 700px) and (max-width: 1000px) {
+  .edit-wrapper {
+    flex-direction: column;
+    padding: 0 20px;
+    min-width: 300px;
+  }
+  .edit-board-form textarea {
+    width: 500px;
+  }
+  .frames-wrapper {
+    width: 100%;
+  }
+  .edit-buttons {
+    position: relative;
+    margin-bottom: 50px;
+    width: 100%;
+    height: 100px;
+    margin-top: 0;
+  }
+  .delete-button {
+    position: absolute;
+    top:10px;
+    right: 20px;
+  }
+  .save-button {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+}
+@media (max-width: 700px){
+  .edit-wrapper {
+    flex-direction: column;
+    padding: 0 20px;
+    min-width: 300px;
+  }
+  .edit-board-form textarea {
+    width: 250px;
+  }
+  .frames-wrapper {
+    width: 100%;
+  }
+  .add-frame {
+    display: flex;
+    flex-direction: column;
+  }
+  .edit-buttons {
+    margin-bottom: 50px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    height: 100px;
+  }
+  .save-button, .delete-button {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+// 保存・削除ボタン
+.delete-button a, .save-button a {
+  font-size: 25px;
+  text-decoration: none;
+  padding: 5px 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+// <%#ボードタイトル編集%>
+.edit-board-container {
+  margin-bottom: 100px;
+}
+.edit-board-title {
+  font-size: 25px;
+  text-align: center;
+  padding: 5px 20px;
+  background: #ededed;
+  border: 2px solid #ddd;
+  width: 100%;
+  margin-bottom: 20px;
+}
+#edit-board-link {
+  width: 100%;
+  font-size: 20px;
+  text-decoration: none;
+
+}
+.edit-board-form .bi {
+  font-size: 30px;
+  color: #0f54ff;
+}
+.edit-board-form input  {
+  display: flex;
+  flex-direction: column;
+}
+.edit-board-form textarea {
+  font-size: 25px;
+  background: #ededed;
+  border: 2px solid #ddd;
+}
+.edit-board-form input[type="submit"] {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 20px;
+}
+.edit-board-form a {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+// フレーム編集部分
+.edit-wrapper {
+height: 100%;
+display: flex;
+align-items: center;
+gap: 20px;
+flex-wrap: wrap;
+margin: auto;
+overflow: auto;
+margin-bottom: 50px;
+margin-top: 100px;
+}
+.frames-wrapper {
+display: flex;
+flex-direction: column;
+margin: auto;
+align-items: center;
+border: 2px solid #ddd;
+border-radius: 40px;
+padding: 10%;
+position: relative;
+}
+.frame-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+overflow: hidden;
+height: 100%;
+min-width: 200px;
+position: relative;
+}
+.frame-content {
+text-align: center;
+overflow: hidden;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+margin-bottom: 50px;
+font-size: 25px;
+background: #ededed;
+border: 2px solid #ddd;
+word-break: break-word;
+overflow-wrap: break-word;
+}
+.frame-content img {
+max-width: 100%;
+max-height: 100%;
+margin: auto;
+object-fit: contain;  
+display: block;
+border: 3px solid #ddd;
+}
+.add-frame {
+margin-bottom: 100px;
+font-size: 30px;
+border-radius: 20px;
+
+}
+.add-frame a {
+font-size: 25px;
+margin-bottom: 20px;
+}
+.edit-tools {
+width: 200px;
+display: none;
+}
+.edit-button {
+width: 100%;
+margin: 20px 20px 0 0;
+margin-bottom: 20px;
+}
+.edit-button a {
+width: 100%;
+font-size: 20px;
+border-radius: 10px;
+}
+.move-button a {
+margin: 0 20px;
+}
+.edit-button.disabled a {
+pointer-events: none;
+background: #ddd;
+}

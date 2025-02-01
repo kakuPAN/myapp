@@ -2,21 +2,30 @@
 <div class="wrapper">
   <div class="scroll-content">
     <div class="container">
-      <% @frames.each do |frame| %>
+      <% if @frames.empty? %>
         <div class="section">
-          <div class="frame-number">
-            <% total_number = @frames.size %>
-            <% current_number = @frames.index(frame) + 1 %>
-            <p><%= current_number %>／<%= total_number %></p>
-          </div>
           <div class="board-body">
-            <% if frame.image.attached? %>
-              <%= image_tag frame.image %>
-            <% else %>
-              <div class="board-body-text"><%= simple_format(frame.body) %></div>
-            <% end %>
+            <% images = ["free_images/space.png", "free_images/sky.png", "free_images/tree.png", "free_images/sea.png"] %>
+            <%= image_tag images.sample %>
           </div>
         </div>
+      <% else %>
+        <% @frames.each do |frame| %>
+          <div class="section">
+            <div class="frame-number">
+              <% total_number = @frames.size %>
+              <% current_number = @frames.index(frame) + 1 %>
+              <p><%= current_number %>／<%= total_number %></p>
+            </div>
+            <div class="board-body">
+              <% if frame.image.attached? %>
+                <%= image_tag frame.image %>
+              <% else %>
+                <div class="board-body-text"><%= simple_format(frame.body) %></div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       <% end %>
     </div>
     <div class="board-title-label <%= board_color(board) %>">
@@ -55,13 +64,6 @@
         <%= render "likes/like_button", board: board %>
       </div>
     </div>
-    <style>
-      .twitter-button {
-        position: absolute;
-        bottom: 0;
-        z-index: 990;
-      }
-    </style>
   </div>
   <div class="comment-area-wrapper">
     <div class="comment-area-label <%= board_color(board) %>">
@@ -75,29 +77,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  function displayForm(){
-    const commentForm = document.querySelector(".comment-form-wrapper");
-    const commentButton = document.getElementById("comment-button");
-    const backgroundCover = document.getElementById("background-cover");
-    if(commentForm&&commentButton){
-      commentButton.addEventListener("click", function(e){
-        e.stopPropagation();
-        commentForm.style.display = "block";
-        backgroundCover.style.display = "block";
-      })
-      document.addEventListener("click", function(e){
-        commentForm.style.display = "none";
-        backgroundCover.style.display = "none";
-      });
-      commentForm.addEventListener("click", function(e){
-        e.stopPropagation();
-      });
-    };
-  }
-
-  document.addEventListener("turbo:load", function(){
-    displayForm();
-  });
-</script>

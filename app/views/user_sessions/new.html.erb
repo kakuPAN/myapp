@@ -16,59 +16,6 @@
   <%= link_to "パスワードを忘れた方", new_password_reset_path, id: "forget-password-link" %>
 </div>
 <div class="recommend-link">
-  <p>アカウントをお持ちではない方は<%= link_to "こちら", new_user_path, id: "create-user-link" %></p>
+  <p>アカウントをお持ちではない方は</p>
+  <%= link_to "こちら", new_user_path, id: "create-user-link" %>
 </div>
-
-<style>
-  .login-container {
-    width: 60%;
-    max-width: 600px;
-    margin: auto;
-    margin-top: 100px;
-  }
-  .login-container .form-group {
-    margin-top: 10px;
-  }
-  .login-container .form-group input {
-    font-size: 20px;
-  }
-
-</style>
-<style>
-  .line-login {
-    display: flex;
-    justify-content: center;
-    margin: auto;
-    width: 200px;
-    background: #f7f5f5;
-    border: 2px solid #ddd;
-  }
-  .or-login {
-    text-align: center;
-    font-size: 20px;
-    margin: 20px 0px;
-  }
-  .line-login span {
-    margin: auto;
-    font-weight: bold;
-    color: #333;
-  }
-  .line-login .line-icon {
-    display: flex;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-    margin: auto;
-  }
-  .line-icon img {
-    width: 40px;
-    height: 40px;
-   }
-
-   .recommend-link {
-    margin: 50px;
-    text-align: center;
-  }
-
-</style>

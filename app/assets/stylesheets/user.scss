@@ -1,0 +1,808 @@
+// users/new
+@media (max-width: 799px) {
+  .user-create-form-container {
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 100px;
+    min-width: 300px;
+  }
+}
+@media (min-width: 800px) {
+  .user-create-form-container {
+    width: 60%;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 100px;
+    min-width: 300px;
+  }
+}
+
+.user-create-form-container input[type="submit"]{
+  margin-top: 20px;
+}
+.recommend-link {
+  margin: 50px;
+  text-align: center;
+}
+.user-create-form-container .form-group {
+  margin-top: 10px;
+}
+.user-create-form-container .form-group input {
+  font-size: 20px;
+}
+.user-create-form-container .form-group select {
+  font-size: 18px;
+  border: none;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.line-login {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  width: 200px;
+  background: #f7f5f5;
+  border: 2px solid #ddd;
+}
+.or-login {
+  text-align: center;
+  font-size: 20px;
+  margin: 20px 0px;
+}
+.line-login span {
+  margin: auto;
+  font-weight: bold;
+  color: #333;
+}
+.line-login .line-icon {
+  display: flex;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+  margin: auto;
+}
+.line-icon img {
+  width: 40px;
+  height: 40px;
+  }
+
+// users/edit.html
+.form-label {
+  width: 100%;
+  height: 100%;
+  margin: 20px 0;
+  min-width: 300px;
+  text-align: center;
+  background: rgba(221,221,221,0.4);
+}
+.form-label span {
+  font-size: 30px;
+  font-weight: bold;
+  color: rgb(112, 112, 112);
+}
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 700px;
+  min-width: 300px;
+  margin: 0 auto;
+  padding: 0 10px 20px 10px;
+}
+
+.users-form-container, .cancel-button {
+width: 100%;
+margin: auto;
+}
+.users-form-container input, .cancel {
+font-size: 25px;
+padding: 5px 10px;
+border-radius: 5px;
+width: 50%;
+display: block;
+margin: auto;
+}
+#user_image {
+display: block;
+margin: 10px 0;
+padding: 5px;
+border: 1px solid #ccc;
+border-radius: 4px;
+width: 100%;
+cursor: pointer;
+font-size: 20px;
+}
+.users-form-container textarea {
+min-height: 300px;
+height: 100%;
+resize: none;
+background: rgba(221,221,221,0.4);
+font-size: 25px;
+}
+.cancel-button {
+margin-top: 20px;
+text-align: center;
+width: 50%;
+}
+
+.cancel-button .cancel {
+display: block;
+width: 100%;
+text-decoration: none;
+}
+
+
+.user-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: 20px;
+  overflow: hidden;
+}
+.user-image-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+#avatar-image, #user-name {
+  font-size: 20px;
+  width: 100%;
+}
+#users-new-image-label {
+  display: none;
+}
+// post_imagesはframe.scssに定義
+
+// users/user_profile
+@media(min-width: 800px){
+  .user-wrapper {
+    margin: 100px 20%;
+    border: 2px solid #ddd;
+  }
+  .user-content {
+    width: 400px;
+  }
+  .user-content.avatar-container {
+    width: 400px;
+  }
+}
+@media(max-width: 800px){
+  .user-wrapper {
+    padding: 100px 10px;
+  }
+  .user-content {
+    width: 100%;
+  }
+  .user-content.avatar-container {
+    width: 100%;
+  }
+}
+.user-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 10%;
+  min-width: 300px;
+}
+.users-profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 30px;
+  width: 100%;
+  border-bottom: 2px solid #ddd;
+}
+.user-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+}
+.user-content.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 400px;
+}
+.edit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+}
+.edit a {
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+}
+.delete-user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  margin-top: 50px;
+}
+.delete-user-label {
+  font-size: 23px;
+}
+.delete-user-container #confirmation_1, #confirmation_2 {
+  cursor: pointer;
+}
+.delete-user-form input[type="submit"] {
+  float: right;
+}
+.delete-user-container p {
+  font-size: 23px;
+}
+.delete-user-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+.delete-user-container li {
+  text-align: left;
+  font-size: 18px;
+}
+.avatar-container .avatar img {
+  height: 300px;
+  width: 300px;
+  border-radius: 50%;
+}
+.user-name, .profile, .email {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 30px;
+  margin: 30px 0;
+  background: rgb(112, 112, 112, 0.2);
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+// users/user_sessions
+@media (max-width: 799px) {
+  .login-container {
+  width: 90%;
+  max-width: 600px;
+  margin: auto;
+  margin-top: 100px;
+  }
+}
+@media (min-width: 800px) {
+  .login-container {
+  width: 60%;
+  max-width: 600px;
+  margin: auto;
+  margin-top: 100px;
+  }
+}
+
+.login-container .form-group {
+  margin-top: 10px;
+}
+.login-container .form-group input {
+  font-size: 20px;
+}
+.line-login {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  width: 200px;
+  background: #f7f5f5;
+  border: 2px solid #ddd;
+}
+.or-login {
+  text-align: center;
+  font-size: 20px;
+  margin: 20px 0px;
+}
+.line-login span {
+  margin: auto;
+  font-weight: bold;
+  color: #333;
+}
+.line-login .line-icon {
+  display: flex;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+  margin: auto;
+}
+.line-icon img {
+  width: 40px;
+  height: 40px;
+ }
+
+ .recommend-link {
+  margin: 50px;
+  text-align: center;
+}
+
+// パスワードリセット申請ページ
+
+@media (max-width: 799px) {
+  .secret-question-container {
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    min-width: 300px;
+  }
+  .edit-password-container {
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    min-width: 300px;
+  }
+}
+@media (min-width: 800px) {
+  .secret-question-container {
+    width: 60%;
+    max-width: 600px;
+    margin: auto;
+    min-width: 300px;
+  }
+  .edit-password-container {
+    width: 60%;
+    max-width: 600px;
+    margin: auto;
+    min-width: 300px;
+  }
+}
+.secret-question-title {
+  text-align: center;
+  margin: 20px 0;
+}
+.secret-question-title .content {
+  font-weight: bold;
+  color: #333;
+}
+
+.secret-question-container .form-group {
+  margin-top: 10px;
+}
+.secret-question-container .form-group input {
+  font-size: 20px;
+}
+.secret-question-container .form-group input[type="submit"] {
+  width: 100%;
+}
+.secret-question-container .form-group select {
+    font-size: 18px;
+    border: none;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+.recommend-link {
+    margin: 50px;
+    text-align: center;
+}
+
+// パスワード再設定
+.edit-password-title {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.edit-password-container .form-group {
+  margin-top: 10px;
+}
+.edit-password-container .form-group input {
+  font-size: 20px;
+}
+.edit-password-container .form-group input[type="submit"] {
+  width: 100%;
+}
+.edit-password-container .form-group a {
+  width: 100%;
+  font-size: 20px;
+  text-align: center;
+}
+
+// users/user_mypage
+@media (min-width: 1200px){
+  .index-board-container {
+    padding: 10px 10%;
+    flex-direction: column;
+  }
+  .index-board-image {
+    min-width: 200px;
+  }
+  .index-board-image img {
+    width: 200px
+  }
+  .index-board-title a {
+    font-size: 30px;
+  }
+  .index-board-body{
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1200px){
+  .mypage-header {
+  flex-direction: column;
+  padding: 20px 20px;
+}
+  .index-board-container {
+    padding: 10px 10px;
+    flex-direction: column;
+  }
+  .index-board-image {
+    min-width: 200px;
+  }
+  .index-board-image img {
+    width: 200px
+  }
+  .index-board-title a {
+    font-size: 30px;
+  }
+  .index-board-body {
+    font-size: 20px;
+  }
+}
+@media (max-width: 800px){
+  .mypage-header {
+  flex-direction: column;
+  padding: 20px 20px;
+  }
+  .user-profile {
+    flex-direction: column;
+    width: 100%;
+  }
+  .mypage-wrapper {
+    min-width: 300px;
+  }
+  .index-board-container {
+    padding: 10px 10px;
+    flex-direction: column;
+  }
+  .index-board-image {
+    width: 100px;
+  }
+  .index-board-image img {
+    width: 100px;
+  }
+  .index-board-title a {
+    font-size: 24px;
+  }
+  .index-board-body {
+    font-size: 18px;
+  }
+}
+
+//  <!-- 閲覧履歴・お気に入り -->
+.border-label {
+  width: 100%;
+  height: 100%;
+  margin: 20px 0;
+  text-align: center;
+  background: #FFE8EC;
+}
+.border-label span {
+  font-size: 30px;
+  font-weight: bold;
+  color: rgb(112, 112, 112);
+}
+.visited_boards, .liked-boards {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  border-bottom: 3px solid #ddd;
+}
+
+.board-tab {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  height: 60px;
+  padding: 0 10%;
+  position: relative;
+  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.to-visited-boards, .to-liked-boards, .to-users-home, .to-useraction-boards {
+  font-size: 20px;
+  min-width: 300px;
+  text-align: center;
+  border-top: 20px solid #ff701e;
+  padding: 10px 0;
+}
+
+.to-visited-boards a, .to-liked-boards a, .to-users-home a,.to-useraction-boards a {
+  text-decoration: none;
+  font-size: 30px;
+  font-weight: bold;
+  color: rgb(112, 112, 112);
+  pointer-events: none;
+  min-width: 300px;
+  white-space: nowrap
+}
+.to-visited-boards.disabled, .to-liked-boards.disabled, .to-users-home.disabled, .to-useraction-boards.disabled  {
+  opacity: 0.5;
+  border-top: none;
+}
+.to-visited-boards.disabled a, .to-liked-boards.disabled a, .to-users-home.disabled a, .to-useraction-boards.disabled a  {
+  pointer-events: auto;
+}
+
+
+// ボード一覧表示部分
+.mypage-boards-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  }
+
+.index-board-container {
+  display: flex;
+  border: 1px solid #ddd; 
+  min-width: 300px;
+}
+.image-and-board {
+  display: flex;
+  align-items: center; 
+  border: 1px solid #ddd; 
+}
+.index-board-image {
+  height: 200px;
+  background-color: #FFFAF0;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ddd;
+}
+.index-board-image img {
+  height: 200px;
+  object-fit: contain;
+  margin: auto;
+  display: block;
+}
+
+.index-board-content {
+  height: 200px;
+  flex: 1;
+  background-color: #FFFAF0;
+  padding: 10px;
+  overflow: auto;
+}
+
+.index-board-title {
+  text-align: left;
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+.index-board-body {
+  width: 100%;
+  height: 130px;
+  text-align: left;
+  padding: 0 10px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  overflow: auto;
+  background: #F7ECDD;
+  border-radius: 8px;
+}
+
+// ユーザー活動記録
+.index-board-actions a{
+  border: 2px solid #ddd;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  background-color: #FFFAF0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  text-decoration: none;
+  max-width: 400px;
+  gap: 20px;
+  font-size: 20px;
+  margin-top: 10px;
+  box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+}
+
+// マイページヘッダー
+@media (min-width: 900px){
+  .mypage-header{
+    padding: 20px 15%;
+  }
+  .user-profile {
+  padding-left: 20px;
+  }
+}
+
+.mypage-wrapper {
+  margin: auto;
+  position: relative;
+  margin-bottom: 50px;
+}
+.mypage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 20px;
+  margin: auto;
+  text-align: center;
+  border: 3px solid #ddd;
+  min-width: 300px;
+}
+
+.user-profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.users-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px
+}
+.users-avatar-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+}
+.users-avatar-image img {
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
+  margin: auto;
+  display: block;
+  border-radius: 50%;
+}
+.users-info .setting {
+  border-radius: 20px;
+  padding: 5px;
+}
+.users-info .setting.active {
+  background: #ddd;
+}
+.users-info .setting a {
+  text-decoration: none;
+  color: black;
+}
+.users-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow: auto;
+  flex-wrap: wrap;
+  padding: 20px;
+  margin: auto;
+}
+.users-name {
+  max-width: 300px;
+  font-size: 30px;
+  word-wrap: break-word;
+  word-break: break-word;
+
+}
+.users-logs {
+  min-width: 300px;
+}
+.users-logs p {
+  padding: 10px 10px 0px 10px;
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+}
+.log-items {
+  display: flex;
+  justify-content: space-between;
+  background:rgb(70, 70, 70);
+  border-radius: 5px;
+  margin: 5px;
+  align-items: center;
+  border-bottom: 4px inset #FF9226;
+}
+.log-label {
+  text-align: left;
+}
+.log-value {
+  text-align: right;
+}
+
+// マイページ　トピック一覧
+.border-label {
+  width: 100%;
+  height: 100%;
+  margin: 20px 0;
+  text-align: center;
+  background: #FFE8EC;
+}
+.border-label span {
+  font-size: 30px;
+  font-weight: bold;
+  color: rgb(112, 112, 112);
+}
+.all-users-boards, .bookmarked-boards {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  border-bottom: 3px solid #ddd;
+}
+
+.board-tab {
+display: flex;
+justify-content: space-evenly;
+align-items: center;
+gap: 20px;
+width: 100%;
+height: 60px;
+padding: 0 10%;
+position: relative;
+}
+
+.to-all-users-boards, .to-bookmarked-boards {
+font-size: 20px;
+min-width: 200px;
+text-align: center;
+border-top: 8px solid pink;
+padding: 10px 0;
+}
+
+.to-all-users-boards a, .to-bookmarked-boards a {
+text-decoration: none;
+font-size: 30px;
+font-weight: bold;
+color: rgb(112, 112, 112);
+pointer-events: none;
+}
+.to-bookmarked-boards.disabled {
+opacity: 0.5;
+border-top: none;
+}
+.to-bookmarked-boards.disabled a {
+pointer-events: auto;
+}
+.to-all-users-boards.disabled {
+opacity: 0.5;
+border-top: none;
+pointer-events: auto;
+}
+.to-all-users-boards.disabled a {
+pointer-events: auto;
+}
+
+.page-numbers {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 40px;
+}
+
+
+
+

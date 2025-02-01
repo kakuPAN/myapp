@@ -2,8 +2,8 @@
   <%= turbo_stream.replace "form-container" do %> 
     <%= render "frames/edit_form", board: @board, frame: @frame %>
   <% end %>
-  
- <%= turbo_stream.append "error-messages" do %>
+<% end %>
+<%= turbo_stream.append "error-messages" do %>
   <div id="replace-flash-message">
     <% if flash.now[:success] || flash.now[:danger] %>
       <div class="alert-label">Wクリックで削除</div>

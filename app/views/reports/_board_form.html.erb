@@ -6,7 +6,7 @@
       <p id="inputlength">0文字/500文字</p>
     </div>
     <%= f.hidden_field :board_id, value: board.id %>
-    <div class="buttons">
+    <div class="cancel-button">
       <%= f.submit "送信", class: "form-control btn btn-outline-primary", id: "report-submit-button", disabled: true %>
       <%= link_to "キャンセル", board_path(board), class: "btn btn-outline-danger cancel-button" %>
     </div>

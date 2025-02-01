@@ -11,44 +11,46 @@
     <% if @frames.empty? %>
       <div class="no-content">フレームがありません</div>
     <% else %>
-      <table class="table table-striped fixed-table">
-        <thead>
-          <tr>
-            <th class="col-frame-number">番号</th>
-            <th class="col-frame-type">タイプ</th>
-            <th class="col-action">アクション</th>
-            <th class="col-username">更新ユーザー名</th>
-            <th class="col-timestamp">最終更新日時</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @frames.each do |frame| %>
-            <% frame_logged_user = frame.frame_logs.order(updated_at: :desc).first %>
+      <div class="table-container">
+        <table class="table table-striped fixed-table">
+          <thead>
             <tr>
-              <% frame_action = frame.board_logs.where(user_id: frame_logged_user.id).order(updated_at: :desc).first&.action_type if frame_logged_user %>
-              <td>
-                <%= link_to admin_board_frame_path(@board, frame), class: "cell-link", id: "frame-link-#{frame.id}" do %>
-                  <%= frame.frame_number %>
-                <% end %>
-              </td>
-              <td><%= I18n.t("enums.frame.frame_type.#{frame.frame_type}") %></td>
-              <td>
-                <% if frame_action %>
-                  <%= I18n.t("enums.board_log.action_type.#{frame_action}") %>
-                <% end %>
-              </td>
-              <td>
-                <% if frame_logged_user %>
-                  <%= link_to admin_user_path(frame_logged_user), class: "cell-link" do %>
-                    <%= frame_logged_user.user_name %>
-                  <% end %>
-                <% end %>
-              </td>
-              <td><%= frame.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+              <th class="col-frame-number">番号</th>
+              <th class="col-frame-type">タイプ</th>
+              <th class="col-action">アクション</th>
+              <th class="col-username">更新ユーザー名</th>
+              <th class="col-timestamp">最終更新日時</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% @frames.each do |frame| %>
+              <% frame_logged_user = frame.frame_logs.order(updated_at: :desc).first %>
+              <tr>
+                <% frame_action = frame.board_logs.where(user_id: frame_logged_user.id).order(updated_at: :desc).first&.action_type if frame_logged_user %>
+                <td>
+                  <%= link_to admin_board_frame_path(@board, frame), class: "cell-link", id: "frame-link-#{frame.id}" do %>
+                    <%= frame.frame_number %>
+                  <% end %>
+                </td>
+                <td><%= I18n.t("enums.frame.frame_type.#{frame.frame_type}") %></td>
+                <td>
+                  <% if frame_action %>
+                    <%= I18n.t("enums.board_log.action_type.#{frame_action}") %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if frame_logged_user %>
+                    <%= link_to admin_user_path(frame_logged_user), class: "cell-link" do %>
+                      <%= frame_logged_user.user_name %>
+                    <% end %>
+                  <% end %>
+                </td>
+                <td><%= frame.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
       <%= paginate @frames %>
     <% end %>
   </div>
