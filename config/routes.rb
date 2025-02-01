@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  # LINEログイン
-  # post "oauth/callback", to: "oauths#callback"
-  # get "oauth/callback", to: "oauths#callback"
-  # get "oauth/:provider", to: "oauths#oauth", as: :auth_at_provider
-
   namespace :admin do
     root "users#index"
     resources :users, except: [ :edit, :update ]

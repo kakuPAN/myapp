@@ -1,6 +1,8 @@
 <div class="title-board-container">
   <div class="title-container">
-    <div class="title-text">TopicBoard</div>
+    <div class="title-text">
+      <%= image_tag "free_images/logo.png" %>
+    </div>
     <div class="title-jp">トピックボード</div>
     <% unless current_user %>
       <div class="top-page-login-container">
@@ -24,120 +26,4 @@
     <span id="hidden-board-<%= board.id %>" class="list-child"><%= board.title %></span>
   <% end %>
 </div>
-<style>
-  * {
-    /*outline: 2px solid blue;*/
-    scrollbar-width: none;
-  }
-  <%# トップ画面 lineログイン %>
-  @media (min-width: 800px) {
-    .top-page-login-container {
-      flex-direction: column;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-  }
-  @media (max-width: 800px) {
-    .top-page-login-container {
-      flex-direction: column;
-    }
-  }
-  .top-page-login-container {
-    display: flex;
-    padding: 10px;
-    border: 2px solid #ddd;
-    background: #f7f5f5;
-    border-radius: 15px;
-    font-weight: bold;
-  }
 
-  .title-board-container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .title-board-container .title-board-content {
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 20px;
-    font-weight: bold;
-  }
-  .title-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  <%# カラーの部分はshowに同じものあり%>
-  .board-container .board-content.red, .board-title-label.red, .comment-form .submit.red, .comment-area-label.red, .title-board-content.red {
-    background: #F4ADB0;
-  }
-  .board-container .board-content.green, .board-title-label.green, .comment-form .submit.green, .comment-area-label.green, .title-board-content.green {
-    background: #C9E2C7;
-  }
-  .board-container .board-content.blue, .board-title-label.blue, .comment-form .submit.blue, .comment-area-label.blue, .title-board-content.blue {
-    background: #ABECF2;
-  }
-  .board-container .board-content.brown, .board-title-label.brown, .comment-form .submit.brown, .comment-area-label.brown, .title-board-content.brown {
-    background: #EFDDAA;
-  }
-  .board-container .board-content.emerald, .board-title-label.emerald, .comment-form .submit.emerald, .comment-area-label.emerald, .title-board-content.emerald {
-    background: #E4EDAA;
-  }
-
-  .title-text {
-    font-size:80px;
-    font-weight: bold;
-  }
-  .title-jp {
-    font-size: 20px;
-  }
-  .title-board-content-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .title-board-container a {
-    color: black;
-    text-decoration: none;
-  }
-
-  @media (max-width: 768px) {
-    .board-content {
-      width: calc(50% - 20px);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .board-content {
-      width: 100%;
-    }
-  }
-  .anim-box.poyopoyo {
-  animation: poyopoyo 5s ease-out infinite;
-  opacity: 1;
-  }
-  @keyframes poyopoyo {
-    0%, 40%, 60%, 80% {
-      transform: scale(1.0);
-    }
-    50%, 70% {
-      transform: scale(0.95);
-    }
-  }
-</style>

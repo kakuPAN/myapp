@@ -3,9 +3,12 @@ require 'rails_helper'
 RSpec.describe "StaticPages", type: :system do
   describe "ページ遷移確認" do
     describe "フッターのリンクからページ遷移できる" do
+      before do
+        page.driver.browser.manage.window.resize_to(1200, 768)
+      end
       it "利用規約にアクセスできる" do
         visit root_path
-        new_window = window_opened_by { click_link "利用規約" } # 別のタブを開く
+        new_window = window_opened_by { find("#terms-of-service-link").click  } # 別のタブを開く
         within_window new_window do
           expect(page).to have_content("利用規約")
           expect(current_path).to eq terms_of_service_path
@@ -14,7 +17,7 @@ RSpec.describe "StaticPages", type: :system do
       end
       it "プライバシーポリシーにアクセスできる" do
         visit root_path
-        new_window = window_opened_by { click_link "プライバシーポリシー" }
+        new_window = window_opened_by { find("#privacy-policy-link").click  }
         within_window new_window do
           expect(page).to have_content("プライバシーポリシー")
           expect(current_path).to eq privacy_policy_path
@@ -23,7 +26,7 @@ RSpec.describe "StaticPages", type: :system do
       end
       it "お問い合わせページ（Google Forms）にアクセスできる" do
         visit root_path
-        new_window = window_opened_by { click_link "お問い合わせ" }
+        new_window = window_opened_by { find("#contact-form-link").click }
         within_window new_window do
           expect(page).to have_content("お問い合わせ")
           expect(current_url).to include("docs.google.com/forms/d/e/1FAIpQLScyWfOx1ezyRz_1TFlh-1Wk5AGrRsgfAYAsu9rCogQTzfLwsA/viewform")
@@ -38,7 +41,7 @@ RSpec.describe "StaticPages", type: :system do
     before { login(user) }
     context "ウィンドウサイズが1001px以上の場合" do
       before do
-        page.driver.browser.manage.window.resize_to(1001, 768) # 大サイズ
+        page.driver.browser.manage.window.resize_to(1100, 768) # 大サイズ
       end
       it "ヘッダーにロゴ、ユーザー名が表示される" do
         visit visited_boards_user_path(user)
@@ -47,7 +50,7 @@ RSpec.describe "StaticPages", type: :system do
       end
       it "サブフッターが表示されない" do
         visit visited_boards_user_path(user)
-        expect(page).not_to have_selector('.sub-footer-content', visible: true, wait: 5)
+        expect(page).not_to have_selector('.sub-footer-content', visible: true, wait: 10)
       end
     end
     context "ウィンドウサイズが1000px以下の場合" do

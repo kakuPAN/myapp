@@ -116,7 +116,8 @@ RSpec.describe "Frames", type: :system do
       it "フレームの削除が成功する" do
         visit edit_board_path(board)
 
-        find("#frame-content-#{frame.frame_number}").hover
+        find("#frame-content-#{frame.frame_number}").click
+        expect(page).to have_selector("#delete-frame-link-#{frame.frame_number}", visible: true, wait: 5)
         find("#delete-frame-link-#{frame.frame_number}").click
 
         expect(page).to have_content "フレームを削除しました"
@@ -132,7 +133,8 @@ RSpec.describe "Frames", type: :system do
           it "前後のフレームの番号が入れ替わる" do
             visit edit_board_path(board)
 
-            find("#frame-content-#{second_frame.frame_number}").hover
+            find("#frame-content-#{second_frame.frame_number}").click
+            expect(page).to have_selector("#move-forword-#{second_frame.frame_number}", visible: true, wait: 5)
             find("#move-forword-#{second_frame.frame_number}").click
 
             expect(page).to have_content "フレームを移動しました"
@@ -152,7 +154,8 @@ RSpec.describe "Frames", type: :system do
           it "移動することができない" do
             visit edit_board_path(board)
 
-            find("#frame-content-#{first_frame.frame_number}").hover
+            find("#frame-content-#{first_frame.frame_number}").click
+            expect(page).to have_selector("#move-forword-button-#{first_frame.frame_number}", visible: true, wait: 5)
             button = find("#move-forword-button-#{first_frame.frame_number}")
             expect(button[:class]).to include("disabled")
 
@@ -171,11 +174,12 @@ RSpec.describe "Frames", type: :system do
       end
 
       describe "フレームを後ろに移動" do
-        context "フレームが一番後ろではないの場合" do
+        context "フレームが一番後ろではない場合" do
           it "前後のフレームの番号が入れ替わる" do
             visit edit_board_path(board)
 
-            find("#frame-content-#{first_frame.frame_number}").hover
+            find("#frame-content-#{first_frame.frame_number}").click
+            expect(page).to have_selector("#move-back-#{first_frame.frame_number}", visible: true, wait: 5)
             find("#move-back-#{first_frame.frame_number}").click
 
             expect(page).to have_content "フレームを移動しました"
@@ -197,7 +201,8 @@ RSpec.describe "Frames", type: :system do
           it "移動することができない" do
             visit edit_board_path(board)
 
-            find("#frame-content-#{second_frame.frame_number}").hover
+            find("#frame-content-#{second_frame.frame_number}").click
+            expect(page).to have_selector("#move-back-button-#{second_frame.frame_number}", visible: true, wait: 5)
             button = find("#move-back-button-#{second_frame.frame_number}")
             expect(button[:class]).to include("disabled")
 

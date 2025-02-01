@@ -7,38 +7,41 @@
         <% end %>
       </div>
       <div class="sub-title">ユーザー詳細</div>
-    <div class="user-profile-container">
-      <div class="user-profile-row">
-        <span class="label">属性:</span>
-        <span class="value"><%= I18n.t("enums.user.role.#{@user.role}") %></span>
-      </div>
-      <div class="user-profile-row">
-        <span class="label">ID:</span>
-        <span class="value"><%= @user.id %></span>
-      </div>
-      <div class="user-profile-row">
-        <span class="label">ユーザー名:</span>
-        <span class="value"><%= @user.user_name %></span>
-      </div>
-      <div class="user-profile-row">
-        <span class="label">メールアドレス:</span>
-        <span class="value"><%= @user.email %></span>
-      </div>
-      <div class="user-profile-row">
-        <span class="label">作成日時:</span>
-        <span class="value"><%= @user.created_at.strftime("%Y-%m-%d %H:%M:%S") %></span>
-      </div>
-      <div class="user-profile-row">
-        <span class="label">プロフィール:</span>
-        <span class="value"><%= @user.profile %></span>
-      </div>
-      <div class="user-profile-row">
-        <span class="label">アバター画像:</span>
-        <span class="value">
-          <% if @user.avatar_image.attached? %>
-            <%= image_tag @user.avatar_image, class: "admin-avatar-image" %>
-          <% end %>
-        </span>
+      <div class="user-profile-wrapper">
+        <div class="user-profile-container">
+          <div class="user-profile-row">
+            <span class="label">属性:</span>
+            <span class="value"><%= I18n.t("enums.user.role.#{@user.role}") %></span>
+          </div>
+          <div class="user-profile-row">
+            <span class="label">ID:</span>
+            <span class="value"><%= @user.id %></span>
+          </div>
+          <div class="user-profile-row">
+            <span class="label">ユーザー名:</span>
+            <span class="value"><%= @user.user_name %></span>
+          </div>
+          <div class="user-profile-row">
+            <span class="label">メールアドレス:</span>
+            <span class="value"><%= @user.email %></span>
+          </div>
+          <div class="user-profile-row">
+            <span class="label">作成日時:</span>
+            <span class="value"><%= @user.created_at.strftime("%Y-%m-%d %H:%M:%S") %></span>
+          </div>
+          <div class="user-profile-row">
+            <span class="label">プロフィール:</span>
+            <span class="value"><%= @user.profile %></span>
+          </div>
+          <div class="user-profile-row">
+            <span class="label">アバター画像:</span>
+            <span class="value">
+              <% if @user.avatar_image.attached? %>
+                <%= image_tag @user.avatar_image, class: "admin-avatar-image" %>
+              <% end %>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
     <%= link_to "ユーザーを削除", admin_user_path(@user), data: { turbo_method: :delete }, class: "btn btn-outline-danger", id: "delete-user-button" %>
