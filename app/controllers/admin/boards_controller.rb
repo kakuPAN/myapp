@@ -11,7 +11,7 @@ class Admin::BoardsController < Admin::BaseController
     @board_logs = @board.board_logs
       .where.not(action_type: 0)
       .includes(:user, :frame)
-      .order(created_at: :desc).page(params[:page]).per(2)
+      .order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def destroy

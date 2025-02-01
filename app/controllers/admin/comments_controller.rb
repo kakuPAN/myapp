@@ -3,7 +3,7 @@ class Admin::CommentsController < Admin::BaseController
   before_action :set_comment, only: %i[show destroy]
 
   def index
-    @comments = @board.comments.includes(:children).order(created_at: :desc).page(params[:page]).per(2)
+    @comments = @board.comments.includes(:children).order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def show

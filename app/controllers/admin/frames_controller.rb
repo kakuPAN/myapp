@@ -3,7 +3,7 @@ class Admin::FramesController < Admin::BaseController
   before_action :set_frame, only: %i[show destroy]
 
   def index
-    @frames = @board.frames.order(frame_number: :asc).page(params[:page]).per(2)
+    @frames = @board.frames.order(frame_number: :asc).page(params[:page]).per(10)
   end
 
   def show

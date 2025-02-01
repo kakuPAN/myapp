@@ -2,7 +2,7 @@ class Admin::ReportsController < Admin::BaseController
   before_action :set_board
   before_action :set_report_and_board, only: %i[show destroy]
   def index
-    @reports = Report.where(board_id: @board.id).order(created_at: :desc).page(params[:page]).per(2)
+    @reports = Report.where(board_id: @board.id).order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def show
