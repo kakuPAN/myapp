@@ -5,9 +5,9 @@ document.addEventListener('turbo:load', function() {
 
   if (mypageContainer) {
 
-    mypageContainer.addEventListener('mouseover', function() {
+    mypageContainer.addEventListener('mouseover', function(e) {
       mypageDropdown.style.display = 'block'
-      event.stopPropagation(); // キャプチャおよびバブリング段階において現在のイベントのさらなる伝播を阻止
+      e.stopPropagation();
     });
 
     document.addEventListener('click', function() {

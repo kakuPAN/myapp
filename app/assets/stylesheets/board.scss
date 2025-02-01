@@ -862,6 +862,9 @@ border: 2px solid #ddd;
 word-break: break-word;
 overflow-wrap: break-word;
 }
+.frame-content:hover {
+  border: 2px solid rgb(0, 140, 255);
+}
 .frame-content img {
 max-width: 100%;
 max-height: 100%;
