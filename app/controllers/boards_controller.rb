@@ -3,7 +3,7 @@ class BoardsController < ApplicationController
   before_action :set_board, except: %i[index new create]
 
   def index
-    if @index_boards.empty? && @index_boards.current_page > 1 # 表示できるトピックが存在しない場合、このコードがないとリダイレクトが繰り返されエラーになる。
+    if @index_boards.empty? && @index_boards.current_page > 1
       redirect_to boards_path(page: @index_boards.total_pages) and return
     end
   end

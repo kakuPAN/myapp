@@ -622,51 +622,60 @@
 
 
 // 報告 board_info.html
-.board-info-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+@media (min-width: 600px) {
+  .board-info-content {
+   width: 500px;
+ }
 }
-.board-info-content {
-  display: flex;
-  justify-content: center;
-  width: 500px;
-  margin: auto;
-  border-bottom: 2px solid #ddd;
+@media (max-width: 599px) {
+  .board-info-content {
+   width: 100%;
+ }
 }
-.action-user-info {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-}
-.action-user-info a {
-  text-decoration: none;
-}
-.action-user-image img {
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-}
-.avatar-icon {
-  font-size: 40px;
-  color: #aaa;
-}
-.action-user-name {
-  font-size: 20px;
-}
-.action-details {
-  flex: 4;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.action-details p {
-  margin: auto;
-  font-size: 20px;
-}
+ .board-info-container {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+ }
+ .board-info-content {
+   display: flex;
+   justify-content: center;
+   margin: auto;
+   border-bottom: 2px solid #ddd;
+ }
+ .action-user-info {
+   flex: 2;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   text-align: center;
+ }
+ .action-user-info a {
+   text-decoration: none;
+ }
+ .action-user-image img {
+   border-radius: 50%;
+   width: 40px;
+   height: 40px;
+   object-fit: cover;
+ }
+ .avatar-icon {
+   font-size: 40px;
+   color: #aaa;
+ }
+ .action-user-name {
+   font-size: 20px;
+ }
+ .action-details {
+   flex: 4;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+ }
+ .action-details p {
+   margin: auto;
+   font-size: 20px;
+ }
 
 // boards/edit
 @media (min-width: 1000px) {
