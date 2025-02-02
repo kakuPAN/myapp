@@ -1,5 +1,5 @@
 <% if like = current_user.likes.find_by(board_id: board.id) %>
   <%= link_to destroy_like_board_path(board), data: { turbo_method: :delete }, remote: true, id: "unlike-button-#{board.id}", class: "unlike" do %>
-    <span><i class="bi bi-pin-fill unlike"></i>お気に入りを解除 <%= board.likes.count %><span>
+    <span><i class="bi bi-pin-fill unlike"></i>解除 <%= board.likes.count %><span>
   <% end %>
 <% end %>

@@ -1,4 +1,14 @@
 // users/new
+@media (max-width: 399px) {
+  #avatar-image {
+    font-size: 17px;
+  }
+}
+@media (min-width: 400px) {
+  #avatar-image {
+    font-size: 20px;
+  }
+}
 @media (max-width: 799px) {
   .user-create-form-container {
     width: 90%;
@@ -151,7 +161,10 @@ text-decoration: none;
   align-items: center;
   margin: 10px;
 }
-#avatar-image, #user-name {
+#avatar-image{
+  width: 100%;
+}
+#user-name {
   font-size: 20px;
   width: 100%;
 }

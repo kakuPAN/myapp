@@ -72,8 +72,32 @@
 // boards/show
 //　トピック関連のスタイル
 // show.html
-
-@media (max-width: 599px){
+@media (max-width: 399px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 1100px;
+    padding: 0 5px;
+  }
+  .container {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    height: 80%;
+    width: 100%;
+    margin: auto;
+    z-index: 1;
+    margin-top: 100px;
+  }
+  .scroll-content {
+    height: 60%;
+  }
+  .section {
+    margin-bottom: 120px;
+    height: 450px;
+  }
+}
+@media (min-width: 400px) and (max-width: 599px){
   .wrapper {
     flex-direction: column;
     align-items: center;
@@ -81,6 +105,24 @@
     height: 1500px;
     padding: 0 5px;
   }
+  .container {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    height: 80%;
+    width: 100%;
+    margin: auto;
+    z-index: 1;
+  }
+  .scroll-content {
+    flex: 5;
+  }
+  .section {
+    margin-bottom: 100px;
+    height: 100%;
+  }
+}
+
+@media (max-width: 599px){
   .comment-area-wrapper {
     width: 100%;
     margin-top: 10px;
@@ -98,8 +140,13 @@
   .board-title-label {
   flex-direction: column;
   }
+  .like-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .like-button a {
-    font-size: 15px;
+    font-size: 20px;
     text-decoration: none;
    }
 }
@@ -110,6 +157,21 @@
     justify-content: center;
     height: 1500px;
     padding: 0 20px;
+  }
+  .scroll-content {
+    flex: 5;
+  }
+  .container {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    height: 80%;
+    width: 100%;
+    margin: auto;
+    z-index: 1;
+  }
+  .section {
+    margin-bottom: 100px;
+    height: 100%;
   }
   .comment-area-wrapper {
     width: 100%;
@@ -128,12 +190,26 @@
     font-size: 20px;
     text-decoration: none;
    }
-
 }
 @media (min-width: 1001px) {
   .wrapper {
     height: 80vh;
     padding: 0 20px;
+  }
+  .scroll-content {
+    flex: 5;
+  }
+  .container {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    height: 80%;
+    width: 100%;
+    margin: auto;
+    z-index: 1;
+  }
+  .section {
+    margin-bottom: 100px;
+    height: 100%;
   }
   .scroll-content .container {
     position: absolute;
@@ -156,7 +232,7 @@
     text-decoration: none;
    }
 }
-// <!-- ボード画面 -->
+ // <!-- ボード画面 --> %>
   .wrapper {
     display: flex;
     width: 100%;
@@ -167,11 +243,10 @@
   .wrapper::-webkit-scrollbar {
     display:none;
   }
-  // スクロール部分
+ // スクロール部分 %>
   .scroll-content {
     border-radius: 5px;
     position: relative;
-    flex: 5;
     width: 100%;
     border: 1px solid;
     align-items: center;
@@ -179,24 +254,14 @@
     background-color: white;
     overflow: hidden;
   }
-  .container {
-    overflow: auto;
-    scroll-snap-type: y mandatory;
-    height: 80%;
-    width: 100%;
-    margin: auto;
-    z-index: 1;
-  }
   .section {
     scroll-snap-align: start;
-    height: 100%;
+    position: relative;
     border: 2px solid #ddd;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 100px;
-    position: relative;
   }
   .frame-number {
     font-size: 20px;
@@ -242,7 +307,6 @@
   .create-board i {
     font-size: 50px;
   }
-
   .user-name {
     display: inline-block;
     margin: auto;
@@ -255,6 +319,7 @@
     object-fit: cover;
     border-radius: 15px 15px 15px 15px;
   }
+
 // コメント欄
 .comment-area-wrapper {
   flex: 3;
@@ -599,6 +664,7 @@
   box-shadow: inset 0 -5px 8px rgba(0, 0, 0, 0.1);
   padding: 5px 10px;
   min-width: 180px;
+  text-align: center;
  }
  .like-button:hover {
   background: #fff;
