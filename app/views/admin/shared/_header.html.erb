@@ -1,0 +1,46 @@
+<div class="header-wrapper">
+  <div class="logo">
+    <% if controller_name == "users" %>
+      <%= link_to admin_users_path, class: "main-logo" do %>
+        User
+      <% end %>
+      <i class="bi bi-arrow-left-right"></i>
+      <%= link_to admin_boards_path, class: "sub-logo" do %>
+        Topic
+      <% end %>
+    <% else %>
+      <%= link_to admin_boards_path, class: "main-logo" do %>
+        Topic
+      <% end %>
+      <i class="bi bi-arrow-left-right"></i>
+      <%= link_to admin_users_path, class: "sub-logo" do %>
+        User
+      <% end %>
+    <% end %>
+  </div>
+  <%= render "admin/shared/search_form_container" %>
+  <div class="mypage-container" id="mypageContainer">
+    <span class="header-user-name" id="header-user-name"><%= current_user.user_name %></span>
+    <div class="mypage-dropdown" id="mypageDropdown">
+      <ul>
+        <li><%= link_to "ログアウト", logout_path, id: "header-logout",  data: { turbo_method: :delete } %></li>
+        <li><%= link_to "マイページ", visited_boards_user_path(current_user), id: "header-mypage" %></li>
+        <li><%= link_to "ユーザー情報", show_profile_user_path(current_user), id: "header-user-info" %></li>
+        <li><%= link_to "管理者を作成", new_admin_user_path, id: "header-create-admin" %></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<% if controller_name == "users" %>
+  <div class="boards-list hidden">
+    <% @all_users.each do |user| %>
+      <span id="hidden-board-<%= user.id %>" class="list-child"><%= user.user_name %></span>
+    <% end %>
+  </div>
+<% else %>
+  <div class="boards-list hidden">
+    <% @all_boards.each do |board| %>
+      <span id="hidden-board-<%= board.id %>" class="list-child"><%= board.title %></span>
+    <% end %>
+  </div>
+<% end %>

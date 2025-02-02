@@ -1,0 +1,30 @@
+<% if @comment.errors.present? %>
+  <%= turbo_stream.replace "comment-form" do %>
+    <%= render 'comments/form', comment: @comment, board: @board %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.prepend "comment-table" do %>
+    <%= render 'comments/comment', comment: @comment, board: @board, reply: Comment.new %>
+  <% end %>
+  <%= turbo_stream.replace "comment-form" do %>
+    <%= render 'comments/form', comment: Comment.new, board: @board %>
+  <% end %>
+  <%= turbo_stream.remove "no-comment" %>
+<% end %>
+
+<%= turbo_stream.remove "replace-flash-message" %>
+ 
+<%= turbo_stream.append "error-messages" do %>
+  <div id="replace-flash-message">
+    <% if flash.now[:success] || flash.now[:danger] %>
+      <div class="alert-label">Wクリックで削除</div>
+      <div class="alert alert-success flash-message">
+        <% if flash.now[:success] %>
+          <%= flash.now[:success] %>
+        <% elsif flash.now[:danger] %>
+          <%= flash.now[:danger] %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

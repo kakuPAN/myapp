@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Myapp" %></title>
+    <title><%= page_title(yield(:title), admin: false) %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -16,13 +16,309 @@
 
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
     <%= stylesheet_link_tag "application" %>
+    <%= display_meta_tags(default_meta_tags) %>
   </head>
 
   <body>
-    <% unless controller_name == 'static_pages' && action_name == 'top' %>
-      <%= render "shared/header" %>
-    <% end %>
     <%= render "shared/flash_message" %>
-    <%= yield %>
+    <div id="error-messages"></div>
+    <div class="background-cover" id="background-cover"></div>
+    <div class="whole-wrapper">
+      <% unless controller_name == "static_pages" && action_name == "top" %>
+        <%= render "shared/header" %>
+      <% end %>
+      <%= yield %>
+      <%= render "shared/sub_footer" %>
+      <%= render "shared/footer" %>
+    </div>
   </body>
 </html>
+
+<script>
+// <!-- オートコンプリート　-->
+function AutoComplete(str){
+  const candidateContainer = document.getElementById("candidate-container");
+  const candidateList = document.getElementById("candidate-list");
+  const boards = document.querySelectorAll("[id^='hidden-board-']");
+  const searchField = document.getElementById("search-field")
+  const searchText = str
+  const toHiragana = (text) => {
+    return text.normalize("NFKC").replace(/[\u30A1-\u30F6]/g, (char) => {
+      return String.fromCharCode(char.charCodeAt(0) - 0x60); // カタカナをひらがなに変換
+    });
+  };
+  if (boards) {
+    while (candidateList.firstChild) {
+      candidateList.removeChild(candidateList.firstChild);
+    };
+    boards.forEach(board => {
+      const duplicate = Array.from(candidateList.children).some(
+        (child) => child.textContent === board.textContent
+      );
+      const normalizedSearchText = toHiragana(searchText);
+      const boardText = toHiragana(board.innerHTML);
+
+      if ((board.innerHTML.toLowerCase().indexOf(searchText) >= 0 || boardText.indexOf(normalizedSearchText) >= 0) && !duplicate){
+        const clone = board.cloneNode(true);
+        clone.removeAttribute('id')
+        candidateList.append(clone);
+        candidateContainer.style.display = "block";
+        clone.addEventListener("mouseover", function(){
+          clone.classList.add("hight-light");
+        });
+        clone.addEventListener("mouseout", function(){
+          clone.classList.remove("hight-light");
+        });
+        clone.addEventListener("click", function(){
+          searchField.value = board.innerHTML;
+          while (candidateList.firstChild) {
+            candidateList.removeChild(candidateList.firstChild);
+          };
+          candidateContainer.style.display = "none";
+        })
+      };
+    });
+    if (searchText == "") {
+      while (candidateList.firstChild) {
+        candidateList.removeChild(candidateList.firstChild);
+      };
+      candidateContainer.style.display = "none";
+    };
+  };
+};
+document.getElementById("search-field").addEventListener("click", function() {
+  AutoComplete(this.value);
+});
+document.addEventListener("turbo:load", function(){
+  const candidateContainer = document.getElementById("candidate-container");
+  const candidateList = document.getElementById("candidate-list");
+  const searchField = document.getElementById("search-field");
+  document.addEventListener("click", function(){
+    candidateContainer.style.display = "none";
+  });
+  candidateContainer.addEventListener("click", function(e){
+    e.stopPropagation();
+  });
+  searchField.addEventListener("click", function(e){
+    e.stopPropagation();
+  });
+
+  if (candidateList.children.length !== 0) {
+    searchField.addEventListener("click", function(){
+    candidateContainer.style.display = "block";
+  });
+  };
+});
+</script>
+
+<script>
+// トピック作成/タイトル編集
+function BoardShowLength(str) {
+  const maxLength = 100;
+  const value = str.trim()
+  const inputLength = str.trim().length;
+  const submitButton = document.getElementById("create-new-board");
+
+  // 文字数を表示
+  document.getElementById("inputlength").innerHTML = `${inputLength}文字/${maxLength}文字`;
+
+  // ボタンの有効/無効を切り替え
+  if (value === "") {
+      submitButton.disabled = true; // 入力が空の場合はボタンを無効化
+  } else {
+      submitButton.disabled = false; // 入力がある場合はボタンを有効化
+  }
+}
+
+// コメント作成
+function ActivateCommentSubmit(str) {
+  const maxLength = 100;
+  const value = str.trim()
+  const inputLength = str.trim().length;
+  const submitButton = document.getElementById("comments-comment-submit");
+  const commentForm = document.getElementById("comment-form");
+
+  document.getElementById("comments-inputlength").innerHTML = `${inputLength}/${maxLength}文字`;
+
+  if (value === "") {
+      commentForm.removeAttribute("class");
+      commentForm.classList.add("comments-comment-form");
+  } else {
+      commentForm.classList.add("active");
+  };
+};
+
+// リプライ送信
+function ActivateReplySubmit(textarea, commentId) {
+  const maxLength = 100;
+  const value = textarea.value.trim()
+  const inputLength = value.trim().length;
+  const submitButton = document.getElementById(`reply-submit-${commentId}`);
+  const replyForm = document.getElementById(`reply-form-${commentId}`)
+  document.getElementById(`reply-inputlength-${commentId}`).innerHTML = `${inputLength}/${maxLength}文字`;
+
+  if (value === "") {
+      replyForm.removeAttribute("class");
+      replyForm.classList.add("reply-form");
+      console.log(replyForm.classList)
+  } else {
+      replyForm.classList.add("active");
+      console.log(replyForm.classList)
+  };
+};
+
+// コメント編集
+function EditCommentShowLength(str, commentId) {
+  const Comments = document.querySelectorAll("[id^='edit_comment_submit_']");
+  const maxLength = 100;
+  const value = str.trim()
+  const inputLength = str.trim().length;
+  const submitButton = document.getElementById(`edit_comment_submit_${commentId}`);
+
+  // 文字数を表示
+  document.getElementById("inputlength").innerHTML = `${inputLength}文字/${maxLength}文字`;
+
+  // ボタンの有効/無効を切り替え
+  if (value === "") {
+      submitButton.disabled = true; // 入力が空の場合はボタンを無効化
+  } else {
+      submitButton.disabled = false; // 入力がある場合はボタンを有効化
+  };
+};
+
+// フレーム作成/編集
+function FrameShowLength(str) {
+  const maxLength = 500;
+  const value = str.trim()
+  const inputLength = str.trim().length;
+  const submitButton = document.getElementById("frame-submit-button");
+
+  document.getElementById("inputlength").innerHTML = `${inputLength}/${maxLength}文字`;
+
+  if (value === "") {
+      submitButton.disabled = true;
+  } else {
+      submitButton.disabled = false;
+  }
+}
+
+// 報告
+function ReportShowLength(str) {
+  const maxLength = 500;
+  const value = str.trim();
+  const inputLength = str.trim().length;
+  const submitButton = document.getElementById("report-submit-button");
+
+  // 文字数を表示
+  document.getElementById("inputlength").innerHTML = `${inputLength}文字/${maxLength}文字`;
+
+  // ボタンの有効/無効を切り替え
+  if (value === "") {
+      submitButton.disabled = true; // 入力が空の場合はボタンを無効化
+  } else {
+      submitButton.disabled = false; // 入力がある場合はボタンを有効化
+  };
+};
+
+// ユーザープロフィール
+function ShowProfileLength(str) {
+  const maxLength = 250;
+  const value = str.trim();
+  const inputLength = str.trim().length;
+
+  const userNameInput = document.getElementById("user-name");
+  const userName = userNameInput.value.trim();
+  const submitButton = document.getElementById("submit-button");
+
+  document.getElementById("profile-length").innerHTML = `${inputLength}/${maxLength}文字`;
+
+  if (userName !== "") {
+    submitButton.disabled = false;
+  } else {
+    submitButton.disabled = true;
+  };
+};
+
+// ユーザー名
+function ShowUserNameLength(str) {
+  const maxLength = 20;
+  const value = str.trim();
+  const inputLength = str.trim().length;
+  const submitButton = document.getElementById("submit-button");
+
+  document.getElementById("username-length").innerHTML = `${inputLength}/${maxLength}文字`;
+
+  if (value === "") {
+      submitButton.disabled = true;
+  } else {
+      submitButton.disabled = false;
+  };
+};
+</script>
+
+<script>
+// ユーザー名が空でなく、かつ画像が選択されている場合にsubmitを有効化
+function UserCheckImage() {
+  const userNameInput = document.getElementById("user-name");
+  const avatarImageInput = document.getElementById("avatar-image");
+  const submitButton = document.getElementById("submit-button");
+
+  const userName = userNameInput.value.trim();
+
+  const isImageSelected = avatarImageInput.files.length > 0;
+
+  if (userName !== "" || isImageSelected) {
+    submitButton.disabled = false;
+  } else {
+    submitButton.disabled = true;
+  };
+};
+</script>
+
+<script>
+  // フレーム画像　プレビュー
+function loadImage(obj) {
+  const newImageLabel = document.getElementById("new-image-label");
+  var allPreview = document.getElementById("post_images");
+
+  var existingPreview = allPreview.querySelector("#preview");
+  if (existingPreview) {
+    existingPreview.remove();
+  }
+
+  var newPreview = document.createElement("div");
+  newPreview.setAttribute("id", "preview");
+  allPreview.style.display = "flex";
+  allPreview.appendChild(newPreview);
+
+  var fileReader = new FileReader();
+  fileReader.onload = function (e) {
+    var img = new Image();
+    img.src = e.target.result;
+    img.style.maxWidth = "100%";
+    img.style.maxHeight = "100%";
+    newPreview.appendChild(img);
+  };
+
+  if (obj.files && obj.files[0]) {
+    fileReader.readAsDataURL(obj.files[0]);
+    newImageLabel.innerHTML = "追加した画像";
+
+  }
+}
+
+// フレーム画像ファイルチェック
+function checkFrameImage() {
+  const frameImageInput = document.getElementById("frame-image");
+  const submitButton = document.getElementById("frame-submit-button");
+
+  const isImageSelected = frameImageInput.files.length > 0;
+
+  //
+  if (isImageSelected) {
+    submitButton.disabled = false;
+  } else {
+    submitButton.disabled = true;
+  }
+}
+</script>

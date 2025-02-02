@@ -1,0 +1,131 @@
+@media (min-width: 800px) {
+  .top-page-login-container {
+    flex-direction: column;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+}
+@media (max-width: 800px) {
+  .top-page-login-container {
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
+@media (min-width: 500px) {
+  .title-board-content-wrapper {
+    gap: 20px;
+    padding: 10px;
+  }
+  .title-text {
+    font-size:80px;
+  }
+}
+@media (max-width: 499px) {
+  .title-board-content-wrapper {
+    gap: 7px;
+    padding-top: 10px;
+  }
+  .title-text {
+    font-size:35px;
+  }
+  .title-board-content {
+    display: none;
+  }
+  .title-board-content[data-index="1"],
+  .title-board-content[data-index="2"],
+  .title-board-content[data-index="3"],
+  .title-board-content[data-index="4"],
+  .title-board-content[data-index="5"],
+  .title-board-content[data-index="6"],
+  .title-board-content[data-index="7"],
+  .title-board-content[data-index="8"],
+  .title-board-content[data-index="9"],
+  .title-board-content[data-index="10"],
+  .title-board-content[data-index="11"],
+  .title-board-content[data-index="12"],
+  .title-board-content[data-index="13"],
+  .title-board-content[data-index="14"],
+  .title-board-content[data-index="15"],
+  .title-board-content[data-index="16"],
+  .title-board-content[data-index="17"],
+  .title-board-content[data-index="18"],
+  .title-board-content[data-index="19"],
+  .title-board-content[data-index="20"] {
+    display: block;
+  }
+
+}
+
+// トップページ　ログインボタン
+.title-text img {
+  width: 100%;
+  max-width: 400px;
+}
+.top-page-login-container {
+  display: flex;
+  padding: 10px;
+  border: 2px solid #ddd;
+  background: #f7f5f5;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.title-board-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.title-board-content {
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: bold;
+}
+.title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title-text {
+  font-weight: bold;
+}
+.title-jp {
+  font-size: 20px;
+}
+.title-board-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.title-board-container a {
+  color: black;
+  text-decoration: none;
+}
+
+// アニメーション
+.anim-box.poyopoyo {
+  animation: poyopoyo 5s ease-out infinite;
+  opacity: 1;
+  }
+  @keyframes poyopoyo {
+    0%, 40%, 60%, 80% {
+      transform: scale(1.0);
+    }
+    50%, 70% {
+      transform: scale(0.95);
+    }
+  }

@@ -1,44 +1,36 @@
 <div class="header-wrapper">
-  <% if current_user %>
-    <span class="username-honorific">ログイン中のユーザー：</span><%= current_user.user_name %><span class="username-honorific">さん</span>
-  <% else %>
-    <span class="user-title">ゲストユーザー</span>
-  <% end %>
-  <div class="header-body">
-    <% unless current_user %>
-      <%= link_to "トップ", root_path, class: "header-content" %>
-    <% end %>
-    <%= link_to "ホーム", home_pages_path, class: "header-content" %>
-    <% if current_user %>
-      <%= link_to "タスクの作成", new_task_path, class: "header-content" %>
-    <% end %>
-    <%= link_to "タスク一覧", tasks_path, class: "header-content" %>
-    <% if current_user %>
-      <%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "header-content" %>
-    <% else %>
-      <% unless controller_name == 'user_sessions' && action_name == 'new' || controller_name == 'users' && action_name == 'new' %>
-        <%= link_to "ログイン", login_path, class: "header-content" %>
-      <% end %>
+  <div class="logo">
+    <%= link_to root_path do %>
+      <%= image_tag "free_images/logo_b.png", class: "title-logo-image" %>
     <% end %>
   </div>
+  <%= render "shared/search_form_container" %>
+  <% if current_user %>
+    <div class="mypage-container" id="mypageContainer">
+      <span class="header-user-name" id="header-user-name"><%= current_user.user_name %></span>
+      <div class="mypage-dropdown" id="mypageDropdown">
+        <ul>
+          <li><%= link_to "ログアウト", logout_path, id: "header-logout",  data: { turbo_method: :delete } %></li>
+          <li><%= link_to "マイページ", visited_boards_user_path(current_user), id: "header-mypage" %></li>
+          <li><%= link_to "ユーザー情報", show_profile_user_path(current_user), id: "header-user-info" %></li>
+        </ul>
+      </div>
+    </div>
+  <% else %>
+    <div class="mypage-container" id="mypageContainer">
+      <span class="header-user-name">ゲストユーザー</span>
+      <div class="mypage-dropdown" id="mypageDropdown">
+        <ul>
+          <li><%= link_to "ユーザー登録", new_user_path %>
+          <li><%= link_to "ログイン", login_path, class: "login-text" %></li>
+          <li><%= link_to "トップ", root_path %></li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
 </div>
-
-<style>
-
-  .username-honorific {
-    font-size: 12px;
-  }
-  .header-wrapper {
-    background-color: rgba(240, 240, 240);
-    padding: 3px;
-  }
-  .header-body {
-    float: right;
-  }
-  .header-content {
-    text-decoration: none;
-  }
-  .header-content:hover {
-    color: rgba(233, 155, 0, 0.946);
-  }
-</style>
+<div class="boards-list hidden">
+  <% @all_boards.each do |board| %>
+    <span id="hidden-board-<%= board.id %>" class="list-child"><%= board.title %></span>
+  <% end %>
+</div>

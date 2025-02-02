@@ -1,0 +1,4 @@
+<%= search_form_for @q, url: boards_path do |f| %>
+  <%= f.search_field :title_cont, placeholder: "トピックを検索", id: "search-field", onkeyup: "AutoComplete(value);" %>
+  <%= f.submit "検索" %>
+<% end %>

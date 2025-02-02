@@ -1,0 +1,10 @@
+<div class="form-label">
+  <% if  @frame_type == 0 %>
+    <span>本文を追加</span>
+  <% else %>
+    <span>画像を追加</span>
+  <% end %>
+</div>
+<div class="form-wrapper">
+  <%= render "frames/form", board: @board, frame: @frame, frame_type: @frame_type %>
+</div>

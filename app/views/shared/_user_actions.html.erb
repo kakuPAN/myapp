@@ -1,0 +1,38 @@
+<div class="index-board-container">
+  <div class="image-and-board">
+    <div class="index-board-image">
+      <% if board_image(log[:board]) %>
+        <%= image_tag board_image(log[:board]).image %>
+      <% else %>
+        <%= image_tag "free_images/tree.png" %>
+      <% end %>
+    </div>
+    <div class="index-board-content">
+      <div class="index-board-title">
+        <%= link_to board_path(log[:board]) do %>
+          <%= log[:board].title %>
+        <% end %>
+      </div>
+      <div class="index-board-body">
+        <% if log[:board].frames.empty? %>
+          コンテンツがありません
+        <% else %>
+          <%= log[:board]&.frames&.order(:frame_number).first.body %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="index-board-actions"> <!-- トピックごとの編集履歴のリンク -->
+    <%= link_to board_info_board_path(log[:board].id) do %>
+      <span><%= l log[:action_date] %></span>
+      <span>
+        <% if log[:frame] %>
+          フレーム<%= log[:frame].frame_number %>
+        <% else %>
+          トピック
+        <% end %>
+        を<%= I18n.t("enums.board_log.action_type.#{log[:action_type]}") %>
+      </span>
+    <% end %>
+  </div>
+</div>

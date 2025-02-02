@@ -1,0 +1,14 @@
+<div class="login-tab">
+  <div class="login-tab-container">
+    <div class="login-tab-title">
+      <%= link_to root_path do %>
+        <%= image_tag "free_images/logo.png" %>
+      <% end %>
+    </div>
+    <div class="login-or-new">
+      <span class="auth-link"><%= link_to "ログイン", login_path %></span>
+      <span class="or-text">or</span>
+      <span class="auth-link"><%= link_to "ユーザー登録", new_user_path %></span>
+    </div>
+  </div>
+</div>

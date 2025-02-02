@@ -1,0 +1,11 @@
+<div id="edit-comment-wrapper-<%= comment.id %>">
+  <%= turbo_frame_tag id="edit-comment-#{ comment.id }" do %>
+    <div class="to-comment"><%= simple_format(comment.body) %></div>
+    <% if current_user && current_user == User.find(comment.user_id) %>
+      <div class="comment-links">
+        <%= link_to "編集", edit_board_comment_path(board, comment), id: "edit-comment-button-#{comment.id}", class: "btn btn-outline-success comment-delete-edit-button", remote: true %>
+        <%= link_to "削除", board_comment_path(board, comment), class: "btn btn-outline-danger comment-delete-edit-button", id: "delete-comment-button-#{comment.id}", data: { turbo_method: :delete }, remote: true %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

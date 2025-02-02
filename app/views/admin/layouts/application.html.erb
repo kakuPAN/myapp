@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= page_title(yield(:title), admin: true) %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <%= stylesheet_link_tag "application" %>
+    <%= display_meta_tags(default_meta_tags) %>
+  </head>
+
+  <body>
+    <%= render "shared/flash_message" %>
+    <div id="error-messages"></div>
+    <div class="whole-wrapper">
+      <%= render "admin/shared/header" %>
+      <%= yield %>
+      <%= render "admin/shared/sub_footer" %>
+      <%= render "shared/footer" %>
+    </div>
+  </body>
+</html>
+
+<!-- オートコンプリート　-->
+<script>
+  function AutoComplete(str){
+    const candidateContainer = document.getElementById("candidate-container");
+    const candidateList = document.getElementById("candidate-list");
+    const boards = document.querySelectorAll("[id^='hidden-board-']");
+    const searchField = document.getElementById("search-field")
+    const searchText = str
+    const toHiragana = (text) => {
+      return text.normalize("NFKC").replace(/[\u30A1-\u30F6]/g, (char) => {
+        return String.fromCharCode(char.charCodeAt(0) - 0x60); // カタカナをひらがなに変換
+      });
+    };
+    if (boards) {
+      while (candidateList.firstChild) {
+        candidateList.removeChild(candidateList.firstChild);
+      };
+      boards.forEach(board => {
+        const duplicate = Array.from(candidateList.children).some(
+          (child) => child.textContent === board.textContent
+        );
+        const normalizedSearchText = toHiragana(searchText);
+        const boardText = toHiragana(board.innerHTML);
+
+        if ((board.innerHTML.toLowerCase().indexOf(searchText) >= 0 || boardText.indexOf(normalizedSearchText) >= 0) && !duplicate){
+          const clone = board.cloneNode(true);
+          clone.removeAttribute('id')
+          candidateList.append(clone);
+          candidateContainer.style.display = "block";
+          clone.addEventListener("mouseover", function(){
+            clone.classList.add("hight-light");
+          });
+          clone.addEventListener("mouseout", function(){
+            clone.classList.remove("hight-light");
+          });
+          clone.addEventListener("click", function(){
+            searchField.value = board.innerHTML;
+            while (candidateList.firstChild) {
+              candidateList.removeChild(candidateList.firstChild);
+            };
+            candidateContainer.style.display = "none";
+          })
+        };
+      });
+      if (searchText == "") {
+        while (candidateList.firstChild) {
+          candidateList.removeChild(candidateList.firstChild);
+        };
+        candidateContainer.style.display = "none";
+      };
+    };
+  };
+  document.getElementById("search-field").addEventListener("click", function() {
+    AutoComplete(this.value);
+  });
+  document.addEventListener("turbo:load", function(){
+    const candidateContainer = document.getElementById("candidate-container");
+    const candidateList = document.getElementById("candidate-list");
+    const searchField = document.getElementById("search-field");
+    document.addEventListener("click", function(){
+      candidateContainer.style.display = "none";
+    });
+    candidateContainer.addEventListener("click", function(e){
+      e.stopPropagation();
+    });
+    searchField.addEventListener("click", function(e){
+      e.stopPropagation();
+    });
+
+    if (candidateList.children.length !== 0) {
+      searchField.addEventListener("click", function(){
+      candidateContainer.style.display = "block";
+    });
+    };
+  });
+</script>

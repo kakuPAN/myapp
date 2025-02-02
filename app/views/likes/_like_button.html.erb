@@ -1,0 +1,5 @@
+<% if current_user && board.liked_by?(current_user) %>
+   <%= render "boards/unlike", board: board %>
+<% else %>
+   <%= render "boards/like", board: board %>
+<% end %>

@@ -2,7 +2,8 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
+  config.hosts << "host.docker.internal:3000" # ngrokで公開したホストにアクセスするための記述
+  config.hosts << ".ngrok-free.app" # ngrokで公開したホストにアクセスするための記述
   # Make code changes take effect immediately without server restart.
   config.enable_reloading = true
 
@@ -29,7 +30,9 @@ Rails.application.configure do
   config.cache_store = :memory_store
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = :amazon
+
+  config.active_storage.variant_processsor = :mini_magick
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

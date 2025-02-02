@@ -1,0 +1,18 @@
+<div class="reply-content" id="reply-<%= reply.id %>">
+  <%= link_to liked_boards_user_path(reply.user_id) do %>
+    <% if reply.user.avatar_image.attached? %>
+      <%= image_tag reply.user.avatar_image, class: "avatar-image" %>
+    <% else %>
+      <i class="bi bi-person-circle avatar-icon"></i>
+    <% end %>
+    <div class="to-comment-user"><%= reply.user.user_name %></div>
+  <% end %>
+  <%= render "comments/edit_comment_wrapper", board: board, comment: reply %>
+  <% if current_user && current_user != User.find(reply.user_id) %>
+    <div class="report-link">
+      <%= link_to new_comment_report_report_path(board.id, comment_id: reply.id), id: "comment-report-link-#{reply.id}" do %>
+        <i class="bi bi-flag-fill"></i>
+      <% end %>
+    </div>
+  <% end %>
+</div>

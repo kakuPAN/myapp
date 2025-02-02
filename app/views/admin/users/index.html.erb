@@ -1,0 +1,42 @@
+<div class="admin admin-boards-wrapper">
+  <div class="admin-content">
+    <div class="admin-title">ユーザー</div>
+    <% if @users.empty? %>
+      ユーザーが存在しません
+    <% else %>
+      <div class="table-container">
+        <table class="table table-striped fixed-table">
+          <thead>
+            <tr>
+              <th class="col-role">属性</th>
+              <th class="col-id">ID</th>
+              <th class="col-title">ユーザー名</th>
+              <th class="col-email">メールアドレス</th>
+              <th class="col-timestamp">作成日時</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td class="col-role"><%= I18n.t("enums.user.role.#{user.role}") %></td>
+                <td class="col-id">
+                  <%= link_to admin_user_path(user), class: "cell-link", id: "user-link-#{user.id}" do %>
+                    <%= user.id %>
+                  <% end %>
+                </td>
+                <td class="col-title">
+                  <%= user.user_name %>
+                </td>
+                <td class="col-email">
+                  <%= user.email %>
+                </td>
+                <td class="col-timestamp"><%= user.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>
+<%= paginate @users %>

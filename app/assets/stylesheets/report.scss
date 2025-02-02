@@ -1,0 +1,38 @@
+// 報告フォーム
+@media (max-width: 799px) {
+  .report-form-wrapper {
+    width: 90%;
+    margin: auto;
+    margin-top: 50px;
+  }
+}
+@media (min-width: 800px) {
+  .report-form-wrapper {
+    width: 60%;
+    margin: auto;
+    margin-top: 50px;
+  }
+}
+.report-form-wrapper .report-label {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin: 10px;
+}
+.report-form-wrapper .buttons {
+  text-align: center;
+}
+.report-form-wrapper input[type="submit"] {
+  width: 200px;
+  margin: auto;
+  margin-top: 20px;
+}
+.report-form-wrapper textarea {
+  height: 200px;
+}
+.report-form-wrapper .cancel-button {
+  width: 200px;
+  margin: auto;
+  margin-top: 20px;
+}
+

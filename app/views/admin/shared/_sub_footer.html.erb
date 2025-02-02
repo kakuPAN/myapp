@@ -1,0 +1,32 @@
+<div class="sub-footer-menu-wrapper" id="sub-footer-menu">
+  <div class="sub-footer-menu">
+    <span><%= link_to "ログアウト", logout_path, id: "sub-footer-logout", data: { turbo_method: :delete } %></span>
+    <span><%= link_to "マイページ", visited_boards_user_path(current_user) %></span>
+    <span><%= link_to "ユーザー情報", show_profile_user_path(current_user) %></span>
+    <span><%= link_to "管理者を作成", new_admin_user_path, id: "sub-footer-user_create" %></span>
+  </div>
+</div>
+
+<div class="sub-footer-content">
+  <span class="sub-footer-logo">
+    <% if controller_name == "users" %>
+      <%= link_to admin_users_path, class: "main-logo" do %>
+        User
+      <% end %>
+      <i class="bi bi-arrow-left-right"></i>
+      <%= link_to admin_boards_path, class: "sub-logo" do %>
+        Topic
+      <% end %>
+    <% else %>
+      <%= link_to admin_boards_path, class: "main-logo" do %>
+        Topic
+      <% end %>
+      <i class="bi bi-arrow-left-right"></i>
+      <%= link_to admin_users_path, class: "sub-logo" do %>
+        User
+      <% end %>
+    <% end %>
+  </span>
+
+  <span id="sub-footer-icon"><i class="bi bi-person-circle"></i></span>
+</div>

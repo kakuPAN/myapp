@@ -1,0 +1,65 @@
+<div class="user-wrapper">
+  <div class="users-profile-wrapper">
+    <div class="user-content avatar-container">
+      <div class="avatar">
+        <% if @user.avatar_image.attached? %>
+          <%= image_tag @user.avatar_image %>
+        <% else %>
+          <%= image_tag "free_images/user_icon_4.png" %>
+        <% end %>
+      </div>
+      <div class="edit">
+        <div>プロフィール画像</div>
+      </div>
+    </div>
+    <div class="user-content user-name-container">
+      <div class="user-name">
+        <%= @user.user_name %>
+      </div>
+      <div class="edit">
+        <div>ユーザーネーム</div>
+      </div>
+    </div>
+    <div class="user-content profile-container">
+      <div class="profile">
+        <%= @user.profile %>
+      </div>
+      <div class="edit">
+        <div>自己紹介</div>
+      </div>
+    </div>
+    <div class="edit">
+      <%= link_to "プロフィールを変更", edit_user_path(@user), class: "btn btn-outline-primary", id: "edit-profile-link" %>
+    </div>
+  </div>
+  <div class="user-content email-container">
+      <div class="email">
+        <%= @user.email %>
+      </div>
+      <div class="edit">
+        <div>メールアドレス</div>
+      </div>
+    </div>
+  <div class="delete-user-container">
+    <div class="delete-user-label">
+      退会
+    </div>
+      <%= form_with(url: user_path(current_user), method: :delete, class: "delete-user-form") do |f| %>
+        <ul>
+          <li>
+            <label>
+              <%= check_box_tag "confirmation_1", "yes", false, id: "confirmation_1" %>
+              退会するとコメント・お気に入りなどすべてのデータが削除されます。
+            </label>
+          </li>
+          <li>
+            <label>
+              <%= check_box_tag "confirmation_2", "yes", false, id: "confirmation_2" %>
+              退会後のデータ復旧などは承っていませんので、ご注意ください。
+            </label>
+          </li>
+        </ul>
+        <%= f.submit "退会する", class: "btn btn-outline-danger", disabled: true, id: "delete-button" %>
+      <% end %>
+  </div>
+</div>

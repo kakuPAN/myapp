@@ -1,0 +1,23 @@
+<div class="form-label">
+  <% if  @frame.text_frame? %>
+    <span>本文を追加</span>
+  <% else %>
+    <span>画像を追加</span>
+  <% end %>
+</div>
+<% if @frame.image.attached? &&
+      @frame.image.attachment.blob.present? &&
+      @frame.image.attachment.blob.persisted? %>
+  <p class="image-label">設定中の画像</p>
+  <div class="preset-preview-container">
+    <div id="preset-post_images" style="">
+      <div id="preset-preview">
+        <%= image_tag @frame.image %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<%= render "shared/error_messages", object: @frame %>
+<div class="form-wrapper">
+  <%= render "frames/edit_form", board: @board, frame: @frame %>
+</div>

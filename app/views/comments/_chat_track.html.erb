@@ -1,0 +1,13 @@
+<div class="comment-track" id="comment-track">
+  <div id="chat-table">
+    <% board.comments.where(parent_id: nil).order(created_at: :desc).each do |comment| %>
+      <%= render "comments/chat", comment: comment, board: board %>
+    <% end %>
+  </div>
+  <% if board.comments.empty? %>
+    <span class="comment-text">盛り上げよう！</span>
+    <div class="comment-image"><%= image_tag "free_images/comment.png" %></div>
+    <span class="comment-text">コメントやリアクションをして</span>
+    <span class="comment-text">関心のある投稿には</span>
+  <% end %>
+</div>

@@ -2,19 +2,31 @@ ja:
   activerecord:
     models:
       user: ユーザー
-      task: タスク
+      board: トピック
+      frame: フレーム
+      like: お気に入り
+      report: 報告
     attributes:
       user:
         email: メールアドレス
         user_name: ユーザーネーム
         password: パスワード
         password_confirmation: パスワード確認
-      task:
+        security_question_id: 秘密の質問
+        security_answer_digest: 秘密の質問の答え
+        profile: プロフィール
+        avatar_image: アバター画像
+        role: 属性
+      board:
         title: タイトル
-        body: 内容
-        deadline: 期限
-        progress_status: 進行状況
-        access_level: 公開設定
+      frame: 
+        body: テキスト
+        image: 画像
+        frame_type: フレームタイプ
+      comment:
+        body: コメント
+      report: 
+        body: 報告理由
   views:
     pagination:
       first: <i class="bi bi-chevron-double-left"></i>
@@ -23,14 +35,19 @@ ja:
       next: <i class="bi bi-chevron-right"></i>
       truncate: "..."
   enums:
-    task:
-      progress_status:
-        not_started: 未着手
-        in_progress: 進行中
-        done: 達成済み
-      access_level:
-        private_access: 非公開
-        public_access: 公開
+    user:
+      role:
+        general: 一般
+        admin: 管理者
+    board_log:
+      action_type:
+        view_action: 閲覧
+        create_action: 作成
+        update_action: 編集
+    frame:
+      frame_type:
+        text_frame: テキスト
+        image_frame: 画像
   time:
     formats:
       default: "%Y/%m/%d %H:%M"

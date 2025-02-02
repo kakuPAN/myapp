@@ -1,0 +1,79 @@
+<%= render "shared/login_tab" %>
+<div class="wrapper">
+  <div class="scroll-content">
+    <div class="container">
+      <% if @frames.empty? %>
+        <div class="section">
+          <div class="board-body">
+            <% images = [ "free_images/space.png", "free_images/sky.png", "free_images/tree.png", "free_images/sea.png" ] %>
+            <%= image_tag images.sample %>
+          </div>
+        </div>
+      <% else %>
+        <% @frames.each do |frame| %>
+          <div class="section">
+            <div class="frame-number">
+              <% total_number = @frames.size %>
+              <% current_number = @frames.index(frame) + 1 %>
+              <p><%= current_number %>／<%= total_number %></p>
+            </div>
+            <div class="board-body">
+              <% if frame.image.attached? %>
+                <%= image_tag frame.image %>
+              <% else %>
+                <div class="board-body-text"><%= simple_format(frame.body) %></div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="board-title-label <%= board_color(board) %>">
+      <%= board.title %>
+      <% if current_user %>
+        <div class="delete-edit-button">
+          <%= link_to new_board_report_report_path(board_id: board.id), class: "report-button" do %>
+            <i class="bi bi-flag-fill"></i>
+          <% end %>
+          <%= link_to edit_board_path(board), class: "edit-button" do %>
+            <i class="bi bi-pencil-fill"></i>
+          <% end %>
+          <%= link_to board_info_board_path(board), class: "info-button" do %>
+            <i class="bi bi-bell-fill"></i>
+          <% end %>
+          <i class="bi bi-chat-left-dots-fill comment-button" id="comment-button"></i>
+        </div>
+      <% else %>
+        <div class="delete-edit-button funcs">
+          <i class="bi bi-flag-fill func-icon report-button"></i>
+          <div class="edit-button func-icon">
+            <i class="bi bi-pencil-fill"></i>
+          </div>
+          <%= link_to board_info_board_path(board), class: "info-button" do %>
+            <i class="bi bi-bell-fill"></i>
+          <% end %>
+          <i class="bi bi-chat-left-dots-fill comment-button func-icon"></i>
+        </div>
+      <% end %>
+    </div>
+    <div class="visitor-like-container">
+      <div class="visitor-count">
+        <i class="bi bi-person-fill"></i><%= @visitor_count %>
+      </div>
+      <div class="like-button <%= "func-icon" unless current_user %>">
+        <%= render "likes/like_button", board: board %>
+      </div>
+    </div>
+  </div>
+  <div class="comment-area-wrapper">
+    <div class="comment-area-label <%= board_color(board) %>">
+      <%= render "boards/comment_count", board: board %>
+    </div>
+    <div class="comment-area">
+      <%= render "comments/chat_track", board: board %>
+    </div>
+    <div class="comment-form-wrapper">
+      <%= render "comments/chat_form", board: board, comment: @comment %>
+    </div>
+  </div>
+</div>

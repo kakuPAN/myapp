@@ -1,0 +1,42 @@
+<div class="mypage-header">
+  <div class="user-profile">
+    <div class="users-info">
+      <div class="users-avatar-image">
+        <% if @user.avatar_image.attached? %>
+          <%= image_tag @user.avatar_image %>
+        <% else %>
+          <%= image_tag "free_images/user_icon_4.png" %>
+        <% end %>
+      </div>
+      <div class="users-name">
+        <%= @user.user_name %>
+      </div>
+      <div class="setting">
+        <% if current_user&.id == @user.id %>
+          <%= link_to "プロフィールを編集", edit_user_path(@user), id: "users-setting" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="users-intro" id="users-intro">
+      <%= @user.profile %>
+    </div>
+  </div>
+  <div class="users-logs">
+    <div class="log-items">
+      <p class="log-label">チェックしたトピック数：</p>
+      <p class="log-value"><%= @visited_boards_count %></p>
+    </div>
+    <div class="log-items">
+      <p class="log-label">貢献したトピック数：</p>
+      <p class="log-value"><%= @logs_with_boards.count %></p>
+    </div>
+    <div class="log-items">
+      <p class="log-label">お気に入りのトピック数：</p>
+      <p class="log-value"><%= Like.where(user_id: @user.id).count %></p>
+    </div>
+    <div class="log-items">
+      <p class="log-label">投稿したコメント数：</p>
+      <p class="log-value"><%= Comment.where(user_id: @user.id).count %></p>
+    </div>
+  </div>
+</div>

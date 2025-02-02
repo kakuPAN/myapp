@@ -1,0 +1,35 @@
+<div class="board-info-container">
+  <% unless @board_logs.empty? %>
+    <% @board_logs.each do |log| %>
+      <div class="board-info-content">
+        <div class="action-user-info">
+          <%= link_to liked_boards_user_path(log.user.id) do %>
+            <div class="action-user-image">
+              <% if log.user.avatar_image.attached? %>
+                <%= image_tag log.user.avatar_image %>
+              <% else %>
+                <i class="bi bi-person-circle avatar-icon"></i>
+              <% end %>
+            </div>
+            <div class="action-user-name"><%= log.user.user_name %></div>
+          <% end %>
+        </div>
+        <div class="action-details">
+          <p>
+            <% if log.frame %>
+              フレーム <%= log.frame&.frame_number %>
+            <% elsif log.action_type == 2 %>
+              タイトル
+            <% else %>
+              トピック
+            <% end %>
+          </p>
+          <p>を<%= I18n.t("enums.board_log.action_type.#{log.action_type}") %>しました。</p>
+          <p><%= l log.created_at %></p>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="no-content">このトピックにはまだ変更はありません</div>
+  <% end %>
+</div>

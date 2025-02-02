@@ -1,6 +1,5 @@
 class StaticPagesController < ApplicationController
   def top
-    @users = User.all
-    @tasks = Task.all.order(:id)
+    @boards = Board.order("RANDOM()").limit(80)
   end
 end

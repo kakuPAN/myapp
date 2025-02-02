@@ -1,0 +1,30 @@
+<div class="mypage-wrapper">
+  <%= render "mypage_header" %>
+  <div class="board-tab">
+    <div class="to-liked-boards <%= "disabled" unless @context&.to_sym == :liked %>">
+      <%= link_to "お気に入り", liked_boards_user_path(@user) %>
+    </div>
+    <div class="to-useraction-boards <%= "disabled" unless @context&.to_sym == :user_action %>">
+      <%= link_to "ユーザーの活動", user_actions_user_path(@user) %>
+    </div>
+    <% if current_user && current_user == @user %>
+      <div class="to-visited-boards <%= "disabled" unless @context&.to_sym == :visited %>">
+        <%= link_to "閲覧履歴", visited_boards_user_path(@user) %>
+      </div>
+    <% end %>
+  </div>
+  <% if @boards&.empty? %>
+    <div class="no-content">トピックがありません</div>
+  <% else %>
+    <div class="mypage-boards-wrapper">
+      <% @boards.each do |board| %>
+        <% unless @context&.to_sym == :user_action %>
+          <%= render "shared/index_board", board: board %>
+        <% else %>
+          <%= render "shared/user_actions", log: board %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= paginate @boards %>
+  <% end %>
+</div>

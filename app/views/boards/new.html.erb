@@ -1,0 +1,9 @@
+
+<div class="new-board-wrapper">
+  <div class="new-board-parent">
+    <%= @parent_board.title %>
+  </div>
+  <div id="new-board-wrapper">
+    <%= render "boards/form", board: @board, parent_board: @parent_board %>
+  </div>
+</div>

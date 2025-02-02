@@ -1,0 +1,12 @@
+<div class="index-board-wrapper">
+  <% if @index_boards.present? && @index_boards.current_page %>
+    <% @index_boards.each do |board| %>
+      <%= render "shared/index_board", board: board %>
+    <% end %>
+    <%= paginate @index_boards %>
+  <% else %>
+    <div class="no-content">
+      該当するトピックが見つかりません
+    </div>
+  <% end %>
+</div>

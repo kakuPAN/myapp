@@ -1,0 +1,20 @@
+<%= render "shared/index_board", board: @board %>
+<%= render "shared/login_tab" %>
+<div class="comments-comment-wrapper">
+  <div class="comments-comment-form-container">
+    <%= render "comments/form", board: @board, comment: @comment %>
+  </div>
+
+  <div id="comment-table">
+    <% comments = @board.comments.where(parent_id: nil).includes(:children).order(created_at: :desc) %>
+    <% comments.each do |comment| %>
+      <%= render "comments/comment", board: @board, comment: comment %>
+    <% end %>
+  </div>
+
+  <div class="comments-page" id="is-comment-exist">
+      <% if comments.empty? %>
+        <p id="no-comment">コメントがありません</p>
+      <% end %>
+  </div>
+</div>

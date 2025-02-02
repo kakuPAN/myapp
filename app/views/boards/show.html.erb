@@ -1,0 +1,39 @@
+<%= render @board %>
+<div class="board-container">
+  <div class="create-board">
+    <% if current_user %>
+      <%= link_to new_board_path(parent_board: @board.id), class: "#{"func-icon" unless current_user}" do %>
+        <i class="bi bi-plus-square" id="create-new-board"></i>
+      <% end %>
+    <% else %>
+      <div class="<%= "func-icon" unless current_user %>">
+        <i class="bi bi-plus-square"></i>
+      </div>
+    <% end %>
+  </div>
+  <% @boards.each do |board| %>
+    <div class="board-thumbnail-wrapper" id="board-thumbnail-wrapper-<%= @boards.index(board)+1 %>">
+      <%= link_to board_path(board) do %>
+        <div class="board-thumbnail-container" id="board-thumbnail-container-<%= @boards.index(board)+1 %>">
+          <div class="board-thumbnail">
+            <% if !board.frames.empty? %>
+              <% if board_image(board) %>
+                <%= image_tag board_image(board).image %>
+              <% else %>
+                <% first_frame = board.frames.order(:frame_number).first %>
+                <div class="board-thumbnail-text"><%= simple_format(first_frame.body) %></div>
+              <% end %>
+            <% else %>
+              <% images = [ "free_images/space.png", "free_images/sky.png", "free_images/tree.png", "free_images/sea.png" ] %>
+              <%= image_tag images.sample %>
+            <% end %>
+          </div>
+        </div>
+        <div class="board-content <%= board_color(board) %>" id="board-content-<%= @boards.index(board)+1 %>">
+          <%= board.title %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<%= render "shared/breadcrumb", breadcrumb: @breadcrumb %>

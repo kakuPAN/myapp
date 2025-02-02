@@ -1,0 +1,28 @@
+<% if @board.errors.present? %>
+  <%= turbo_stream.replace "edit-form" do %>
+    <%= render 'boards/edit_board_form', board: @board %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "replace-edit-board-form" do %>
+    <%= turbo_frame_tag id= "replace-edit-board-form" do %>
+      <div class="edit-board-title" id="edit-board-title"><%= @board.title %></div>
+      <%= link_to "タイトルを編集", edit_board_board_path(@board), class: "btn btn-outline-success",id: "edit-board-link",remote: true %>
+    <% end %>
+  <% end %>
+<% end %>
+<%= turbo_stream.remove "replace-flash-message" %>
+ 
+<%= turbo_stream.append "error-messages" do %>
+  <div id="replace-flash-message">
+    <% if flash.now[:success] || flash.now[:danger] %>
+      <div class="alert-label">Wクリックで削除</div>
+      <div class="alert alert-success flash-message">
+        <% if flash.now[:success] %>
+          <%= flash.now[:success] %>
+        <% elsif flash.now[:danger] %>
+          <%= flash.now[:danger] %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

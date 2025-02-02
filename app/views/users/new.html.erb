@@ -1,24 +1,31 @@
-<h1>New User</h1>
-<%= render "shared/error_messages", object: @user %>
-<%= form_with model: @user do |f| %>
-  <div>
-    <%= f.label :user_name, "ユーザーネーム", class: "form-label" %>
-    <%= f.text_field :user_name, class: "form-control" %>
-  </div>
-  <div>
-    <%= f.label :emai, "メールアドレス", class: "form-label" %>
-    <%= f.email_field :email, class: "form-control" %>
-  </div>
-  <div>
-    <%= f.label :password, "パスワード", class: "form-label" %>
-    <%= f.password_field :password, class: "form-control" %>
-  </div>
-  <div>
-    <%= f.label :password_confirmation, "パスワード確認", class: "form-label" %>
-    <%= f.password_field :password_confirmation, class: "form-control" %>
-  </div>
-  <%= f.submit "登録", class: "form-control btn btn-primary" %>
-<% end %>
-<div>
-  <p>ログインは<%= link_to "こちら", login_path %>
+<div class="user-create-form-container">
+  <%= form_with model: @user do |f| %>
+    <%= render "shared/error_messages", object: f.object %>
+    <div class="form-group">
+      <%= f.text_field :user_name, class: "form-control", placeholder: "ユーザーネーム" %>
+    </div>
+    <div class="form-group">
+      <%= f.email_field :email, class: "form-control", placeholder: "メールアドレス" %>
+    </div>
+    <div class="form-group">
+      <%= f.password_field :password, class: "form-control", placeholder: "パスワード" %>
+    </div>
+    <div class="form-group">
+      <%= f.password_field :password_confirmation, class: "form-control", placeholder: "パスワード確認" %>
+    </div>
+    <div class="form-group">
+      <%= f.select :security_question_id,
+          options_from_collection_for_select(SecurityQuestion.all, :id, :question_text),
+          class: "form-control" %>
+      <%= f.text_field :security_answer, class: "form-control", placeholder: "秘密の質問の答え" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit "登録", class: "form-control btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="recommend-link">
+  <p>アカウントをお持ちの方は</p>
+  <%= link_to "こちら", login_path %>
 </div>

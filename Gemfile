@@ -19,6 +19,8 @@ gem "cssbundling-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem "jquery-rails"
+
 gem "sorcery"
 
 gem "ransack"
@@ -30,6 +32,20 @@ gem "rails-i18n"
 gem "kaminari"
 
 gem "bootstrap5-kaminari-views"
+
+gem "redis"
+
+gem "sidekiq"
+
+gem "sidekiq-scheduler"
+
+gem "dotenv-rails"
+
+gem "aws-sdk-s3", require: false
+
+gem "image_processing", "~> 1.2"
+
+gem "meta-tags"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -59,7 +75,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
-  gem "brakeman", require: false
+  gem "brakeman", "~> 7.0.0", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
@@ -71,10 +87,13 @@ group :development, :test do
   gem "erb_lint", require: false
 
   gem "factory_bot_rails"
-
   gem "faker"
-
   gem "database_cleaner"
+
+  gem "line-bot-api"
+  gem "omniauth-auth0"
+  gem "omniauth-line"
+  gem "omniauth-rails_csrf_protection"
 end
 
 group :development do

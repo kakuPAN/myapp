@@ -1,0 +1,25 @@
+<div class="index-board-container">
+  <div class="image-and-board">
+    <div class="index-board-image">
+      <% if board_image(board) %>
+        <%= image_tag board_image(board).image %>
+      <% else %>
+        <%= image_tag "free_images/glass.png" %>
+      <% end %>
+    </div>
+    <div class="index-board-content">
+      <div class="index-board-title">
+        <%= link_to board_path(board) do %>
+          <%= board.title %>
+        <% end %>
+      </div>
+      <div class="index-board-body">
+        <% if board.frames.empty? %>
+          コンテンツがありません
+        <% else %>
+          <%= board&.frames&.order(:frame_number).first.body %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

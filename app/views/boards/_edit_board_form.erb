@@ -1,0 +1,7 @@
+<%= form_with model: board, id:"edit-form" do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <%= f.text_area :title, id:"title-text", onkeyup: "BoardShowLength(value)" %>
+  <p id="inputlength">0文字/100文字</p>
+  <%= f.submit "変更", id:"create-new-board", class: "btn btn-outline-primary", disabled: true %>
+  <%= link_to "キャンセル", edit_board_path(board), remote: true,  class: "cancel btn btn-outline-danger" %>
+<% end %>
