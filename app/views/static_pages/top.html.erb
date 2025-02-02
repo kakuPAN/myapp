@@ -12,9 +12,9 @@
   </div>
   <%= render "shared/search_form_container" %>
   <div class="title-board-content-wrapper">
-    <% @boards.each do |board| %>
+    <% @boards.each_with_index do |board, index| %>
       <%= link_to board_path(board) do %>
-        <div class="title-board-content anim-box poyopoyo <%= board_color(board) %>" id="title-board-content-<%= board.id %>">
+        <div class="title-board-content anim-box poyopoyo <%= board_color(board) %>" id="title-board-content-<%= index + 1 %>" data-index="<%= index + 1 %>">
           <%= board.title %>
         </div>
       <% end %>

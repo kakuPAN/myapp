@@ -9,23 +9,53 @@
 @media (max-width: 800px) {
   .top-page-login-container {
     flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 @media (min-width: 500px) {
   .title-board-content-wrapper {
     gap: 20px;
+    padding: 10px;
   }
   .title-text {
     font-size:80px;
   }
 }
-@media (max-width: 500px) {
+@media (max-width: 499px) {
   .title-board-content-wrapper {
-    gap: 10px;
+    gap: 7px;
+    padding-top: 10px;
   }
   .title-text {
-    font-size:50px;
+    font-size:35px;
   }
+  .title-board-content {
+    display: none;
+  }
+  .title-board-content[data-index="1"],
+  .title-board-content[data-index="2"],
+  .title-board-content[data-index="3"],
+  .title-board-content[data-index="4"],
+  .title-board-content[data-index="5"],
+  .title-board-content[data-index="6"],
+  .title-board-content[data-index="7"],
+  .title-board-content[data-index="8"],
+  .title-board-content[data-index="9"],
+  .title-board-content[data-index="10"],
+  .title-board-content[data-index="11"],
+  .title-board-content[data-index="12"],
+  .title-board-content[data-index="13"],
+  .title-board-content[data-index="14"],
+  .title-board-content[data-index="15"],
+  .title-board-content[data-index="16"],
+  .title-board-content[data-index="17"],
+  .title-board-content[data-index="18"],
+  .title-board-content[data-index="19"],
+  .title-board-content[data-index="20"] {
+    display: block;
+  }
+
 }
 
 // トップページ　ログインボタン
@@ -77,7 +107,6 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 10px;
   width: 100%;
   box-sizing: border-box;
 }

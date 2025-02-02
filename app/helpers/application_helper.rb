@@ -28,4 +28,11 @@ module ApplicationHelper
     base_title = admin ? "Topic Board Admin" : "Topic Board"
     title.present? ? "#{title} | #{base_title}" : base_title
   end
+
+  def board_color(board)
+    colors = ["purple", "red", "green", "blue", "brown", "emerald", "pink", "orange"]
+    color_type = board.id % 8
+    color_name = colors[color_type]
+    return color_name
+  end
 end

@@ -8,250 +8,158 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 SecurityQuestion.create!([
-  { question_text: "あなたの母親・父親の旧姓は？" },
-  { question_text: "あなたの子供の頃のあだ名は？" },
-  { question_text: "あなたの小学校の名前は？" }
+  { question_text: "好きな言葉は？" },
+  { question_text: "お気に入りの映画やドラマのタイトルは？" },
+  { question_text: "子供の頃のあだ名は？" },
+  { question_text: "一番印象に残っている旅行先は？" }
 ])
 
-users_data = [
-    {
-    email: "admin@email.com",
-    password: "pass",
-    password_confirmation: "pass",
-    user_name: "マスター",
-    security_question_id: 1,
-    role: 1
-    },
-    {
-     email: "nanaka@email.com",
-     password: "pass",
-     password_confirmation: "pass",
-     user_name: "志田",
-     security_question_id: 1,
-     role: 0
-    },
-    {
-      email: "ishigami@email.com",
-      password: "pass",
-      password_confirmation: "pass",
-      user_name: "石上",
-      security_question_id: 1,
-      role: 0
-     },
-     {
-     email: "kasuga@email.com",
-     password: "pass",
-     password_confirmation: "pass",
-     user_name: "春日",
-     security_question_id: 1,
-     role: 0
-    }
-  ]
-  users_data.each do |user_data|
-    user = User.new(user_data)
-    user.security_answer_digest = BCrypt::Password.create("山田") # セキュリティ回答をハッシュ化
-    user.save!
-  end
+user_data = {
+    email: Rails.application.credentials.dig(:admin, :email),
+    password: Rails.application.credentials.dig(:admin, :password),
+    password_confirmation: Rails.application.credentials.dig(:admin, :password),
+    user_name: Rails.application.credentials.dig(:admin, :user_name),
+    security_question_id: Rails.application.credentials.dig(:admin, :security_question),
+    role: Rails.application.credentials.dig(:admin, :role)
+}
+user = User.new(user_data)
+user.security_answer_digest = BCrypt::Password.create(Rails.application.credentials.dig(:admin, :answer))
+user.save!
+
 
 
 Board.create!(
   [
-    {
-      title: "趣味"
-    }, {
-      parent_id: 1,
-      title: "漫画"
-    }, {
-      parent_id: 2,
-      title: "ONE PIECE"
-    }, {
-      parent_id: 2,
-      title: "BLEACH"
-    }, {
-      parent_id: 2,
-      title: "HUNTER×HUNTER"
-    }, {
-      parent_id: 2,
-      title: "NARUTO"
-    }, {
-      parent_id: 2,
-      title: "DRAGON BALL"
-    }, {
-      parent_id: 2,
-      title: "SAKAMOTO DAYs"
-    }, {
-      parent_id: 2,
-      title: "幽遊白書"
-    }, {
-      parent_id: 2,
-      title: "呪術廻戦"
-    }, {
-      parent_id: 2,
-      title: "Dr.STONE"
-    }, {
-      parent_id: 2,
-      title: "７つの大罪"
-    }, {
-      parent_id: 2,
-      title: "金色のガッシュ！！" # 13
-    }, {
-      parent_id: 1,
-      title: "映画"
-    }, { parent_id: 14, title: "アクション映画" },
-    { parent_id: 14, title: "コメディ映画" },
-    { parent_id: 14, title: "ホラー映画" },
-    { parent_id: 14, title: "SF映画" },
-    { parent_id: 14, title: "アニメ映画" },
-    { parent_id: 14, title: "恋愛映画" },
-    { parent_id: 14, title: "サスペンス映画" },
-    { parent_id: 14, title: "歴史映画" },
-    { parent_id: 14, title: "ドキュメンタリー映画" },
-    { parent_id: 14, title: "ファンタジー映画" }, { # 24
-      title: "生活"
-    }, {
-      parent_id: 1,
-      title: "Youtube"
-    }, {
-      parent_id: 1,
-      title: "アニメ"
-    }, {
-      parent_id: 1,
-      title: "スポーツ"
-    }, {
-      parent_id: 1,
-      title: "テレビ"
-    }, {
-      parent_id: 1,
-      title: "ゲーム" # 30
-    }, { parent_id: 30, title: "アクションゲーム" },
-    { parent_id: 30, title: "ロールプレイングゲーム（RPG）" },
-    { parent_id: 30, title: "シューティングゲーム" },
-    { parent_id: 30, title: "パズルゲーム" },
-    { parent_id: 30, title: "スポーツゲーム" },
-    { parent_id: 30, title: "ボードゲーム" },
-    { parent_id: 30, title: "シミュレーションゲーム" },
-    { parent_id: 30, title: "格闘ゲーム" },
-    { parent_id: 30, title: "レースゲーム" },
-    { parent_id: 30, title: "ソーシャルゲーム" }, { # 40
-      title: "仕事"
-    }, {
-      title: "感情"
-    }, {
-      title: "人"
-    }, {
-      title: "動物"
-    }, {
-      title: "食べ物"
-    }, {
-      title: "飲み物"
-    }, {
-      title: "地域"
-    }, {
-      title: "自然"
-    }, {
-      title: "歴史"
-    }, {
-      title: "科学"
-    }, {
-      title: "夢"
-    }, {
-      title: "季節"
-    }, {
-      title: "スポーツ"
-    }, {
-      title: "健康"
-    }, {
-      title: "技術"
-    }, {
-      title: "遊び"
-    }
+    { title: "趣味" },
+    { title: "スポーツ" },
+    { title: "音楽" },
+    { title: "映画" },
+    { title: "美術" },
+    { title: "旅行" },
+    { title: "料理" },
+    { title: "ファッション" },
+    { title: "ゲーム" },
+    { title: "科学" },
+    { title: "テクノロジー" },
+    { title: "健康" },
+    { title: "教育" },
+    { title: "歴史" },
+    { title: "文学" }
   ]
 )
 
-require "active_storage/attached"
+parents = Board.where(parent_id: nil).order(:id)
 
-# 初期データとしての画像ファイルのパス
-# 画像フォルダのパス
-image_directory = Rails.root.join("app/assets/images")
-
-# 画像ファイルのリストを取得
-image_files = Dir.children(image_directory).select { |file| file.match?(/\.(jpg|jpeg|png)$/i) }
-
-# 初期データを作成
-boards = Board.all # Board が存在していることが前提
-i = 0
-boards.each do |board|
-  if i % 2 == 0
-    frame = Frame.create!(
-      board_id: board.id,
-      frame_number: 1,
-      body: "サンプルフレーム for board #{board.title}",
-      frame_type: 0
-    )
-  else
-    frame = Frame.create!(
-      board_id: board.id,
-      frame_number: 1,
-      body: "あとで画像入れる予定",
-      frame_type: 0
-    )
-  end
-  # インスタンスを作成しないとattachできないが、bodyを入れないとvalidationで弾かれる。 => 一度buildした後でattachしてsaveすることでできる？
-  # image_file = image_files.sample
-  # # 画像をアタッチする
-  # frame.image.attach(
-  #   io: File.open(image_directory.join(image_file)),
-  #   filename: image_file,
-  #   content_type: Mime::Type.lookup_by_extension(File.extname(image_file).delete("."))
-  # )
-  i += 1
-end
-
-puts "Frames and images have been seeded successfully!"
-
-
-Comment.create!(
+children = Board.create!(
   [
-    {
-      body: "かわいい〜",
-      user_id: 2,
-      board_id: 1
-    },
-    {
-      body: "癒される！",
-      user_id: 3,
-      board_id: 1
-    },
-    {
-      body: "朝から元気出ますね！！",
-      user_id: 3,
-      board_id: 1
-    },
-    {
-      body: "私も今朝挨拶もらいました笑",
-      user_id: 2,
-      board_id: 1
-    },
-    {
-      body: "nice!",
-      user_id: 2,
-      board_id: 5
-    },
-    {
-      body: "私も頑張らねば",
-      user_id: 2,
-      board_id: 5
-    },
-    {
-      body: "優しい世界",
-      user_id: 2,
-      board_id: 6
-    },
-    {
-      body: "優しい人でよかったですね〜",
-      user_id: 1,
-      board_id: 6
-    }
+    { parent_id: parents[0].id, title: "Youtube" },
+    { parent_id: parents[0].id, title: "アニメ" },
+    { parent_id: parents[0].id, title: "映画レビュー" },
+    { parent_id: parents[0].id, title: "写真撮影" },
+    { parent_id: parents[0].id, title: "カラオケ" },
 
+    { parent_id: parents[1].id, title: "サッカー" },
+    { parent_id: parents[1].id, title: "バスケットボール" },
+    { parent_id: parents[1].id, title: "野球" },
+    { parent_id: parents[1].id, title: "テニス" },
+    { parent_id: parents[1].id, title: "水泳" },
+
+    { parent_id: parents[2].id, title: "ロック" },
+    { parent_id: parents[2].id, title: "ジャズ" },
+    { parent_id: parents[2].id, title: "クラシック" },
+    { parent_id: parents[2].id, title: "K-POP" },
+    { parent_id: parents[2].id, title: "J-POP" },
+
+    { parent_id: parents[3].id, title: "アクション映画" },
+    { parent_id: parents[3].id, title: "ホラー映画" },
+    { parent_id: parents[3].id, title: "コメディ映画" },
+    { parent_id: parents[3].id, title: "SF映画" },
+    { parent_id: parents[3].id, title: "恋愛映画" },
+
+    { parent_id: parents[4].id, title: "ピカソ" },
+    { parent_id: parents[4].id, title: "印象派" },
+    { parent_id: parents[4].id, title: "現代アート" },
+    { parent_id: parents[4].id, title: "彫刻" },
+    { parent_id: parents[4].id, title: "水彩画" },
+
+    { parent_id: parents[5].id, title: "日本国内旅行" },
+    { parent_id: parents[5].id, title: "海外旅行" },
+    { parent_id: parents[5].id, title: "おすすめスポット" },
+    { parent_id: parents[5].id, title: "バックパッキング" },
+    { parent_id: parents[5].id, title: "キャンプ" },
+
+    { parent_id: parents[6].id, title: "和食" },
+    { parent_id: parents[6].id, title: "フレンチ" },
+    { parent_id: parents[6].id, title: "イタリアン" },
+    { parent_id: parents[6].id, title: "スイーツ" },
+    { parent_id: parents[6].id, title: "ヴィーガン料理" },
+
+    { parent_id: parents[7].id, title: "ストリートファッション" },
+    { parent_id: parents[7].id, title: "フォーマル" },
+    { parent_id: parents[7].id, title: "ブランド" },
+    { parent_id: parents[7].id, title: "アクセサリー" },
+    { parent_id: parents[7].id, title: "メンズファッション" },
+
+    { parent_id: parents[8].id, title: "RPG" },
+    { parent_id: parents[8].id, title: "FPS" },
+    { parent_id: parents[8].id, title: "アクションゲーム" },
+    { parent_id: parents[8].id, title: "ボードゲーム" },
+    { parent_id: parents[8].id, title: "ソーシャルゲーム" },
+
+    { parent_id: parents[9].id, title: "宇宙" },
+    { parent_id: parents[9].id, title: "生物学" },
+    { parent_id: parents[9].id, title: "物理学" },
+    { parent_id: parents[9].id, title: "化学" },
+    { parent_id: parents[9].id, title: "環境科学" },
+
+    { parent_id: parents[10].id, title: "AI" },
+    { parent_id: parents[10].id, title: "スマートフォン" },
+    { parent_id: parents[10].id, title: "IoT" },
+    { parent_id: parents[10].id, title: "VR/AR" },
+    { parent_id: parents[10].id, title: "ロボティクス" },
+
+    { parent_id: parents[11].id, title: "フィットネス" },
+    { parent_id: parents[11].id, title: "ダイエット" },
+    { parent_id: parents[11].id, title: "メンタルヘルス" },
+    { parent_id: parents[11].id, title: "ヨガ" },
+    { parent_id: parents[11].id, title: "スーパーフード" },
+
+    { parent_id: parents[12].id, title: "学校教育" },
+    { parent_id: parents[12].id, title: "オンライン学習" },
+    { parent_id: parents[12].id, title: "外国語学習" },
+    { parent_id: parents[12].id, title: "教育政策" },
+    { parent_id: parents[12].id, title: "資格試験" },
+
+    { parent_id: parents[13].id, title: "日本史" },
+    { parent_id: parents[13].id, title: "世界史" },
+    { parent_id: parents[13].id, title: "戦争史" },
+    { parent_id: parents[13].id, title: "古代文明" },
+    { parent_id: parents[13].id, title: "歴史小説" },
+
+    { parent_id: parents[14].id, title: "小説" },
+    { parent_id: parents[14].id, title: "詩" },
+    { parent_id: parents[14].id, title: "エッセイ" },
+    { parent_id: parents[14].id, title: "ミステリー" },
+    { parent_id: parents[14].id, title: "ファンタジー" }
+  ]
+)
+
+Board.create!(
+  [
+    { parent_id: children[0].id, title: "アルゴリズム" },
+    { parent_id: children[5].id, title: "フォーメーション" },
+    { parent_id: children[10].id, title: "ロックバンド" },
+    { parent_id: children[15].id, title: "ジャッキー・チェン" },
+    { parent_id: children[20].id, title: "ゲルニカ" },
+    { parent_id: children[25].id, title: "絶景" },
+    { parent_id: children[30].id, title: "だし" },
+    { parent_id: children[35].id, title: "トレンド" },
+    { parent_id: children[40].id, title: "ドラゴンクエスト" },
+    { parent_id: children[45].id, title: "火星" },
+    { parent_id: children[50].id, title: "画像生成" },
+    { parent_id: children[55].id, title: "ダイエット食" },
+    { parent_id: children[60].id, title: "英語学習" },
+    { parent_id: children[65].id, title: "戦国時代" },
+    { parent_id: children[70].id, title: "ミステリー" }
   ]
 )
