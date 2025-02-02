@@ -90,6 +90,9 @@ a {
   border-bottom: 3px solid #ddd;
 }
 
+* {
+  scrollbar-width: none;
+}
 // フラッシュ
 .alert-label {
   position: fixed;

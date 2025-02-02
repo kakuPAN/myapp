@@ -11,16 +11,15 @@ module ApplicationHelper
       og: {
         site_name: "TopicBoard",
         title: "TopicBoard",
-        description: "みんなで作る掲示板サイトです",
+        description: "「TopicBoard」は、さまざまな話題についてトピックを作成し、フレームを追加して情報を共有できる掲示板サイトです。",
         type: "website",
         url: request.original_url,
-        image: image_url("free_images/sakura.png"),
+        image: image_url("free_images/logo_ogp.png"),
         local: "ja-JP"
       },
       twitter: {
-        card: "summary_large_image",
-        site: "@V7wMYdaO8s14160",
-        image: image_url("free_images/sakura.png")
+        card: "summary",
+        image: image_url("free_images/logo_ogp.png")
       }
     }
   end
