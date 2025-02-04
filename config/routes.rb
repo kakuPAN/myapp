@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  post '/google_login_api/callback', to: 'google_login_api#callback'
+  post "oauth/callback" => "oauths#callback"
+  get "oauth/callback" => "oauths#callback" 
+  post "oauth/:provider" => "oauths#oauth", :as => :auth_at_provider
+
   namespace :admin do
     root "users#index"
     resources :users, except: [ :edit, :update ]
