@@ -12,10 +12,6 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-
-    if params[:user][:security_answer].present?
-      @user.encrypt_security_answer(params[:user][:security_answer])
-    end
     if @user.save
       auto_login(@user)
       redirect_to visited_boards_user_path(@user)
@@ -121,7 +117,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avatar_image, :security_question_id)
+    params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avatar_image)
   end
 
   def set_user
