@@ -94,6 +94,7 @@ group :development, :test do
   gem "omniauth-auth0"
   gem "omniauth-line"
   gem "omniauth-rails_csrf_protection"
+  gem "googleauth"
 end
 
 group :development do

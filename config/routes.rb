@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post '/google_login_api/callback', to: 'google_login_api#callback'
   namespace :admin do
     root "users#index"
     resources :users, except: [ :edit, :update ]

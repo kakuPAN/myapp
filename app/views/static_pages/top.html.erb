@@ -6,7 +6,21 @@
     <div class="title-jp">トピックボード</div>
     <% unless current_user %>
       <div class="top-page-login-container">
-        <%= link_to "ログイン", login_path, id: "login-button" %>
+        <!-- <%= link_to "ログイン", login_path, id: "login-button" %> -->
+        <script src="https://accounts.google.com/gsi/client" async></script>
+        <div id="g_id_onload"
+            data-client_id= <%= Rails.application.credentials.dig(:google_api, :client_id) %>
+            data-login_uri="http://localhost:3000/google_login_api/callback"
+            data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin"
+            data-type="standard"
+            data-size="large"
+            data-theme="outline"
+            data-text="sign_in_with"
+            data-shape="rectangular"
+            data-logo_alignment="left">
+        </div>
       </div>
     <% end %>
   </div>
