@@ -22,12 +22,12 @@ class OauthsController < ApplicationController
   private
 
   def auth_params
-    params.permit(:code, :provider)
+    params.permit(:provider)
   end
 
   def signup_and_login(provider)
     @user = create_from(provider)
-    if @user.email = Rails.application.credentials.dig(:admin, :email)
+    if @user.email == Rails.application.credentials.dig(:admin, :email)
       @user.update(role: 1)
     end
     reset_session
