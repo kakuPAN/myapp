@@ -17,15 +17,8 @@
       </div>
     </div>
   <% else %>
-    <div class="mypage-container" id="mypageContainer">
-      <span class="header-user-name">ゲストユーザー</span>
-      <div class="mypage-dropdown" id="mypageDropdown">
-        <ul>
-          <li><%= link_to "ユーザー登録", new_user_path %>
-          <li><%= link_to "ログイン", login_path, class: "login-text" %></li>
-          <li><%= link_to "トップ", root_path %></li>
-        </ul>
-      </div>
+    <div class="mypage-container">
+      <span class="header-user-name"><%= render "shared/google_button" %></span>
     </div>
   <% end %>
 </div>

@@ -7,13 +7,6 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-SecurityQuestion.create!([
-  { question_text: "好きな言葉は？" },
-  { question_text: "お気に入りの映画やドラマのタイトルは？" },
-  { question_text: "子供の頃のあだ名は？" },
-  { question_text: "一番印象に残っている旅行先は？" }
-])
-
 Board.create!(
   [
     { title: "趣味" },
