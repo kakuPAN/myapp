@@ -6,9 +6,7 @@
       <% end %>
     </div>
     <div class="login-or-new">
-      <span class="auth-link"><%= link_to "ログイン", login_path %></span>
-      <span class="or-text">or</span>
-      <span class="auth-link"><%= link_to "ユーザー登録", new_user_path %></span>
+      <span class="auth-link"><%= render "shared/google_button" %></span>
     </div>
   </div>
 </div>

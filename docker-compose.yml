@@ -2,7 +2,7 @@ version: '3'
 services:
   db:
     container_name: postgresql_db
-    image: postgres
+    image: postgres:16 # 未指定の場合、17.2になる
     restart: always
     environment:
       TZ: Asia/Tokyo

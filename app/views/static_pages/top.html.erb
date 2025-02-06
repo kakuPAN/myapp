@@ -6,7 +6,7 @@
     <div class="title-jp">トピックボード</div>
     <% unless current_user %>
       <div class="top-page-login-container">
-        <%= button_to 'Login with Google', auth_at_provider_path(provider: :google), method: :post, data: { turbo: false }  %>
+        <%= render "shared/google_button" %>
       </div>
     <% end %>
   </div>

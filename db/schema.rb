@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_04_124644) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_27_062014) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -112,12 +112,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_04_124644) do
     t.index ["board_id"], name: "index_reports_on_board_id"
     t.index ["comment_id"], name: "index_reports_on_comment_id"
     t.index ["user_id"], name: "index_reports_on_user_id"
-  end
-
-  create_table "security_questions", force: :cascade do |t|
-    t.string "question_text", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "user_boards", force: :cascade do |t|
