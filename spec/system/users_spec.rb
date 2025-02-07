@@ -1,253 +1,62 @@
 # require 'rails_helper'
 
 # RSpec.describe "Users", type: :system do
-#   let!(:security_question) { create(:security_question, question_text: "秘密の質問") }
-#   let(:user) { create(:user, security_question_id: security_question.id) }
-#   let!(:registered_user) { create(:user, email: "registered@email.com") }
-#   describe "ユーザー作成" do
-#     context "ログイン前" do
-#       it "フォームの入力値が正常な場合" do
-#         visit root_path
-#         find("#login-button").click
-#         find("#create-user-link").click
-
-#         fill_in "user_user_name", with: "new_user"
-#         fill_in "user_email", with: "new_user@email.com"
-#         fill_in "user_password", with: "password"
-#         fill_in "user_password_confirmation", with: "password"
-#         select security_question.question_text, from: "user_security_question_id"
-#         fill_in "user_security_answer", with: "回答"
-
-#         click_button "登録"
-#         puts user.id
-#         expect(page).to have_content("#{user.user_name}さまがログインしました", wait: 5)
-#         created_user = User.find_by(email: "new_user@email.com")
-#         expect(current_path).to eq visited_boards_user_path(created_user)
-#       end
-
-#       it "ユーザーネームが未入力の場合" do
-#         visit root_path
-#         find("#login-button").click
-#         find("#create-user-link").click
-
-#         fill_in "user_user_name", with: ""
-#         fill_in "user_email", with: "new_user@email.com"
-#         fill_in "user_password", with: "password"
-#         fill_in "user_password_confirmation", with: "password"
-#         select security_question.question_text, from: "user_security_question_id"
-#         fill_in "user_security_answer", with: "回答"
-
-#         click_button "登録"
-
-#         expect(page).to have_content("入力に不足があります")
-#         expect(page).to have_content("ユーザーネームを入力してください")
-
-#         expect(current_path).to eq new_user_path
-#       end
-
-#       it "メールアドレスが未入力の場合" do
-#         visit root_path
-#         find("#login-button").click
-#         find("#create-user-link").click
-
-#         fill_in "user_user_name", with: "new_user"
-#         fill_in "user_email", with: ""
-#         fill_in "user_password", with: "password"
-#         fill_in "user_password_confirmation", with: "password"
-#         select security_question.question_text, from: "user_security_question_id"
-#         fill_in "user_security_answer", with: "回答"
-
-#         click_button "登録"
-
-#         expect(page).to have_content("入力に不足があります")
-#         expect(page).to have_content("メールアドレスを入力してください")
-
-#         expect(current_path).to eq new_user_path
-#       end
-
-#       it "メールアドレスがすでに登録済みの場合" do
-#         visit root_path
-#         find("#login-button").click
-#         find("#create-user-link").click
-
-#         fill_in "user_user_name", with: "new_user"
-#         fill_in "user_email", with: registered_user.email
-#         fill_in "user_password", with: "password"
-#         fill_in "user_password_confirmation", with: "password"
-#         select security_question.question_text, from: "user_security_question_id"
-#         fill_in "user_security_answer", with: "回答"
-
-#         click_button "登録"
-
-#         expect(page).to have_content("入力に不足があります")
-#         expect(page).to have_content("メールアドレスはすでに存在します")
-
-#         expect(current_path).to eq new_user_path
-#       end
-
-#       it "パスワードが未入力の場合" do
-#         visit root_path
-#         find("#login-button").click
-#         find("#create-user-link").click
-
-#         fill_in "user_user_name", with: "new_user"
-#         fill_in "user_email", with: "new_user@email.com"
-#         fill_in "user_password", with: ""
-#         fill_in "user_password_confirmation", with: ""
-#         select security_question.question_text, from: "user_security_question_id"
-#         fill_in "user_security_answer", with: "回答"
-
-#         click_button "登録"
-
-#         expect(page).to have_content("入力に不足があります")
-#         expect(page).to have_content("パスワードは3文字以上で入力してください")
-
-#         expect(current_path).to eq new_user_path
-#       end
-#       it "パスワード確認が未入力の場合" do
-#         visit root_path
-#         find("#login-button").click
-#         find("#create-user-link").click
-
-#         fill_in "user_user_name", with: "new_user"
-#         fill_in "user_email", with: "new_user@email.com"
-#         password = Faker::Lorem.paragraph_by_chars(number: 3)
-#         fill_in "user_password", with: password
-#         fill_in "user_password_confirmation", with: ""
-#         select security_question.question_text, from: "user_security_question_id"
-#         fill_in "user_security_answer", with: "回答"
-
-#         click_button "登録"
-
-#         expect(page).to have_content("入力に不足があります")
-#         expect(page).to have_content("パスワード確認を入力してください")
-#         expect(page).to have_content("パスワード確認とパスワードの入力が一致しません")
-
-#         expect(current_path).to eq new_user_path
-#       end
-#       it "パスワードが3文字未満の場合" do
-#         visit root_path
-#         find("#login-button").click
-#         find("#create-user-link").click
-
-#         fill_in "user_user_name", with: "new_user"
-#         fill_in "user_email", with: "new_user@email.com"
-#         password = "p"
-#         fill_in "user_password", with: password
-#         fill_in "user_password_confirmation", with: password
-#         select security_question.question_text, from: "user_security_question_id"
-#         fill_in "user_security_answer", with: "回答"
-
-#         click_button "登録"
-
-#         expect(page).to have_content("入力に不足があります")
-#         expect(page).to have_content("パスワードは3文字以上で入力してください")
-
-#         expect(current_path).to eq new_user_path
-#       end
-
-#       it "パスワードとパスワード確認が一致しない場合" do
-#         visit root_path
-#         find("#login-button").click
-#         find("#create-user-link").click
-
-#         fill_in "user_user_name", with: "new_user"
-#         fill_in "user_email", with: "new_user@email.com"
-#         password = Faker::Lorem.paragraph_by_chars(number: 3)
-#         fill_in "user_password", with: password
-#         fill_in "user_password_confirmation", with: "misspassword"
-#         select security_question.question_text, from: "user_security_question_id"
-#         fill_in "user_security_answer", with: "回答"
-#         click_button "登録"
-
-#         expect(page).to have_content("入力に不足があります")
-#         expect(page).to have_content("パスワード確認とパスワードの入力が一致しません")
-
-#         expect(current_path).to eq new_user_path
-#       end
-
-#       it "秘密の質問の回答を入力していない場合" do
-#         visit root_path
-#         find("#login-button").click
-#         find("#create-user-link").click
-
-#         fill_in "user_user_name", with: "new_user"
-#         fill_in "user_email", with: "new_user@email.com"
-#         password = Faker::Lorem.paragraph_by_chars(number: 3)
-#         fill_in "user_password", with: password
-#         fill_in "user_password_confirmation", with: "misspassword"
-#         select security_question.question_text, from: "user_security_question_id"
-#         fill_in "user_security_answer", with: ""
-#         click_button "登録"
-
-#         expect(page).to have_content("入力に不足があります")
-#         expect(page).to have_content("秘密の質問の答えを入力してください")
-
-#         expect(current_path).to eq new_user_path
-#       end
-#     end
-#     context "ログイン後" do
-#       before { login(user) }
-#       it "トピック一覧にリダイレクトする" do
-#         visit new_user_path
-#         expect(page).to have_content("すでにログインしています")
-#         expect(current_path).to eq boards_path
-#       end
-#     end
-#   end
+#   let(:user) { create(:user) }
+#   let!(:other_user) { create(:user) }
+#   # ユーザー作成についてはOauthsControllerのテストによって替える
 
 #   describe "ユーザーマイページ" do
 #     let!(:board) { create(:board) }
 #     describe "自分以外のユーザーのマイページにアクセス" do
-#       let!(:registered_user_board_log) { create(:board_log, user_id: registered_user.id, board_id: board.id, action_type: 1) }
-#       let!(:registered_user_like) { create(:like, user_id: registered_user.id, board_id: board.id) }
-#       let!(:registered_user_visiter_board) { create(:user_board, user_id: registered_user.id, board_id: board.id) }
+#       let!(:other_user_board_log) { create(:board_log, user_id: other_user.id, board_id: board.id, action_type: 1) }
+#       let!(:other_user_like) { create(:like, user_id: other_user.id, board_id: board.id) }
+#       let!(:other_user_visiter_board) { create(:user_board, user_id: other_user.id, board_id: board.id) }
 
 #       it "ユーザーのマイページにアクセスできる" do
-#         visit liked_boards_user_path(registered_user)
-#         expect(current_path).to eq liked_boards_user_path(registered_user)
+#         visit liked_boards_user_path(other_user)
+#         expect(current_path).to eq liked_boards_user_path(other_user)
 #       end
 #       describe "ユーザープロフィールの編集" do
 #         it "ユーザーのプロフィール編集リンクが表示されない" do
-#           visit liked_boards_user_path(registered_user)
+#           visit liked_boards_user_path(other_user)
 #           expect(page).not_to have_selector("#users-setting")
 #         end
 #         it "ユーザーのプロフィール編集ページにアクセスできない" do
-#           visit edit_user_path(registered_user)
+#           visit edit_user_path(other_user)
 #           expect(page).to have_content "権限がありません"
-#           expect(current_path).to eq liked_boards_user_path(registered_user)
+#           expect(current_path).to eq liked_boards_user_path(other_user)
 #         end
 #       end
 #       it "ユーザーのユーザー情報にアクセスできない" do
-#         visit show_profile_user_path(registered_user)
+#         visit show_profile_user_path(other_user)
 #         expect(page).to have_content "権限がありません"
-#         expect(current_path).to eq liked_boards_user_path(registered_user)
+#         expect(current_path).to eq liked_boards_user_path(other_user)
 #       end
 #       describe "ユーザーのお気に入り一覧ページにアクセス" do
 #         it "ユーザーがお気に入りに登録したトピックが表示される" do
-#           visit liked_boards_user_path(registered_user)
-#           expect(page).to have_content registered_user.liked_boards.last.title
-#           expect(page).to have_current_path(liked_boards_user_path(registered_user), wait: 5)
+#           visit liked_boards_user_path(other_user)
+#           expect(page).to have_content other_user.liked_boards.last.title
+#           expect(page).to have_current_path(liked_boards_user_path(other_user), wait: 5)
 #         end
 #       end
 #       describe "ユーザーの活動一覧ページにアクセス" do
 #         it "ユーザーの活動に関連するトピックが表示される" do
-#           visit liked_boards_user_path(registered_user)
+#           visit liked_boards_user_path(other_user)
 #           click_link "ユーザーの活動"
-#           expect(page).to have_content registered_user.user_board_actions.last.title
-#           expect(page).to have_current_path(user_actions_user_path(registered_user), wait: 5)
+#           expect(page).to have_content other_user.user_board_actions.last.title
+#           expect(page).to have_current_path(user_actions_user_path(other_user), wait: 5)
 #         end
 #       end
 #       describe "ユーザーの閲覧履歴にアクセス" do
 #         it "閲覧履歴へのリンクが表示されない" do
-#           visit liked_boards_user_path(registered_user)
+#           visit liked_boards_user_path(other_user)
 #           expect(page).not_to have_content "閲覧履歴"
-#           expect(current_path).to eq liked_boards_user_path(registered_user)
+#           expect(current_path).to eq liked_boards_user_path(other_user)
 #         end
 #         it "閲覧履歴にアクセスできない" do
-#           visit visited_boards_user_path(registered_user)
+#           visit visited_boards_user_path(other_user)
 #           expect(page).not_to have_content("権限がありません", wait: 5)
-#           expect(current_path).to eq liked_boards_user_path(registered_user)
+#           expect(current_path).to eq liked_boards_user_path(other_user)
 #         end
 #       end
 #     end

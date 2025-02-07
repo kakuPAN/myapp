@@ -65,6 +65,7 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
   config.include LoginMacros
+  config.include OmniauthMacros
 
   config.before(:each, type: :system) do
     if ENV['SELENIUM_DRIVER_URL']

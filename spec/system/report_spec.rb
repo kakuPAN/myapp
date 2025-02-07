@@ -1,9 +1,8 @@
 # require 'rails_helper'
 
 # RSpec.describe "Reports", type: :system do
-#   let!(:security_question) { create(:security_question, question_text: "秘密の質問") }
-#   let!(:commented_user) { create(:user, security_question_id: security_question.id) }
-#   let!(:user) { create(:user, security_question_id: security_question.id) }
+#   let!(:commented_user) { create(:user) }
+#   let!(:user) { create(:user) }
 #   let!(:board) { create(:board) }
 #   let!(:comment) { create(:comment, board_id: board.id, user_id: commented_user.id) }
 #   let!(:board_report) { create(:report, body: "トピックの報告", board_id: board.id, user_id: user.id, comment_id: nil) }

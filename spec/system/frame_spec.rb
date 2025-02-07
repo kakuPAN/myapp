@@ -1,7 +1,6 @@
 # require "rails_helper"
 
 # RSpec.describe "Frames", type: :system do
-#   let!(:security_question) { create(:security_question) }
 #   let(:user) { create(:user) }
 #   let(:board) { create(:board) }
 #   let(:frame) { create(:frame) }

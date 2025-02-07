@@ -1,9 +1,8 @@
 # require 'rails_helper'
 
 # RSpec.describe "AdminFrames", type: :system do
-#   let!(:security_question) { create(:security_question, question_text: "秘密の質問") }
-#   let!(:general_user) { create(:user, security_question_id: security_question.id) }
-#   let!(:admin_user) { create(:user, user_name: "admin_user", role: 1, security_question_id: security_question.id) }
+#   let!(:general_user) { create(:user) }
+#   let!(:admin_user) { create(:user, user_name: "admin_user", role: 1) }
 #   let!(:board) { create(:board) }
 #   let!(:frame) { create(:frame, board_id: board.id) }
 #   describe "一般ユーザーによるアクセス" do
