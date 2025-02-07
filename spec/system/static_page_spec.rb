@@ -4,7 +4,7 @@
 #   describe "ページ遷移確認" do
 #     describe "フッターのリンクからページ遷移できる" do
 #       before do
-#         page.driver.browser.manage.window.resize_to(1200, 768)
+#         page.driver.browser.manage.window.resize_to(1201, 768)
 #       end
 #       it "利用規約にアクセスできる" do
 #         visit root_path
@@ -36,12 +36,11 @@
 #     end
 #   end
 #   describe "ヘッダー・フッターのレスポンシブ対応" do
-#     let!(:security_question) { create(:security_question) }
 #     let(:user) { create(:user) }
 #     before { login(user) }
-#     context "ウィンドウサイズが1001px以上の場合" do
+#     context "ウィンドウサイズが1201px以上の場合" do
 #       before do
-#         page.driver.browser.manage.window.resize_to(1100, 768) # 大サイズ
+#         page.driver.browser.manage.window.resize_to(1201, 768) # 大サイズ
 #       end
 #       it "ヘッダーにロゴ、ユーザー名が表示される" do
 #         visit visited_boards_user_path(user)
@@ -53,9 +52,9 @@
 #         expect(page).not_to have_selector('.sub-footer-content', visible: true, wait: 10)
 #       end
 #     end
-#     context "ウィンドウサイズが1000px以下の場合" do
+#     context "ウィンドウサイズが1200px以下の場合" do
 #       before do
-#         page.driver.browser.manage.window.resize_to(1000, 768) # 小サイズ
+#         page.driver.browser.manage.window.resize_to(1200, 768) # 小サイズ
 #       end
 #       it "ヘッダーにロゴ、ユーザー名が表示されない" do
 #         visit visited_boards_user_path(user)

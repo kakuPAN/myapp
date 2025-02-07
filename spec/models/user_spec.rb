@@ -2,7 +2,6 @@
 
 # RSpec.describe User, type: :model do
 #   describe 'バリデーションチェック' do
-#     let(:security_question) { create(:security_question) }
 #     let!(:another_user) { create(:user, email: "another@email.com") }
 #     let(:user) { create(:user) }
 #     describe "ユーザーの作成が成功する" do
@@ -47,16 +46,6 @@
 #         user.profile = Faker::Lorem.paragraph_by_chars(number: 251)
 #         expect(user).to be_invalid
 #         expect(user.errors[:profile]).to include("は250文字以内で入力してください")
-#       end
-#       it "security_question_idがない場合、無効である" do
-#         user.security_question_id = nil
-#         expect(user).to be_invalid
-#         expect(user.errors[:security_question_id]).to eq [ "を入力してください" ]
-#       end
-#       it "security_answer_digestがない場合、無効である" do
-#         user.security_answer_digest = ""
-#         expect(user).to be_invalid
-#         expect(user.errors[:security_answer_digest]).to eq [ "を入力してください" ]
 #       end
 #       context "image_content_typeのバリデーション" do
 #         it "ファイル形式が、JPEG, JPG, PNG以外の場合、無効である" do
