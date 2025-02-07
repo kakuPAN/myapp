@@ -21,7 +21,7 @@ gem "jbuilder"
 
 gem "jquery-rails"
 
-gem "devise"
+gem "devise", "~> 4.9"
 
 gem "ransack"
 
@@ -95,6 +95,8 @@ group :development, :test do
   gem "omniauth-line"
   gem "omniauth-rails_csrf_protection"
   gem "omniauth-google-oauth2"
+  gem 'omniauth'
+  gem 'omniauth-github'
 end
 
 group :development do
