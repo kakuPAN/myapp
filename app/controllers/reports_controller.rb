@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  before_action :require_login
+  before_action :authenticate_user!
   before_action :set_board, only: %i[ new_board_report create_board_report ]
   before_action :set_comment, only: %i[ new_comment_report create_comment_report ]
 

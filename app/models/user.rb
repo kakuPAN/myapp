@@ -1,7 +1,9 @@
 class User < ApplicationRecord
-  authenticates_with_sorcery!
-  has_many :authentications, :dependent => :destroy
-  accepts_nested_attributes_for :authentications
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
 
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
@@ -14,6 +16,7 @@ class User < ApplicationRecord
   has_many :reports, dependent: :destroy
   has_one_attached :avatar_image
 
+  validates :uid, uniqueness: { scope: :provider }
   validates :user_name, presence: true, length: { maximum: 20 }
   validates :profile, length: { maximum: 250 }
   # validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
@@ -42,5 +45,17 @@ class User < ApplicationRecord
     if avatar_image.attached? && avatar_image.blob.byte_size > 200.kilobytes
       errors.add(:base, "200KB以下のファイルをアップロードしてください")
     end
+  end
+
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.name = auth.info.name
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+    end
+  end
+  
+  def self.create_unique_string
+    SecureRandom.uuid
   end
 end

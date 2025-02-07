@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  post "oauth/callback" => "oauths#callback"
-  get "oauth/callback" => "oauths#callback" 
-  post "oauth/:provider" => "oauths#oauth", :as => :auth_at_provider
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
   namespace :admin do
     root "users#index"

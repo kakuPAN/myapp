@@ -1,4 +1,4 @@
-<%= button_to auth_at_provider_path(provider: :google), method: :post, data: { turbo: false }, class: "gsi-material-button white-button" do %>
+<%= button_to user_google_oauth2_omniauth_authorize_path, data: { turbo: false }, class: "gsi-material-button white-button" do %>
   <div class="gsi-material-button-state"></div>
   <div class="gsi-material-button-content-wrapper">
     <div class="gsi-material-button-icon icon">
