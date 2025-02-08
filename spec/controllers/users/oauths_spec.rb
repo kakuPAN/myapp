@@ -43,7 +43,7 @@
 #           uid: "123456",
 #           info: {
 #             name: "Test User",
-#             email: Rails.application.credentials.admin[:email]
+#             email: Rails.application.credentials.dig(:admin, :email)
 #           }
 #         )
 #         @request.env["devise.mapping"] = Devise.mappings[:user]
@@ -52,7 +52,7 @@
 #       let!(:admin_user) { create(:user, provider: "google_oauth2", uid: "123456", email: Rails.application.credentials.admin[:email], role: 1) }
 
 #       it "管理者ページへリダイレクトする" do
-#         puts User.find_by(email: Rails.application.credentials.admin[:email]).admin?
+#         puts User.find_by(email: Rails.application.credentials.dig(:admin, :email).admin?
 #         expect {
 #           get :google_oauth2
 #         }.not_to change(User, :count)
