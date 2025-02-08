@@ -50,7 +50,7 @@ class User < ApplicationRecord
       email: auth.info.email,
       password: Devise.friendly_token[0, 20]
     )
-    user.role = 1 if auth.info.email == Rails.application.credentials.dig(:admin, :email)
+    user.role = 1 if auth.info.email == Rails.application.credentials.dig(:admin, :email) # []はCIでエラーになる
     begin
       user.save!
       user
