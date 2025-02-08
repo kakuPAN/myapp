@@ -1,5 +1,5 @@
 class BoardsController < ApplicationController
-  before_action :require_login, except: %i[index show board_info]
+  before_action :authenticate, except: %i[index show board_info]
   before_action :set_board, except: %i[index new create]
 
   def index

@@ -1,19 +1,16 @@
 require "rails_helper"
 
 RSpec.describe "Boards", type: :system do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :with_google) }
   let(:board) { create(:board) }
   let!(:latest_board) { create(:board) }
-  before do
-    mock_google_auth(user)
-  end
   describe "ログイン前" do
     describe "ページ遷移確認" do
       context "トピックの作成ページにアクセス" do
         it "作成ページへのアクセスが失敗する" do
           visit new_board_path
           expect(page).to have_content("ログインしてください")
-          expect(current_path).to eq login_path
+          expect(current_path).to eq root_path
         end
       end
 
@@ -21,7 +18,7 @@ RSpec.describe "Boards", type: :system do
         it "編集ページへのアクセスが失敗する" do
           visit edit_board_path(board)
           expect(page).to have_content("ログインしてください")
-          expect(current_path).to eq login_path
+          expect(current_path).to eq root_path
         end
       end
 
@@ -45,14 +42,12 @@ RSpec.describe "Boards", type: :system do
   end
 
   describe "ログイン後" do
-    before { login(user) }
-
+   before { login(user) }
     describe "トピック作成" do
       context "フォームの入力値が正常な場合" do
         it "トピックの作成が成功する" do
           visit board_path(board)
           find('#create-new-board').click
-
           fill_in "board_title", with: "test_title"
           find("#create-new-board").click
           expect(page).to have_content("test_title", wait: 5)

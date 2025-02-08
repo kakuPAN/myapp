@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   helper_method :breadcrumbs
   before_action :set_search
 
-  def before_login
+  def authenticate
     return if current_user
     flash[:danger] = "ログインしてください"
     redirect_to root_path

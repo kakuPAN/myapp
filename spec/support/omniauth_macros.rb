@@ -1,12 +1,21 @@
-module OmniauthMacros
-  def mock_google_auth(user)
-    OmniAuth.config.test_mode = true
+module OmniAuthMacros
+  def mock_google_oauth2(user)
     OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
-      provider: "google_oauth2",
-      uid: Faker::Number.number(digits: 10).to_s,
+      provider: 'google_oauth2',
+      uid: user.uid || Faker::Internet.uuid,
       info: {
-        email: user.email,
-        name: user.user_name
+        name: user.user_name,
+        email: user.email
+      }
+    )
+  end
+  def mock_auth_hash(email: "test@example.com", provider: "google_oauth2", uid: "123456")
+    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
+      provider: provider,
+      uid: uid,
+      info: {
+        name: "Test User",
+        email: email
       }
     )
   end
