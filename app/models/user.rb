@@ -19,10 +19,6 @@ class User < ApplicationRecord
   validates :uid, uniqueness: { scope: :provider }
   validates :user_name, presence: true, length: { maximum: 20 }
   validates :profile, length: { maximum: 250 }
-  # validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
-  # validates :password, length: { maximum: 50 }, if: -> { new_record? || changes[:crypted_password] }
-  # validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
-  # validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
   validates :email, presence: true, uniqueness: true
 
   validate :image_content_type
@@ -48,14 +44,19 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.name = auth.info.name
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0, 20]
+    user = where(provider: auth.provider, uid: auth.uid).first_or_initialize
+    user.assign_attributes(
+      user_name: auth.info.name,
+      email: auth.info.email,
+      password: Devise.friendly_token[0, 20]
+    )
+    user.role = 1 if auth.info.email == Rails.application.credentials.admin[:email]
+    begin
+      user.save!
+      user
+    rescue ActiveRecord::RecordInvalid => e
+      Rails.logger.error "OmniAuth authentication failed: #{e.message}"
+      nil
     end
-  end
-  
-  def self.create_unique_string
-    SecureRandom.uuid
   end
 end
