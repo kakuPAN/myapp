@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Frame, type: :model do
   describe 'バリデーションチェック' do
-    let!(:security_question) { create(:security_question) }
     let(:board) { create(:board) }
     let(:frame) { create(:frame) }
     it '全ての値が正しい場合、有効である' do

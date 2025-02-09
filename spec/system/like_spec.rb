@@ -1,8 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Likes", type: :system do
-  let!(:security_question) { create(:security_question) }
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :with_google) }
   let(:board) { create(:board) }
   describe "ログイン前" do
     describe "ページ遷移確認" do
@@ -10,8 +9,7 @@ RSpec.describe "Likes", type: :system do
         it "お気に入り登録が失敗する" do
           visit board_path(board)
           find("#like-button-not-login").click
-          expect(page).to have_content("ログイン")
-          expect(page).to have_content("ユーザー登録")
+          expect(page).to have_selector("#tab-google-button", visible: true)
           expect(current_path).to eq board_path(board)
         end
       end

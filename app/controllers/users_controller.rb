@@ -1,30 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, except: %i[ new create ]
-
-  def new
-    if current_user
-      redirect_to boards_path
-      flash[:danger] = "すでにログインしています"
-    end
-    @user = User.new
-    @security_questions = SecurityQuestion.all
-  end
-
-  def create
-    @user = User.new(user_params)
-
-    if params[:user][:security_answer].present?
-      @user.encrypt_security_answer(params[:user][:security_answer])
-    end
-    if @user.save
-      auto_login(@user)
-      redirect_to visited_boards_user_path(@user)
-      flash[:primary] = "#{@user.user_name}さまがログインしました"
-    else
-      flash.now[:danger] = "入力に不足があります"
-      render :new, status: :unprocessable_entity
-    end
-  end
+  before_action :set_user
 
   def destroy
     if @user.admin?
@@ -121,7 +96,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avatar_image, :security_question_id)
+    params.require(:user).permit(:user_name, :profile, :email, :password, :password_confirmation, :avatar_image)
   end
 
   def set_user

@@ -1,6 +1,6 @@
 // application.htmlより
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
   .whole-wrapper {
     padding-bottom: 150px;
   }
@@ -39,7 +39,7 @@
   }
 }
 
-@media (min-width: 600px) and (max-width: 1000px) {
+@media (min-width: 600px) and (max-width: 1200px) {
   .mypage-container {
     position: relative;
     flex: 1;
@@ -53,7 +53,7 @@
   }
 }
 
-@media (min-width: 1001px) {
+@media (min-width: 1201px) {
   .mypage-container {
     position: relative;
     flex: 1;
@@ -390,7 +390,7 @@ footer {
     font-size: 14px;
   }
 }
-@media (min-width: 600px) and (max-width: 1000px) {
+@media (min-width: 600px) and (max-width: 1200px) {
   footer {
     display: none;
   }
@@ -420,6 +420,9 @@ footer {
   #sub-footer-icon {
     margin-right: 20px;
   }
+  #sub-footer-google {
+    margin-right: 20px;
+  }
   .sub-footer-menu a {
     text-decoration: none;
     color: #fff;
@@ -431,7 +434,7 @@ footer {
     font-size: 20px;
   }
 }
-@media (min-width: 1001px) {
+@media (min-width: 1201px) {
   .sub-footer-content {
     display: none;
   }
@@ -439,6 +442,9 @@ footer {
     width: 200px;
   }
   #sub-footer-icon {
+    margin-right: 20px;
+  }
+  #sub-footer-google {
     margin-right: 20px;
   }
   #sub-footer-list {

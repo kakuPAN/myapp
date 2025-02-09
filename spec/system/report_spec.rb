@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Reports", type: :system do
-  let!(:security_question) { create(:security_question, question_text: "秘密の質問") }
-  let!(:commented_user) { create(:user, security_question_id: security_question.id) }
-  let!(:user) { create(:user, security_question_id: security_question.id) }
+  let!(:commented_user) { create(:user) }
+  let!(:user) { create(:user, :with_google) }
   let!(:board) { create(:board) }
   let!(:comment) { create(:comment, board_id: board.id, user_id: commented_user.id) }
   let!(:board_report) { create(:report, body: "トピックの報告", board_id: board.id, user_id: user.id, comment_id: nil) }
@@ -16,8 +15,7 @@ RSpec.describe "Reports", type: :system do
           it "ログインを促すタブを表示" do
             visit board_path(board)
             find(".report-button").click
-            expect(page).to have_content("ログイン")
-            expect(page).to have_content("ユーザー登録")
+            expect(page).to have_selector("#tab-google-button", visible: true)
             expect(current_path).to eq board_path(board)
           end
         end
@@ -25,14 +23,14 @@ RSpec.describe "Reports", type: :system do
           it "ログインページにリダイレクト" do
             visit new_board_report_report_path(board, board_id: board.id)
             expect(page).to have_content("ログインしてください")
-            expect(current_path).to eq login_path
+            expect(current_path).to eq root_path
           end
         end
         context "コメント報告ページに直接アクセスした場合" do
           it "ログインページにリダイレクト" do
             visit new_comment_report_report_path(board, comment_id: comment.id)
             expect(page).to have_content("ログインしてください")
-            expect(current_path).to eq login_path
+            expect(current_path).to eq root_path
           end
         end
       end

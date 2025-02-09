@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Like, type: :model do
   describe "バリデーションチェック" do
     let(:board) { create(:board) }
-    let(:user) { create(:user) }
+    let(:user) { create(:user, :with_google) }
     let(:like) { create(:like) }
     it "全ての値が正しい場合、有効である" do
       expect(like).to be_valid

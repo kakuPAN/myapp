@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  devise_scope :user do
+    get "/users/auth/google_oauth2/callback" => "users/omniauth_callbacks#google_oauth2"
+  end
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }, skip: %i[registrations passwords]
+  
+  
   namespace :admin do
     root "users#index"
     resources :users, except: [ :edit, :update ]

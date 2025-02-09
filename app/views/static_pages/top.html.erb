@@ -6,7 +6,7 @@
     <div class="title-jp">トピックボード</div>
     <% unless current_user %>
       <div class="top-page-login-container">
-        <%= link_to "ログイン", login_path, id: "login-button" %>
+        <%= render "shared/google_button" %>
       </div>
     <% end %>
   </div>

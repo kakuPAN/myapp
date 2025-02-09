@@ -1,15 +1,8 @@
 module LoginMacros
   def login(user)
-    visit login_path
-    fill_in "session-email", with: user.email
-    fill_in "session-password", with: "password"
-    find('#login-submit').click
-    if user.admin?
-      expect(page).to have_content("管理者：#{user.user_name}がログインしました")
-      expect(current_path).to eq admin_users_path
-    else
-      expect(page).to have_content("#{user.user_name}さまがログインしました")
-      expect(current_path).to eq visited_boards_user_path(user)
-    end
+    mock_google_oauth2(user)
+    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]  # Deviseの設定
+    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]  # モック認証データを設定
+    sign_in user
   end
 end

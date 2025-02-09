@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :require_login, except: %i[ index ]
+  before_action :authenticate, except: %i[ index ]
   before_action :set_board
 
   def index

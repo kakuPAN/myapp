@@ -1,8 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Frames", type: :system do
-  let!(:security_question) { create(:security_question) }
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :with_google) }
   let(:board) { create(:board) }
   let(:frame) { create(:frame) }
   describe "ログイン前" do
@@ -11,7 +10,7 @@ RSpec.describe "Frames", type: :system do
         it "作成ページへのアクセスが失敗する" do
           visit new_board_frame_path(board)
           expect(page).to have_content("ログインしてください")
-          expect(current_path).to eq login_path
+          expect(current_path).to eq root_path
         end
       end
 
@@ -19,7 +18,7 @@ RSpec.describe "Frames", type: :system do
         it "編集ページへのアクセスが失敗する" do
           visit edit_board_frame_path(board, frame)
           expect(page).to have_content("ログインしてください")
-          expect(current_path).to eq login_path
+          expect(current_path).to eq root_path
         end
       end
     end

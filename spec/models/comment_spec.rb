@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
   describe 'バリデーションチェック' do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, :with_google) }
     let(:board) { create(:board) }
     let(:comment) { create(:comment) }
     it '全ての値が正しい場合、有効である' do

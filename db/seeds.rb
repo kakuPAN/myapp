@@ -7,27 +7,6 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-SecurityQuestion.create!([
-  { question_text: "好きな言葉は？" },
-  { question_text: "お気に入りの映画やドラマのタイトルは？" },
-  { question_text: "子供の頃のあだ名は？" },
-  { question_text: "一番印象に残っている旅行先は？" }
-])
-
-user_data = {
-    email: Rails.application.credentials.dig(:admin, :email),
-    password: Rails.application.credentials.dig(:admin, :password),
-    password_confirmation: Rails.application.credentials.dig(:admin, :password),
-    user_name: Rails.application.credentials.dig(:admin, :user_name),
-    security_question_id: Rails.application.credentials.dig(:admin, :security_question),
-    role: Rails.application.credentials.dig(:admin, :role)
-}
-user = User.new(user_data)
-user.security_answer_digest = BCrypt::Password.create(Rails.application.credentials.dig(:admin, :answer))
-user.save!
-
-
-
 Board.create!(
   [
     { title: "趣味" },

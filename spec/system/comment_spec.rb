@@ -1,9 +1,11 @@
 require "rails_helper"
 
 RSpec.describe "Comments", type: :system do
-  let!(:security_question) { create(:security_question) }
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :with_google) }
   let!(:board) { create(:board) }
+  before do
+    page.driver.browser.manage.window.resize_to(1400, 900) # テストのクラッシュを抑えるため画面サイズを調整
+  end
   describe "ログイン前" do
     describe "ページ遷移確認" do
       context "コメント一覧ページにアクセス" do
@@ -19,8 +21,7 @@ RSpec.describe "Comments", type: :system do
         it "コメントの作成ができない" do
           visit board_path(board)
           find(".comment-button").click
-          expect(page).to have_content("ログイン")
-          expect(page).to have_content("ユーザー登録")
+          expect(page).to have_selector("#tab-google-button", visible: true)
           expect(current_path).to eq board_path(board)
         end
       end
@@ -30,8 +31,7 @@ RSpec.describe "Comments", type: :system do
           find("#comment-form").click
           form = find("#comment-form")
           expect(form[:class]).to include("disabled")
-          expect(page).to have_content("ログイン")
-          expect(page).to have_content("ユーザー登録")
+          expect(page).to have_selector("#tab-google-button", visible: true)
           expect(current_path).to eq board_comments_path(board)
         end
       end
@@ -39,6 +39,7 @@ RSpec.describe "Comments", type: :system do
   end
   describe "ログイン後" do
     before { login(user) }
+    let!(:to_comment) { create(:comment, board_id: board.id) }
     describe "ページ遷移確認" do
       context "コメント一覧ページにアクセス" do
         it "コメント一覧ページにアクセスできる" do
@@ -49,12 +50,14 @@ RSpec.describe "Comments", type: :system do
       end
     end
     describe "コメントの作成" do
-      let!(:to_comment) { create(:comment, board_id: board.id) }
       describe "トピック詳細ページでコメントを作成" do
+        before do
+          visit board_path(board)
+        end
         context "入力内容が正常な場合" do
           it "コメントを作成できる" do
-            visit board_path(board)
-            find(".comment-button").click
+            expect(page).to have_selector("#comment-button", wait: 10)
+            find("#comment-button").click
             fill_in "comment_body", with: "新しいコメント"
             click_button "コメントを送信"
             expect(page).to have_selector('div.comment-text p', text: "新しいコメント", visible: :all) # 暗転背景の下にあっても検知
@@ -62,9 +65,9 @@ RSpec.describe "Comments", type: :system do
             expect(current_path).to eq board_path(board)
           end
         end
+        
         context "入力が100文字を超える場合" do
           it "コメントの作成が失敗する" do
-            visit board_path(board)
             find(".comment-button").click
             body = Faker::Lorem.paragraph_by_chars(number: 101)
             fill_in "comment_body", with: body
@@ -80,7 +83,7 @@ RSpec.describe "Comments", type: :system do
             visit board_comments_path(board)
             fill_in "comment_body", with: "新しいコメント"
             find("#comments-comment-submit").click
-            expect(page).to have_content("新しいコメント")
+            expect(page).to have_content("新しいコメント", wait: 5)
             expect(page).to have_content("コメントを作成しました")
             expect(current_path).to eq board_comments_path(board)
           end
@@ -116,6 +119,7 @@ RSpec.describe "Comments", type: :system do
       end
     end
     describe "コメントの編集" do
+      before { login(user) }
       let!(:to_comment) { create(:comment, user_id: user.id, board_id: board.id) }
       let!(:reply) { create(:comment, user_id: user.id, board_id: board.id, parent_id: to_comment.id) }
       describe "トピック詳細ページでコメントを編集" do

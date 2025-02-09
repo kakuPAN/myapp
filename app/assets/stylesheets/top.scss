@@ -1,4 +1,4 @@
-@media (min-width: 800px) {
+@media (min-width: 1200px) {
   .top-page-login-container {
     flex-direction: column;
     position: absolute;
@@ -6,7 +6,7 @@
     right: 20px;
   }
 }
-@media (max-width: 800px) {
+@media (max-width: 1201px) {
   .top-page-login-container {
     flex-direction: column;
     margin-top: 10px;

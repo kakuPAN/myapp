@@ -21,7 +21,7 @@ gem "jbuilder"
 
 gem "jquery-rails"
 
-gem "sorcery"
+gem "devise", "~> 4.9"
 
 gem "ransack"
 
@@ -94,6 +94,9 @@ group :development, :test do
   gem "omniauth-auth0"
   gem "omniauth-line"
   gem "omniauth-rails_csrf_protection"
+  gem "omniauth-google-oauth2"
+  gem 'omniauth'
+  gem 'omniauth-github'
 end
 
 group :development do
@@ -107,4 +110,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers", "~> 5.3", ">= 5.3.1"
+  gem 'rack_session_access'
 end

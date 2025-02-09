@@ -2,10 +2,10 @@ require "rails_helper"
 
 RSpec.describe Report, type: :model do
   describe "バリデーションチェック" do
-    let(:user) { create(:user) }
+    let!(:user) { create(:user, :with_google) }
     let(:board) { create(:board) }
     let(:comment) { create(:comment) }
-    let(:report) { create(:report) }
+    let(:report) { create(:report, user_id: user.id) }
 
     it "全ての値が正しい場合、有効である" do
       expect(report).to be_valid

@@ -3,9 +3,10 @@ class ApplicationController < ActionController::Base
   helper_method :breadcrumbs
   before_action :set_search
 
-  def not_authenticated
-    redirect_to login_path
+  def authenticate
+    return if current_user
     flash[:danger] = "ログインしてください"
+    redirect_to root_path
   end
 
   def breadcrumbs

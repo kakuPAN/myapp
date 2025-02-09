@@ -38,7 +38,6 @@ RSpec.configure do |config|
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]
-
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
@@ -62,9 +61,12 @@ RSpec.configure do |config|
   #
   # To enable this behaviour uncomment the line below.
   # config.infer_spec_type_from_file_location!
-
+  config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Devise::TestHelpers, :type => :controller
   config.include FactoryBot::Syntax::Methods
+  config.include OmniAuthMacros
   config.include LoginMacros
+  OmniAuth.config.test_mode = true
 
   config.before(:each, type: :system) do
     if ENV['SELENIUM_DRIVER_URL']
