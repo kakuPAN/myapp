@@ -38,4 +38,4 @@
 
 /node_modules
 /ngrok.yml
-/ngrok
+/ngrok.DS_Store
