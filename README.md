@@ -40,7 +40,7 @@ https://topic-board.jp
 
 ![画像フレーム](https://github.com/user-attachments/assets/4cb02eb6-2e5b-4696-a243-27d785125583)
 
-### 使用技術
+## 使用技術
 | カテゴリ  | 技術 |
 | ------------- | ------------- |
 | サーバーサイド  | Ruby on Rails 8.0.0・Ruby 3.2.2 |
@@ -51,6 +51,5 @@ https://topic-board.jp
 | アプリケーションサーバー | Render |
 | バージョン管理ツール | GitHub |
 
-
-
-
+## ER図
+<img src="app/assets/images/free_images/ER.drawio.png" width="500">
