@@ -21,7 +21,7 @@
               <% if frame.image.attached? %>
                 <%= image_tag frame.image %>
               <% else %>
-                <div class="board-body-text"><%= simple_format(frame.body) %></div>
+                <div class="board-body-text"><%= frame.content %></div>
               <% end %>
             </div>
           </div>

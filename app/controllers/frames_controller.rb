@@ -151,6 +151,6 @@ class FramesController < ApplicationController
   end
 
   def frame_params
-    params.require(:frame).permit(:body, :frame_number, :image, :frame_type)
+    params.require(:frame).permit(:body, :frame_number, :image, :frame_type, :content)
   end
 end
