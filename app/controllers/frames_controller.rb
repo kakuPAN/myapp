@@ -24,7 +24,7 @@ class FramesController < ApplicationController
         end
       else
         format.turbo_stream do
-          flash.now[:success] = "フレームを作成できません"
+          flash.now[:danger] = "フレームを作成できません"
         end
       end
     end

@@ -196,10 +196,10 @@ function EditCommentShowLength(str, commentId) {
 };
 
 // フレーム作成/編集
-function FrameShowLength(str) {
+function FrameShowLength(element) {
   const maxLength = 500;
-  const value = str.trim()
-  const inputLength = str.trim().length;
+  const value = element.innerText.trim();
+  const inputLength = value.length;
   const submitButton = document.getElementById("frame-submit-button");
 
   document.getElementById("inputlength").innerHTML = `${inputLength}/${maxLength}文字`;
