@@ -3,13 +3,13 @@ class Frame < ApplicationRecord
   has_many :board_logs, dependent: :destroy
   has_many :frame_logs, through: :board_logs, source: :user
   has_one_attached :image
-
+  has_rich_text :content
   validates :board_id, presence: true
   validates :body, length: { maximum: 500 }, allow_nil: true
   validates :frame_number, presence: true, uniqueness: { scope: :board_id }
   validates :frame_type, presence: true
 
-  validate :body_or_image_presence
+  # validate :body_or_image_presence
   validate :image_content_type
   validate :image_size
   validate :frame_type_check

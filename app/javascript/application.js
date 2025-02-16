@@ -9,3 +9,6 @@ import "./error_message.js"
 import "./login.js"
 import "./mypage.js"
 import "./users.js"
+
+import "trix"
+import "@rails/actiontext"
