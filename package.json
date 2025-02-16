@@ -16,13 +16,15 @@
     "@hotwired/turbo-rails": "^8.0.12",
     "@mojs/core": "^1.7.1",
     "@popperjs/core": "^2.11.8",
+    "@rails/actiontext": "^8.0.100",
     "autoprefixer": "^10.4.20",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "nodemon": "^3.1.7",
     "postcss": "^8.4.49",
     "postcss-cli": "^11.0.0",
-    "sass": "^1.81.0"
+    "sass": "^1.81.0",
+    "trix": "^2.1.12"
   },
   "browserslist": [
     "defaults"
