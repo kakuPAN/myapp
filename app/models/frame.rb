@@ -7,7 +7,6 @@ class Frame < ApplicationRecord
   
   validate :content_length
   validates :board_id, presence: true
-  # validates :body, length: { maximum: 500 }, allow_nil: true
   validates :frame_number, presence: true, uniqueness: { scope: :board_id }
   validates :frame_type, presence: true
 

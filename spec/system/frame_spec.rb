@@ -133,8 +133,8 @@ RSpec.describe "Frames", type: :system do
     end
 
     describe "フレームの移動" do
-      let!(:first_frame) { create(:frame, board_id: board.id, body: "フレーム１", frame_number: 1) }
-      let!(:second_frame) { create(:frame, board_id: board.id, body: "フレーム２", frame_number: 2) }
+      let!(:first_frame) { create(:frame, board_id: board.id, content: "フレーム１", frame_number: 1) }
+      let!(:second_frame) { create(:frame, board_id: board.id, content: "フレーム２", frame_number: 2) }
       describe "フレームを前に移動" do
         context "フレームが一番前ではない場合" do
           it "前後のフレームの番号が入れ替わる" do
