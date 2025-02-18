@@ -63,7 +63,7 @@ RSpec.describe "AdminFrames", type: :system do
       end
       context "画像フレームの場合" do
         let(:image_frame) do
-          Frame.new(board_id: board.id, body: nil, frame_type: 1)
+          Frame.new(board_id: board.id, content: nil, frame_type: 1)
         end
         before do
           image_frame.frame_number = Frame.where(board_id: board.id).order(frame_number: :desc).first&.frame_number + 1
