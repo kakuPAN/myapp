@@ -57,7 +57,7 @@ RSpec.describe "AdminFrames", type: :system do
           visit admin_board_path(board)
           click_link "フレーム"
           find("#frame-link-#{frame.id}").click
-          expect(page).to have_content(frame.body)
+          expect(page).to have_content(frame.content.body.to_plain_text)
           visit admin_board_frame_path(board, frame)
         end
       end

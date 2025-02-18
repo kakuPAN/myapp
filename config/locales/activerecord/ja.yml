@@ -21,6 +21,7 @@ ja:
         title: タイトル
       frame: 
         body: テキスト
+        content: 本文
         image: 画像
         frame_type: フレームタイプ
       comment:

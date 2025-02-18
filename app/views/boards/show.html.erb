@@ -16,13 +16,8 @@
       <%= link_to board_path(board) do %>
         <div class="board-thumbnail-container" id="board-thumbnail-container-<%= @boards.index(board)+1 %>">
           <div class="board-thumbnail">
-            <% if !board.frames.empty? %>
-              <% if board_image(board) %>
-                <%= image_tag board_image(board).image %>
-              <% else %>
-                <% first_frame = board.frames.order(:frame_number).first %>
-                <div class="board-thumbnail-text"><%= simple_format(first_frame.body) %></div>
-              <% end %>
+            <% if !board.frames.empty? && board_image(board) %>
+              <%= image_tag board_image(board).image %>
             <% else %>
               <% images = [ "free_images/space.png", "free_images/sky.png", "free_images/tree.png", "free_images/sea.png" ] %>
               <%= image_tag images.sample %>

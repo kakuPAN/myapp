@@ -197,18 +197,11 @@ function EditCommentShowLength(str, commentId) {
 
 // フレーム作成/編集
 function FrameShowLength(element) {
-  const maxLength = 500;
+  const maxLength = 1000;
   const value = element.innerText.trim();
   const inputLength = value.length;
-  const submitButton = document.getElementById("frame-submit-button");
 
   document.getElementById("inputlength").innerHTML = `${inputLength}/${maxLength}文字`;
-
-  if (value === "") {
-      submitButton.disabled = true;
-  } else {
-      submitButton.disabled = false;
-  }
 }
 
 // 報告

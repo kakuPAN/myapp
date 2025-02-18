@@ -10,6 +10,7 @@ RSpec.describe "StaticPages", type: :system do
         visit root_path
         new_window = window_opened_by { find("#terms-of-service-link").click  } # 別のタブを開く
         within_window new_window do
+          page.driver.browser.manage.window.resize_to(900, 500)
           expect(page).to have_content("利用規約")
           expect(current_path).to eq terms_of_service_path
         end

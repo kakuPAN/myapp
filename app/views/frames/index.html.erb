@@ -1,6 +1,0 @@
-<% @frames.each do |frame| %>
-  <%= simple_format(frame.body) %>
-  <% if frame.image.attached? %>
-    <%= frame.image %>
-  <% end %>
-<% end %>

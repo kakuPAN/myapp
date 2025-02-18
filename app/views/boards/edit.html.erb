@@ -32,7 +32,7 @@
       </div>
       <div class="edit-tools" id="edit-tools-<%= frame.frame_number %>">
         <div class="edit-button">
-          <%= link_to "編集", edit_board_frame_path(@board, frame), class: "btn btn-outline-secondary" %>
+          <%= link_to "編集", edit_board_frame_path(@board, frame), class: "btn btn-outline-secondary", id: "edit-frame-link-#{frame.frame_number}" %>
         </div>
         <div class="edit-button">
           <%= link_to "削除", board_frame_path(@board, frame), data: { turbo_method: :delete }, class: "btn btn-outline-danger", id: "delete-frame-link-#{frame.frame_number}" %>
