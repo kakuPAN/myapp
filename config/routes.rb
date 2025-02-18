@@ -51,7 +51,7 @@ Rails.application.routes.draw do
       post :create_chat
       get :board_info
     end
-    resources :frames, except: [ :show ] do
+    resources :frames, except: [ :index, :show ] do
       member do
         patch :move_forward
         patch :move_back

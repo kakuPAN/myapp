@@ -2,10 +2,6 @@ class FramesController < ApplicationController
   before_action :authenticate
   before_action :set_board
 
-  def index
-    @frames = Frame.where(board_id: @board.id)
-  end
-
   def new
     @frame_type = params[:frame_type].to_i
     @frame = @board.frames.build(frame_type: @frame_type)
