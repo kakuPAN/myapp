@@ -53,7 +53,7 @@ class FramesController < ApplicationController
         end
       else
         format.turbo_stream do
-          flash.now[:success] = "変更を保存できません"
+          flash.now[:danger] = "変更を保存できません"
         end
       end
     end

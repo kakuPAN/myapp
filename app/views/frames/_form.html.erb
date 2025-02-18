@@ -7,6 +7,10 @@
         <%= f.rich_text_area :content, size: "10x5", class: "form-control", placeholder: "本文を入力してください", id: "frame_body", onkeyup: "FrameShowLength(this);" %>
         <p id="inputlength">0文字/1000文字</p>
       </div>
+      <div class="cancel-button">
+        <%= f.submit "作成", class: "form-control btn btn-outline-primary", id: "frame-submit-button" %>
+        <%= link_to "キャンセル", edit_board_path(@board), class: "cancel btn btn-outline-danger" %>
+      </div>
     <% else %>
       <div class="image-form" id="frame-form">
         <%= f.hidden_field :frame_type, value: "image_frame" %>
@@ -18,10 +22,10 @@
           <div id="preview"></div>
         </div>
       </div>
+      <div class="cancel-button">
+        <%= f.submit "作成", class: "form-control btn btn-outline-primary", id: "frame-submit-button", disabled: true %>
+        <%= link_to "キャンセル", edit_board_path(@board), class: "cancel btn btn-outline-danger" %>
+      </div>
     <% end %>
-    <div class="cancel-button">
-      <%= f.submit "作成", class: "form-control btn btn-outline-primary", id: "frame-submit-button", disabled: true %>
-      <%= link_to "キャンセル", edit_board_path(@board), class: "cancel btn btn-outline-danger" %>
-    </div>
   <% end %>
 </div>

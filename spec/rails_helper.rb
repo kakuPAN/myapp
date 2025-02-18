@@ -66,6 +66,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include OmniAuthMacros
   config.include LoginMacros
+  config.include ActionTextHelper
   OmniAuth.config.test_mode = true
 
   config.before(:each, type: :system) do

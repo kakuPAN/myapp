@@ -7,14 +7,13 @@ class Frame < ApplicationRecord
   
   validate :content_length
   validates :board_id, presence: true
-  validates :body, length: { maximum: 500 }, allow_nil: true
+  # validates :body, length: { maximum: 500 }, allow_nil: true
   validates :frame_number, presence: true, uniqueness: { scope: :board_id }
   validates :frame_type, presence: true
 
-  # validate :body_or_image_presence
+  validate :content_or_image_presence
   validate :image_content_type
   validate :image_size
-  validate :frame_type_check
   validate :content_length
   enum :frame_type, { text_frame: 0, image_frame: 1 }
 
@@ -27,7 +26,7 @@ class Frame < ApplicationRecord
   def content_length
     return if content.blank?
     if content.body&.to_plain_text&.length > 1000
-      errors.add(:base, "テキストは1000文字以内で入力してください")
+      errors.add(:content, "本文は1000文字以内で入力してください")
     end
   end
 
@@ -37,21 +36,13 @@ class Frame < ApplicationRecord
     end
   end
 
-  def frame_type_check
-    if image.attached? && text_frame?
-      errors.add(:base, "画像ファイルを設定してください")
-    elsif body.present? && image_frame?
-      errors.add(:base, "本文を入力してください")
-    end
-  end
-
   private
 
-  def body_or_image_presence
-    if body.blank? && !image.attached?
-      errors.add(:base, "本文または画像のどちらかを入力してください")
-    elsif body.present? && image.attached?
-      errors.add(:base, "本文と画像の両方を設定することはできません")
+  def content_or_image_presence
+    if frame_type == "text_frame" && content.body.blank?
+      errors.add(:base, "本文を入力してください")
+    elsif frame_type == "image_frame" && !image.attached?
+      errors.add(:base, "画像ファイルを選択してください")
     end
   end
 end
