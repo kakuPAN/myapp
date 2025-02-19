@@ -29,12 +29,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def destroy
-    if @user.admin? && (User.admin.count == 1 || @user == current_user)
-      flash[:danger] = "このユーザーは削除できません"
-      redirect_to admin_user_path(@user)
-      return
-    end
-    if @user.destroy
+    if @user != current_user && @user.destroy
       flash[:success] = "ユーザーを削除しました"
       redirect_to admin_users_path
     else

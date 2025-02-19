@@ -1,22 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user
 
-  def destroy
-    if @user.admin?
-      redirect_to admin_users_path
-      flash[:danger] = "この操作はできません"
-      return
-    end
-    if @user == current_user
-      @user.destroy
-      redirect_to root_path
-      flash[:success] = "退会が完了しました"
-    else
-      redirect_to liked_boards_user_path(@user)
-      flash[:danger] = "権限がありません"
-    end
-  end
-
   def liked_boards # お気に入り
     if @user.admin? && !current_user&.admin?
       flash[:danger] = "ユーザーが存在しません"
@@ -90,6 +74,22 @@ class UsersController < ApplicationController
           flash.now[:success] = "プロフィールを編集できません"
         end
       end
+    end
+  end
+
+  def destroy
+    if @user.admin?
+      redirect_to admin_users_path
+      flash[:danger] = "この操作はできません"
+      return
+    end
+    if @user == current_user
+      @user.destroy
+      redirect_to root_path
+      flash[:success] = "退会が完了しました"
+    else
+      redirect_to liked_boards_user_path(@user)
+      flash[:danger] = "権限がありません"
     end
   end
 

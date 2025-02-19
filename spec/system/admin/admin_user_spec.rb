@@ -103,7 +103,7 @@ RSpec.describe "AdminUsers", type: :system do
             it "ユーザーの削除に失敗する" do
               visit admin_user_path(admin_user)
               find("#delete-user-button").click
-              expect(page).to have_content("このユーザーは削除できません")
+              expect(page).to have_content("ユーザーを削除できません")
               expect(current_path).to eq admin_user_path(admin_user)
               expect(User.exists?(id: admin_user.id)).to be_truthy
             end

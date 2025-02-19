@@ -24,6 +24,8 @@ class User < ApplicationRecord
   validate :image_content_type
   validate :image_size
 
+  before_destroy :check_admin_count
+  
   enum :role, { general: 0, admin: 1 }
 
   def self.ransackable_attributes(auth_object = nil)
@@ -57,6 +59,14 @@ class User < ApplicationRecord
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error "OmniAuth authentication failed: #{e.message}"
       nil
+    end
+  end
+
+  private
+
+  def check_admin_count
+    if admin? && User.where(role: "admin").count == 1
+      throw :abort
     end
   end
 end
