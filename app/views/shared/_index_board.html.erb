@@ -17,7 +17,7 @@
         <% if board.frames.empty? %>
           コンテンツがありません
         <% else %>
-          <%= board&.frames&.order(:frame_number).first.body %>
+          <%= board&.frames&.order(:frame_number).first.content %>
         <% end %>
       </div>
     </div>
