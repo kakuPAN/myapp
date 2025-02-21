@@ -18,3 +18,28 @@ document.addEventListener("turbo:load", function () {
     });
   });
 });
+
+// チュートリアルに切り替え
+document.addEventListener("turbo:load", function () {
+  const mainContainer = document.getElementById("main-container");
+  const tutorialContainer = document.getElementById("tutorial-container");
+  const tutorialButton = document.getElementById("tutorial-button");
+
+  if (mainContainer && tutorialContainer && tutorialButton) {
+    tutorialButton.removeEventListener("click", toggleContainers);
+    tutorialButton.addEventListener("click", toggleContainers);
+  }
+});
+function toggleContainers(e) {
+  e.stopPropagation();
+  const mainContainer = document.getElementById("main-container");
+  const tutorialContainer = document.getElementById("tutorial-container");
+
+  if (mainContainer.style.display === "none") {
+    mainContainer.style.display = "block";
+    tutorialContainer.style.display = "none";
+  } else {
+    mainContainer.style.display = "none";
+    tutorialContainer.style.display = "block";
+  }
+}

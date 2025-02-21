@@ -53,7 +53,6 @@ class BoardsController < ApplicationController
       @visitor.update(user_id: current_user.id)
       @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :view_action)
     end
-
     @frames = Frame.where(board_id: @board.id).order(:frame_number)
 
     @page = boards_page_for(@board)

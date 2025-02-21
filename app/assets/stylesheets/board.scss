@@ -262,6 +262,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(135deg, #f9f9f9, #eef1f8); /* 軽いグラデーション */
+    border-radius: 12px;
+    padding: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  
   }
   .section .trix-content {
     width: 100%;
@@ -1153,4 +1158,21 @@ margin: 0 20px;
 .edit-button.disabled a {
 pointer-events: none;
 background: #ddd;
+}
+
+// チュートリアル
+#tutorial-container {
+  display: none;
+}
+#create-board-button {
+color: #ff701e;
+}
+.tutorial-section {
+  text-align: center;
+}
+.tutorial-heading {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
 }
