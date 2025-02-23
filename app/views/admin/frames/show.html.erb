@@ -18,7 +18,7 @@
     <div class="admin-frame-container">
       <div class="board-body">
         <% if @frame.image.attached? %>
-          <%= image_tag @frame.image %>
+          <%= image_tag @frame.image_webp %>
         <% else %>
           <div class="board-body-text"><%= @frame.content %></div>
         <% end %>

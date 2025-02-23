@@ -3,7 +3,7 @@
   <div class="comment-wrapper">
     <div class="comment-avatar">
       <% if comment.user.avatar_image.attached? %>
-        <%= image_tag comment.user.avatar_image, class: "avatar-image" %>
+        <%= image_tag comment.user.avatar_image_webp, class: "avatar-image" %>
       <% else %>
         <i class="bi bi-person-circle avatar-icon"></i>
       <% end %>
@@ -20,7 +20,7 @@
           <% reply_class_name = reply_class_name(child) %>
           <div class="reply-avatar">
             <% if child.user.avatar_image.attached? %>
-              <%= image_tag child.user.avatar_image, class: "avatar-image" %>
+              <%= image_tag child.user.avatar_image_webp, class: "avatar-image" %>
             <% else %>
               <i class="bi bi-person-circle avatar-icon"></i>
             <% end %>

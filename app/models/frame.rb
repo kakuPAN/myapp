@@ -16,9 +16,13 @@ class Frame < ApplicationRecord
   validate :content_length
   enum :frame_type, { text_frame: 0, image_frame: 1 }
 
+  def image_webp
+    image.variant(format: :webp).processed
+  end
+
   def image_content_type
-    if image.attached? && !image.content_type.in?(%w[image/jpeg image/jpg image/png])
-      errors.add(:base, "ファイル形式が、JPEG, JPG, PNG以外になっています")
+    if image.attached? && !image.content_type.in?(%w[image/jpeg image/jpg image/png image/webp])
+      errors.add(:base, "ファイル形式が、JPEG, JPG, PNG, WEBP以外になっています")
     end
   end
 

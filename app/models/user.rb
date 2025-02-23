@@ -33,9 +33,13 @@ class User < ApplicationRecord
     [ "user_name" ]
   end
 
+  def avatar_image_webp
+    avatar_image.variant(format: :webp).processed
+  end
+
   def image_content_type
-    if avatar_image.attached? && !avatar_image.content_type.in?(%w[image/jpeg image/jpg image/png])
-      errors.add(:base, "ファイル形式が、JPEG, JPG, PNG以外になっています")
+    if avatar_image.attached? && !avatar_image.content_type.in?(%w[image/jpeg image/jpg image/png image/webp])
+      errors.add(:base, "ファイル形式が、JPEG, JPG, PNG, WEBP以外になっています")
     end
   end
 

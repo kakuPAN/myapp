@@ -24,7 +24,7 @@
       <div class="frame-container" id="frame-container-<%= frame.frame_number %>">
         <div class="frame-content" id="frame-content-<%= frame.frame_number %>">
           <% if frame.image.attached? %>
-            <%= image_tag frame.image %>
+            <%= image_tag frame.image_webp %>
           <% else %>
             <%= frame.content %>
           <% end %>

@@ -10,6 +10,11 @@ RSpec.describe User, type: :model do
         expect(user).to be_valid
         expect(user.errors).to be_empty
       end
+      it "アップされた画像がwebp形式に変換されていること" do
+        user.avatar_image.attach(io: File.open(Rails.root.join('spec/fixtures/files/sample_image.png')), filename: 'sample_image.png', content_type: 'image/png')
+        webp_avatar_image = user.avatar_image_webp
+        expect(webp_avatar_image.filename.to_s).to end_with('.webp')
+      end
     end
     describe "ユーザーの作成が失敗する" do
       it 'user_nameがない場合、無効である' do
@@ -33,11 +38,11 @@ RSpec.describe User, type: :model do
         expect(user.errors[:profile]).to include("は250文字以内で入力してください")
       end
       context "image_content_typeのバリデーション" do
-        it "ファイル形式が、JPEG, JPG, PNG以外の場合、無効である" do
+        it "ファイル形式が、JPEG, JPG, PNG, WEBP以外の場合、無効である" do
           user = build(:user)
-          user.avatar_image.attach(io: File.open(Rails.root.join('spec/fixtures/files/webp_test.webp')), filename: 'webp_test.webp', content_type: 'avatar_image/webp')
+          user.avatar_image.attach(io: File.open(Rails.root.join('spec/fixtures/files/gif_test.gif')), filename: 'gif_test.gif', content_type: 'avatar_image/gif')
           expect(user).to be_invalid
-          expect(user.errors[:base]).to include("ファイル形式が、JPEG, JPG, PNG以外になっています")
+          expect(user.errors[:base]).to include("ファイル形式が、JPEG, JPG, PNG, WEBP以外になっています")
         end
       end
 
