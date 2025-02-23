@@ -100,7 +100,7 @@ class BoardsController < ApplicationController
         end
       else
         format.turbo_stream do
-          flash.now[:success] = "お気に入りに登録できません"
+          flash.now[:danger] = "お気に入りに登録できません"
         end
       end
     end
@@ -108,14 +108,16 @@ class BoardsController < ApplicationController
 
   def destroy_like
     @like = @board.likes.find_by(user_id: current_user.id)
-    respond_to do |format|
-      if @like.destroy
-        format.turbo_stream do
-          flash.now[:success] = "お気に入りを解除しました"
-        end
-      else
-        format.turbo_stream do
-          flash.now[:success] = "お気に入りを解除できません"
+    if @like
+      respond_to do |format|
+        if @like.destroy
+          format.turbo_stream do
+            flash.now[:success] = "お気に入りを解除しました"
+          end
+        else
+          format.turbo_stream do
+            flash.now[:danger] = "お気に入りを解除できません"
+          end
         end
       end
     end

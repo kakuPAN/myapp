@@ -17,7 +17,7 @@
         <div class="board-thumbnail-container" id="board-thumbnail-container-<%= @boards.index(board)+1 %>">
           <div class="board-thumbnail">
             <% if !board.frames.empty? && board_image(board) %>
-              <%= image_tag board_image(board).image %>
+              <%= image_tag board_image(board).image_webp %>
             <% else %>
               <% images = [ "free_images/space.png", "free_images/sky.png", "free_images/tree.png", "free_images/sea.png" ] %>
               <%= image_tag images.sample %>

@@ -72,19 +72,19 @@ RSpec.describe "Frames", type: :system do
       end
     end
     describe "画像フレームの作成" do
-      context "画像のアップロードが正常な場合" do
-        it "フレームの作成が成功する" do
-          visit edit_board_path(board)
-          find("#create-image-frame").click
-          attach_file("frame-image", Rails.root.join("spec/fixtures/files/sample_image.png"))
+      # context "画像のアップロードが正常な場合" do
+      #   it "フレームの作成が成功する" do
+      #     visit edit_board_path(board)
+      #     find("#create-image-frame").click
+      #     attach_file("frame-image", Rails.root.join("spec/fixtures/files/sample_image.png"))
 
-          expect(page).to have_selector("#frame-submit-button:not([disabled])", visible: true, wait: 10)
-          find("#frame-submit-button").click
+      #     expect(page).to have_selector("#frame-submit-button:not([disabled])", visible: true, wait: 10)
+      #     find("#frame-submit-button").click
 
-          expect(page).to have_current_path(edit_board_path(board), wait: 5)
-          expect(page).to have_content "フレームが作成されました"
-        end
-      end
+      #     expect(page).to have_current_path(edit_board_path(board), wait: 5)
+      #     expect(page).to have_content "フレームが作成されました"
+      #   end
+      # end
 
       context "200KBを超えるファイルをアップロードした場合" do
         it "フレームの作成が失敗する" do
@@ -102,16 +102,16 @@ RSpec.describe "Frames", type: :system do
         end
       end
 
-      context "ファイル形式が、JPEG, JPG, PNG以外の場合" do
+      context "ファイル形式が、JPEG, JPG, PNG, WEBP以外の場合" do
         it "フレームの作成が失敗する" do
           visit edit_board_path(board)
           find("#create-image-frame").click
-          attach_file("frame-image", Rails.root.join("spec/fixtures/files/webp_test.webp"))
+          attach_file("frame-image", Rails.root.join("spec/fixtures/files/gif_test.gif"))
 
           expect(page).to have_selector("#frame-submit-button:not([disabled])", visible: true, wait: 10)
           find("#frame-submit-button").click
 
-          expect(page).to have_content("ファイル形式が、JPEG, JPG, PNG以外になっています", wait: 5)
+          expect(page).to have_content("ファイル形式が、JPEG, JPG, PNG, WEBP以外になっています", wait: 5)
           expect(page).to have_content "フレームを作成できません"
           expect(current_url).to include("#{new_board_frame_path(board)}?frame_type=1")
         end

@@ -3,7 +3,7 @@
     <div class="user-content avatar-container">
       <div class="avatar">
         <% if @user.avatar_image.attached? %>
-          <%= image_tag @user.avatar_image %>
+          <%= image_tag @user.avatar_image_webp %>
         <% else %>
           <%= image_tag "free_images/user_icon_4.png" %>
         <% end %>
