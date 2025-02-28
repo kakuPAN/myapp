@@ -1,9 +1,9 @@
-:concurrency: 3
-:queues:
-  - default
-:scheduler:
-  :schedule:
-    send_line_message_job:
-      every: '2m' #一旦2分に一回送る
-      class: "SendLineMessageJob"
-      queue: default
+# :concurrency: 3
+# :queues:
+#   - default
+# :scheduler:
+#   :schedule:
+#     send_line_message_job:
+#       every: '2m' #一旦2分に一回送る
+#       class: "SendLineMessageJob"
+#       queue: default
