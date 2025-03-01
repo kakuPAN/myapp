@@ -20,7 +20,6 @@ class User < ApplicationRecord
   validates :user_name, presence: true, length: { maximum: 20 }
   validates :profile, length: { maximum: 250 }
   validates :email, presence: true, uniqueness: true
-
   validate :image_content_type
   validate :image_size
 
