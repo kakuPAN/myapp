@@ -587,7 +587,6 @@ DEPENDENCIES
   thruster
   turbo-rails
   tzinfo-data
-  uri (>= 1.0.3)
   web-console
   webdrivers (~> 5.3, >= 5.3.1)
 
