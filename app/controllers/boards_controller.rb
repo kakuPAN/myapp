@@ -177,7 +177,7 @@ class BoardsController < ApplicationController
   def set_related_boards
     page = params[:page].to_i
     q = Board.where(parent_id: @board).ransack(params[:q])
-    @boards = q.result(distinct: true).order(created_at: :desc).page(page).per(2)
+    @boards = q.result(distinct: true).order(created_at: :desc).page(page).per(20)
   end
 
   def set_comment_form

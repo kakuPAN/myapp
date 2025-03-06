@@ -110,7 +110,7 @@ class UsersController < ApplicationController
 
   def set_user_boards(log)
     page = params[:page].to_i
-    boards = Kaminari.paginate_array(log).page(page).per(4)
+    boards = Kaminari.paginate_array(log).page(page).per(10)
     boards
   end
 
