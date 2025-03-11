@@ -35,13 +35,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :password_resets, except: [ :index, :show, :destroy ] do
-    collection do
-      get ":token/edit", action: :edit, as: "edit_password_reset"
-      post "create", action: :create, as: "password_resets"
-      patch "update", action: :update, as: "update_password_reset"
-    end
-  end
+  # resources :password_resets, except: [ :index, :show, :destroy ] do
+  #   collection do
+  #     get ":token/edit", action: :edit, as: "edit_password_reset"
+  #     post "create", action: :create, as: "password_resets"
+  #     patch "update", action: :update, as: "update_password_reset"
+  #   end
+  # end
 
   resources :boards do
     member do
@@ -51,7 +51,7 @@ Rails.application.routes.draw do
       post :create_chat
       get :board_info
     end
-    resources :frames, except: [ :show ] do
+    resources :frames, except: [ :index, :show ] do
       member do
         patch :move_forward
         patch :move_back

@@ -1,16 +1,23 @@
 <div class="title-board-container">
   <div class="title-container">
-    <div class="title-text">
-      <%= image_tag "free_images/logo.png" %>
-    </div>
-    <div class="title-jp">トピックボード</div>
-    <% unless current_user %>
-      <div class="top-page-login-container">
-        <%= render "shared/google_button" %>
+    <div class="title-logo-container">
+      <div class="title-text clickable" id="title-text">
+        <%= image_tag "free_images/logo.png" %>
+        <div class="title-jp">〜つながる知識、広がる世界〜</div>
       </div>
-    <% end %>
+    </div>
+    <%= render "static_pages/tutorial_box" %>
+    <div class="google-login-container">
+      <% unless current_user %>
+        <div class="top-page-login-container">
+          <%= render "shared/google_button" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-  <%= render "shared/search_form_container" %>
+  <div class="title-search-container">
+    <%= render "shared/search_form_container" %>
+  </div>
   <div class="title-board-content-wrapper">
     <% @boards.each_with_index do |board, index| %>
       <%= link_to board_path(board) do %>

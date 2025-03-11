@@ -57,13 +57,13 @@ RSpec.describe "AdminFrames", type: :system do
           visit admin_board_path(board)
           click_link "フレーム"
           find("#frame-link-#{frame.id}").click
-          expect(page).to have_content(frame.body)
+          expect(page).to have_content(frame.content.body.to_plain_text)
           visit admin_board_frame_path(board, frame)
         end
       end
       context "画像フレームの場合" do
         let(:image_frame) do
-          Frame.new(board_id: board.id, body: nil, frame_type: 1)
+          Frame.new(board_id: board.id, content: nil, frame_type: 1)
         end
         before do
           image_frame.frame_number = Frame.where(board_id: board.id).order(frame_number: :desc).first&.frame_number + 1

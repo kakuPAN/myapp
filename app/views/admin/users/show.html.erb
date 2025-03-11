@@ -37,7 +37,7 @@
             <span class="label">アバター画像:</span>
             <span class="value">
               <% if @user.avatar_image.attached? %>
-                <%= image_tag @user.avatar_image, class: "admin-avatar-image" %>
+                <%= image_tag @user.avatar_image_webp, class: "admin-avatar-image" %>
               <% end %>
             </span>
           </div>

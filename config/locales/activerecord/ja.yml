@@ -12,15 +12,13 @@ ja:
         user_name: ユーザーネーム
         password: パスワード
         password_confirmation: パスワード確認
-        security_question_id: 秘密の質問
-        security_answer_digest: 秘密の質問の答え
         profile: プロフィール
         avatar_image: アバター画像
         role: 属性
       board:
         title: タイトル
       frame: 
-        body: テキスト
+        content: 本文
         image: 画像
         frame_type: フレームタイプ
       comment:

@@ -1,6 +1,11 @@
 class BoardsController < ApplicationController
   before_action :authenticate, except: %i[index show board_info]
   before_action :set_board, except: %i[index new create]
+  before_action :set_visitor_log, only: :show
+  before_action :set_board_logs, if: -> { current_user }, only: :show
+  before_action :set_board_details, only: :show
+  before_action :set_related_boards, only: :show
+  before_action :set_comment_form, only: :show
 
   def index
     if @index_boards.empty? && @index_boards.current_page > 1
@@ -44,22 +49,6 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @visitor = UserBoard.create(board_id: @board.id)
-    @same_title_boards = Board.where(title: @board.title)
-    @breadcrumbs = @board.breadcrumbs
-    @visitor_count = UserBoard.where(board_id: @board.id).count
-
-    if current_user
-      @visitor.update(user_id: current_user.id)
-      @board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :view_action)
-    end
-
-    @frames = Frame.where(board_id: @board.id).order(:frame_number)
-
-    @page = boards_page_for(@board)
-    @boards = Board.where(parent_id: @board).order(created_at: :desc).page(@page).per(10)
-
-    @comment = Comment.new
   end
 
   def edit
@@ -101,7 +90,7 @@ class BoardsController < ApplicationController
         end
       else
         format.turbo_stream do
-          flash.now[:success] = "お気に入りに登録できません"
+          flash.now[:danger] = "お気に入りに登録できません"
         end
       end
     end
@@ -109,14 +98,16 @@ class BoardsController < ApplicationController
 
   def destroy_like
     @like = @board.likes.find_by(user_id: current_user.id)
-    respond_to do |format|
-      if @like.destroy
-        format.turbo_stream do
-          flash.now[:success] = "お気に入りを解除しました"
-        end
-      else
-        format.turbo_stream do
-          flash.now[:success] = "お気に入りを解除できません"
+    if @like
+      respond_to do |format|
+        if @like.destroy
+          format.turbo_stream do
+            flash.now[:success] = "お気に入りを解除しました"
+          end
+        else
+          format.turbo_stream do
+            flash.now[:danger] = "お気に入りを解除できません"
+          end
         end
       end
     end
@@ -148,13 +139,6 @@ class BoardsController < ApplicationController
   end
 
   private
-  def set_board
-    @board = Board.find_by(id: params[:id])
-    unless @board
-      flash[:danger] = "トピックが存在しません"
-      redirect_to boards_path
-    end
-  end
 
   def board_params
     params.require(:board).permit(:title, :parent_id)
@@ -164,19 +148,39 @@ class BoardsController < ApplicationController
     params.require(:comment).permit(:body)
   end
 
+  def set_board
+    @board = Board.find_by(id: params[:id])
+    unless @board
+      flash[:danger] = "トピックが存在しません"
+      redirect_to boards_path
+    end
+  end
+
   def set_breadcrumbs
     add_breadcrumb("HOME", root_path)
   end
 
-  def boards_page_for(board) # 詳細ページ上にあるトピック一覧の同じページを表示するためのメソッド
-    per_page = 10
-    parent_board = Board.find_by(id: board.parent_id)
-    if parent_board && !parent_board.children.empty?
-      boards = parent_board.children.order(created_at: :desc).pluck(:id)# 表示順序によって変更が必要
-      board_index = boards.index(board.id)
-      (board_index / per_page) + 1
-    else
-      1
-    end
+  def set_visitor_log
+    visitor = UserBoard.create(board_id: @board.id)
+  end
+
+  def set_board_details
+    @breadcrumbs = @board.breadcrumbs
+    @visitor_count = UserBoard.where(board_id: @board.id).count
+    @frames = Frame.where(board_id: @board.id).order(:frame_number)
+  end
+
+  def set_board_logs
+    board_logs = BoardLog.create(user_id: current_user.id, board_id: @board.id, action_type: :view_action)
+  end
+
+  def set_related_boards
+    page = params[:page].to_i
+    q = Board.where(parent_id: @board).ransack(params[:q])
+    @boards = q.result(distinct: true).order(created_at: :desc).page(page).per(20)
+  end
+
+  def set_comment_form
+    @comment = Comment.new
   end
 end

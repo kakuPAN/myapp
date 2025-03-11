@@ -21,20 +21,27 @@ RSpec.describe "Boards", type: :system do
           expect(current_path).to eq root_path
         end
       end
-
-      context "トピックの詳細ページにアクセス" do
-        it "トピックの詳細情報が表示される" do
+      describe "トピック詳細ページ" do
+        before do
           visit board_path(board)
-          expect(page).to have_content board.title
-          expect(current_path).to eq board_path(board)
+        end
+        context "トピックの詳細ページにアクセス" do
+          it "トピックの詳細情報が表示される" do
+            expect(page).to have_content board.title
+            expect(current_path).to eq board_path(board)
+          end
+        end
+        context "チュートリアルボタンをクリック" do
+          it "チュートリアル用のフレームが表示される" do
+            find("#tutorial-button").click
+            expect(page).to have_selector(".tutorial-section", visible: true, wait:5)
+          end
         end
       end
-
       context "トピックの一覧ページにアクセス" do
         it "最新のトピックが表示される" do
           visit boards_path
           expect(page).to have_content latest_board.title
-
           expect(current_path).to eq boards_path
         end
       end

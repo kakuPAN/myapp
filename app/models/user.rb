@@ -20,10 +20,11 @@ class User < ApplicationRecord
   validates :user_name, presence: true, length: { maximum: 20 }
   validates :profile, length: { maximum: 250 }
   validates :email, presence: true, uniqueness: true
-
   validate :image_content_type
   validate :image_size
 
+  before_destroy :check_admin_count
+  
   enum :role, { general: 0, admin: 1 }
 
   def self.ransackable_attributes(auth_object = nil)
@@ -31,9 +32,13 @@ class User < ApplicationRecord
     [ "user_name" ]
   end
 
+  def avatar_image_webp
+    avatar_image.variant(format: :webp).processed
+  end
+
   def image_content_type
-    if avatar_image.attached? && !avatar_image.content_type.in?(%w[image/jpeg image/jpg image/png])
-      errors.add(:base, "ファイル形式が、JPEG, JPG, PNG以外になっています")
+    if avatar_image.attached? && !avatar_image.content_type.in?(%w[image/jpeg image/jpg image/png image/webp])
+      errors.add(:base, "ファイル形式が、JPEG, JPG, PNG, WEBP以外になっています")
     end
   end
 
@@ -57,6 +62,14 @@ class User < ApplicationRecord
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error "OmniAuth authentication failed: #{e.message}"
       nil
+    end
+  end
+
+  private
+
+  def check_admin_count
+    if admin? && User.where(role: "admin").count == 1
+      throw :abort
     end
   end
 end

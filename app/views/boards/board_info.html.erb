@@ -6,7 +6,7 @@
           <%= link_to liked_boards_user_path(log.user.id) do %>
             <div class="action-user-image">
               <% if log.user.avatar_image.attached? %>
-                <%= image_tag log.user.avatar_image %>
+                <%= image_tag log.user.avatar_image_webp %>
               <% else %>
                 <i class="bi bi-person-circle avatar-icon"></i>
               <% end %>

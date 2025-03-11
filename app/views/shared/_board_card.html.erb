@@ -3,7 +3,7 @@
     <% frame = board&.frames&.order(:frame_number).first %>
     <% if frame&.image&.attached? %>
       <div class="card-content card-image">
-        <%= image_tag frame.image %>
+        <%= image_tag frame.image_webp %>
       </div>
     <% end %>
     <div class="card-content card-body <%= "no-image" unless frame&.image&.attached? %>">

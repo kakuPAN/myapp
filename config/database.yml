@@ -3,8 +3,8 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: db
-  username: postgres
-  password: password
+  username: <%= Rails.application.credentials.dig(:db, :username) %>
+  password: <%= Rails.application.credentials.dig(:db, :password) %>
 
 development:
   <<: *default
@@ -14,7 +14,19 @@ test:
   <<: *default
   database: myapp_test
 
-# ここを追加[本番環境DB設定]
 production:
-  <<: *default
-  database: myapp_production
+  primary: &primary_production
+    <<: *default
+    database: myapp_production
+  cache:
+    <<: *primary_production
+    database: myapp_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: myapp_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: myapp_production_cable
+    migrations_paths: db/cable_migrate

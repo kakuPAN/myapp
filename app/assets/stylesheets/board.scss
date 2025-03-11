@@ -232,7 +232,7 @@
     text-decoration: none;
    }
 }
- // <!-- ボード画面 --> %>
+// <%# ボード画面 --> %>
   .wrapper {
     display: flex;
     width: 100%;
@@ -243,7 +243,7 @@
   .wrapper::-webkit-scrollbar {
     display:none;
   }
- // スクロール部分 %>
+//  <%# スクロール部分 %>
   .scroll-content {
     border-radius: 5px;
     position: relative;
@@ -262,6 +262,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(135deg, #f9f9f9, #eef1f8);
+    border-radius: 12px;
+    padding: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  
+  }
+  .section .trix-content {
+    width: 100%;
+    overflow: scroll;
+  }
+  .section pre {
+    border-top: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+    background: #333;
+    color: white;
   }
   .frame-number {
     font-size: 20px;
@@ -288,6 +303,7 @@
     text-align: left;
     padding: 0 10px;
     overflow: auto;
+    width: 90%;
   }
   .board-body-text p {
     word-break: break-word;
@@ -319,6 +335,7 @@
     object-fit: cover;
     border-radius: 15px 15px 15px 15px;
   }
+
 
 // コメント欄
 .comment-area-wrapper {
@@ -900,7 +917,145 @@
   font-size: 20px;
 }
 
-// フレーム編集部分
+// <%# // boards/edit %>
+
+@media (min-width: 1000px) {
+  .edit-wrapper {
+    flex-direction: column;
+    height: auto; /* 縦方向に制限を外す */
+    overflow-y: auto;
+  }
+  .edit-board-form textarea {
+    width: 500px;
+  }
+  .frames-wrapper {
+    width: 60%;
+    min-width: 1000px;
+  }
+  .edit-buttons {
+    position: relative;
+    margin-bottom: 50px;
+    width: 100%;
+    height: 100px;
+    margin-top: 0;
+  }
+  .delete-button {
+    position: absolute;
+    top:10px;
+    right: 20px;
+  }
+  .save-button {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+}
+@media (min-width: 700px) and (max-width: 1000px) {
+  .edit-wrapper {
+    flex-direction: column;
+    padding: 0 20px;
+    min-width: 300px;
+  }
+  .edit-board-form textarea {
+    width: 500px;
+  }
+  .frames-wrapper {
+    width: 100%;
+  }
+  .edit-buttons {
+    position: relative;
+    margin-bottom: 50px;
+    width: 100%;
+    height: 100px;
+    margin-top: 0;
+  }
+  .delete-button {
+    position: absolute;
+    top:10px;
+    right: 20px;
+  }
+  .save-button {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+}
+@media (max-width: 700px){
+  .edit-wrapper {
+    flex-direction: column;
+    padding: 0 20px;
+    min-width: 300px;
+  }
+  .edit-board-form textarea {
+    width: 250px;
+  }
+  .frames-wrapper {
+    width: 100%;
+  }
+  .add-frame {
+    display: flex;
+    flex-direction: column;
+  }
+  .edit-buttons {
+    margin-bottom: 50px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    height: 100px;
+  }
+  .save-button, .delete-button {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+// <%#ボードタイトル編集%>
+.edit-board-container {
+  margin-bottom: 100px;
+}
+.edit-board-title {
+  font-size: 25px;
+  text-align: center;
+  padding: 5px 20px;
+  background: #ededed;
+  border: 2px solid #ddd;
+  width: 100%;
+  margin-bottom: 20px;
+}
+#edit-board-link {
+  width: 100%;
+  font-size: 20px;
+  text-decoration: none;
+
+}
+.edit-board-form .bi {
+  font-size: 30px;
+  color: #0f54ff;
+}
+.edit-board-form input  {
+  display: flex;
+  flex-direction: column;
+}
+.edit-board-form textarea {
+  font-size: 25px;
+  background: #ededed;
+  border: 2px solid #ddd;
+}
+.edit-board-form input[type="submit"] {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 20px;
+}
+.edit-board-form a {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+// <%# フレーム編集部分 %>
 .edit-wrapper {
 height: 100%;
 display: flex;
@@ -919,31 +1074,48 @@ margin: auto;
 align-items: center;
 border: 2px solid #ddd;
 border-radius: 40px;
-padding: 10%;
+padding: 10% 0;
 position: relative;
 }
 .frame-container {
 display: flex;
 flex-direction: column;
 align-items: center;
-overflow: hidden;
+overflow: auto;
+width: 100%;
 height: 100%;
 min-width: 200px;
 position: relative;
 }
+
 .frame-content {
-text-align: center;
-overflow: hidden;
 display: flex;
 justify-content: center;
 align-items: center;
 width: 100%;
+max-width: 700px;
+min-height: 100%;
+overflow: scroll;
 margin-bottom: 50px;
+padding: 10px;
 font-size: 25px;
 background: #ededed;
 border: 2px solid #ddd;
 word-break: break-word;
 overflow-wrap: break-word;
+}
+.frame-content .trix-content {
+  margin: 10px;
+  max-width: 600px;
+  width: 100%;
+  overflow: scroll;
+}
+// <%# コード挿入時のスタイル %>
+.frame-content pre {
+  border-top: 2px solid #ddd;
+  border-bottom: 2px solid #ddd;
+  background: #333;
+  color: white;
 }
 .frame-content:hover {
   border: 2px solid rgb(0, 140, 255);
@@ -986,4 +1158,21 @@ margin: 0 20px;
 .edit-button.disabled a {
 pointer-events: none;
 background: #ddd;
+}
+
+// チュートリアル
+#tutorial-container {
+  display: none;
+}
+#create-board-button {
+color: #ff701e;
+}
+.tutorial-section {
+  text-align: center;
+}
+.tutorial-heading {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
 }

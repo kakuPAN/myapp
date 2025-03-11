@@ -1,21 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user
-
-  def destroy
-    if @user.admin?
-      redirect_to admin_users_path
-      flash[:danger] = "この操作はできません"
-      return
-    end
-    if @user == current_user
-      @user.destroy
-      redirect_to root_path
-      flash[:success] = "退会が完了しました"
-    else
-      redirect_to liked_boards_user_path(@user)
-      flash[:danger] = "権限がありません"
-    end
-  end
+  before_action :set_user_board_data, only: %i[ liked_boards visited_boards user_actions ]
 
   def liked_boards # お気に入り
     if @user.admin? && !current_user&.admin?
@@ -23,12 +8,8 @@ class UsersController < ApplicationController
       redirect_to boards_path
       return
     end
-    @visited_boards_count = user_board_history(@user).count
-    @logs_with_boards = logs_with_boards(@user)
-    @page = params[:page].to_i
-    @page = 1 if @page < 1
     @context = :liked
-    @boards = Kaminari.paginate_array(@user.likes.includes(:board).order(created_at: :desc).map(&:board)).page(@page).per(4)
+    @boards = set_user_boards(@user.likes.includes(:board).order(created_at: :desc).map(&:board))
     render :show
   end
 
@@ -38,12 +19,8 @@ class UsersController < ApplicationController
       flash[:danger] = "権限がありません"
       return
     end
-    @visited_boards_count = user_board_history(@user).count
-    @logs_with_boards = logs_with_boards(@user)
-    @page = params[:page].to_i
-    @page = 1 if @page < 1
     @context = :visited
-    @boards = Kaminari.paginate_array(user_board_history(@user)).page(@page).per(4)
+    @boards = set_user_boards(user_board_history(@user))
     render :show
   end
 
@@ -53,12 +30,8 @@ class UsersController < ApplicationController
       redirect_to boards_path
       return
     end
-    @visited_boards_count = user_board_history(@user).count
-    @page = params[:page].to_i
-    @page = 1 if @page < 1
     @context = :user_action
-    @logs_with_boards = logs_with_boards(@user)
-    @boards = Kaminari.paginate_array(@logs_with_boards).page(@page).per(4)
+    @boards = set_user_boards(@logs_with_boards)
     render :show
   end
 
@@ -93,6 +66,22 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    if @user.admin?
+      redirect_to admin_users_path
+      flash[:danger] = "この操作はできません"
+      return
+    end
+    if @user == current_user
+      @user.destroy
+      redirect_to root_path
+      flash[:success] = "退会が完了しました"
+    else
+      redirect_to liked_boards_user_path(@user)
+      flash[:danger] = "権限がありません"
+    end
+  end
+
   private
 
   def user_params
@@ -109,8 +98,7 @@ class UsersController < ApplicationController
 
   def user_board_history(user)
     filtered_boards = []
-
-    all_visited_boards = user.user_boards.order(created_at: :desc)
+    all_visited_boards = BoardLog.where(user_id: user.id).order(created_at: :desc)
     all_visited_boards.each do |visited_board|
       unless filtered_boards.any? { |board| board.id == visited_board.board_id }
         board = Board.find(visited_board.board_id)
@@ -118,6 +106,12 @@ class UsersController < ApplicationController
       end
     end
     filtered_boards
+  end
+
+  def set_user_boards(log)
+    page = params[:page].to_i
+    boards = Kaminari.paginate_array(log).page(page).per(10)
+    boards
   end
 
   def logs_with_boards(user)
@@ -129,5 +123,10 @@ class UsersController < ApplicationController
       { board: log.board, frame: log.frame, action_date: log.created_at, action_type: log.action_type }
     end
     logs_with_boards
+  end
+
+  def set_user_board_data
+    @visited_boards_count = user_board_history(@user).count
+    @logs_with_boards = logs_with_boards(@user)
   end
 end

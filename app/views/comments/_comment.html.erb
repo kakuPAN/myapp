@@ -2,7 +2,7 @@
   <div class="reply-label">
     <%= link_to liked_boards_user_path(comment.user_id) do %>
       <% if comment.user.avatar_image.attached? %>
-        <%= image_tag comment.user.avatar_image, class: "avatar-image" %>
+        <%= image_tag comment.user.avatar_image_webp, class: "avatar-image" %>
       <% else %>
         <i class="bi bi-person-circle avatar-icon"></i>
       <% end %>

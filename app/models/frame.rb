@@ -3,22 +3,33 @@ class Frame < ApplicationRecord
   has_many :board_logs, dependent: :destroy
   has_many :frame_logs, through: :board_logs, source: :user
   has_one_attached :image
-
+  has_rich_text :content
+  
+  validate :content_length
   validates :board_id, presence: true
-  validates :body, length: { maximum: 500 }, allow_nil: true
   validates :frame_number, presence: true, uniqueness: { scope: :board_id }
   validates :frame_type, presence: true
 
-  validate :body_or_image_presence
+  validate :content_or_image_presence
   validate :image_content_type
   validate :image_size
-  validate :frame_type_check
-
+  validate :content_length
   enum :frame_type, { text_frame: 0, image_frame: 1 }
 
+  def image_webp
+    image.variant(format: :webp).processed
+  end
+
   def image_content_type
-    if image.attached? && !image.content_type.in?(%w[image/jpeg image/jpg image/png])
-      errors.add(:base, "ファイル形式が、JPEG, JPG, PNG以外になっています")
+    if image.attached? && !image.content_type.in?(%w[image/jpeg image/jpg image/png image/webp])
+      errors.add(:base, "ファイル形式が、JPEG, JPG, PNG, WEBP以外になっています")
+    end
+  end
+
+  def content_length
+    return if content.blank?
+    if content.body&.to_plain_text&.length > 1000
+      errors.add(:content, "本文は1000文字以内で入力してください")
     end
   end
 
@@ -28,21 +39,13 @@ class Frame < ApplicationRecord
     end
   end
 
-  def frame_type_check
-    if image.attached? && text_frame?
-      errors.add(:base, "画像ファイルを設定してください")
-    elsif body.present? && image_frame?
-      errors.add(:base, "本文を入力してください")
-    end
-  end
-
   private
 
-  def body_or_image_presence
-    if body.blank? && !image.attached?
-      errors.add(:base, "本文または画像のどちらかを入力してください")
-    elsif body.present? && image.attached?
-      errors.add(:base, "本文と画像の両方を設定することはできません")
+  def content_or_image_presence
+    if frame_type == "text_frame" && content.body.blank?
+      errors.add(:base, "本文を入力してください")
+    elsif frame_type == "image_frame" && !image.attached?
+      errors.add(:base, "画像ファイルを選択してください")
     end
   end
 end

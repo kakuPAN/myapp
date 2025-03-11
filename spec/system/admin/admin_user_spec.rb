@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe "AdminUsers", type: :system do
   let!(:general_user) { create(:user, :with_google) }
   let!(:admin_user) { create(:user, :with_google, :admin) }
-
   describe "ログインしていないユーザーによるアクセス" do
     describe "管理者ページへのアクセスが失敗する" do
       it "ユーザー一覧ページへのアクセスが失敗する" do
@@ -60,10 +59,11 @@ RSpec.describe "AdminUsers", type: :system do
         expect(current_path).to eq admin_users_path
       end
     end
+    
     describe "ユーザー詳細ページにアクセス" do
       it "ユーザー詳細にユーザーの詳細情報が表示される" do
-        visit admin_users_path
-        find("#user-link-#{admin_user.id}").click
+        visit admin_user_path(admin_user)
+        expect(page).to have_current_path(admin_user_path(admin_user.id), wait: 5)
         expect(page).to have_content(I18n.t("enums.user.role.#{admin_user.role}"))
         expect(page).to have_content(admin_user.id)
         expect(page).to have_content(admin_user.user_name)
@@ -103,7 +103,7 @@ RSpec.describe "AdminUsers", type: :system do
             it "ユーザーの削除に失敗する" do
               visit admin_user_path(admin_user)
               find("#delete-user-button").click
-              expect(page).to have_content("このユーザーは削除できません")
+              expect(page).to have_content("ユーザーを削除できません")
               expect(current_path).to eq admin_user_path(admin_user)
               expect(User.exists?(id: admin_user.id)).to be_truthy
             end
