@@ -23,3 +23,23 @@ function recommendLogin(){
 document.addEventListener("turbo:load", function(){
   recommendLogin();
 });
+
+// トップページ　チュートリアル表示
+function openTutorial(){
+    const tutorialBox = document.getElementById("tutorial-box");
+    const boxTitle = document.getElementById("title-text");
+    const boxContent = document.getElementById("box-content");
+    if(boxTitle&&boxContent) {
+      boxTitle.addEventListener("click", function(e){
+        boxContent.style.display="block";
+        e.stopPropagation();
+      });
+      document.addEventListener('click', function(e) {
+        boxContent.style.display="none";
+        e.stopPropagation();
+      });
+    };
+  };
+document.addEventListener("turbo:load", function(){
+  openTutorial();
+});
